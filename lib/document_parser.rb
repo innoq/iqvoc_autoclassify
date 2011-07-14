@@ -1,6 +1,6 @@
 # encoding: UTF-8
 
-class DocumentParser
+class DocumentParser # XXX bad API (result is instance.sentences)
   attr_reader :sentences
 
   @@delimiters = {
@@ -12,12 +12,18 @@ class DocumentParser
     @sentences = []
     @current_sentence = []
     @current_token = nil
-    @previous_char = nil
 
+    @previous_char = nil
+    @next_char = nil
+
+    text += "." # ensure final sentence is completed -- XXX: hacky?
+    text += " " # ensure a final iteration -- XXX: hacky?
+    current_char = text.slice!(0) # skip first iteration (for look-ahead)
     text.each_char { |char|
-      process char
+      @next_char = char
+      process current_char
+      current_char = char
     }
-    process "." # XXX: hacky?
   end
 
   private
@@ -29,7 +35,9 @@ class DocumentParser
       else
         end_word
       end
-    elsif @@delimiters["sentence"].include? char
+    elsif (@@delimiters["sentence"].include? char) and
+        (@next_char =~ /[A-Za-z]/) == nil # XXX: too simplistic?
+      # TODO: special-case (known) abbreviations
       end_sentence
     elsif @@delimiters["word"].include? char
       end_word
