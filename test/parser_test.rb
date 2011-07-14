@@ -53,6 +53,33 @@ class ParserTest < Test::Unit::TestCase
     assert_equal "ipsum-37-dolor", doc.sentences[0][1]
   end
 
+  def test_quotations_and_apostrophes
+    text = %Q(Gretchen fragt "Nun sag, wie hast du's mit der Religion?" und blickt)
+    doc = DocumentParser.new text
+
+    assert_equal 2, doc.sentences.length
+    assert_equal 10, doc.sentences[0].length
+    assert_equal "du", doc.sentences[0][6]
+    assert_equal "mit", doc.sentences[0][7]
+
+    # NB: special chars being used for quotes and apostrophe
+    text = %Q(„Nun sag, wie hast du’s mit der Religion? Du bist ein herzlich guter Mann, allein ich glaub, du hältst nicht viel davon.“)
+    doc = DocumentParser.new text
+
+    assert_equal 2, doc.sentences.length
+    assert_equal 8, doc.sentences[0].length
+    assert_equal 14, doc.sentences[1].length
+
+    text = "Was gibt's denn? Äußerlich sieht's gut aus."
+    doc = DocumentParser.new text
+
+    assert_equal 2, doc.sentences.length
+    assert_equal 3, doc.sentences[0].length
+    assert_equal "Was", doc.sentences[0][0]
+    assert_equal "gibt", doc.sentences[0][1]
+    assert_equal "denn", doc.sentences[0][2]
+  end
+
   def test_implicit_sentence_termination
     text = "lorem ipsum dolor sit amet"
     doc = DocumentParser.new text

@@ -48,7 +48,7 @@ class DocumentParser # XXX bad API (result is instance.sentences)
   end
 
   def end_sentence
-    @current_sentence.push(@current_token) if @current_token
+    end_word
     @sentences.push(@current_sentence) if @current_sentence.length > 0
     @current_sentence = []
     @current_token = nil
