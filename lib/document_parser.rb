@@ -16,6 +16,8 @@ class DocumentParser # XXX bad API (result is instance.sentences)
     @previous_char = nil
     @next_char = nil
 
+    text = preprocess(text)
+
     text += "." # ensure final sentence is completed -- XXX: hacky?
     text += " " # ensure a final iteration -- XXX: hacky?
     current_char = text.slice!(0) # skip first iteration (for look-ahead)
@@ -36,8 +38,7 @@ class DocumentParser # XXX bad API (result is instance.sentences)
         end_word
       end
     elsif (@@delimiters["sentence"].include? char) and
-        (@next_char =~ /[A-Za-z]/) == nil # XXX: too simplistic?
-      # TODO: special-case (known) abbreviations
+        (@next_char =~ /\s/) != nil # XXX: too simplistic?
       end_sentence
     elsif @@delimiters["word"].include? char
       end_word
@@ -45,6 +46,10 @@ class DocumentParser # XXX bad API (result is instance.sentences)
       @current_token = @current_token ? "#{@current_token}#{char}" : char
     end
     @previous_char = char
+  end
+
+  def preprocess(text)
+    text
   end
 
   def end_sentence
@@ -59,5 +64,19 @@ class DocumentParser # XXX bad API (result is instance.sentences)
       @current_sentence.push(@current_token)
     end
     @current_token = nil
+  end
+end
+
+class GermanDocumentParser < DocumentParser
+  @@abbreviations = {
+    "z. B." => "" # XXX: simply dropping this is cheating and breaks encapsulation
+  }
+
+  def preprocess(text)
+    # "disguise" known abbreviations
+    @@abbreviations.each { |old, new|
+      text = text.gsub(old, new)
+    }
+    return text
   end
 end
