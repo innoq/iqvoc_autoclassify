@@ -5,7 +5,7 @@ class DocumentParser # XXX bad API (result is instance.sentences)
 
   @@delimiters = {
     "sentence" => [".", "?", "!"],
-    "word" => [" ", ",", ":", ";", '"', "'", "(", ")"]
+    "word" => [" ", "\t", ",", ":", ";", '"', "'", "(", ")"]
   }
 
   def initialize(text)
@@ -56,14 +56,21 @@ class DocumentParser # XXX bad API (result is instance.sentences)
     end_word
     @sentences.push(@current_sentence) if @current_sentence.length > 0
     @current_sentence = []
-    @current_token = nil
   end
 
   def end_word
-    if @current_token and @current_token.length > 1 # ignore dashes, slashes etc.
-      @current_sentence.push(@current_token)
+    if @current_token
+      word = normalize_word @current_token
+      @current_sentence.push(word) if word.length > 1 # ignore dashes, slashes etc.
     end
     @current_token = nil
+  end
+
+  def normalize_word(token)
+    # strip leading and trailing non-alphanumeric characters
+    return token.
+        sub(/^[^A-Za-z0-9]+/, "").
+        sub(/[^A-Za-z0-9]+$/, "")
   end
 end
 
@@ -78,5 +85,12 @@ class GermanDocumentParser < DocumentParser
       text = text.gsub(old, new)
     }
     return text
+  end
+
+  def normalize_word(token)
+    # strip leading and trailing non-alphanumeric characters (excl. umlauts and ß)
+    return token.
+        sub(/^[^A-Za-z0-9ÄÖÜäöüß]+/, "").
+        sub(/[^A-Za-z0-9ÄÖÜäöüß]+$/, "")
   end
 end
