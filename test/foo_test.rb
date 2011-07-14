@@ -3,9 +3,9 @@
 require File.join(File.dirname(__FILE__), 'test_helper')
 
 class FooTest < Test::Unit::TestCase
-  
-  test "nothing" do
+
+  def test_sample
     assert true
   end
-  
+
 end
