@@ -3,7 +3,6 @@
 require File.join(File.dirname(__FILE__), 'test_helper')
 require 'document_parser'
 
-
 class ParserTest < Test::Unit::TestCase
 
   def test_simple_sentence_identification
@@ -95,4 +94,5 @@ class ParserTest < Test::Unit::TestCase
     assert_equal 3, doc.sentences[1].length
   end
 
+>>>>>>> 0248f717d977d1a85b69646a259acdfc2bfe3f9c
 end
