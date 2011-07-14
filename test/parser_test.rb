@@ -1,29 +1,71 @@
 # encoding: UTF-8
 
 require File.join(File.dirname(__FILE__), 'test_helper')
+require 'document_parser'
 
 class ParserTest < Test::Unit::TestCase
-  
-  def setup
+
+  def test_simple_sentence_identification
+    text = "Lorem ipsum dolor sit amet."
+    doc = DocumentParser.new text
+
+    assert_equal 1, doc.sentences.length
+    assert_equal 5, doc.sentences[0].length
+
+    text = "lorem ipsum. dolor sit amet."
+    doc = DocumentParser.new text
+
+    assert_equal 2, doc.sentences.length
+    assert_equal 2, doc.sentences[0].length
+    assert_equal 3, doc.sentences[1].length
+
+    text = "lorem ipsum.dolor sit amet."
+    doc = DocumentParser.new text
+
+    assert_equal 1, doc.sentences.length
+    assert_equal 4, doc.sentences[0].length
+    assert_equal "ipsum.dolor", doc.sentences[0][1]
+
+    text = "lörem ipsüm dolor ßit ämet."
+    doc = DocumentParser.new text
+
+    assert_equal 1, doc.sentences.length
+    assert_equal 5, doc.sentences[0].length
+
+    text = "lorem ipsum, dolor sit amet."
+    doc = DocumentParser.new text
+
+    assert_equal 1, doc.sentences.length
+    assert_equal 5, doc.sentences[0].length
+
+    text = "lorem ipsum - dolor sit amet."
+    doc = DocumentParser.new text
+
+    assert_equal 1, doc.sentences.length
+    assert_equal 5, doc.sentences[0].length
+
+    text = "lorem ipsum-37-dolor sit amet."
+    doc = DocumentParser.new text
+
+    assert_equal 1, doc.sentences.length
+    assert_equal 4, doc.sentences[0].length
+    assert_equal "ipsum-37-dolor", doc.sentences[0][1]
   end
-  
-  test "should split text into sentences" do
-    @text = <<-TXT
-      Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod 
-      tempor incididunt ut labore et dolore magna aliqua. 
-      Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi 
-      ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit
-      in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur
-      sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt
-      mollit anim id est laborum.
-    TXT
-    
-    arr = Parser.parse(@text)
-    
-    puts arr.inspect
-    
-    assert arr.is_a?(Array)
-    assert_equal arr.size, 4
+
+  def test_implicit_sentence_termination
+    text = "lorem ipsum dolor sit amet"
+    doc = DocumentParser.new text
+
+    assert_equal 1, doc.sentences.length
+    assert_equal 5, doc.sentences[0].length
+
+    text = "lorem ipsum. dolor sit amet"
+    doc = DocumentParser.new text
+
+    assert_equal 2, doc.sentences.length
+    assert_equal 2, doc.sentences[0].length
+    assert_equal 3, doc.sentences[1].length
   end
-  
+
+>>>>>>> 0248f717d977d1a85b69646a259acdfc2bfe3f9c
 end
