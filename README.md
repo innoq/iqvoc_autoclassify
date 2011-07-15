@@ -10,13 +10,15 @@ Operate Iqvoc::AutoClassify like a common iQvoc-based Application.
 
 1. Run Iqvoc database migrations:
     `rake iqvoc:db:migrate`
-2. Run Iqvoc::AutoClassify migrations:
+2. Run Iqvoc:SKOSXL migrations:
+    `rake iqvoc_skosxl:db:migrate`
+3. Run Iqvoc::AutoClassify migrations:
     `rake db:migrate`
-3. Link or copy iqvoc assets:
+4. Link or copy iqvoc assets:
     `rake iqvoc:assets:link` or `rake iqvoc:assets:copy`
-4. Populate Iqvoc seeds:
+5. Populate Iqvoc seeds:
     `rake iqvoc:db:seed`
-5. Populate Iqvoc:AutoClassify seeds:
+6. Populate Iqvoc:AutoClassify seeds:
     `rake db:seed`
 
 ## Engine
@@ -26,16 +28,18 @@ Operate Iqvoc::AutoClassify and Iqvoc as Engines running in a custom App.
 1. Add iqvoc_autoclassify to your Gemfile (beneath iqvoc)
 2. Run Iqvoc migrations:
     `rake iqvoc:db:migrate`
-2. Run Iqvoc:AutoClassify migrations:
+3. Run Iqvoc:SKOSXL migrations:
+    `rake iqvoc_skosxl:db:migrate`
+4. Run Iqvoc:AutoClassify migrations:
     `rake iqvoc_autoclassify:db:migrate`
-3. Run your own migrations:
+5. Run your own migrations:
     `rake db:migrate`
-4. Link or copy iqvoc assets:
+6. Link or copy iqvoc assets:
     `rake iqvoc:assets:link` or `rake iqvoc:assets:copy`
-5. Iqvoc::AutoClassify doesn't have any assets yet. So you can skip this for Iqvoc::AutoClassify.
-6. Populate Iqvoc seeds:
+7. Iqvoc::AutoClassify doesn't have any assets yet. So you can skip this for Iqvoc::AutoClassify.
+8. Populate Iqvoc seeds:
     `rake iqvoc:db:seed`
-7. Populate Iqvoc:AutoClassify seeds:
+9. Populate Iqvoc:AutoClassify seeds:
     `rake iqvoc_autoclassify:db:seed`
-8. Populate your applications seeds:
+10. Populate your applications seeds:
     `rake db:seed`
