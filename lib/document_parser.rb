@@ -75,14 +75,22 @@ class DocumentParser # XXX bad API (result is instance.sentences)
 end
 
 class GermanDocumentParser < DocumentParser
-  @@abbreviations = {
-    "z. B." => "" # XXX: simply dropping this is cheating and breaks encapsulation
+  @@irrelevant_abbreviations = [
+    "ca.", "etc.", "usw.", "bzw.", "vgl.", "evtl.",
+    "P.S.", "z. B.", "d. h.", "s. o.", "u.a.", "z. T.", "z. Zt.", "i. A.", "i. V.",
+    "i. d. R.",
+    "Min.", "min.", "Mio.", "Mrd.", "Nr.",
+    "Dr.", "Prof.", "Fa.", "ff."
+  ]
+  # add common variants
+  @@irrelevant_abbreviations += @@irrelevant_abbreviations.map { |abbr|
+    abbr.gsub(". ", ".")
   }
 
   def preprocess(text)
-    # "disguise" known abbreviations
-    @@abbreviations.each { |old, new|
-      text = text.gsub(old, new)
+    # discard semantically irrelevant abbreviations (to avoid erroneous sentence termination)
+    @@irrelevant_abbreviations.each { |abbr|
+      text = text.gsub(abbr, "")
     }
     return text
   end

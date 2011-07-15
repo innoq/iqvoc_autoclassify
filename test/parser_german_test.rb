@@ -25,4 +25,31 @@ class ParserGermanTest < Test::Unit::TestCase
     assert_equal "Gruß", doc.sentences[0][3]
   end
 
+  def test_abbreviation_handling
+    text = "lorem ipsum z. B. dolor sit amet"
+    doc = GermanDocumentParser.new text
+
+    assert_equal 1, doc.sentences.length
+
+    text = "lorem ipsum z.B. dolor sit amet"
+    doc = GermanDocumentParser.new text
+
+    assert_equal 1, doc.sentences.length
+
+    text = "lorem ipsum i. d. R. dolor sit amet"
+    doc = GermanDocumentParser.new text
+
+    assert_equal 1, doc.sentences.length
+
+    text = "lorem ipsum i.d.R. dolor sit amet"
+    doc = GermanDocumentParser.new text
+
+    assert_equal 1, doc.sentences.length
+
+    text = "lorem d.h. ipsum s.o. dolor Nr. sit etc. amet"
+    doc = GermanDocumentParser.new text
+
+    assert_equal 1, doc.sentences.length
+  end
+
 end
