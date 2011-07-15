@@ -5,11 +5,15 @@ require "iqvoc/auto_classify/version"
 Gem::Specification.new do |s|
   s.name        = "iqvoc_autoclassify"
   s.version     = Iqvoc::AutoClassify::VERSION
+  s.platform    = Gem::Platform::RUBY
   s.authors     = ["Robert Glaser", "Frederik Dohr", "Till Schulte-Coerne"]
   s.email       = ["robert.glaser@innoq.com"]
-  s.homepage    = ""
-  s.summary     = %q{TODO: Write a gem summary}
-  s.description = %q{TODO: Write a gem description}
+  s.homepage    = "http://innoq.com"
+  s.summary     = "automatic classification of documents based on iQvoc thesauri"
+  s.description = ""
+
+  s.add_dependency "iqvoc"
+  s.add_dependency "bundler"
 
   s.rubyforge_project = "iqvoc_autoclassify"
 
