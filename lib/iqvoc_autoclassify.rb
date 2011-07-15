@@ -1,7 +1,6 @@
 # encoding: UTF-8
 
 require 'iqvoc/auto_classify/version'
-require 'iqvoc/auto_classify/engine'
 
 module IqvocAutoclassify
   unless Iqvoc.const_defined?(:AutoClassify) && Iqvoc::AutoClassify.const_defined?(:Application)
