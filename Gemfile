@@ -2,7 +2,7 @@ source "http://rubygems.org"
 
 gemspec
 
-gem 'rake', '~> 0.8.7'
+gem 'rails', '3.0.9'
 
 gem 'iqvoc', :path => '../iqvoc'
 gem 'iqvoc_skosxl', :path => '../iqvoc_skosxl'
@@ -25,7 +25,6 @@ group :development, :test do
 end
 
 group :test do
-  gem 'test-unit'
   gem 'nokogiri', '1.4.3.1'
   gem 'capybara'
   gem 'database_cleaner', '0.6.0.rc.3'
