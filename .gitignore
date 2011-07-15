@@ -4,6 +4,7 @@ Gemfile.lock
 pkg/*
 
 config/database.yml
+db/schema.rb
 log
 tmp
 
