@@ -1,11 +1,4 @@
 PATH
-  remote: .
-  specs:
-    iqvoc_autoclassify (0.0.1)
-      bundler
-      iqvoc
-
-PATH
   remote: ../iqvoc
   specs:
     iqvoc (3.2.1)
@@ -143,7 +136,6 @@ DEPENDENCIES
   database_cleaner (= 0.6.0.rc.3)
   factory_girl_rails
   iqvoc!
-  iqvoc_autoclassify!
   iqvoc_skosxl!
   mysql2 (= 0.2.7)
   nokogiri (= 1.4.3.1)
