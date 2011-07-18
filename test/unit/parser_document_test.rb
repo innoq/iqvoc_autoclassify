@@ -2,7 +2,7 @@
 
 require 'test_helper'
 require 'document_parser/base'
-require 'document_parser/de'
+require 'document_parser/german_document_parser'
 
 class ParserDocumentTest < ActiveSupport::TestCase
 
@@ -79,7 +79,7 @@ class ParserDocumentTest < ActiveSupport::TestCase
   EOF
 
   def test_sample_documents
-    doc = DocumentParser.new @@doc1
+    doc = DocumentParser::Base.new @@doc1
     assert_equal 13, doc.sentences.length # base parser doesn't handle abbreviations
 
     doc = GermanDocumentParser.new @@doc1

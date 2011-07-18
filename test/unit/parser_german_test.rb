@@ -1,7 +1,7 @@
 # encoding: UTF-8
 
 require 'test_helper'
-require 'document_parser/de'
+require 'document_parser/german_document_parser'
 
 class ParserGermanTest < ActiveSupport::TestCase
 
