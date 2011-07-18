@@ -18,8 +18,6 @@ end
 group :development, :test do
   platforms :ruby do
     gem 'mysql2', '0.2.7'
-    gem 'spork', '~> 0.9.0.rc'
-    gem 'spork-testunit'
   end
   platforms :jruby do
     gem 'activerecord-jdbcmysql-adapter'
@@ -31,6 +29,8 @@ group :test do
   gem 'capybara'
   gem 'database_cleaner', '0.6.0.rc.3'
   gem 'factory_girl_rails'
+  gem 'spork', '~> 0.9.0.rc'
+  gem 'spork-testunit'
 end
 
 group :production, :production_internal do
