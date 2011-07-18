@@ -1,6 +1,6 @@
 # encoding: UTF-8
 
-require File.join(File.dirname(__FILE__), 'test_helper')
+require 'test_helper'
 require 'document_parser'
 require 'german_document_parser'
 
