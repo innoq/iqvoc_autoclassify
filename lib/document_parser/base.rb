@@ -3,12 +3,10 @@
 class DocumentParser # XXX bad API (result is instance.sentences)
   attr_reader :sentences
 
-  def delimiters
-    {
-      "sentence" => [".", "?", "!"],
-      "word" => [" ", "\t", ",", ":", ";", '"', "'", "(", ")"]
-    }
-  end
+  Delimiters = {
+    "sentence" => [".", "?", "!"],
+    "word" => [" ", "\t", ",", ":", ";", '"', "'", "(", ")"]
+  }
 
   def initialize(text)
     @sentences = []
@@ -39,10 +37,10 @@ class DocumentParser # XXX bad API (result is instance.sentences)
       else
         end_word
       end
-    elsif (delimiters["sentence"].include? char) and
+    elsif (Delimiters["sentence"].include? char) and
         (@next_char =~ /\s/) != nil # XXX: too simplistic?
       end_sentence
-    elsif delimiters["word"].include? char
+    elsif Delimiters["word"].include? char
       end_word
     else
       @current_token = @current_token ? "#{@current_token}#{char}" : char
