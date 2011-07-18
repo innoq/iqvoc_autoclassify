@@ -3,7 +3,7 @@
 require 'test_helper'
 require 'document_parser/base'
 
-class ParserTest < Test::Unit::TestCase
+class ParserTest < ActiveSupport::TestCase
 
   def test_simple_sentence_identification
     text = "Lorem ipsum dolor sit amet."

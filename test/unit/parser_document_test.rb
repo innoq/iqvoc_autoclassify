@@ -4,7 +4,7 @@ require 'test_helper'
 require 'document_parser/base'
 require 'document_parser/de'
 
-class ParserDocumentTest < Test::Unit::TestCase
+class ParserDocumentTest < ActiveSupport::TestCase
 
   # source: http://de.wikipedia.org/wiki/Stoppwort
   @@doc1 = <<-EOF

@@ -3,7 +3,7 @@
 require 'test_helper'
 require 'document_parser/de'
 
-class ParserGermanTest < Test::Unit::TestCase
+class ParserGermanTest < ActiveSupport::TestCase
 
   def test_word_normalization
     text = "Nord- und Südgefälle"
