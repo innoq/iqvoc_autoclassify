@@ -2,7 +2,7 @@
 
 require 'document_parser/base'
 
-class GermanDocumentParser < DocumentParser
+class GermanDocumentParser < DocumentParser::Base
 
   Irrelevant_abbreviations = [
     "ca.", "etc.", "usw.", "bzw.", "vgl.", "evtl.",
