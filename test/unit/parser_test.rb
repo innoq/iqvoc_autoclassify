@@ -1,7 +1,7 @@
 # encoding: UTF-8
 
 require 'test_helper'
-require 'document_parser'
+require 'document_parser/base'
 
 class ParserTest < Test::Unit::TestCase
 

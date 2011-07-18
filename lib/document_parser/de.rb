@@ -1,5 +1,7 @@
 # encoding: UTF-8
 
+require 'document_parser/base'
+
 class GermanDocumentParser < DocumentParser
 
   def irrelevant_abbreviations
