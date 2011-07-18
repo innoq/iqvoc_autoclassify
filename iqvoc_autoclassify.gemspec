@@ -15,7 +15,7 @@ Gem::Specification.new do |s|
   s.add_dependency "iqvoc"
   s.add_dependency "bundler"
 
-  s.rubyforge_project = "iqvoc_autoclassify"
+  # s.rubyforge_project = "iqvoc_autoclassify"
 
   s.files         = `git ls-files`.split("\n")
   s.test_files    = `git ls-files -- {test,spec,features}/*`.split("\n")
