@@ -18,6 +18,8 @@ end
 group :development, :test do
   platforms :ruby do
     gem 'mysql2', '0.2.7'
+    gem 'spork', '~> 0.9.0.rc'
+    gem 'spork-testunit'
   end
   platforms :jruby do
     gem 'activerecord-jdbcmysql-adapter'
