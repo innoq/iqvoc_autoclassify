@@ -7,7 +7,7 @@ class Document < ActiveRecord::Base
     self.content_hash = Digest::SHA1.hexdigest(content)
   end
   
-  def after_initialize
+  def self.after_initialize
     @concepts = nil
   end
   
