@@ -1,5 +1,3 @@
-# XXX: should this be moved to config/engine.rb? (cf. iqvoc_skosxl)
-
 require 'rails'
 
 module Iqvoc

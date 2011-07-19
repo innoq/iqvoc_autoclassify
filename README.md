@@ -12,13 +12,17 @@ Operate Iqvoc::AutoClassify like a common iQvoc-based Application.
     `rake iqvoc:db:migrate`
 2. Run Iqvoc:SKOSXL migrations:
     `rake iqvoc_skosxl:db:migrate`
-3. Run Iqvoc::AutoClassify migrations:
+3. Run Iqvoc:UMT migrations:
+    `rake iqvoc_umt:db:migrate`
+4. Run Iqvoc::AutoClassify migrations:
     `rake db:migrate`
-4. Link or copy iqvoc assets:
+5. Link or copy iqvoc assets:
     `rake iqvoc:assets:link` or `rake iqvoc:assets:copy`
-5. Populate Iqvoc seeds:
+6. Link or copy iqvoc_umt assets:
+    `rake iqvoc_umt:assets:link` or `rake iqvoc_umt:assets:copy`
+7. Populate Iqvoc seeds:
     `rake iqvoc:db:seed`
-6. Populate Iqvoc:AutoClassify seeds:
+8. Populate Iqvoc:AutoClassify seeds:
     `rake db:seed`
 
 ## Engine
@@ -30,16 +34,20 @@ Operate Iqvoc::AutoClassify and Iqvoc as Engines running in a custom App.
     `rake iqvoc:db:migrate`
 3. Run Iqvoc:SKOSXL migrations:
     `rake iqvoc_skosxl:db:migrate`
-4. Run Iqvoc:AutoClassify migrations:
+4. Run Iqvoc:UMT migrations:
+    `rake iqvoc_umt:db:migrate`
+5. Run Iqvoc:AutoClassify migrations:
     `rake iqvoc_autoclassify:db:migrate`
-5. Run your own migrations:
+6. Run your own migrations:
     `rake db:migrate`
-6. Link or copy iqvoc assets:
+7. Link or copy iqvoc assets:
     `rake iqvoc:assets:link` or `rake iqvoc:assets:copy`
-7. Iqvoc::AutoClassify doesn't have any assets yet. So you can skip this for Iqvoc::AutoClassify.
-8. Populate Iqvoc seeds:
+8. Link or copy iqvoc_umt assets:
+    `rake iqvoc_umt:assets:link` or `rake iqvoc_umt:assets:copy`
+9. Iqvoc::AutoClassify doesn't have any assets yet. So you can skip this for Iqvoc::AutoClassify.
+10. Populate Iqvoc seeds:
     `rake iqvoc:db:seed`
-9. Populate Iqvoc:AutoClassify seeds:
+11. Populate Iqvoc:AutoClassify seeds:
     `rake iqvoc_autoclassify:db:seed`
-10. Populate your applications seeds:
+12. Populate your applications seeds:
     `rake db:seed`

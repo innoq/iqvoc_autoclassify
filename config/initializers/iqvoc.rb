@@ -1,3 +1,3 @@
-# initializer for both iqvoc AND iqvoc_skosxl
+# initializer for both iqvoc and iqvoc_skosxl
 
 Iqvoc.title = "iQvoc AutoClassify"

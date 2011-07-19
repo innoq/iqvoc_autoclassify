@@ -17,6 +17,14 @@ PATH
       bundler
       iqvoc
 
+PATH
+  remote: ../iqvoc_umt
+  specs:
+    iqvoc_umt (1.0.0)
+      bundler
+      iqvoc
+      iqvoc_skosxl
+
 GEM
   remote: http://rubygems.org/
   specs:
@@ -137,6 +145,7 @@ DEPENDENCIES
   factory_girl_rails
   iqvoc!
   iqvoc_skosxl!
+  iqvoc_umt!
   mysql2 (= 0.2.7)
   nokogiri (= 1.4.3.1)
   rails (= 3.0.9)
