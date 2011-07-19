@@ -25,7 +25,7 @@ class DocumentsController < ActionController::Base
     end
     
     parsed_document = DocumentParser::Base.new(text)
-    document = Document.new(:content => params[:content])
+    document = Document.new(:content => text)
     # TBD
     # Handle creation of classification association records
     # Waiting for FND to expose an API method
