@@ -1,13 +1,6 @@
 class DocumentsController < ActionController::Base  
   respond_to :json
   
-  def index
-    # TBD
-    # Pagination is still missing
-    documents = Document.all
-    respond_with documents
-  end
-  
   def show
     document = Document.find(params[:id])
     respond_with document
@@ -31,9 +24,9 @@ class DocumentsController < ActionController::Base
     # Waiting for FND to expose an API method
     
     if document.save
-      redirect_to document_path(:id => document)
+      respond_with @document, :location => document_path(:id => document)
     else
-      # HTTP invalidation
+      respond_with @document.errors.full_messages, :status => 400
     end
   end
   
