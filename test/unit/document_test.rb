@@ -1,8 +1,9 @@
 require 'test_helper'
 
 class DocumentTest < ActiveSupport::TestCase
-  # Replace this with your real tests.
-  test "the truth" do
-    assert true
+  
+  test "document should have a list of classified concepts" do
+    # TBD
   end
+  
 end
