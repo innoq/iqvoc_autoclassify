@@ -37,19 +37,3 @@ Label::Base.blueprint do
   published_at { 2.days.ago }
   origin { object.value }
 end
-
-# # Broader
-# Iqvoc::Concept.broader_relation_class.blueprint do
-#   owner { Iqvoc::Concept.base_class.make(:weltraumkampfpilot) }
-#   target { Iqvoc::Concept.base_class.make(:pref_labelings => [
-#     Labeling::SKOSXL::PrefLabel.make(:target => Label::Base.make(:value => "Weltraumkampf"))
-#   ])}
-# end
-# 
-# # Narrower
-# Iqvoc::Concept.broader_relation_class.narrower_class.blueprint do
-#   owner { Iqvoc::Concept.base_class.make(:weltraumkampfpilot) }
-#   target { Iqvoc::Concept.base_class.make(:pref_labelings => [
-#     Labeling::SKOSXL::PrefLabel.make(:target => Label::Base.make(:value => "Weltraumkampfspezialpilot"))
-#   ])}
-# end
