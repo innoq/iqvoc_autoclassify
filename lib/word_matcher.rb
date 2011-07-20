@@ -10,12 +10,15 @@ class WordMatcher # XXX: does this really need to be a class? (makes for a bad A
     @words = sentence
   end
 
-  def labels # XXX: should be combined with to_inflectionals for efficiency; currently separate for testability
-    labels = inflectionals.map(&:label).uniq # TODO: inflectionals should be optional
+  def labels # XXX: might be combined with to_inflectionals for efficiency; currently separate for testability
+    labels = inflectionals. # TODO: inflectionals should be optional
+        map(&:label).
+        find_all(&:published?). # XXX: this could be made more efficient
+        uniq
     # XXX: the concept document states that a single inflectional might be
     #      associated with more than one label - however, this does not match
     #      the current implementation (model: inflectional belongs_to label)
-    # TODO: do we need to filter out unpublished labels here?
+    # FIXME: do we need to filter out labels based on languages here?
     compound_forms = resolve_compound_forms(labels) # TODO: compound forms should be optional
     labels + compound_forms
   end

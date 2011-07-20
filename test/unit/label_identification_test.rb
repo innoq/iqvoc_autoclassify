@@ -6,10 +6,23 @@ require 'word_matcher'
 class LabelIdentificationTest < ActionController::TestCase
 
   setup do
+    # published
     {
       "Baum" => ["Bäume", "Baumes"],
       "Kind" => ["Kinder", "Kinde", "Kindes"],
       "Fenster" => []
+    }.each { |term, inflectionals|
+      label = Iqvoc::XLLabel.base_class.create :value => term,
+          :origin => OriginMapping.merge(term), :published_at => 2.days.ago
+      inflectionals.unshift term # the label itself is also an inflectional
+      inflectionals.each { |inf|
+        Inflectional::Base.create :value => inf, :label => label
+      }
+    }
+    # unpublished
+    {
+      "foo" => [],
+      "bar" => []
     }.each { |term, inflectionals|
       label = Iqvoc::XLLabel.base_class.create :value => term,
           :origin => OriginMapping.merge(term)
@@ -51,7 +64,12 @@ class LabelIdentificationTest < ActionController::TestCase
     assert_equal 3, WordMatcher.new(sentence).labels.length
 
     sentence = ["Das", "Kind", "am", "Fenster", "sieht", "Bäume", "und", "Gras"]
-    assert_equal 3, WordMatcher.new(sentence).inflectionals.length
+    assert_equal 3, WordMatcher.new(sentence).labels.length
+  end
+
+  test "ignore unpublished labels" do
+    sentence = ["lorem", "foo", "ipsum", "bar", "dolor", "sit", "amet"]
+    assert_equal 0, WordMatcher.new(sentence).labels.length
   end
 
 end

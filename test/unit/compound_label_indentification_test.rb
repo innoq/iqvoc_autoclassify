@@ -14,7 +14,7 @@ class CompoundLabelIdentificationTest < ActionController::TestCase
       "Pilot" => ["Piloten", "Pilotin"]
     }.each { |term, inflectionals|
       @labels[term] = Iqvoc::XLLabel.base_class.create :value => term,
-          :origin => OriginMapping.merge(term)
+          :origin => OriginMapping.merge(term), :published_at => 2.days.ago
       inflectionals.unshift term # the label itself is also an inflectional
       inflectionals.each { |inf|
         Inflectional::Base.create :value => inf, :label => @labels[term]
@@ -23,7 +23,7 @@ class CompoundLabelIdentificationTest < ActionController::TestCase
 
     compound = "Weltraumkampfpilot"
     @labels[compound] = Iqvoc::XLLabel.base_class.create :value => compound,
-        :origin => OriginMapping.merge(compound)
+        :origin => OriginMapping.merge(compound), :published_at => 2.days.ago
     compound_form_contents = ["Weltraum", "Kampf", "Pilot"].map { |term|
       CompoundForm::Content::Base.new(:label => @labels[term])
     }
@@ -31,7 +31,7 @@ class CompoundLabelIdentificationTest < ActionController::TestCase
 
     compound = "Weltraumfrachtpilot"
     @labels[compound] = Iqvoc::XLLabel.base_class.create :value => compound,
-        :origin => OriginMapping.merge(compound)
+        :origin => OriginMapping.merge(compound), :published_at => 2.days.ago
     compound_form_contents = ["Weltraum", "Fracht", "Pilot"].map { |term|
       CompoundForm::Content::Base.new(:label => @labels[term])
     }
