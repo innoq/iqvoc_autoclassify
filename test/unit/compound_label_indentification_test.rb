@@ -7,11 +7,18 @@ class CompoundLabelIdentificationTest < ActionController::TestCase
 
   setup do # TODO: use factories/blueprints
     @labels = {}
-    ["Weltraum", "Kampf", "Fracht", "Pilot"].each { |term|
-      label = Iqvoc::XLLabel.base_class.create :value => term,
+    {
+      "Weltraum" => [],
+      "Kampf" => ["Kämpfe", "Kampfes"],
+      "Fracht" => [],
+      "Pilot" => ["Piloten", "Pilotin"]
+    }.each { |term, inflectionals|
+      @labels[term] = Iqvoc::XLLabel.base_class.create :value => term,
           :origin => OriginMapping.merge(term)
-      Inflectional::Base.create :value => term, :label => label
-      @labels[term] = label
+      inflectionals.unshift term # the label itself is also an inflectional
+      inflectionals.each { |inf|
+        Inflectional::Base.create :value => inf, :label => @labels[term]
+      }
     }
 
     compound = "Weltraumkampfpilot"
@@ -33,6 +40,12 @@ class CompoundLabelIdentificationTest < ActionController::TestCase
 
   test "compound discovery" do
     sentence = ["der", "Weltraum", "der", "Kampf", "und", "der", "Pilot"]
+    labels = WordMatcher.new(sentence).labels
+    assert_equal 4, labels.length
+    assert labels.include? @labels["Weltraumkampfpilot"]
+    assert (not labels.include? @labels["Weltraumfrachtpilot"])
+
+    sentence = ["Weltraum", "des", "Kampfes", "und", "der", "Piloten"]
     labels = WordMatcher.new(sentence).labels
     assert_equal 4, labels.length
     assert labels.include? @labels["Weltraumkampfpilot"]
