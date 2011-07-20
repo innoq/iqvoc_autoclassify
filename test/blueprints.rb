@@ -24,16 +24,16 @@ Iqvoc::Concept.base_class.blueprint(:weltraumkampfpilot) do
   labeling_skosxl_alt_labels(1)
 end
 
+Iqvoc::XLLabel.base_class.blueprint do
+  origin { object.value }
+  language { Iqvoc::Concept.pref_labeling_languages.first }
+  published_at { 2.days.ago }
+end
+
 Labeling::SKOSXL::PrefLabel.blueprint do
-  target { Label::Base.make(:value => "Weltraumkampfpilot") }
+  target { Iqvoc::XLLabel.base_class.make(:value => "Weltraumkampfpilot") }
 end
 
 Labeling::SKOSXL::AltLabel.blueprint do
-  target { Label::Base.make(:value => "Weltraumkampfflieger") }
-end
-
-Label::Base.blueprint do
-  language { Iqvoc::Concept.pref_labeling_languages.first }
-  published_at { 2.days.ago }
-  origin { object.value }
+  target { Iqvoc::XLLabel.base_class.make(:value => "Weltraumkampfflieger") }
 end
