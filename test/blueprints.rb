@@ -25,7 +25,7 @@ Iqvoc::Concept.base_class.blueprint(:weltraumkampfpilot) do
 end
 
 Iqvoc::XLLabel.base_class.blueprint do
-  origin { object.value }
+  origin { OriginMapping.merge(object.value) }
   language { Iqvoc::Concept.pref_labeling_languages.first }
   published_at { 2.days.ago }
 end
