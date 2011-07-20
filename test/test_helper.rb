@@ -7,8 +7,8 @@ Spork.prefork do
   require 'blueprints'
 
   class ActiveSupport::TestCase
-  # Reset the Machinist cache before each test.
-  setup { Machinist.reset_before_test }
+    # Reset the Machinist cache before each test.
+    setup { Machinist.reset_before_test }
 
     # Setup all fixtures in test/fixtures/*.(yml|csv) for all tests in alphabetical order.
     #
