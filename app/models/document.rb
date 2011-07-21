@@ -40,8 +40,8 @@ class Document < ActiveRecord::Base
   def weighting_factors
     @weighting_factors ||= {
       Iqvoc::Concept.broader_relation_class_name => 1.5,
-      'Concept::Relation::SKOS::Narrower'        => 2.0,
-      'Concept::Relation::SKOS::Related'         => 1.3
+      'Concept::Relation::SKOS::Narrower::Base'  => 2.0,
+      'Concept::Relation::SKOS::Related::Base'   => 1.3
     }
   end
 
@@ -62,8 +62,7 @@ class Document < ActiveRecord::Base
   end
 
   def analyze_concept_relations
-    return if @concepts == nil
-    @concepts.each do |concept|
+    @concepts.each do |concept, weighting|
       concept.relations.each do |relation|
         if @concepts.has_key?(relation.target)
           @concepts[concept] *= weighting_factors[relation.type]
