@@ -12,23 +12,14 @@ class LabelIdentificationTest < ActionController::TestCase
       "Kind" => ["Kinder", "Kinde", "Kindes"],
       "Fenster" => []
     }.each { |term, inflectionals|
-      label = Iqvoc::XLLabel.base_class.make! :value => term
-      inflectionals.unshift term # the label itself is also an inflectional
-      inflectionals.each { |inf|
-        Inflectional::Base.create :value => inf, :label => label
-      }
+      make_label(term, inflectionals)
     }
     # unpublished
     {
       "foo" => [],
       "bar" => []
     }.each { |term, inflectionals|
-      label = Iqvoc::XLLabel.base_class.make! :value => term,
-          :published_at => nil
-      inflectionals.unshift term # the label itself is also an inflectional
-      inflectionals.each { |inf|
-        Inflectional::Base.create :value => inf, :label => label
-      }
+      make_label(term, inflectionals, { :published_at => nil })
     }
   end
 

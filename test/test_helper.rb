@@ -16,7 +16,16 @@ Spork.prefork do
     # -- they do not yet inherit this setting
     # fixtures :all
 
-    # Add more helper methods to be used by all tests here...
+    def make_label(value, inflectionals=[], attributes={})
+      attributes[:value] = value
+      label = Iqvoc::XLLabel.base_class.make!(attributes)
+      inflectionals.unshift value # the label itself is also an inflectional
+      inflectionals.each { |inf|
+        label.inflectionals.create!(:value => inf)
+      }
+      return label
+    end
+
   end
 end
 

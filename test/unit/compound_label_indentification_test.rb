@@ -5,7 +5,7 @@ require 'word_matcher'
 
 class CompoundLabelIdentificationTest < ActionController::TestCase
 
-  setup do # TODO: use factories/blueprints
+  setup do
     @labels = {}
     {
       "Weltraum" => [],
@@ -13,11 +13,7 @@ class CompoundLabelIdentificationTest < ActionController::TestCase
       "Fracht" => [],
       "Pilot" => ["Piloten", "Pilotin"]
     }.each { |term, inflectionals|
-      @labels[term] = Iqvoc::XLLabel.base_class.make! :value => term
-      inflectionals.unshift term # the label itself is also an inflectional
-      inflectionals.each { |inf|
-        Inflectional::Base.create :value => inf, :label => @labels[term]
-      }
+      @labels[term] = make_label(term, inflectionals)
     }
 
     compound = "Weltraumkampfpilot"
