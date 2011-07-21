@@ -1,4 +1,6 @@
 require 'digest/sha1'
+require 'document_parser/german_document_parser'
+require 'word_matcher'
 
 class Document < ActiveRecord::Base
   has_many :classifications, :dependent => :destroy
@@ -15,6 +17,7 @@ class Document < ActiveRecord::Base
     return @concepts if @concepts
     determine_concepts
     analyze_concept_relations
+    return @concepts || []
   end
 
   def labels
@@ -57,6 +60,7 @@ class Document < ActiveRecord::Base
   end
 
   def analyze_concept_relations
+    return if @concepts == nil
     @concepts.each do |concept|
       concept.relations.each do |relation|
         if @concepts.has_key?(relation.target)
