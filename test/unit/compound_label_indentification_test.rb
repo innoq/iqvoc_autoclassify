@@ -7,28 +7,23 @@ class CompoundLabelIdentificationTest < ActionController::TestCase
 
   setup do
     @labels = {}
+    # labels with inflectionals
     {
       "Weltraum" => [],
       "Kampf" => ["Kämpfe", "Kampfes"],
       "Fracht" => [],
       "Pilot" => ["Piloten", "Pilotin"]
     }.each { |term, inflectionals|
-      @labels[term] = make_label(term, inflectionals)
+      @labels[term] = make_label(term, :inflectionals => inflectionals)
     }
-
-    compound = "Weltraumkampfpilot"
-    @labels[compound] = Iqvoc::XLLabel.base_class.make! :value => compound
-    compound_form_contents = ["Weltraum", "Kampf", "Pilot"].map { |term|
-      CompoundForm::Content::Base.new(:label => @labels[term])
+    # compound forms
+    {
+      "Weltraumkampfpilot" => ["Weltraum", "Kampf", "Pilot"],
+      "Weltraumfrachtpilot" => ["Weltraum", "Fracht", "Pilot"]
+    }.each { |term, components|
+      components = components.map { |term| @labels[term] }
+      @labels[term] = make_label(term, :components => components)
     }
-    @labels[compound].compound_forms.create!(:compound_form_contents => compound_form_contents)
-
-    compound = "Weltraumfrachtpilot"
-    @labels[compound] = Iqvoc::XLLabel.base_class.make! :value => compound
-    compound_form_contents = ["Weltraum", "Fracht", "Pilot"].map { |term|
-      CompoundForm::Content::Base.new(:label => @labels[term])
-    }
-    @labels[compound].compound_forms.create!(:compound_form_contents => compound_form_contents)
   end
 
   test "compound discovery" do

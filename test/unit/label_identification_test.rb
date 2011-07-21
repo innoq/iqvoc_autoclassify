@@ -12,14 +12,15 @@ class LabelIdentificationTest < ActionController::TestCase
       "Kind" => ["Kinder", "Kinde", "Kindes"],
       "Fenster" => []
     }.each { |term, inflectionals|
-      make_label(term, inflectionals)
+      make_label(term, :inflectionals => inflectionals)
     }
     # unpublished
     {
       "foo" => [],
       "bar" => []
     }.each { |term, inflectionals|
-      make_label(term, inflectionals, { :published_at => nil })
+      make_label(term, :inflectionals => inflectionals,
+          :label_attributes => { :published_at => nil })
     }
   end
 
