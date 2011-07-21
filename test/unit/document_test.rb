@@ -12,12 +12,22 @@ class DocumentTest < ActiveSupport::TestCase
         create_with_reverse_relation(broader_concept)
     @concept.send(Iqvoc::Concept.broader_relation_class.narrower_class.name.to_relation_name).
         create_with_reverse_relation(narrower_concept)
-
-    @document = Document.make!
   end
 
-  test "should determine concepts" do
-    assert true
+  test "should gracefully handle lack of matches" do
+    text = ""
+
+    doc = Document.make!(:content => text)
+    assert_equal 0, doc.labels.length
+    assert_equal 0, doc.concepts.length
+  end
+
+  test "should determine matching concepts" do
+    text = "Der Weltraumkampfpilot"
+
+    doc = Document.make!(:content => text)
+    assert_equal 1, doc.labels.length
+    assert_equal 1, doc.concepts.length
   end
 
 end
