@@ -18,8 +18,8 @@ Spork.prefork do
 
     # optional arguments:
     # concept_attributes for custom concept attributes to be passed to the blueprint
-    # pref_labels is an array of strings to be used as prefLabels
-    # alt_labels is an array of strings to be used as altLabels
+    # pref_labels is an array of strings or label instances to be used as prefLabels
+    # alt_labels is an array of strings or label instances to be used as altLabels
     def make_concept(options={})
       attributes = options[:concept_attributes] || {}
       pref_labels = options[:pref_labels] || []
@@ -28,12 +28,12 @@ Spork.prefork do
       concept = Iqvoc::Concept.base_class.make!(attributes)
 
       pref_labels.each { |term|
-        label = make_label(term)
+        label = term.is_a?(String) ? make_label(term) : term
         Iqvoc::Concept.pref_labeling_class.
             create!(:owner => concept, :target => label)
       }
       alt_labels.each { |term|
-        label = make_label(term)
+        label = term.is_a?(String) ? make_label(term) : term
         Iqvoc::Concept.further_labeling_classes.first.first.
             create!(:owner => concept, :target => label)
       }

@@ -15,7 +15,7 @@ class Document < ActiveRecord::Base
 
   def concepts
     return @concepts if @concepts
-    determine_concepts
+    @concepts = determine_concepts
     analyze_concept_relations
     return @concepts || []
   end
@@ -31,9 +31,9 @@ class Document < ActiveRecord::Base
 
   def weightings
     @weightings ||= {
-      'Labeling::SKOS::PrefLabel'   => 1.0,
-      'Labeling::SKOS::AltLabel'    => 1.0,
-      'Labeling::SKOS::HiddenLabel' => 0.3
+      'Labeling::SKOSXL::PrefLabel'   => 1.0,
+      'Labeling::SKOSXL::AltLabel'    => 1.0,
+      'Labeling::SKOSXL::HiddenLabel' => 0.3
     }
   end
 
@@ -46,17 +46,19 @@ class Document < ActiveRecord::Base
   end
 
   def determine_concepts
-    labels.each do |label|
+    concepts = {}
+    self.labels.each do |label|
       label.labelings.each do |labeling|
         concept = labeling.owner
         weighting = weightings[labeling.type]
-        if @concepts.has_key?(concept)
-          @concepts[concept] += weighting
+        if concepts.has_key?(concept)
+          concepts[concept] += weighting
         else
-          @concepts[concept] = weighting
+          concepts[concept] = weighting
         end
       end
     end
+    return concepts
   end
 
   def analyze_concept_relations
