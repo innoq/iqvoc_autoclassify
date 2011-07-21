@@ -17,11 +17,11 @@ class Document < ActiveRecord::Base
     analyze_concept_relations
   end
 
-  def labels(text)
+  def labels
     # XXX: it might be more efficient to adopt a streaming approach, processing
     #      each sentence as they're identified instead of separating the
     #      processing steps
-    GermanDocumentParser.new(text).map { |sentence| # XXX: simply assuming German for now
+    GermanDocumentParser.new(self.content).sentences.map { |sentence| # XXX: simply assuming German for now
       WordMatcher.new(sentence).labels
     }.flatten.uniq # XXX: this could be made more efficient
   end
