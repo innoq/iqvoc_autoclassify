@@ -3,7 +3,7 @@
 require 'test_helper'
 require 'word_matcher'
 
-class CompoundLabelIdentificationTest < ActionController::TestCase
+class CompoundLabelIdentificationTest < ActiveSupport::TestCase
 
   setup do
     @labels = {}

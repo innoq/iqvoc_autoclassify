@@ -2,7 +2,7 @@
 
 require 'test_helper'
 
-class DocumentLabelsTest < ActionController::TestCase
+class DocumentLabelsTest < ActiveSupport::TestCase
 
   setup do
     @labels = {}

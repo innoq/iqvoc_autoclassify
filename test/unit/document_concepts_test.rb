@@ -2,7 +2,7 @@
 
 require 'test_helper'
 
-class DocumentConceptsTest < ActionController::TestCase
+class DocumentConceptsTest < ActiveSupport::TestCase
 
   setup do
     @concepts = {}

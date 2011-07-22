@@ -3,7 +3,7 @@
 require 'test_helper'
 require 'word_matcher'
 
-class LabelIdentificationTest < ActionController::TestCase
+class LabelIdentificationTest < ActiveSupport::TestCase
 
   setup do
     # published
