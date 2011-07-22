@@ -17,7 +17,7 @@ class Document < ActiveRecord::Base
     return @concepts if @concepts
     @concepts = determine_concepts
     analyze_concept_relations
-    return @concepts || []
+    return @concepts
   end
 
   def labels
@@ -65,7 +65,7 @@ class Document < ActiveRecord::Base
     @concepts.each do |concept, weighting|
       concept.relations.each do |relation|
         if @concepts.has_key?(relation.target)
-          @concepts[concept] *= weighting_factors[relation.type]
+          @concepts[relation.target] *= weighting_factors[relation.type]
         end
       end
     end

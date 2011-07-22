@@ -5,7 +5,7 @@ require 'test_helper'
 class DocumentConceptsTest < ActionController::TestCase
 
   setup do
-    @concepts = []
+    @concepts = {}
     @labels = {}
     [
       ["Weltraum", "All"],
@@ -16,17 +16,23 @@ class DocumentConceptsTest < ActionController::TestCase
       labels = terms.map { |term|
         @labels[term] = make_label(term)
       }
-      pref_labels = [labels.shift]
+      pref_label = labels.shift
       alt_labels = labels
-      @concepts.push make_concept(:pref_labels => pref_labels, :alt_labels => alt_labels)
+      @concepts[pref_label.value] = make_concept(:pref_labels => [pref_label],
+          :alt_labels => alt_labels)
     }
-    # add some relations
-    broader_concept = make_concept(:pref_labels => ["Auseinandersetzung"])
-    @concepts[2].send(Iqvoc::Concept.broader_relation_class.name.to_relation_name).
+    # broader relation
+    term = "Auseinandersetzung"
+    broader_concept = make_concept(:pref_labels => [term])
+    @concepts["Kampf"].send(Iqvoc::Concept.broader_relation_class.name.to_relation_name).
         create_with_reverse_relation(broader_concept)
-    narrower_concept = make_concept(:pref_labels => ["Messerkampf"])
-    @concepts[2].send(Iqvoc::Concept.broader_relation_class.narrower_class.name.to_relation_name).
+    @concepts[term] = broader_concept
+    # narrower relation
+    term = "Messerkampf"
+    narrower_concept = make_concept(:pref_labels => [term])
+    @concepts["Kampf"].send(Iqvoc::Concept.broader_relation_class.narrower_class.name.to_relation_name).
         create_with_reverse_relation(narrower_concept)
+    @concepts[term] = narrower_concept
   end
 
   test "concept discovery and redundancy elimination" do
@@ -41,6 +47,8 @@ class DocumentConceptsTest < ActionController::TestCase
 
     concepts = doc.determine_concepts
     assert_equal 2, concepts.keys.length
+    assert concepts.include? @concepts["Weltraum"]
+    assert concepts.include? @concepts["Kampf"]
   end
 
   test "simple concept weighting" do
@@ -52,8 +60,9 @@ class DocumentConceptsTest < ActionController::TestCase
     # simple analysis
     concepts = doc.concepts
     assert_equal 3, concepts.keys.length
-    assert_equal 2.0, concepts[@concepts[0]]
-    assert_equal 1.0, concepts[@concepts[2]]
+    assert_equal 2.0, concepts[@concepts["Weltraum"]]
+    assert_equal 1.0, concepts[@concepts["Kampf"]]
+    assert_equal 1.0, concepts[@concepts["Pilot"]]
   end
 
   test "full concept weighting" do
@@ -66,9 +75,9 @@ class DocumentConceptsTest < ActionController::TestCase
     # full analysis
     concepts = doc.concepts
     assert_equal 3, concepts.keys.length
-    assert_equal 2.0, concepts[@concepts[0]]
-    assert_equal 2.0, concepts[@concepts[2]]
-    assert_equal 1.5, concepts[@concepts[4]]
+    assert_equal 2.0, concepts[@concepts["Weltraum"]]
+    assert_equal 2.0, concepts[@concepts["Kampf"]]
+    assert_equal 1.5, concepts[@concepts["Auseinandersetzung"]]
   end
 
 end
