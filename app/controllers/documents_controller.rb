@@ -1,30 +1,31 @@
 class DocumentsController < ActionController::Base
-  respond_to :json
+  respond_to :html
 
-  def show
-    document = Document.find(params[:id])
-    respond_with document
+  def index
+    @documents = Document.all
+    respond_with @documents
   end
 
-  def create
-    # TBD
-    # A production API should restrict the amount of requests coming from the same IP
+  def show
+    @document = Document.find(params[:id])
+    respond_with @document
+  end
 
-    text = if params[:uri]
-      # TBD
-      # Parse URI and extract main content
+  def create # TODO: restrict the amount of requests from the same IP?
+    if params[:content]
+      text = params[:content]
+    elsif params[:uri]
+      # TODO: extract content body from target resource
     else
-      params[:content]
+      # TODO: error
     end
 
-    parsed_document = DocumentParser::Base.new(text)
-    document = Document.new(:content => text)
-    # TBD
-    # Handle creation of classification association records
-    # Waiting for FND to expose an API method
+    @document = Document.new(:content => text)
+    # TODO: calculate and store classification results
 
-    if document.save
-      respond_with @document, :location => document_path(:id => document)
+    if @document.save
+      respond_with @document, :location => document_path(:id => @document,
+          :lang => @active_language)
     else
       respond_with @document.errors.full_messages, :status => 400
     end

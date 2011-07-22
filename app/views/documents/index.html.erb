@@ -1,0 +1,18 @@
+<h1>Documents</h1>
+
+<table> <!-- TODO: i18n -->
+  <tr>
+    <th>Date</th>
+    <th>Hash</th>
+    <th>Concepts</th>
+  </tr>
+
+<%- @documents.each do |doc| -%>
+  <tr>
+    <td><%= doc.updated_at %></td>
+    <td><%= link_to doc.content_hash, document_path(doc, :lang => @active_language) %></td>
+    <td><%= doc.concepts.length %></td>
+  </tr>
+<% end %>
+
+</table>

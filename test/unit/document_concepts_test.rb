@@ -35,7 +35,7 @@ class DocumentConceptsTest < ActiveSupport::TestCase
     @concepts[term] = narrower_concept
   end
 
-  test "should gracefully handle lack of matches" do
+  test "gracefully handle lack of matches" do
     text = ""
 
     doc = Document.make!(:content => text)
