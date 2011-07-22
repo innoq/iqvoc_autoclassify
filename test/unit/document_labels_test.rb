@@ -35,7 +35,7 @@ class DocumentLabelsTest < ActiveSupport::TestCase
       Weltraums Kämpfe auszutragen.
     EOF
 
-    labels = Document.make!(:content => text).labels
+    labels = Document.create!(:content => text).labels
     assert_equal 4, labels.length
     assert labels.include? @labels["Weltraum"]
     assert labels.include? @labels["Pilot"]
