@@ -35,6 +35,14 @@ class DocumentConceptsTest < ActionController::TestCase
     @concepts[term] = narrower_concept
   end
 
+  test "should gracefully handle lack of matches" do
+    text = ""
+
+    doc = Document.make!(:content => text)
+    assert_equal 0, doc.labels.length
+    assert_equal 0, doc.concepts.keys.length
+  end
+
   test "concept discovery and redundancy elimination" do
     text = "Der Weltraum (oder das All) ist Schauplatz für den Kampf."
     doc = Document.make!(:content => text)
