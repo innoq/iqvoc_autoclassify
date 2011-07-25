@@ -5,7 +5,7 @@ require 'document_parser/base'
 
 class ParserTest < ActiveSupport::TestCase
 
-  def test_simple_sentence_identification
+  test "simple sentence identification" do
     text = "Lorem ipsum dolor sit amet."
     doc = DocumentParser::Base.new text
 
@@ -52,7 +52,7 @@ class ParserTest < ActiveSupport::TestCase
     assert_equal "ipsum-37-dolor", doc.sentences[0][1]
   end
 
-  def test_quotations_and_apostrophes
+  test "quotations and apostrophes" do
     text = %Q(Gretchen fragt "Nun sag, wie hast du's mit der Religion?" und blickt)
     doc = DocumentParser::Base.new text
 
@@ -79,7 +79,7 @@ class ParserTest < ActiveSupport::TestCase
     assert_equal "denn", doc.sentences[0][2]
   end
 
-  def test_implicit_sentence_termination
+  test "implicit sentence termination" do
     text = "lorem ipsum dolor sit amet"
     doc = DocumentParser::Base.new text
 
