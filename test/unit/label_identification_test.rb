@@ -18,10 +18,10 @@ class LabelIdentificationTest < ActiveSupport::TestCase
         value: Fenster
       -
         value: foo
-        published_at: nil
+        published_at:
       -
         value: bar
-        published_at: nil
+        published_at:
     EOF
   end
 

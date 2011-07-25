@@ -9,7 +9,7 @@ class HelpersTest < ActiveSupport::TestCase
       labels:
       -
         value: Foo
-        published_at: nil
+        published_at:
         inflectionals: ["foo", "fu"]
       -
         value: Bar
@@ -20,7 +20,7 @@ class HelpersTest < ActiveSupport::TestCase
         components: ["Foo", "Bar"]
     EOF
 
-    labels = Label::Base.all
+    labels = Iqvoc::XLLabel.base_class.all
     assert_equal 3, labels.length
 
     label = labels[0]

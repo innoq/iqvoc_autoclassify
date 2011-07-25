@@ -70,26 +70,26 @@ Spork.prefork do
     end
 
     # labels:
-    #   -
-    #     value: <string>
-    #     <attribute>: <value>
-    #     inflectionals: [<string>, <string>]
-    #     components: [<label>, <label>]
+    # -
+    #   value: <string>
+    #   <attribute>: <value>
+    #   inflectionals: [<string>, ...]
+    #   components: [<label>, ...]
     #
     # NB: order of labels matters when referencing components
     def make_from_yaml(yml)
       data = YAML.load(yml)
 
       labels = {}
-      data["labels"].each { |props| # XXX: use omap to simplify format (making `value` the key instead of an attribute)?
-        term = props.delete("value")
-        components = props.delete("components").map { |term|
+      data["labels"].each { |label| # XXX: use omap to simplify format (making `value` the key instead of an attribute)?
+        term = label.delete("value")
+        components = label.delete("components").map { |term|
           labels[term]
-        } if props["components"]
+        } if label["components"]
         options = {
-          :inflectionals => props.delete("inflectionals"),
+          :inflectionals => label.delete("inflectionals"),
           :components => components,
-          :label_attributes => props
+          :label_attributes => label
         }
         labels[term] = make_label(term, options)
       }
