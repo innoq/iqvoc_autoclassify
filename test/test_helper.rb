@@ -5,6 +5,7 @@ Spork.prefork do
   require File.expand_path('../../config/environment', __FILE__)
   require 'rails/test_help'
   require 'blueprints'
+  require 'yaml'
 
   class ActiveSupport::TestCase
     # Reset the Machinist cache before each test.
@@ -66,6 +67,34 @@ Spork.prefork do
       end
 
       return label
+    end
+
+    # labels:
+    #   -
+    #     value: <string>
+    #     <attribute>: <value>
+    #     inflectionals: [<string>, <string>]
+    #     components: [<label>, <label>]
+    #
+    # NB: order of labels matters when referencing components
+    def make_from_yaml(yml)
+      data = YAML.load(yml)
+
+      labels = {}
+      data["labels"].each { |props| # XXX: use omap to simplify format (making `value` the key instead of an attribute)?
+        term = props.delete("value")
+        components = props.delete("components").map { |term|
+          labels[term]
+        } if props["components"]
+        options = {
+          :inflectionals => props.delete("inflectionals"),
+          :components => components,
+          :label_attributes => props
+        }
+        labels[term] = make_label(term, options)
+      }
+
+      return { :labels => labels }
     end
 
   end

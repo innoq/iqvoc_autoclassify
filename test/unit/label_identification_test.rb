@@ -6,22 +6,23 @@ require 'word_matcher'
 class LabelIdentificationTest < ActiveSupport::TestCase
 
   setup do
-    # published
-    {
-      "Baum" => ["Bäume", "Baumes"],
-      "Kind" => ["Kinder", "Kinde", "Kindes"],
-      "Fenster" => []
-    }.each { |term, inflectionals|
-      make_label(term, :inflectionals => inflectionals)
-    }
-    # unpublished
-    {
-      "foo" => [],
-      "bar" => []
-    }.each { |term, inflectionals|
-      make_label(term, :inflectionals => inflectionals,
-          :label_attributes => { :published_at => nil })
-    }
+    make_from_yaml <<-EOF
+      labels:
+      -
+        value: Baum
+        inflectionals: [Bäume, Baumes]
+      -
+        value: Kind
+        inflectionals: [Kinder, Kinde, Kindes]
+      -
+        value: Fenster
+      -
+        value: foo
+        published_at: nil
+      -
+        value: bar
+        published_at: nil
+    EOF
   end
 
   test "identifying matching inflectionals" do

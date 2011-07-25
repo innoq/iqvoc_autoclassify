@@ -6,24 +6,26 @@ require 'word_matcher'
 class CompoundLabelIdentificationTest < ActiveSupport::TestCase
 
   setup do
-    @labels = {}
-    # labels with inflectionals
-    {
-      "Weltraum" => [],
-      "Kampf" => ["Kämpfe", "Kampfes"],
-      "Fracht" => [],
-      "Pilot" => ["Piloten", "Pilotin"]
-    }.each { |term, inflectionals|
-      @labels[term] = make_label(term, :inflectionals => inflectionals)
-    }
-    # compound forms
-    {
-      "Weltraumkampfpilot" => ["Weltraum", "Kampf", "Pilot"],
-      "Weltraumfrachtpilot" => ["Weltraum", "Fracht", "Pilot"]
-    }.each { |term, components|
-      components = components.map { |term| @labels[term] }
-      @labels[term] = make_label(term, :components => components)
-    }
+    data = make_from_yaml <<-EOF
+      labels:
+      -
+        value: Weltraum
+      -
+        value: Kampf
+        inflectionals: [Kämpfe, Kampfes]
+      -
+        value: Fracht
+      -
+        value: Pilot
+        inflectionals: [Piloten, Pilotin]
+      -
+        value: Weltraumkampfpilot
+        components: [Weltraum, Kampf, Pilot]
+      -
+        value: Weltraumfrachtpilot
+        components: [Weltraum, Fracht, Pilot]
+    EOF
+    @labels = data[:labels]
   end
 
   test "compound discovery" do

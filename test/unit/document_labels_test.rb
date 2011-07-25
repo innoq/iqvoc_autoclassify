@@ -5,27 +5,27 @@ require 'test_helper'
 class DocumentLabelsTest < ActiveSupport::TestCase
 
   setup do
-    @labels = {}
-    # labels with inflectionals
-    {
-      "Weltraum" => [],
-      "Kampf" => ["Kämpfe", "Kampfes"],
-      "Fracht" => [],
-      "Pilot" => ["Piloten", "Pilotin"]
-    }.each { |term, inflectionals|
-      @labels[term] = make_label(term, :inflectionals => inflectionals)
-    }
-    # compound forms with inflectionals
-    {
-      "Weltraumkampfpilot" => [
-        ["Weltraumkampfpiloten"],
-        ["Weltraum", "Kampf", "Pilot"]
-      ],
-      "Weltraumfrachtpilot" => [ [], ["Weltraum", "Fracht", "Pilot"] ]
-    }.each { |term, options|
-      @labels[term] = make_label(term, :inflectionals => options[0],
-          :components => options[1].map { |term| @labels[term] })
-    }
+    data = make_from_yaml <<-EOF
+      labels:
+      -
+        value: Weltraum
+      -
+        value: Kampf
+        inflectionals: [Kämpfe, Kampfes]
+      -
+        value: Fracht
+      -
+        value: Pilot
+        inflectionals: [Piloten, Pilotin]
+      -
+        value: Weltraumkampfpilot
+        inflectionals: [Weltraumkampfpiloten]
+        components: [Weltraum, Kampf, Pilot]
+      -
+        value: Weltraumfrachtpilot
+        components: [Weltraum, Fracht, Pilot]
+    EOF
+    @labels = data[:labels]
   end
 
   test "label discovery and redundancy elimination" do
