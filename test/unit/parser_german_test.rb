@@ -5,7 +5,7 @@ require 'document_parser/german_document_parser'
 
 class ParserGermanTest < ActiveSupport::TestCase
 
-  def test_word_normalization
+  test "word normalization" do
     text = "Nord- und Südgefälle"
     doc = GermanDocumentParser.new text
 
@@ -24,7 +24,7 @@ class ParserGermanTest < ActiveSupport::TestCase
     assert_equal "Gruß", doc.sentences[0][3]
   end
 
-  def test_abbreviation_handling
+  test "abbreviation handling" do
     text = "lorem ipsum z. B. dolor sit amet"
     doc = GermanDocumentParser.new text
 
