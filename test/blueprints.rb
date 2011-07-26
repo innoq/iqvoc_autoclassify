@@ -2,16 +2,6 @@
 
 require 'machinist/active_record'
 
-Document.blueprint do
-  content { <<-END
-    Ein Weltraumkampfpilot ist ein Pilot, der im Weltraum fliegt und kämpft.
-    Es geht dabei um nichts geringeres als den Kampf um die Weltherrschaft und
-    die Herrschaft über den Weltraum. Diese kann nur kämpfend erreicht werden.
-    Dafür braucht es nun mal einen Piloten, der den Kampf um den Weltraum kämpft.
-  END
-  }
-end
-
 Iqvoc::Concept.base_class.blueprint do
   origin { "_#{sn}" }
   published_at { 3.days.ago }

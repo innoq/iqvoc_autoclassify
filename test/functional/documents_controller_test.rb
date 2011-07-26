@@ -5,7 +5,7 @@ require 'test_helper'
 class DocumentsControllerTest < ActionController::TestCase
 
   setup do
-    @document = Document.make!(:content => "lorem ipsum\ndolor sit amet")
+    @document = Document.create!(:content => "lorem ipsum\ndolor sit amet")
   end
 
   test "list documents at index" do
@@ -16,7 +16,7 @@ class DocumentsControllerTest < ActionController::TestCase
     assert_select "table" do
       assert_select "tr", 2
     end
-    assert_select "tr:nth-of-type(2) a[href=/documents/1]", 1 # FIXME: use content hash as ID
+    assert_select "tr:nth-of-type(2) a[href=/documents/d0d2efdf0c05081e2c3ae386215483329a653cfd]", 1
   end
 
   test "list matching concepts for the respective document" do

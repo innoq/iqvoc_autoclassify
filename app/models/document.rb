@@ -13,6 +13,17 @@ class Document < ActiveRecord::Base
     @concepts = nil
   end
 
+  # use content_hash as entity identifier
+  def to_param
+    content_hash
+  end
+
+  # ensure retrieval is based on content_hash
+  def self.find(*args)
+    args[0] = args[0].content_hash if args[0].is_a?(Document) # XXX: fugly hack (shouldn't even be necessary!?)
+    self.find_by_content_hash(*args)
+  end
+
   def concepts
     return @concepts if @concepts
     @concepts = determine_concepts
