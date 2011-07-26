@@ -10,7 +10,7 @@ class Document < ActiveRecord::Base
   has_many :classifications, :dependent => :destroy
 
   validates_presence_of :content
-  validates_uniqueness_of :content # XXX: expensive? might use content_hash (calculated in before_save though)
+  validates_uniqueness_of :content_hash
 
   before_save do |document|
     self.content_hash = Digest::SHA1.hexdigest(content)
