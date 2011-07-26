@@ -27,6 +27,11 @@ class DocumentTest < ActiveSupport::TestCase
       -
         pref_labels: [Pilot]
     EOF
+
+    @url_info = {
+      :host => "localhost",
+      :lang => "de"
+    }
   end
 
   test "ensures content is supplied" do
@@ -37,14 +42,21 @@ class DocumentTest < ActiveSupport::TestCase
     assert_equal 1, doc.errors.length
   end
 
+  test "ensures content is unique" do
+    doc = Document.new(:content => "lipsum")
+    doc.url_info = @url_info
+    doc.save!
+
+    doc = Document.new(:content => "lipsum")
+    doc.save
+    assert_equal 1, doc.errors.length
+  end
+
   test "classification creation" do
     text = "der Weltraum - Piloten im Kampf"
 
     doc = Document.new(:content => text)
-    doc.url_info = {
-      :host => "localhost",
-      :lang => "de"
-    }
+    doc.url_info = @url_info
 
     assert_equal 0, Classification.count
 

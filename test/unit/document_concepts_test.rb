@@ -41,16 +41,18 @@ class DocumentConceptsTest < ActiveSupport::TestCase
     EOF
     @labels = data[:labels]
     @concepts = data[:concepts]
+
+    @url_info = {
+      :host => "localhost",
+      :lang => "de"
+    }
   end
 
   test "gracefully handle lack of matches" do
     text = "..."
 
     doc = Document.new(:content => text)
-    doc.url_info = {
-      :host => "localhost",
-      :lang => "de"
-    }
+    doc.url_info = @url_info
     doc.save!
 
     assert_equal 0, doc.labels.length
@@ -60,10 +62,7 @@ class DocumentConceptsTest < ActiveSupport::TestCase
   test "concept discovery and redundancy elimination" do
     text = "Der Weltraum (oder das All) ist Schauplatz für den Kampf."
     doc = Document.new(:content => text)
-    doc.url_info = {
-      :host => "localhost",
-      :lang => "de"
-    }
+    doc.url_info = @url_info
     doc.save!
 
     labels = doc.labels
@@ -84,10 +83,7 @@ class DocumentConceptsTest < ActiveSupport::TestCase
     EOF
 
     doc = Document.new(:content => text)
-    doc.url_info = {
-      :host => "localhost",
-      :lang => "de"
-    }
+    doc.url_info = @url_info
     doc.save!
 
     # simple analysis
@@ -105,10 +101,7 @@ class DocumentConceptsTest < ActiveSupport::TestCase
     EOF
 
     doc = Document.new(:content => text)
-    doc.url_info = {
-      :host => "localhost",
-      :lang => "de"
-    }
+    doc.url_info = @url_info
     doc.save!
 
     # full analysis
