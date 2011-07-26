@@ -31,8 +31,8 @@ class DocumentTest < ActiveSupport::TestCase
 
   test "ensures content is supplied" do
     doc = Document.new
-    doc.save
 
+    assert_raises(TypeError) { doc.save }
     assert_equal 0, Document.count
     assert doc.errors[:content]
   end
@@ -44,7 +44,8 @@ class DocumentTest < ActiveSupport::TestCase
 
     doc = Document.new(:content => "lipsum")
     doc.save
-    assert_equal 1, doc.errors.length
+
+    assert doc.errors[:content]
   end
 
   test "classification creation" do
