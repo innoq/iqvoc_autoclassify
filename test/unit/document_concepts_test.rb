@@ -44,7 +44,7 @@ class DocumentConceptsTest < ActiveSupport::TestCase
   end
 
   test "gracefully handle lack of matches" do
-    text = ""
+    text = "..."
 
     doc = Document.create!(:content => text)
     assert_equal 0, doc.labels.length

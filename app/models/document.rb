@@ -5,6 +5,8 @@ require 'word_matcher'
 class Document < ActiveRecord::Base
   has_many :classifications, :dependent => :destroy
 
+  validates_presence_of :content
+
   before_save do |document|
     self.content_hash = Digest::SHA1.hexdigest(content)
   end
