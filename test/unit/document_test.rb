@@ -34,15 +34,7 @@ class DocumentTest < ActiveSupport::TestCase
     doc.save
 
     assert_equal 0, Document.count
-    assert_equal 1, doc.errors.length
-  end
-
-  test "ensures content is unique" do
-    Document.make!(:content => "lipsum")
-
-    doc = Document.new(:content => "lipsum")
-    doc.save
-    assert_equal 1, doc.errors.length
+    assert doc.errors.on(:content)
   end
 
   test "classification creation" do
