@@ -9,10 +9,6 @@ class Document < ActiveRecord::Base
     self.content_hash = Digest::SHA1.hexdigest(content)
   end
 
-  def self.after_initialize
-    @concepts = nil
-  end
-
   # use content_hash as entity identifier
   def to_param
     content_hash
