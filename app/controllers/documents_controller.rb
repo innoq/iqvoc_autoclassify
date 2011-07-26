@@ -1,5 +1,5 @@
 class DocumentsController < ActionController::Base
-  respond_to :html
+  respond_to :html # TODO: JSON, RDF
 
   def index
     @documents = Document.all
@@ -21,11 +21,14 @@ class DocumentsController < ActionController::Base
     end
 
     @document = Document.new(:content => text)
-    # TODO: calculate and store classification results
+    @document.url_info = { # required for classifications' concept URLs
+      :host => request.host_with_port,
+      :lang => I18n.locale
+    }
 
     if @document.save
       respond_with @document, :location => document_path(:id => @document,
-          :lang => @active_language)
+          :lang => I18n.locale)
     else
       respond_with @document.errors.full_messages, :status => 400
     end
