@@ -20,7 +20,7 @@ class DocumentsControllerTest < ActionController::TestCase
   end
 
   test "list matching concepts for the respective document" do
-    get :show, :id => @document
+    get :show, :id => @document.content_hash
 
     assert_response :success
     assert_select "ol" do
