@@ -42,4 +42,99 @@ class HelpersTest < ActiveSupport::TestCase
     assert_equal 7, Inflectional::Base.count
   end
 
+  test "concepts from YAML with label references" do
+    make_from_yaml <<-EOF
+      labels:
+      -
+        value: Foo
+        language: en
+      -
+        value: Bar
+        language: de
+      -
+        value: Baz
+        language: en
+
+      concepts:
+      -
+        pref_labels: [Foo, Bar]
+        alt_labels: [Baz]
+      -
+        pref_labels: [Baz]
+        published_at:
+    EOF
+
+    concepts = Iqvoc::Concept.base_class.all
+    assert_equal 2, concepts.length
+
+    concept = concepts[0]
+    alt_labels = concept.send(Iqvoc::Concept.further_labeling_classes.
+        first.first.name.to_relation_name).map(&:target)
+    assert_equal 2, concept.pref_labels.count
+    assert_equal "Foo", concept.pref_labels[0].value
+    assert_equal "Bar", concept.pref_labels[1].value
+    assert_equal 1, alt_labels.count
+    assert_equal "Baz", alt_labels[0].value
+
+    concept = concepts[1]
+    alt_labels = concept.send(Iqvoc::Concept.further_labeling_classes.
+        first.first.name.to_relation_name).map(&:target)
+    assert_nil concept.published_at
+    assert_equal 1, concept.pref_labels.count
+    assert_equal "Baz", concept.pref_labels[0].value
+    assert_equal 0, alt_labels.count
+  end
+
+  test "concepts from YAML with inline labels" do
+    # TODO (YAGNI?)
+  end
+
+  test "concepts from YAML with relation references" do
+    make_from_yaml <<-EOF
+      labels:
+      -
+        value: Foo
+        language: en
+      -
+        value: Bar
+        language: de
+      -
+        value: Baz
+        language: en
+
+      concepts:
+      -
+        pref_labels: [Foo]
+      -
+        pref_labels: [Baz]
+      -
+        pref_labels: [Bar]
+        broader: Foo
+        narrower: Baz
+    EOF
+
+    concepts = Iqvoc::Concept.base_class.all
+    assert_equal 3, concepts.length
+
+    concept = concepts[0]
+    assert_equal 0, concept.broader_relations.count
+    assert_equal 1, concept.narrower_relations.count
+
+    concept = concepts[1]
+    assert_equal 1, concept.broader_relations.count
+    assert_equal 0, concept.narrower_relations.count
+
+    concept = concepts[2]
+    broader = concept.broader_relations.map(&:target)
+    narrower = concept.narrower_relations.map(&:target)
+    assert_equal 1, broader.count
+    assert_equal 1, narrower.count
+    assert_equal concepts[0], broader.first
+    assert_equal concepts[1], narrower.first
+  end
+
+  test "concepts from YAML with inline relations" do
+    # TODO (YAGNI?)
+  end
+
 end

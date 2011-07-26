@@ -5,34 +5,42 @@ require 'test_helper'
 class DocumentConceptsTest < ActiveSupport::TestCase
 
   setup do
-    @concepts = {}
-    @labels = {}
-    [
-      ["Weltraum", "All"],
-      ["Fracht"],
-      ["Kampf"],
-      ["Pilot"]
-    ].each { |terms|
-      labels = terms.map { |term|
-        @labels[term] = make_label(term)
-      }
-      pref_label = labels.shift
-      alt_labels = labels
-      @concepts[pref_label.value] = make_concept(:pref_labels => [pref_label],
-          :alt_labels => alt_labels)
-    }
-    # broader relation
-    term = "Auseinandersetzung"
-    broader_concept = make_concept(:pref_labels => [term])
-    @concepts["Kampf"].send(Iqvoc::Concept.broader_relation_class.name.to_relation_name).
-        create_with_reverse_relation(broader_concept)
-    @concepts[term] = broader_concept
-    # narrower relation
-    term = "Messerkampf"
-    narrower_concept = make_concept(:pref_labels => [term])
-    @concepts["Kampf"].send(Iqvoc::Concept.broader_relation_class.narrower_class.name.to_relation_name).
-        create_with_reverse_relation(narrower_concept)
-    @concepts[term] = narrower_concept
+    data = make_from_yaml <<-EOF
+      labels:
+      -
+        value: Weltraum
+      -
+        value: All
+      -
+        value: Fracht
+      -
+        value: Kampf
+      -
+        value: Pilot
+      -
+        value: Auseinandersetzung
+      -
+        value: Messerkampf
+
+      concepts:
+      -
+        pref_labels: [Weltraum]
+        alt_labels: [All]
+      -
+        pref_labels: [Fracht]
+      -
+        pref_labels: [Pilot]
+      -
+        pref_labels: [Auseinandersetzung]
+      -
+        pref_labels: [Messerkampf]
+      -
+        pref_labels: [Kampf]
+        broader: Auseinandersetzung
+        narrower: Messerkampf
+    EOF
+    @labels = data[:labels]
+    @concepts = data[:concepts]
   end
 
   test "gracefully handle lack of matches" do

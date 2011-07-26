@@ -76,25 +76,71 @@ Spork.prefork do
     #   inflectionals: [<string>, ...]
     #   components: [<label>, ...]
     #
-    # NB: order of labels matters when referencing components
+    # concepts:
+    # -
+    #   <attribute>: <value>
+    #   pref_labels: [<label>, ...]
+    #   alt_labels: [<label>, ...]
+    #   broader: <concept>
+    #   narrower: <concept>
+    #   related: [<concept>, ...]
+    #
+    # NB:
+    # * <label> and <concept> can either be strings referencing a previously
+    #   declared entity or objects representing a new entity
+    #   XXX: The latter is not currently supported yet!
+    # * order of concepts matters when referencing relations
+    # * order of labels matters when referencing components
     def make_from_yaml(yml)
       data = YAML.load(yml)
 
       labels = {}
       data["labels"].each { |label| # XXX: use omap to simplify format (making `value` the key instead of an attribute)?
         term = label.delete("value")
+
         components = label.delete("components").map { |term|
           labels[term]
         } if label["components"]
+
         options = {
           :inflectionals => label.delete("inflectionals"),
           :components => components,
           :label_attributes => label
         }
-        labels[term] = make_label(term, options)
-      }
 
-      return { :labels => labels }
+        labels[term] = make_label(term, options)
+      } if data["labels"]
+
+      concepts = {}
+      data["concepts"].each { |concept| # XXX: use omap to simplify format (using a single pref_label as key)?
+        relations = {}
+        ["broader", "narrower"].each { |type| # TODO: missing related, support for poly-hierarchies
+          relations[type] = concepts[concept.delete(type)] if concept[type]
+        }
+
+        lbls = {} # TODO: rename
+        ["pref", "alt"].each { |type| # TODO: missing hidden
+          key = "#{type}_labels"
+          lbls[type] = concept.delete(key).map { |term|
+            labels[term]
+          } if concept[key]
+        }
+
+        options = {
+          :pref_labels => lbls["pref"],
+          :alt_labels => lbls["alt"],
+          :concept_attributes => concept
+        }
+
+        identifier = options[:pref_labels].first.value
+        concepts[identifier] = make_concept(options)
+        concepts[identifier].send(Iqvoc::Concept.broader_relation_class.name.to_relation_name).
+            create_with_reverse_relation(relations["broader"]) if relations["broader"]
+        concepts[identifier].send(Iqvoc::Concept.broader_relation_class.narrower_class.name.to_relation_name).
+            create_with_reverse_relation(relations["narrower"]) if relations["narrower"]
+      } if data["concepts"]
+
+      return { :concepts => concepts, :labels => labels }
     end
 
   end
