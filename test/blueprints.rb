@@ -2,6 +2,10 @@
 
 require 'machinist/active_record'
 
+Document.blueprint do
+  url_info { { :host => "localhost", :lang => "de" } }
+end
+
 Iqvoc::Concept.base_class.blueprint do
   origin { "_#{sn}" }
   published_at { 3.days.ago }
