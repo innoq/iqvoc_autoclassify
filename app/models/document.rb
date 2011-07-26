@@ -3,12 +3,25 @@ require 'document_parser/german_document_parser'
 require 'word_matcher'
 
 class Document < ActiveRecord::Base
+  include Rails.application.routes.url_helpers
+
+  attr_accessor :url_info # required for classifications' concept URLs
+
   has_many :classifications, :dependent => :destroy
 
   validates_presence_of :content
 
   before_save do |document|
     self.content_hash = Digest::SHA1.hexdigest(content)
+  end
+
+  after_save do |document|
+    concepts.each { |concept, weighting|
+      uri = concept_url(concept, :host => @url_info[:host],
+          :lang => @url_info[:lang])
+      document.classifications.create!(:concept_uri => uri,
+          :weighting => weighting)
+    }
   end
 
   # use content_hash as entity identifier

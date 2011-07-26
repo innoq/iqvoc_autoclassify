@@ -46,14 +46,25 @@ class DocumentConceptsTest < ActiveSupport::TestCase
   test "gracefully handle lack of matches" do
     text = "..."
 
-    doc = Document.create!(:content => text)
+    doc = Document.new(:content => text)
+    doc.url_info = {
+      :host => "localhost",
+      :lang => "de"
+    }
+    doc.save!
+
     assert_equal 0, doc.labels.length
     assert_equal 0, doc.concepts.keys.length
   end
 
   test "concept discovery and redundancy elimination" do
     text = "Der Weltraum (oder das All) ist Schauplatz für den Kampf."
-    doc = Document.create!(:content => text)
+    doc = Document.new(:content => text)
+    doc.url_info = {
+      :host => "localhost",
+      :lang => "de"
+    }
+    doc.save!
 
     labels = doc.labels
     assert_equal 3, labels.length
@@ -71,7 +82,13 @@ class DocumentConceptsTest < ActiveSupport::TestCase
     text = <<-EOF
       Der Weltraum (oder das All) ist Schauplatz für den Kampf, sagt der Pilot.
     EOF
-    doc = Document.create!(:content => text)
+
+    doc = Document.new(:content => text)
+    doc.url_info = {
+      :host => "localhost",
+      :lang => "de"
+    }
+    doc.save!
 
     # simple analysis
     concepts = doc.concepts
@@ -86,7 +103,13 @@ class DocumentConceptsTest < ActiveSupport::TestCase
       Der Weltraum (oder das All) ist Schauplatz für die Auseinandersetzung;
       der letzte Kampf.
     EOF
-    doc = Document.create!(:content => text)
+
+    doc = Document.new(:content => text)
+    doc.url_info = {
+      :host => "localhost",
+      :lang => "de"
+    }
+    doc.save!
 
     # full analysis
     concepts = doc.concepts

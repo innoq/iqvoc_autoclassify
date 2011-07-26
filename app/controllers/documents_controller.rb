@@ -21,7 +21,10 @@ class DocumentsController < ActionController::Base
     end
 
     @document = Document.new(:content => text)
-    # TODO: calculate and store classification results
+    @document.url_info = { # required for classifications' concept URLs
+      :host => request.host_with_port,
+      :lang => @active_language
+    }
 
     if @document.save
       respond_with @document, :location => document_path(:id => @document,
