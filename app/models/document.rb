@@ -12,7 +12,7 @@ class Document < ActiveRecord::Base
   validates_presence_of :content
   validates_uniqueness_of :content_hash
 
-  before_save do |document|
+  before_validation do |document|
     self.content_hash = Digest::SHA1.hexdigest(content)
   end
 
