@@ -37,6 +37,16 @@ class DocumentTest < ActiveSupport::TestCase
     assert doc.errors[:content]
   end
 
+  test "ensures content is unique" do
+    doc = Document.new(:content => "lipsum")
+    doc.url_info = @url_info
+    doc.save!
+
+    doc = Document.new(:content => "lipsum")
+    doc.save
+    assert_equal 1, doc.errors.length
+  end
+
   test "classification creation" do
     text = "der Weltraum - Piloten im Kampf"
 
