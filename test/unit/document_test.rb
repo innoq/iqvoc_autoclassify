@@ -34,7 +34,7 @@ class DocumentTest < ActiveSupport::TestCase
     doc.save
 
     assert_equal 0, Document.count
-    assert doc.errors.on(:content)
+    assert doc.errors[:content]
   end
 
   test "classification creation" do
