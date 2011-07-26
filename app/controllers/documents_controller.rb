@@ -7,7 +7,8 @@ class DocumentsController < ActionController::Base
   end
 
   def show
-    @document = Document.find_by_content_hash(params[:id])
+    @document = Document.find_by_content_hash(params[:id],
+        :include => :classifications)
     respond_with @document
   end
 

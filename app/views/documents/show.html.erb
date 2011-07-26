@@ -2,8 +2,8 @@
 
 <h2>Concepts</h2> <!-- TODO: i18n -->
 <ol>
-  <%- @document.concepts.each { |concept, weighting| -%>
-    <li><%= concept.to_s %> (<%= weighting %>)</li>
+  <%- @document.classifications.each { |classification| -%>
+    <li>[<%= classification.weighting %>] <%= classification.concept_uri %></li>
   <%- } -%>
 </ol>
 

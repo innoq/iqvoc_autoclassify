@@ -7,7 +7,7 @@ class Document < ActiveRecord::Base
 
   attr_accessor :url_info # required for classifications' concept URLs
 
-  has_many :classifications, :dependent => :destroy
+  has_many :classifications, :order => "weighting DESC", :dependent => :destroy
 
   validates_presence_of :content
   validates_uniqueness_of :content # XXX: expensive? might use content_hash (calculated in before_save though)
