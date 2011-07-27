@@ -6,7 +6,7 @@ require 'word_matcher'
 class CompoundLabelIdentificationTest < ActiveSupport::TestCase
 
   setup do
-    data = make_from_yaml <<-EOF
+    data = Iqvoc::Maker.from_yaml <<-EOF
       labels:
       -
         value: Weltraum

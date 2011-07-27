@@ -5,7 +5,7 @@ require 'test_helper'
 class HelpersTest < ActiveSupport::TestCase
 
   test "labels from YAML" do
-    make_from_yaml <<-EOF
+    Iqvoc::Maker.from_yaml <<-EOF
       labels:
       -
         value: Foo
@@ -43,7 +43,7 @@ class HelpersTest < ActiveSupport::TestCase
   end
 
   test "concepts from YAML with label references" do
-    make_from_yaml <<-EOF
+    Iqvoc::Maker.from_yaml <<-EOF
       labels:
       -
         value: Foo
@@ -90,7 +90,7 @@ class HelpersTest < ActiveSupport::TestCase
   end
 
   test "concepts from YAML with relation references" do
-    make_from_yaml <<-EOF
+    Iqvoc::Maker.from_yaml <<-EOF
       labels:
       -
         value: Foo

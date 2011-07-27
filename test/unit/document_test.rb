@@ -5,7 +5,7 @@ require 'test_helper'
 class DocumentTest < ActiveSupport::TestCase
 
   setup do
-    make_from_yaml <<-EOF
+    Iqvoc::Maker.from_yaml <<-EOF
       labels:
       -
         value: Weltraum

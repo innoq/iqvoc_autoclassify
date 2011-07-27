@@ -5,7 +5,7 @@ require 'test_helper'
 class DocumentsControllerTest < ActionController::TestCase
 
   setup do
-    make_from_yaml <<-EOF
+    Iqvoc::Maker.from_yaml <<-EOF
       labels:
       -
         value: Foo
@@ -68,12 +68,13 @@ class DocumentsControllerTest < ActionController::TestCase
     assert_response :success
     assert_select "ol li", 0
 
-    make_concept :pref_labels => [make_label("lorem")]
-    make_concept :pref_labels => [make_label("dolor")]
+    Iqvoc::Maker.concept :pref_labels => [Iqvoc::Maker.label("lorem")]
+    Iqvoc::Maker.concept :pref_labels => [Iqvoc::Maker.label("dolor")]
 
     post :update, :id => @documents[0].content_hash, :reclassify => "1"
     assert_redirected_to document_path(assigns(:document),
         :lang => I18n.locale)
+    assert_equal "Document was successfully reclassified.", flash[:notice]
 
     get :show, :id => @documents[0].content_hash
     assert_select "ol li", 2
