@@ -52,7 +52,7 @@ class DocumentsControllerTest < ActionController::TestCase
 
   test "create document from raw content" do
     assert_difference("Document.count") do
-      post :create, :content => "lorem ipsum"
+      post :create, :document => { :content => "lorem ipsum" }
     end
 
     assert_redirected_to document_path(assigns(:document),

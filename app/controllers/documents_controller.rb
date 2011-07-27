@@ -12,13 +12,18 @@ class DocumentsController < ActionController::Base
     respond_with @document
   end
 
+  def new
+    @document = Document.new
+  end
+
   def create # TODO: restrict the amount of requests from the same IP?
-    if params[:content]
-      text = params[:content]
-    elsif params[:uri]
+    doc = params[:document]
+    if doc[:content]
+      text = doc[:content]
+    elsif doc[:uri]
       # TODO: extract content body from target resource
     else
-      # TODO: error
+      respond_with "missing content or URI reference", :status => 400 # TODO: phrasing, i18n
     end
 
     @document = Document.new(:content => text)
