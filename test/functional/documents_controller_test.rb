@@ -27,7 +27,7 @@ class DocumentsControllerTest < ActionController::TestCase
       "lorem ipsum\ndolor sit amet",
       "lorem Foo ipsum\ndolor Bar sit Baz amet"
     ].map { |text|
-      doc = Document.make!(:content => text)
+      doc = make_document(:content => text)
     }
   end
 

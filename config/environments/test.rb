@@ -35,11 +35,4 @@ Iqvoc::AutoClassify::Application.configure do
   # Print deprecation notices to the stderr
   config.active_support.deprecation = :stderr
 
-  # work around Machinist bug when using SQLite:
-  # https://github.com/notahat/machinist/issues/84#issuecomment-1476464
-  # XXX: this should be temporary!
-  Machinist.configure do |config|
-    config.cache_objects = false
-  end
-
 end

@@ -5,18 +5,22 @@ Spork.prefork do
   require File.expand_path('../../config/environment', __FILE__)
   require 'rails/test_help'
   require 'maker'
-  require 'blueprints'
   require 'yaml'
 
   class ActiveSupport::TestCase
-    # Reset the Machinist cache before each test.
-    setup { Machinist.reset_before_test }
-
     # Setup all fixtures in test/fixtures/*.(yml|csv) for all tests in alphabetical order.
     #
     # Note: You'll currently still have to declare fixtures explicitly in integration tests
     # -- they do not yet inherit this setting
     # fixtures :all
+
+    def make_document(attributes)
+      defaults = {
+        :url_info => { :host => "localhost", :lang => "de" }
+      }
+      Document.create! defaults.merge(attributes)
+    end
+
   end
 end
 

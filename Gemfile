@@ -27,7 +27,6 @@ group :test do
   gem 'nokogiri', '1.4.3.1'
   gem 'capybara'
   gem 'database_cleaner', '0.6.0.rc.3'
-  gem 'machinist', '>= 2.0.0.beta2'
   gem 'spork', '~> 0.9.0.rc'
   gem 'spork-testunit'
 end
