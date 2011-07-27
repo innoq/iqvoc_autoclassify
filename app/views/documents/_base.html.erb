@@ -1,0 +1,11 @@
+<h1><%= @document.content_hash %></h1> <!-- FIXME: can there ever be a concise, human-friendly string representation for individual documents? -->
+
+<h2>Concepts</h2> <!-- TODO: i18n -->
+<ol>
+  <%- @document.classifications.each { |classification| -%>
+    <li>[<%= classification.weighting %>] <%= classification.concept_uri %></li>
+  <%- } -%>
+</ol>
+
+<h2>Full Text</h2> <!-- TODO: i18n -->
+<pre><%= @document.content %></pre>

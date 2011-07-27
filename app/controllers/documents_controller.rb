@@ -1,4 +1,4 @@
-class DocumentsController < ActionController::Base
+class DocumentsController < ActionController::Base # TODO: auth restrictions?
   respond_to :html # TODO: JSON, RDF
 
   def index
@@ -23,7 +23,7 @@ class DocumentsController < ActionController::Base
     elsif doc[:uri]
       # TODO: extract content body from target resource
     else
-      respond_with "missing content or URI reference", :status => 400 # TODO: phrasing, i18n
+      render :text => "missing content or URI reference", :status => 400 # TODO: phrasing, i18n
     end
 
     @document = Document.new(:content => text)
@@ -37,6 +37,27 @@ class DocumentsController < ActionController::Base
           :lang => I18n.locale)
     else
       respond_with @document.errors.full_messages, :status => 400
+    end
+  end
+
+  def edit
+    @document = Document.find_by_content_hash(params[:id],
+        :include => :classifications)
+  end
+
+  def update
+    if params[:reclassify] == "1"
+      @document = Document.find_by_content_hash(params[:id])
+      @document.url_info = { # required for classifications' concept URLs
+        :host => request.host_with_port,
+        :lang => I18n.locale
+      }
+      @document.save!
+
+      flash[:notice] = "Document was successfully reclassified." # TODO: phrasing, i18n
+      redirect_to document_path(:id => @document, :lang => I18n.locale)
+    else
+      render :text => "missing reclassify flag", :status => 400 # TODO: phrasing, i18n
     end
   end
 

@@ -1,0 +1,13 @@
+<%= form_for(@document) do |f| %>
+  <div class="field">
+    <%= content_tag :label do %>
+      <%= check_box_tag :reclassify %>
+      reclassify <!-- TODO: i18n -->
+    <% end %>
+  </div>
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>
+
+<%= render "base" %>

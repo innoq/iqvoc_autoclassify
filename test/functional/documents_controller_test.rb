@@ -63,4 +63,20 @@ class DocumentsControllerTest < ActionController::TestCase
     # TODO
   end
 
+  test "reclassify document" do
+    get :show, :id => @documents[0].content_hash
+    assert_response :success
+    assert_select "ol li", 0
+
+    make_concept :pref_labels => [make_label("lorem")]
+    make_concept :pref_labels => [make_label("dolor")]
+
+    post :update, :id => @documents[0].content_hash, :reclassify => "1"
+    assert_redirected_to document_path(assigns(:document),
+        :lang => I18n.locale)
+
+    get :show, :id => @documents[0].content_hash
+    assert_select "ol li", 2
+  end
+
 end
