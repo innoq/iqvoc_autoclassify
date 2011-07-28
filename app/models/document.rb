@@ -68,6 +68,7 @@ class Document < ActiveRecord::Base
     self.labels.each do |label|
       label.labelings.each do |labeling|
         concept = labeling.owner
+        next if not concept.published?
         weighting = weightings[labeling.type]
         if concepts.has_key?(concept)
           concepts[concept] += weighting

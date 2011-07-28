@@ -21,6 +21,8 @@ class DocumentConceptsTest < ActiveSupport::TestCase
         value: Auseinandersetzung
       -
         value: Messerkampf
+      -
+        value: foo
 
       concepts:
       -
@@ -38,6 +40,9 @@ class DocumentConceptsTest < ActiveSupport::TestCase
         pref_labels: [Kampf]
         broader: Auseinandersetzung
         narrower: Messerkampf
+      -
+        pref_labels: [foo]
+        published_at:
     EOF
     @labels = data[:labels]
     @concepts = data[:concepts]
@@ -65,6 +70,13 @@ class DocumentConceptsTest < ActiveSupport::TestCase
     assert_equal 2, concepts.keys.length
     assert concepts.include? @concepts["Weltraum"]
     assert concepts.include? @concepts["Kampf"]
+  end
+
+  test "ignore unpublished concepts" do
+    text = "lorem foo ipsum"
+    doc = make_document(:content => text)
+
+    assert_equal 0, doc.concepts.keys.length
   end
 
   test "simple concept weighting" do
