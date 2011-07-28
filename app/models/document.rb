@@ -22,7 +22,7 @@ class Document < ActiveRecord::Base
       uri = concept_url(concept, :host => @url_info[:host],
           :lang => @url_info[:lang])
       document.classifications.create!(:concept_uri => uri,
-          :weighting => weighting)
+          :weighting => weighting, :title => concept.to_s)
     }
   end
 

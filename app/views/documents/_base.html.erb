@@ -3,7 +3,10 @@
 <h2>Concepts</h2> <!-- TODO: i18n -->
 <ol>
   <%- @document.classifications.each { |classification| -%>
-    <li>[<%= classification.weighting %>] <%= classification.concept_uri %></li>
+    <li>
+      <%= link_to classification.to_s, classification.concept_uri %>
+      [<%= classification.weighting %>]
+    </li>
   <%- } -%>
 </ol>
 
