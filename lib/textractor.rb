@@ -7,7 +7,6 @@ require 'readability'
 module Textractor
 
   def self.extract(html)
-    puts "DEBUG #{html}"
     if html =~ /^https?:\/\/[^\s]+$/ # URL
       html = open(html).read # TODO: error handling
       return extract(html)

@@ -1,6 +1,7 @@
 # encoding: UTF-8
 
 require 'test_helper'
+require 'fake_web'
 
 class DocumentsControllerTest < ActionController::TestCase
 
@@ -31,6 +32,9 @@ class DocumentsControllerTest < ActionController::TestCase
     ].map { |text|
       make_document(:content => text)
     }
+
+    @url = "http://example.org"
+    FakeWeb.register_uri(:get, @url, :body => "test/fixtures/sample.html")
   end
 
   test "list documents at index" do
@@ -62,7 +66,16 @@ class DocumentsControllerTest < ActionController::TestCase
   end
 
   test "create document from URL" do
-    # TODO
+    assert_difference("Document.count") do
+      post :create, :document => { :url => @url }
+    end
+
+    assert_redirected_to document_path(assigns(:document),
+        :lang => I18n.locale)
+
+    get :show, :id => response.headers["Location"].split("/").last
+
+    assert_select "ol li", 3
   end
 
   test "reclassify document" do

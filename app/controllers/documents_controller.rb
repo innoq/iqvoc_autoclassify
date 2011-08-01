@@ -1,3 +1,5 @@
+require 'textractor'
+
 class DocumentsController < ActionController::Base # TODO: auth restrictions?
   respond_to :html # TODO: JSON, RDF
 
@@ -25,8 +27,8 @@ class DocumentsController < ActionController::Base # TODO: auth restrictions?
     doc = params[:document]
     if doc[:content]
       text = doc[:content]
-    elsif doc[:uri]
-      # TODO: extract content body from target resource
+    elsif doc[:url]
+      text = Textractor.extract(doc[:url])
     else
       render :text => "missing content or URI reference", :status => 400 # TODO: phrasing, i18n
     end
