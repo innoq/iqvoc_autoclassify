@@ -9,7 +9,12 @@ class DocumentsController < ActionController::Base # TODO: auth restrictions?
   def show
     @document = Document.find_by_content_hash(params[:id],
         :include => :classifications)
-    respond_with @document
+
+    respond_to do |format|
+      format.html
+      format.ttl { render("show.iqrdf") }
+      format.rdf { render("show.iqrdf") }
+    end
   end
 
   def new

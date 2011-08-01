@@ -5,7 +5,7 @@ require 'test_helper'
 class DocumentsControllerTest < ActionController::TestCase
 
   setup do
-    Iqvoc::Maker.from_yaml <<-EOF
+    data = Iqvoc::Maker.from_yaml <<-EOF
       labels:
       -
         value: Foo
@@ -23,11 +23,13 @@ class DocumentsControllerTest < ActionController::TestCase
         pref_labels: [Baz]
     EOF
 
+    @concepts = data[:concepts]
+
     @documents = [
       "lorem ipsum\ndolor sit amet",
       "lorem Foo ipsum\ndolor Bar sit Baz amet"
     ].map { |text|
-      doc = make_document(:content => text)
+      make_document(:content => text)
     }
   end
 
@@ -78,6 +80,33 @@ class DocumentsControllerTest < ActionController::TestCase
 
     get :show, :id => @documents[0].content_hash
     assert_select "ol li", 2
+  end
+
+  test "Turtle RDF representation" do
+    id = @documents[1].content_hash
+
+    get :show, :id => id, :format => :ttl
+
+    assert_response :success
+    assert response.body.include? "@prefix sdc: <http://sindice.com/vocab/search#>."
+    assert response.body.include? "<http://#{request.host}/documents/#{id}> a sdc:Query;"
+    @concepts.each { |identifier, concept|
+      assert response.body.include? "sdc:result rdf:http://localhost/de/concepts/#{concept.origin}"
+    }
+  end
+
+  test "XML/RDF representation" do
+    id = @documents[1].content_hash
+
+    get :show, :id => id, :format => :rdf
+
+    host = "http://#{request.host}"
+    assert_response :success
+    assert response.body.include? %{<rdf:Description rdf:about="#{host}/documents/#{id}">}
+    assert response.body.include? %{<rdf:type rdf:resource="http://sindice.com/vocab/search#Query"/>}
+    @concepts.each { |identifier, concept|
+      assert response.body.include? %{<sdc:result rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#http://localhost/de/concepts/#{concept.origin}"/>}
+    }
   end
 
 end

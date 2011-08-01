@@ -1,0 +1,12 @@
+Iqvoc.default_rdf_namespace_helper_methods.each do |meth|
+  document.namespaces self.send(meth)
+end
+
+document.namespaces(:sdc => "http://sindice.com/vocab/search#")
+
+base_url = url_for(request.query_parameters.merge(:page => nil, :only_path => false))
+document << IqRdf.build_full_uri_subject(URI.parse(base_url), IqRdf::Sdc::build_uri('Query')) do |query|
+  @document.classifications.each do |classification|
+    query.Sdc::result(IqRdf::Rdf::build_uri(classification.concept_uri))
+  end
+end
