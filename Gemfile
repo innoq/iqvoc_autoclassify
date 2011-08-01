@@ -5,6 +5,7 @@ gem 'rails', '3.0.9'
 gem 'iqvoc', :path => '../iqvoc'
 gem 'iqvoc_skosxl', :path => '../iqvoc_skosxl'
 gem 'iqvoc_umt', :path => '../iqvoc_umt'
+gem 'ruby-readability', :require => 'readability'
 
 # Hotfix for the problem of engine/plugin helpers not being mixed in.
 # https://rails.lighthouseapp.com/projects/8994/tickets/1905-apphelpers-within-plugin-not-being-mixed-in
