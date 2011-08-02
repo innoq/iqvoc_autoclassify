@@ -52,7 +52,7 @@ class DocumentConceptsTest < ActiveSupport::TestCase
     text = "..."
     doc = make_document(:content => text)
 
-    assert_equal 0, doc.labels.length
+    assert_equal 0, doc.determine_labels.length
     assert_equal 0, doc.concepts.keys.length
   end
 
@@ -60,7 +60,7 @@ class DocumentConceptsTest < ActiveSupport::TestCase
     text = "Der Weltraum (oder das All) ist Schauplatz für den Kampf."
     doc = make_document(:content => text)
 
-    labels = doc.labels
+    labels = doc.determine_labels
     assert_equal 3, labels.length
     assert labels.include? @labels["Weltraum"]
     assert labels.include? @labels["All"]
