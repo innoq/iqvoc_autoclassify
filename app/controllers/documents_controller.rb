@@ -24,9 +24,9 @@ class DocumentsController < ActionController::Base # TODO: auth restrictions?
   end
 
   def create # TODO: restrict the amount of requests from the same IP?
-    doc = params[:document]
-    if doc && doc[:content]
-      text = doc[:content]
+    content = params[:document] ? params[:document][:content] : nil
+    if content && content.strip.length > 0
+      text = content
     elsif params[:url]
       text = Textractor.extract(params[:url])
     else

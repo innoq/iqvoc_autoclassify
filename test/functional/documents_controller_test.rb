@@ -67,7 +67,7 @@ class DocumentsControllerTest < ActionController::TestCase
 
   test "create document from URL" do
     assert_difference("Document.count") do
-      post :create, :url => @url
+      post :create, :url => @url, :document => { :content => "" }
     end
 
     assert_redirected_to document_path(assigns(:document),
