@@ -42,6 +42,8 @@ class DocumentsController < ActionController::Base # TODO: auth restrictions?
     if @document.save
       respond_with @document, :location => document_path(:id => @document,
           :lang => I18n.locale)
+    elsif @document.errors.has_key?(:content_hash) && @document.errors.keys.length == 1
+      redirect_to document_path(:id => @document.content_hash, :lang => I18n.locale)
     else
       respond_with @document.errors.full_messages, :status => 400
     end
