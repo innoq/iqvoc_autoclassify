@@ -9,7 +9,7 @@ module IqvocAutoclassify
   end
 
   ActiveSupport.on_load(:after_iqvoc_config) do
-    require('iqvoc')
+    require 'iqvoc'
   end
 
 end

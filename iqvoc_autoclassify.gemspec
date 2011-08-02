@@ -14,6 +14,7 @@ Gem::Specification.new do |s|
 
   s.add_dependency "iqvoc"
   s.add_dependency "bundler"
+  s.add_dependency "ruby-readability"
 
   # s.rubyforge_project = "iqvoc_autoclassify"
 
