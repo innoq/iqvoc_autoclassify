@@ -10,7 +10,7 @@
 <%- @documents.each do |doc| -%>
   <tr>
     <td><%= doc.updated_at %></td>
-    <td><%= link_to doc.content_hash, document_path(:id => doc, :lang => I18n.locale) %></td>
+    <td><%= link_to doc.content_hash, document_path(:id => doc.content_hash) %></td>
     <td><%= doc.classifications.length %></td>
   </tr>
 <% end %>

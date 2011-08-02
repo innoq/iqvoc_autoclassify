@@ -40,10 +40,9 @@ class DocumentsController < ActionController::Base # TODO: auth restrictions?
     }
 
     if @document.save
-      respond_with @document, :location => document_path(:id => @document,
-          :lang => I18n.locale)
+      respond_with @document, :location => document_path(:id => @document.content_hash)
     elsif @document.errors.has_key?(:content_hash) && @document.errors.keys.length == 1
-      redirect_to document_path(:id => @document.content_hash, :lang => I18n.locale)
+      redirect_to document_path(:id => @document.content_hash)
     else
       respond_with @document.errors.full_messages, :status => 400
     end
@@ -64,7 +63,7 @@ class DocumentsController < ActionController::Base # TODO: auth restrictions?
       @document.save!
 
       flash[:notice] = "Document was successfully reclassified." # TODO: phrasing, i18n
-      redirect_to document_path(:id => @document, :lang => I18n.locale)
+      redirect_to document_path(:id => @document.content_hash)
     else
       render :text => "missing reclassify flag", :status => 400 # TODO: phrasing, i18n
     end
