@@ -55,7 +55,7 @@ class DocumentsController < ActionController::Base # TODO: auth restrictions?
   end
 
   def update
-    if params[:reclassify] == "1"
+    if params[:reclassify]
       @document = Document.find_by_content_hash(params[:id])
       @document.url_info = { # required for classifications' concept URLs
         :host => request.host_with_port,
