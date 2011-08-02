@@ -35,6 +35,7 @@ class Document < ActiveRecord::Base
     return @concepts if @concepts
     @concepts = determine_concepts
     analyze_concept_relations
+    Rails.logger.debug "DEBUG concepts: #{@concepts.map { |c, w| "[#{w}] #{c}" }.join(" | ")}"
     return @concepts
   end
 
@@ -43,6 +44,7 @@ class Document < ActiveRecord::Base
     #      each sentence as they're identified instead of separating the
     #      processing steps
     GermanDocumentParser.new(self.content).sentences.map { |sentence| # XXX: simply assuming German for now
+      Rails.logger.debug "DEBUG determining labels for sentence: #{sentence}"
       WordMatcher.new(sentence).labels
     }.flatten.uniq # XXX: this could be made more efficient
   end
@@ -59,16 +61,18 @@ class Document < ActiveRecord::Base
     @weighting_factors ||= {
       Iqvoc::Concept.broader_relation_class_name => 1.5,
       'Concept::Relation::SKOS::Narrower::Base'  => 2.0,
-      'Concept::Relation::SKOS::Related::Base'   => 1.3
+      'Concept::Relation::SKOS::Related'         => 1.3
     }
   end
 
   def determine_concepts
     concepts = {}
     self.labels.each do |label|
+      Rails.logger.debug "DEBUG determining concepts for label: #{label}"
       label.labelings.each do |labeling|
         concept = labeling.owner
         next if not concept.published?
+        Rails.logger.debug "DEBUG concept: #{concept}"
         weighting = weightings[labeling.type]
         if concepts.has_key?(concept)
           concepts[concept] += weighting
@@ -84,6 +88,7 @@ class Document < ActiveRecord::Base
     @concepts.each do |concept, weighting|
       concept.relations.each do |relation|
         if @concepts.has_key?(relation.target)
+          Rails.logger.debug "DEBUG concept relation: #{concept} --[#{relation.type}]--> #{relation.target}"
           @concepts[relation.target] *= weighting_factors[relation.type]
         end
       end
