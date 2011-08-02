@@ -2,11 +2,23 @@ Iqvoc.default_rdf_namespace_helper_methods.each do |meth|
   document.namespaces self.send(meth)
 end
 
-document.namespaces(:sdc => "http://sindice.com/vocab/search#")
+document.namespaces(
+  :search => url_for(request.query_parameters.merge(:only_path => false, :anchor => "")), # FIXME: "search" doesn't seem quite right!?
+  :sdc => "http://sindice.com/vocab/search#"
+)
 
-base_url = url_for(request.query_parameters.merge(:page => nil, :only_path => false))
-document << IqRdf.build_full_uri_subject(URI.parse(base_url), IqRdf::Sdc::build_uri('Query')) do |query|
-  @document.classifications.each do |classification|
-    query.Sdc::result(IqRdf::Rdf::build_uri(classification.concept_uri))
+classifications = @document.classifications
+base_url = url_for(request.query_parameters.merge(:only_path => false))
+
+document << IqRdf.build_full_uri_subject(URI.parse(base_url), IqRdf::Sdc::build_uri("Query")) do |query|
+  query.Sdc::totalResults(classifications.length)
+  classifications.each_with_index do |classification, i|
+    query.Sdc::result(IqRdf::Search::build_uri("result#{i + 1}"))
+  end
+end
+
+classifications.each_with_index do |classification, i|
+  document << IqRdf::Search::build_uri("result#{i + 1}", IqRdf::Sdc::build_uri("Result")) do |result_node|
+    classification.build_rdf(document, result_node)
   end
 end

@@ -100,12 +100,41 @@ class DocumentsControllerTest < ActionController::TestCase
 
     get :show, :id => id, :format => :ttl
 
+    ttl = response.body.gsub(/^ +/, "\t") # simplifies testing
     assert_response :success
-    assert response.body.include? "@prefix sdc: <http://sindice.com/vocab/search#>."
-    assert response.body.include? "<http://#{request.host}/documents/#{id}> a sdc:Query;"
-    @concepts.each { |identifier, concept|
-      assert response.body.include? "sdc:result rdf:http://localhost/de/concepts/#{concept.origin}"
-    }
+    assert ttl.include? "@prefix sdc: <http://sindice.com/vocab/search#>."
+    assert ttl.include? "<http://#{request.host}/documents/#{id}> a sdc:Query;"
+    assert (not ttl.include? "sdc:result search:result0;")
+
+    assert ttl.include? "sdc:result search:result1;"
+    expected = <<-EOS
+      search:result1 a sdc:Result;
+      \tsdc:link :http://localhost/de/concepts/_00000001;
+      \tdc:title "Foo";
+      \tsdc:rank 1.0.
+    EOS
+    expected.gsub!(/^ +/, "")
+    assert ttl.include? expected
+
+    assert ttl.include? "sdc:result search:result2;"
+    expected = <<-EOS
+      search:result2 a sdc:Result;
+      \tsdc:link :http://localhost/de/concepts/_00000002;
+      \tdc:title "Bar";
+      \tsdc:rank 1.0.
+    EOS
+    expected.gsub!(/^ +/, "")
+    assert ttl.include? expected
+
+    assert ttl.include? "sdc:result search:result3."
+    expected = <<-EOS
+      search:result3 a sdc:Result;
+      \tsdc:link :http://localhost/de/concepts/_00000003;
+      \tdc:title "Baz";
+      \tsdc:rank 1.0.
+    EOS
+    expected.gsub!(/^ +/, "")
+    assert ttl.include? expected
   end
 
   test "XML/RDF representation" do
@@ -117,9 +146,10 @@ class DocumentsControllerTest < ActionController::TestCase
     assert_response :success
     assert response.body.include? %{<rdf:Description rdf:about="#{host}/documents/#{id}">}
     assert response.body.include? %{<rdf:type rdf:resource="http://sindice.com/vocab/search#Query"/>}
-    @concepts.each { |identifier, concept|
-      assert response.body.include? %{<sdc:result rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#http://localhost/de/concepts/#{concept.origin}"/>}
-    }
+    assert (not response.body.include? %{<sdc:result rdf:resource="#{host}/documents/#{id}#result0"/>})
+    assert response.body.include? %{<sdc:result rdf:resource="#{host}/documents/#{id}#result1"/>}
+    assert response.body.include? %{<sdc:result rdf:resource="#{host}/documents/#{id}#result2"/>}
+    assert response.body.include? %{<sdc:result rdf:resource="#{host}/documents/#{id}#result3"/>}
   end
 
 end
