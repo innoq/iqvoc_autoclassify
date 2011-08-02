@@ -1,4 +1,4 @@
-<%= form_for(@document) do |f| %>
+<%= form_for(@document) do |f| %> <!-- TODO: i18n -->
   <%- if @document.errors.any? -%>
     <div id="error_explanation">
       <h2>
@@ -13,11 +13,20 @@
     </div>
   <%- end -%>
 
-  <div class="field">
+  <fieldset>
+    <legend>URL</legend>
+    <%= content_tag :label do %>
+      <%= text_field_tag :url %>
+    <% end %>
+  </fieldset>
+
+  <fieldset>
+    <legend>Text</legend>
     <%= content_tag :label do %>
       <%= f.text_area :content %>
     <% end %>
-  </div>
+  </fieldset>
+
   <div class="actions">
     <%= f.submit %>
   </div>

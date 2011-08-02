@@ -25,10 +25,10 @@ class DocumentsController < ActionController::Base # TODO: auth restrictions?
 
   def create # TODO: restrict the amount of requests from the same IP?
     doc = params[:document]
-    if doc[:content]
+    if doc && doc[:content]
       text = doc[:content]
-    elsif doc[:url]
-      text = Textractor.extract(doc[:url])
+    elsif params[:url]
+      text = Textractor.extract(params[:url])
     else
       render :text => "missing content or URI reference", :status => 400 # TODO: phrasing, i18n
     end
