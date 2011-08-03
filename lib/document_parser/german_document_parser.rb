@@ -26,4 +26,5 @@ class GermanDocumentParser < DocumentParser::Base
         sub(/^[^A-Za-z0-9ÄÖÜäöüß]+/, "").
         sub(/[^A-Za-z0-9ÄÖÜäöüß]+$/, "")
   end
+
 end

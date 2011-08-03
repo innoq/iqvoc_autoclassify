@@ -1,6 +1,8 @@
 # encoding: UTF-8
+
 module DocumentParser
   class Base # XXX bad API (result is instance.sentences)
+
     attr_reader :sentences
 
     Delimiters = {
@@ -72,5 +74,6 @@ module DocumentParser
           sub(/^[^A-Za-z0-9]+/, "").
           sub(/[^A-Za-z0-9]+$/, "")
     end
+
   end
 end
