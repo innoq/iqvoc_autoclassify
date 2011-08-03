@@ -24,12 +24,20 @@ class WordMatcher # XXX: does this really need to be a class? (makes for a bad A
   end
 
   def inflectionals
-    @words.map { |word| # FIXME: very inefficient; this should be a single db query
-      Inflectional::Base. # XXX: should use configuration rather than accessing Inflectional::Base directly
-          by_query_value(word). # FIXME: we should probably escape the query value being passed in here!?
-          includes(:label).
-          first
-    }.compact.uniq # XXX: this could be made more efficient
+    unordered = Inflectional::Base. # XXX: should use configuration rather than accessing Inflectional::Base directly
+        where(:value => @words). # NB: does not retain order -- FIXME: needs to be case-insensitive!?
+        includes(:label)
+    # restore order of occurrence -- XXX: inefficient?
+    ordered = []
+    @words.each { |word|
+      unordered.each { |inf|
+        if inf.value == word
+          ordered.push inf
+          break
+        end
+      }
+    }
+    ordered.uniq
   end
 
   # labels is an array representing a sentence (i.e. order is significant)

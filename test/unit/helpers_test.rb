@@ -39,7 +39,7 @@ class HelpersTest < ActiveSupport::TestCase
     assert_equal labels[0], label.compound_form_contents[0].label
     assert_equal labels[1], label.compound_form_contents[1].label
 
-    assert_equal 10, Inflectional::Base.count
+    assert_equal 7, Inflectional::Base.count
   end
 
   test "concepts from YAML with label references" do
