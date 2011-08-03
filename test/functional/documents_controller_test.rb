@@ -45,7 +45,7 @@ class DocumentsControllerTest < ActionController::TestCase
     assert_select "table" do
       assert_select "tr", 3
     end
-    assert_select "tr:nth-of-type(2) a[href=/de/documents/d0d2efdf0c05081e2c3ae386215483329a653cfd]", 1
+    assert_select "tr:nth-of-type(2) a[href=/documents/d0d2efdf0c05081e2c3ae386215483329a653cfd]", 1
     assert_select "tr:nth-of-type(3) td:nth-of-type(3)", "3"
   end
 
@@ -61,8 +61,7 @@ class DocumentsControllerTest < ActionController::TestCase
       post :create, :document => { :content => "lorem ipsum" }
     end
 
-    assert_redirected_to document_path(assigns(:document),
-        :lang => I18n.locale)
+    assert_redirected_to document_path(assigns(:document), :lang => nil)
   end
 
   test "create document from URL" do
@@ -70,8 +69,7 @@ class DocumentsControllerTest < ActionController::TestCase
       post :create, :url => @url, :document => { :content => "" }
     end
 
-    assert_redirected_to document_path(assigns(:document),
-        :lang => I18n.locale)
+    assert_redirected_to document_path(assigns(:document), :lang => nil)
 
     get :show, :id => response.headers["Location"].split("/").last
 
@@ -87,8 +85,7 @@ class DocumentsControllerTest < ActionController::TestCase
     Iqvoc::Maker.concept :pref_labels => [Iqvoc::Maker.label("dolor")]
 
     post :update, :id => @documents[0].content_hash, :reclassify => "1"
-    assert_redirected_to document_path(assigns(:document),
-        :lang => I18n.locale)
+    assert_redirected_to document_path(assigns(:document), :lang => nil)
     assert_equal "Document was successfully reclassified.", flash[:notice]
 
     get :show, :id => @documents[0].content_hash
