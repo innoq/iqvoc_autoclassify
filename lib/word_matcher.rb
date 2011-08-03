@@ -24,9 +24,10 @@ class WordMatcher # XXX: does this really need to be a class? (makes for a bad A
   end
 
   def inflectionals
-    @words.map { |word|
+    @words.map { |word| # FIXME: very inefficient; this should be a single db query
       Inflectional::Base. # XXX: should use configuration rather than accessing Inflectional::Base directly
-          by_query_value(word). # XXX: we should probably escape the query value being passed in here!?
+          by_query_value(word). # FIXME: we should probably escape the query value being passed in here!?
+          includes(:label).
           first
     }.compact.uniq # XXX: this could be made more efficient
   end
