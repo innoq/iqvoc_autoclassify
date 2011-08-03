@@ -22,7 +22,8 @@ module DocumentParser
 
       text += "." # ensure final sentence is completed -- XXX: hacky?
       text += " " # ensure a final iteration -- XXX: hacky?
-      current_char = text.slice!(0) # skip first iteration (for look-ahead)
+      current_char = text.slice!(0). # skip first iteration (for look-ahead)
+          chr # required for Ruby v1.8
       text.each_char { |char|
         @next_char = char
         process current_char
