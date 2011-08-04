@@ -1,6 +1,8 @@
 require 'textractor'
 
-class DocumentsController < ActionController::Base # TODO: auth restrictions?
+class DocumentsController < ApplicationController # TODO: auth restrictions?
+  skip_before_filter :require_user
+
   respond_to :html # TODO: JSON, RDF
 
   def index

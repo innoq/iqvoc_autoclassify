@@ -38,19 +38,19 @@ class DocumentsControllerTest < ActionController::TestCase
   end
 
   test "list documents at index" do
-    get :index
+    get :index, :format => :html
 
     assert_response :success
     assert_not_nil assigns(:documents)
     assert_select "table" do
       assert_select "tr", 3
     end
-    assert_select "tr:nth-of-type(2) a[href=/documents/d0d2efdf0c05081e2c3ae386215483329a653cfd]", 1
+    assert_select "tr:nth-of-type(2) a[href=/de/documents/d0d2efdf0c05081e2c3ae386215483329a653cfd.html]", 1
     assert_select "tr:nth-of-type(3) td:nth-of-type(3)", "3"
   end
 
   test "list matching concepts for the respective document" do
-    get :show, :id => @documents[1].content_hash
+    get :show, :id => @documents[1].content_hash, :format => :html
 
     assert_response :success
     assert_select "ol li", 3
@@ -58,37 +58,38 @@ class DocumentsControllerTest < ActionController::TestCase
 
   test "create document from raw content" do
     assert_difference("Document.count") do
-      post :create, :document => { :content => "lorem ipsum" }
+      post :create, :document => { :content => "lorem ipsum" }, :format => :html
     end
 
-    assert_redirected_to document_path(assigns(:document), :lang => nil)
+    assert_redirected_to document_path(assigns(:document), :lang => "de", :format => :html)
   end
 
   test "create document from URL" do
     assert_difference("Document.count") do
-      post :create, :url => @url, :document => { :content => "" }
+      post :create, :url => @url, :document => { :content => "" }, :format => :html
     end
 
-    assert_redirected_to document_path(assigns(:document), :lang => nil)
+    assert_redirected_to document_path(assigns(:document), :lang => "de", :format => :html)
 
-    get :show, :id => response.headers["Location"].split("/").last
+    id = response.headers["Location"].split("/").last.sub(/.html$/, "")
+    get :show, :id => id, :lang => "de", :format => :html
 
     assert_select "ol li", 3
   end
 
   test "reclassify document" do
-    get :show, :id => @documents[0].content_hash
+    get :show, :id => @documents[0].content_hash, :format => :html
     assert_response :success
     assert_select "ol li", 0
 
     Iqvoc::Maker.concept :pref_labels => [Iqvoc::Maker.label("lorem")]
     Iqvoc::Maker.concept :pref_labels => [Iqvoc::Maker.label("dolor")]
 
-    post :update, :id => @documents[0].content_hash, :reclassify => "1"
-    assert_redirected_to document_path(assigns(:document), :lang => nil)
+    post :update, :id => @documents[0].content_hash, :reclassify => "1", :format => :html
+    assert_redirected_to document_path(assigns(:document), :lang => "de", :format => :html)
     assert_equal "Document was successfully reclassified.", flash[:notice]
 
-    get :show, :id => @documents[0].content_hash
+    get :show, :id => @documents[0].content_hash, :format => :html
     assert_select "ol li", 2
   end
 
@@ -100,7 +101,7 @@ class DocumentsControllerTest < ActionController::TestCase
     ttl = response.body.gsub(/^ +/, "\t") # simplifies testing
     assert_response :success
     assert ttl.include? "@prefix sdc: <http://sindice.com/vocab/search#>."
-    assert ttl.include? "<http://#{request.host}/documents/#{id}> a sdc:Query;"
+    assert ttl.include? "<http://#{request.host}/de/documents/#{id}.ttl> a sdc:Query;"
     assert (not ttl.include? "sdc:result search:result0;")
 
     assert ttl.include? "sdc:result search:result1;"
@@ -141,12 +142,12 @@ class DocumentsControllerTest < ActionController::TestCase
 
     host = "http://#{request.host}"
     assert_response :success
-    assert response.body.include? %{<rdf:Description rdf:about="#{host}/documents/#{id}">}
+    assert response.body.include? %{<rdf:Description rdf:about="#{host}/de/documents/#{id}.rdf">}
     assert response.body.include? %{<rdf:type rdf:resource="http://sindice.com/vocab/search#Query"/>}
-    assert (not response.body.include? %{<sdc:result rdf:resource="#{host}/documents/#{id}#result0"/>})
-    assert response.body.include? %{<sdc:result rdf:resource="#{host}/documents/#{id}#result1"/>}
-    assert response.body.include? %{<sdc:result rdf:resource="#{host}/documents/#{id}#result2"/>}
-    assert response.body.include? %{<sdc:result rdf:resource="#{host}/documents/#{id}#result3"/>}
+    assert (not response.body.include? %{<sdc:result rdf:resource="#{host}/de/documents/#{id}#result0"/>})
+    assert response.body.include? %{<sdc:result rdf:resource="#{host}/de/documents/#{id}.rdf#result1"/>}
+    assert response.body.include? %{<sdc:result rdf:resource="#{host}/de/documents/#{id}.rdf#result2"/>}
+    assert response.body.include? %{<sdc:result rdf:resource="#{host}/de/documents/#{id}.rdf#result3"/>}
   end
 
 end
