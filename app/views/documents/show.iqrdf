@@ -3,12 +3,13 @@ Iqvoc.default_rdf_namespace_helper_methods.each do |meth|
 end
 
 document.namespaces(
-  :search => url_for(request.query_parameters.merge(:only_path => false, :anchor => "")), # FIXME: "search" doesn't seem quite right!?
+  :search => url_for(request.query_parameters.
+      merge(:only_path => false, :anchor => "", :format => nil)), # FIXME: "search" doesn't seem quite right!?
   :sdc => "http://sindice.com/vocab/search#"
 )
 
 classifications = @document.classifications
-base_url = url_for(request.query_parameters.merge(:only_path => false))
+base_url = url_for(request.query_parameters.merge(:only_path => false, :format => nil))
 
 document << IqRdf.build_full_uri_subject(URI.parse(base_url), IqRdf::Sdc::build_uri("Query")) do |query|
   query.Sdc::totalResults(classifications.length)

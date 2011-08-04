@@ -102,7 +102,7 @@ class DocumentsControllerTest < ActionController::TestCase
     ttl = response.body.gsub(/^ +/, "\t") # simplifies testing
     assert_response :success
     assert ttl.include? "@prefix sdc: <http://sindice.com/vocab/search#>."
-    assert ttl.include? "<http://#{request.host}/de/documents/#{id}.ttl> a sdc:Query;"
+    assert ttl.include? "<http://#{request.host}/de/documents/#{id}> a sdc:Query;"
     assert (not ttl.include? "sdc:result search:result0;")
 
     assert ttl.include? "sdc:result search:result1;"
@@ -143,12 +143,12 @@ class DocumentsControllerTest < ActionController::TestCase
 
     host = "http://#{request.host}"
     assert_response :success
-    assert response.body.include? %{<rdf:Description rdf:about="#{host}/de/documents/#{id}.rdf">}
+    assert response.body.include? %{<rdf:Description rdf:about="#{host}/de/documents/#{id}">}
     assert response.body.include? %{<rdf:type rdf:resource="http://sindice.com/vocab/search#Query"/>}
     assert (not response.body.include? %{<sdc:result rdf:resource="#{host}/de/documents/#{id}#result0"/>})
-    assert response.body.include? %{<sdc:result rdf:resource="#{host}/de/documents/#{id}.rdf#result1"/>}
-    assert response.body.include? %{<sdc:result rdf:resource="#{host}/de/documents/#{id}.rdf#result2"/>}
-    assert response.body.include? %{<sdc:result rdf:resource="#{host}/de/documents/#{id}.rdf#result3"/>}
+    assert response.body.include? %{<sdc:result rdf:resource="#{host}/de/documents/#{id}#result1"/>}
+    assert response.body.include? %{<sdc:result rdf:resource="#{host}/de/documents/#{id}#result2"/>}
+    assert response.body.include? %{<sdc:result rdf:resource="#{host}/de/documents/#{id}#result3"/>}
   end
 
 end
