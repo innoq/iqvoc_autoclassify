@@ -1,6 +1,9 @@
+<!-- TODO: i18n -->
 <h1><%= @document.content_hash %></h1> <!-- FIXME: can there ever be a concise, human-friendly string representation for individual documents? -->
 
-<h2>Concepts</h2> <!-- TODO: i18n -->
+<%= link_to(@document.uri, @document.uri) if @document.uri %>
+
+<h2>Concepts</h2>
 <ol>
   <%- @document.classifications.each { |classification| -%>
     <li>
@@ -10,5 +13,5 @@
   <%- } -%>
 </ol>
 
-<h2>Full Text</h2> <!-- TODO: i18n -->
+<h2>Full Text</h2>
 <blockquote style="white-space: pre-wrap;"><%= @document.content.strip %></blockquote>

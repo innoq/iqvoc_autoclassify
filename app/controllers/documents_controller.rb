@@ -27,15 +27,17 @@ class DocumentsController < ApplicationController # TODO: auth restrictions?
 
   def create # TODO: restrict the amount of requests from the same IP?
     content = params[:document] ? params[:document][:content] : nil
+    url = params[:url]
     if content && content.strip.length > 0
       text = content
-    elsif params[:url]
-      text = Textractor.extract(params[:url])
+      url = nil # disallow simultaneous occurrence of both content and URL
+    elsif url
+      text = Textractor.extract(url)
     else
       render :text => "missing content or URI reference", :status => 400 # TODO: phrasing, i18n
     end
 
-    @document = Document.new(:content => text)
+    @document = Document.new(:content => text, :uri => url)
     @document.url_info = { # required for classifications' concept URLs
       :host => request.host_with_port,
       :lang => I18n.locale
