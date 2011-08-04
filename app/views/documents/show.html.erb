@@ -1,1 +1,13 @@
 <%= render "base" %>
+
+<h1>Comment</h1>
+
+<%= form_for([@document, @document.comments.build]) do |f| %>
+  <label>
+    <%= f.text_area :body %>
+  </label>
+
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>

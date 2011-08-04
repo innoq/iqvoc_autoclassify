@@ -8,6 +8,7 @@ class Document < ActiveRecord::Base
   attr_accessor :url_info # required for classifications' concept URLs
 
   has_many :classifications, :order => "weighting DESC", :dependent => :destroy
+  has_many :comments, :dependent => :destroy
 
   validates_presence_of :content
   validates_uniqueness_of :content_hash
