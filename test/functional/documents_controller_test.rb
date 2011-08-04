@@ -58,18 +58,18 @@ class DocumentsControllerTest < ActionController::TestCase
 
   test "create document from raw content" do
     assert_difference("Document.count") do
-      post :create, :document => { :content => "lorem ipsum" }, :format => :html
+      post :create, :document => { :content => "lorem ipsum" }
     end
 
-    assert_redirected_to document_path(assigns(:document), :lang => "de", :format => :html)
+    assert_redirected_to document_path(assigns(:document), :lang => "de")
   end
 
   test "create document from URL" do
     assert_difference("Document.count") do
-      post :create, :url => @url, :document => { :content => "" }, :format => :html
+      post :create, :url => @url, :document => { :content => "" }
     end
 
-    assert_redirected_to document_path(assigns(:document), :lang => "de", :format => :html)
+    assert_redirected_to document_path(assigns(:document), :lang => "de")
 
     id = response.headers["Location"].split("/").last.sub(/.html$/, "")
     get :show, :id => id, :lang => "de", :format => :html
@@ -86,8 +86,8 @@ class DocumentsControllerTest < ActionController::TestCase
     Iqvoc::Maker.concept :pref_labels => [Iqvoc::Maker.label("lorem")]
     Iqvoc::Maker.concept :pref_labels => [Iqvoc::Maker.label("dolor")]
 
-    post :update, :id => @documents[0].content_hash, :reclassify => "1", :format => :html
-    assert_redirected_to document_path(assigns(:document), :lang => "de", :format => :html)
+    post :update, :id => @documents[0].content_hash, :reclassify => "1"
+    assert_redirected_to document_path(assigns(:document), :lang => "de")
     assert_equal "Document was successfully reclassified.", flash[:notice]
 
     get :show, :id => @documents[0].content_hash, :format => :html
