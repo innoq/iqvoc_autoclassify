@@ -14,7 +14,7 @@ class WordMatcher # XXX: does this really need to be a class? (makes for a bad A
     labels = inflectionals. # TODO: inflectionals should be optional
         map(&:label).
         find_all(&:published?). # XXX: this could be made more efficient
-        uniq
+        uniq # FIXME: uniq potentially compromises order
     # XXX: the concept document states that a single inflectional might be
     #      associated with more than one label - however, this does not match
     #      the current implementation (model: inflectional belongs_to label)
@@ -37,7 +37,7 @@ class WordMatcher # XXX: does this really need to be a class? (makes for a bad A
         end
       }
     }
-    ordered.uniq
+    ordered.uniq # FIXME: uniq potentially compromises order
   end
 
   # labels is an array representing a sentence (i.e. order is significant)
