@@ -28,6 +28,7 @@ PATH
 GEM
   remote: http://rubygems.org/
   specs:
+    Ascii85 (1.0.1)
     abstract (1.0.0)
     actionmailer (3.0.9)
       actionpack (= 3.0.9)
@@ -91,6 +92,8 @@ GEM
     mime-types (1.16)
     mysql2 (0.2.7)
     nokogiri (1.5.0)
+    pdf-reader (0.10.0)
+      Ascii85 (~> 1.0.0)
     polyglot (0.3.2)
     rack (1.2.3)
     rack-mount (0.6.14)
@@ -148,6 +151,7 @@ DEPENDENCIES
   iqvoc_umt!
   mysql2 (= 0.2.7)
   nokogiri (= 1.5.0)
+  pdf-reader (~> 0.10.0)
   rails (= 3.0.9)
   rails_helpers_fix
   ruby-readability

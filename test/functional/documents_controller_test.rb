@@ -33,8 +33,13 @@ class DocumentsControllerTest < ActionController::TestCase
       make_document(:content => text)
     }
 
-    @url = "http://example.org"
-    FakeWeb.register_uri(:get, @url, :body => "test/fixtures/sample.html")
+    @urls = {
+      "pdf" => "http://example.org/sample.pdf",
+      "html" => "http://example.org/sample.html"
+    }
+    FakeWeb.register_uri(:get, @urls["pdf"], :body => "test/fixtures/sample.pdf",
+        :content_type => "application/pdf")
+    FakeWeb.register_uri(:get, @urls["html"], :body => "test/fixtures/sample.html")
   end
 
   test "list documents at index" do
@@ -64,9 +69,9 @@ class DocumentsControllerTest < ActionController::TestCase
     assert_redirected_to document_path(assigns(:document), :lang => "de")
   end
 
-  test "create document from URL" do
+  test "create document from URL (HTML)" do
     assert_difference("Document.count") do
-      post :create, :url => @url, :document => { :content => "" }
+      post :create, :url => @urls["html"], :document => { :content => "" }
     end
 
     assert_redirected_to document_path(assigns(:document), :lang => "de")
@@ -74,9 +79,26 @@ class DocumentsControllerTest < ActionController::TestCase
     id = response.headers["Location"].split("/").last.sub(/.html$/, "")
     get :show, :id => id, :lang => "de", :format => :html
 
+    assert_select "a[href=#{@urls["html"]}]", 1
     assert_select "h1", { :text => "Lipsum" }
     assert_select "ol li", 3
-    assert_select "a[href=#{@url}]", 1
+  end
+
+  test "create document from URL (PDF)" do
+    assert_difference("Document.count") do
+      post :create, :url => @urls["pdf"], :document => { :content => "" }
+    end
+
+    assert_redirected_to document_path(assigns(:document), :lang => "de")
+
+    id = response.headers["Location"].split("/").last.sub(/.html$/, "")
+    get :show, :id => id, :lang => "de", :format => :html
+
+    assert_select "a[href=#{@urls["pdf"]}]", 1
+    assert_select "h1", { :text => "(Unsaved Publication)" }
+    assert_select "blockquote", {
+        :text => "This is a sample PDF file.If you can read this,you already " +
+            "have Adobe AcrobatReader installed on your computer." }
   end
 
   test "reclassify document" do
