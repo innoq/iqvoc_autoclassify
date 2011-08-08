@@ -1,5 +1,5 @@
 <!-- TODO: i18n -->
-<h1><%= @document.content_hash %></h1> <!-- FIXME: can there ever be a concise, human-friendly string representation for individual documents? -->
+<h1><%= @document.title || @document.content_hash %></h1>
 
 <%= link_to(@document.uri, @document.uri) if @document.uri %>
 

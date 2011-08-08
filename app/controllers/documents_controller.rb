@@ -29,15 +29,16 @@ class DocumentsController < ApplicationController # TODO: auth restrictions?
     content = params[:document] ? params[:document][:content] : nil
     url = params[:url]
     if content && content.strip.length > 0
+      title = nil # TODO: optional form field?
       text = content
       url = nil # disallow simultaneous occurrence of both content and URL
     elsif url
-      text = Textractor.extract(url)
+      title, text = Textractor.extract(url)
     else
       render :text => "missing content or URI reference", :status => 400 # TODO: phrasing, i18n
     end
 
-    @document = Document.new(:content => text, :uri => url)
+    @document = Document.new(:title => title, :content => text, :uri => url)
     @document.url_info = { # required for classifications' concept URLs
       :host => request.host_with_port,
       :lang => I18n.locale

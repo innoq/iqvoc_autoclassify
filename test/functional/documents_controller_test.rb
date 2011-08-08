@@ -74,6 +74,7 @@ class DocumentsControllerTest < ActionController::TestCase
     id = response.headers["Location"].split("/").last.sub(/.html$/, "")
     get :show, :id => id, :lang => "de", :format => :html
 
+    assert_select "h1", { :text => "Lipsum" }
     assert_select "ol li", 3
     assert_select "a[href=#{@url}]", 1
   end

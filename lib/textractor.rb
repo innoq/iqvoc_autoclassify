@@ -12,11 +12,15 @@ module Textractor
       return extract(html)
     end
 
-    content = Readability::Document.new(html).content
-    return Nokogiri::HTML(content).text # this seems a bit redundant, but is
-                                        # necessary because Readability's
-                                        # sanitize method converts the DOM tree
-                                        # to a string
+    doc = Readability::Document.new(html)
+    title = doc.html.css("title").first
+    title = title ? title.text : nil
+    content = Nokogiri::HTML(doc.content).text # invoking Nokogiri seems a bit
+                                               # redundant, but is necessary
+                                               # because Readability's sanitize
+                                               # method converts the DOM tree to
+                                               # a string
+    return title, content
   end
 
 end
