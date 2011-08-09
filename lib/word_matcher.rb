@@ -13,8 +13,7 @@ class WordMatcher # XXX: does this really need to be a class? (makes for a bad A
   def labels # XXX: might be combined with to_inflectionals for efficiency; currently separate for testability
     labels = inflectionals. # TODO: inflectionals should be optional
         map(&:label).
-        find_all(&:published?). # XXX: this could be made more efficient
-        uniq # FIXME: uniq potentially compromises order
+        find_all(&:published?) # XXX: this could be made more efficient
     # XXX: the concept document states that a single inflectional might be
     #      associated with more than one label - however, this does not match
     #      the current implementation (model: inflectional belongs_to label)
@@ -25,7 +24,7 @@ class WordMatcher # XXX: does this really need to be a class? (makes for a bad A
 
   def inflectionals
     unordered = Inflectional::Base. # XXX: should use configuration rather than accessing Inflectional::Base directly
-        where(:value => @words). # NB: does not retain order -- FIXME: needs to be case-insensitive!?
+        where(:value => @words). # NB: does not retain order nor duplicates -- FIXME: needs to be case-insensitive!?
         includes(:label)
     # restore order of occurrence -- XXX: inefficient?
     ordered = []
@@ -37,7 +36,7 @@ class WordMatcher # XXX: does this really need to be a class? (makes for a bad A
         end
       }
     }
-    ordered.uniq # FIXME: uniq potentially compromises order
+    ordered
   end
 
   # labels is an array representing a sentence (i.e. order is significant)
@@ -50,10 +49,8 @@ class WordMatcher # XXX: does this really need to be a class? (makes for a bad A
           if components.first == label
             indexes = components.map { |component| labels.index component }
             unless indexes.include? nil # all components must be present in the sentence
-              # discard unrelated noise from the sentence
-              order = labels.find_all { |label| components.include? label }
               # sequence of occurence within the sentence must match the compound's
-              results.push(candidate) if order == components
+              results.push(candidate) if compare_sequences(components, labels)
             end
           end
         }
@@ -62,4 +59,20 @@ class WordMatcher # XXX: does this really need to be a class? (makes for a bad A
     results
   end
 
+  private
+
+  def compare_sequences(template, tokens) # TODO: rename
+    pos = 0
+    match = true
+    template.each do |item|
+      tpos = tokens[pos..-1].index(item)
+      if tpos == nil then
+        match = false
+        break
+      else
+        pos = tpos
+      end
+    end
+    return match
+  end
 end

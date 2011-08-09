@@ -50,4 +50,12 @@ class CompoundLabelIdentificationTest < ActiveSupport::TestCase
     assert (not labels.include? @labels["Weltraumfrachtpilot"])
   end
 
+  test "duplicates are retained" do
+    sentence = "Weltraum Pilot Kampf Pilot".split(" ")
+    labels = WordMatcher.new(sentence).labels
+    assert_equal 5, labels.length
+    assert labels.include? @labels["Weltraumkampfpilot"]
+    assert (not labels.include? @labels["Weltraumfrachtpilot"])
+  end
+
 end
