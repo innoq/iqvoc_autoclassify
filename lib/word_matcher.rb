@@ -11,19 +11,19 @@ class WordMatcher # XXX: does this really need to be a class? (makes for a bad A
   end
 
   def labels # XXX: might be combined with to_inflectionals for efficiency; currently separate for testability
-    labels = inflectionals. # TODO: inflectionals should be optional
+    labels = inflectionals.
         map(&:label).
         find_all(&:published?) # XXX: this could be made more efficient
     # XXX: the concept document states that a single inflectional might be
     #      associated with more than one label - however, this does not match
     #      the current implementation (model: inflectional belongs_to label)
     # FIXME: do we need to filter out labels based on languages here?
-    compound_forms = resolve_compound_forms(labels) # TODO: compound forms should be optional
-    labels + compound_forms
+    compound_forms = resolve_compound_forms(labels)
+    return labels + compound_forms
   end
 
   def inflectionals
-    unordered = Inflectional::Base. # XXX: should use configuration rather than accessing Inflectional::Base directly
+    unordered = Inflectional::Base.
         where(:value => @words). # NB: does not retain order nor duplicates -- FIXME: needs to be case-insensitive!?
         includes(:label)
     # restore order of occurrence -- XXX: inefficient?
@@ -36,7 +36,7 @@ class WordMatcher # XXX: does this really need to be a class? (makes for a bad A
         end
       }
     }
-    ordered
+    return ordered
   end
 
   # labels is an array representing a sentence (i.e. order is significant)
@@ -56,7 +56,7 @@ class WordMatcher # XXX: does this really need to be a class? (makes for a bad A
         }
       }
     }
-    results
+    return results
   end
 
   private
