@@ -30,7 +30,7 @@ class LabelIdentificationTest < ActiveSupport::TestCase
     assert_equal 3, WordMatcher.new(sentence).inflectionals.length
 
     sentence = ["Kinder", "Fenster", "Bäume", "Kinder", "Baum"]
-    assert_equal 4, WordMatcher.new(sentence).inflectionals.length
+    assert_equal 5, WordMatcher.new(sentence).inflectionals.length
 
     sentence = ["Das", "Kind", "am", "Fenster", "sieht", "Bäume", "und", "Gras"]
     assert_equal 3, WordMatcher.new(sentence).inflectionals.length

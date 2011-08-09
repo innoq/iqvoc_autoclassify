@@ -19,7 +19,7 @@ class WordMatcher # XXX: does this really need to be a class? (makes for a bad A
     #      the current implementation (model: inflectional belongs_to label)
     # FIXME: do we need to filter out labels based on languages here?
     compound_forms = resolve_compound_forms(labels)
-    return labels + compound_forms
+    return (labels + compound_forms).uniq # order and duplicates no longer relevant
   end
 
   def inflectionals
