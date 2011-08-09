@@ -28,7 +28,6 @@ group :development, :test do
 end
 
 group :test do
-  gem 'memory_test_fix'
   gem 'capybara'
   gem 'database_cleaner'
   gem 'fakeweb'
