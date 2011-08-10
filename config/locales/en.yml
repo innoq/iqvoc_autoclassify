@@ -1,0 +1,23 @@
+en:
+  txt:
+    models:
+      document:
+        url: URL
+        full_text: Full text
+    controllers:
+      documents:
+        save:
+          success: document created successfully
+        create:
+          invalid: missing content or URI reference
+        update:
+          success: Document was successfully reclassified.
+          invalid: missing reclassify flag
+      comments:
+        save:
+          success: comment created successfully
+    views:
+      document:
+        new: new document
+        reclassify: recalculate classifications
+        index: document index

@@ -36,7 +36,7 @@ class DocumentsController < ApplicationController # TODO: auth restrictions?
     elsif url
       title, text = Textractor.extract(url)
     else
-      render :text => "missing content or URI reference", :status => 400 # TODO: phrasing, i18n
+      render :text => I18n.t("txt.controllers.documents.create.invalid"), :status => 400
     end
 
     @document = Document.new(:title => title, :content => text, :uri => url)
@@ -68,10 +68,10 @@ class DocumentsController < ApplicationController # TODO: auth restrictions?
       }
       @document.save!
 
-      flash[:notice] = "Document was successfully reclassified." # TODO: phrasing, i18n
+      flash[:notice] = I18n.t("txt.controllers.documents.update.success")
       redirect_to document_path(:id => @document.content_hash)
     else
-      render :text => "missing reclassify flag", :status => 400 # TODO: phrasing, i18n
+      render :text => I18n.t("txt.controllers.documents.update.invalid")
     end
   end
 

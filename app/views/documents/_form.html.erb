@@ -1,9 +1,9 @@
-<%= form_for(@document) do |f| %> <!-- TODO: i18n -->
+<%= form_for(@document) do |f| %>
   <%- if @document.errors.any? -%>
     <div id="error_explanation">
       <h2>
         <%= pluralize(@document.errors.count, "error") %>
-        prohibited this document from being saved:
+        prohibited this document from being saved: <!-- TODO: i18n -->
       </h2>
       <ul>
       <%- @document.errors.full_messages.each do |msg| -%>
@@ -14,20 +14,20 @@
   <%- end -%>
 
   <fieldset>
-    <legend>URL</legend>
+    <legend><%= t("txt.models.document.url") %></legend>
     <label>
       <%= text_field_tag :url %>
     </label>
   </fieldset>
 
   <fieldset>
-    <legend>Text</legend>
+    <legend><%= t("txt.models.document.full_text") %></legend>
     <label>
       <%= f.text_area :content %>
     </label>
   </fieldset>
 
   <div class="actions">
-    <%= f.submit %>
+    <%= f.submit t("txt.common.save") %>
   </div>
 <% end %>

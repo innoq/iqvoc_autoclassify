@@ -5,7 +5,7 @@ class CommentsController < ApplicationController
     document.comments.create(:body => params[:comment][:body],
         :user => current_user)
     redirect_to document_path(:id => document),
-        :notice => 'Comment was successfully created.' # TODO: i18n
+        :notice => I18n.t("txt.controllers.comments.save.success")
   end
 
 end

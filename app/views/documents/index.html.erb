@@ -1,11 +1,10 @@
-<!-- TODO: i18n -->
-<h1>Documents</h1>
+<h1><%= Document.model_name.human(:count => 2) %></h1>
 
 <table>
   <tr>
-    <th>Date</th>
-    <th>Hash</th>
-    <th>Concepts</th>
+    <th>Date</th> <!-- TODO: i18n -->
+    <th>Hash</th> <!-- TODO: i18n -->
+    <th><%= Concept::Base.model_name.human(:count => 2) %></th>
   </tr>
 
 <%- @documents.each do |doc| -%>
@@ -18,4 +17,4 @@
 
 </table>
 
-<%= link_to "New Document", new_document_path, :class => "button" %>
+<%= link_to t("txt.views.document.new"), new_document_path, :class => "button" %>

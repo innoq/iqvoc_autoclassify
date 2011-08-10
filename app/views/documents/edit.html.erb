@@ -2,11 +2,11 @@
   <div class="field">
     <%= content_tag :label do %>
       <%= check_box_tag :reclassify %>
-      reclassify <!-- TODO: i18n -->
+      <%= t("txt.models.views.document.reclassify") %>
     <% end %>
   </div>
   <div class="actions">
-    <%= f.submit %>
+    <%= f.submit t("txt.common.save") %>
   </div>
 <% end %>
 

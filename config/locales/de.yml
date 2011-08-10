@@ -1,0 +1,23 @@
+de:
+  txt:
+    models:
+      document:
+        url: URL
+        full_text: Volltext
+    controllers:
+      documents:
+        save:
+          success: Dokument erfolgreich angelegt
+        create:
+          invalid: weder URL noch Volltext übermittelt
+        update:
+          success: Dokument wurde erfolgreich aktualisiert.
+          invalid: Bestätigung wurde nicht angewählt.
+      comments:
+        save:
+          success: Kommentar erfolgreich übermittelt
+    views:
+      document:
+        new: neues Dokument
+        reclassify: Klassifizierung neu berechnen
+        index: Dokumentübersicht

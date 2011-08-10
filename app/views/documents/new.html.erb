@@ -1,5 +1,5 @@
-<h1>New document</h1> <!-- TODO: i18n -->
+<h1><%= t("txt.views.document.new") %></h1>
 
 <%= render "form" %>
 
-<%= link_to "Back", documents_path %>
+<%= link_to t("txt.views.document.index"), documents_path %>

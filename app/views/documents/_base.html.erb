@@ -1,9 +1,8 @@
-<!-- TODO: i18n -->
 <h1><%= @document.title || @document.content_hash %></h1>
 
-<%= link_to(@document.uri, @document.uri) if @document.uri %>
+<%= link_to(@document.title || @document.uri, @document.uri) if @document.uri %>
 
-<h2>Concepts</h2>
+<h2><%= Concept::Base.model_name.human(:count => 2) %></h2>
 <ol>
   <%- @document.classifications.each { |classification| -%>
     <li>
@@ -13,5 +12,5 @@
   <%- } -%>
 </ol>
 
-<h2>Full Text</h2>
+<h2><%= t("txt.models.document.full_text") %></h2>
 <blockquote style="white-space: pre-wrap;"><%= @document.content.strip %></blockquote>

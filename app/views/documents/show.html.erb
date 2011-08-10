@@ -1,6 +1,6 @@
 <%= render "base" %>
 
-<h1>Comment</h1>
+<h1><%= Comment.model_name.human(:count => 2) %></h1>
 
 <%= form_for([@document, @document.comments.build]) do |f| %>
   <label>
@@ -8,8 +8,8 @@
   </label>
 
   <div class="actions">
-    <%= f.submit %>
+    <%= f.submit t("txt.common.save") %>
   </div>
 <% end %>
 
-<%= link_to "Back", documents_path %> <!-- TODO: i18n -->
+<%= link_to t("txt.views.document.index"), documents_path %>
