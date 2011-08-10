@@ -13,6 +13,7 @@ class DocumentsController < ApplicationController # TODO: auth restrictions?
   def show
     @document = Document.find_by_content_hash(params[:id],
         :include => :classifications)
+    raise ActiveRecord::RecordNotFound if not @document
 
     respond_to do |format|
       format.html
