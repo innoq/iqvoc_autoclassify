@@ -50,7 +50,7 @@ class WordMatcher # XXX: does this really need to be a class? (makes for a bad A
             indexes = components.map { |component| labels.index component }
             unless indexes.include? nil # all components must be present in the sentence
               # sequence of occurence within the sentence must match the compound's
-              results.push(candidate) if compare_label_sequences(components, labels)
+              results.push(candidate) if align(labels, components)
             end
           end
         }
@@ -61,13 +61,12 @@ class WordMatcher # XXX: does this really need to be a class? (makes for a bad A
 
   private
 
-  def compare_label_sequences(template, tokens) # TODO: rename
-    # using RegExp to easily compare order of occurrence (using label IDs to
-    # ensure uniqueness and avoid unexpected behavior)
-    source = tokens.map { |label| "-#{label.id}-" }.join("")
-    pattern = template.map { |label| "-#{label.id}-" }.join(".*")
-    pattern = Regexp.new(pattern)
-    return pattern.match(source)
+  # compares two sequences, checking whether tokens contains all items of
+  # template, in that same order
+  def align(tokens, template)
+    if pos = tokens.index(template.first)
+      template.size == 1 || align(tokens.slice(pos..-1), template.drop(1))
+    end
   end
 
 end
