@@ -1,0 +1,8 @@
+div.new_comment {
+	float: right;
+	margin: 2em 0 1em 1em;
+}
+
+.new_comment #comment_submit {
+	float: right;
+}

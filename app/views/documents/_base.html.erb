@@ -2,6 +2,21 @@
 
 <%= link_to(@document.title || @document.uri, @document.uri) if @document.uri %>
 
+<% if defined?(display_comment_form) && display_comment_form %>
+<div class="new_comment">
+  <h3><%= t("txt.views.document.comment") %></h1>
+  <%= form_for([@document, @document.comments.build]) do |f| %>
+    <label>
+      <%= f.text_area :body %>
+    </label>
+
+    <div class="actions">
+      <%= f.submit t("txt.common.save") %>
+    </div>
+  <% end %>
+<% end %>
+</div>
+
 <h2><%= Concept::Base.model_name.human(:count => 2) %></h2>
 <ol>
   <%- @document.classifications.each { |classification| -%>
