@@ -6,7 +6,7 @@ class DocumentsController < ApplicationController # TODO: auth restrictions?
   respond_to :html # TODO: JSON, RDF
 
   def index
-    @documents = Document.all
+    @documents = Document.page(params[:page])
     respond_with @documents
   end
 

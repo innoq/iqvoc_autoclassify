@@ -1,9 +1,13 @@
 <h1><%= Document.model_name.human(:count => 2) %></h1>
 
+<p>
+  <%= link_to t("txt.views.document.new"), new_document_path, :class => "button" %>
+</p>
+
 <table>
   <tr>
-    <th>Date</th> <!-- TODO: i18n -->
-    <th>Hash</th> <!-- TODO: i18n -->
+    <th><%= t("txt.views.document.last_update") %></th>
+    <th>Hash</th> <!-- TODO: i18n? -->
     <th><%= Concept::Base.model_name.human(:count => 2) %></th>
   </tr>
 
@@ -17,4 +21,4 @@
 
 </table>
 
-<%= link_to t("txt.views.document.new"), new_document_path, :class => "button" %>
+<%= paginate @documents %>
