@@ -111,7 +111,7 @@ class DocumentsControllerTest < ActionController::TestCase
 
     post :update, :id => @documents[0].content_hash, :reclassify => "1"
     assert_redirected_to document_path(assigns(:document), :lang => "de")
-    assert_equal "Document was successfully reclassified.", flash[:notice]
+    assert_equal "Dokument wurde erfolgreich aktualisiert.", flash[:notice]
 
     get :show, :id => @documents[0].content_hash, :format => :html
     assert_select "ol li", 2
