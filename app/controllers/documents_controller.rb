@@ -37,9 +37,16 @@ class DocumentsController < ApplicationController # TODO: auth restrictions?
       text = content
       url = nil # disallow simultaneous occurrence of both content and URL
     elsif url
-      title, text = Textractor.extract(url)
+      begin
+        title, text = Textractor.extract(url)
+      rescue Textractor::ExcessiveSize => exception
+        render :text => "413 Request Entity Too Large", # TODO: i18n -- TODO: proper error page
+            :status => :request_entity_too_large
+        return
+      end
     else
-      render :text => I18n.t("txt.controllers.documents.create.invalid"), :status => 400
+      render :text => I18n.t("txt.controllers.documents.create.invalid"), # TODO: proper error page
+          :status => :bad_request
     end
 
     @document = Document.new(:title => title, :content => text, :uri => url)

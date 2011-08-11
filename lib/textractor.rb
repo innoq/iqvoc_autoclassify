@@ -12,7 +12,13 @@ module Textractor
     raise(ArgumentError, "HTTP URL expected") unless url =~ /^https?:\/\/[^\s]+$/
     title = nil
     content = nil
-    open(url) { |data|
+
+    # NB: Content-Length headers are not necessarily reliable
+    validate_size = lambda { |content_length|
+      raise ExcessiveSize if (content_length && content_length > 512000) # TODO: configurable
+    }
+
+    open(url, :content_length_proc => validate_size) { |data|
       case data.content_type
         when "application/pdf"
           file = Tempfile.new "textractor"
@@ -47,6 +53,8 @@ module Textractor
     pdf = PDF::Reader.file(filepath, rcv)
     return rcv.meta[:Title], rcv.content.join("\n\n")
   end
+
+  class ExcessiveSize < StandardError; end
 
   # required due to pdf-reader v0.10's awkward API
   # largely cargo-culted from pdf-reader examples
