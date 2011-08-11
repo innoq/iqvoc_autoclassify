@@ -40,13 +40,14 @@ class DocumentsController < ApplicationController # TODO: auth restrictions?
       begin
         title, text = Textractor.extract(url)
       rescue Textractor::ExcessiveSize => exception
-        render :text => "413 Request Entity Too Large", # TODO: i18n -- TODO: proper error page
-            :status => :request_entity_too_large
+        flash[:error] = I18n.t("txt.views.document.too_large")
+        render "errors/blank", :status => 413
         return
       end
     else
-      render :text => I18n.t("txt.controllers.documents.create.invalid"), # TODO: proper error page
-          :status => :bad_request
+      flash[:error] = I18n.t("txt.controllers.documents.create.invalid")
+      render "errors/blank", :status => 400
+      return
     end
 
     @document = Document.new(:title => title, :content => text, :uri => url)
@@ -84,7 +85,9 @@ class DocumentsController < ApplicationController # TODO: auth restrictions?
       flash[:notice] = I18n.t("txt.controllers.documents.update.success")
       redirect_to document_path(:id => @document.content_hash)
     else
-      render :text => I18n.t("txt.controllers.documents.update.invalid")
+      flash[:error] = I18n.t("txt.controllers.documents.update.invalid")
+      render "errors/blank", :status => 400
+      return
     end
   end
 

@@ -21,4 +21,5 @@ de:
         new: neues Dokument
         reclassify: Klassifizierung neu berechnen
         index: Dokumentübersicht
+        too_large: angefordertes Dokument ist zu umfangreich
         comment: Kommentar hinterlassen
