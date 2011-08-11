@@ -4,7 +4,7 @@
 
 <% if defined?(display_comment_form) && display_comment_form %>
 <div class="new_comment">
-  <h3><%= t("txt.views.document.comment") %></h1>
+  <h3><%= t("txt.views.document.comment") %></h3>
   <%= form_for([@document, @document.comments.build]) do |f| %>
     <label>
       <%= f.text_area :body %>
@@ -19,13 +19,14 @@
 
 <h2><%= Concept::Base.model_name.human(:count => 2) %></h2>
 <ol>
-  <%- @document.classifications.each { |classification| -%>
+  <%- @classifications.each { |classification| -%>
     <li>
       <%= link_to classification.to_s, classification.concept_uri %>
       [<%= classification.weighting %>]
     </li>
   <%- } -%>
 </ol>
+<div class="autoclassify"><%= paginate @classifications %></div> <!-- XXX: divitis!? -->
 <p><%= Document.human_attribute_name(:updated_at) %>: <%= @document.updated_at %></p>
 
 <h2><%= t("txt.models.document.full_text") %></h2>

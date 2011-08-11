@@ -14,6 +14,9 @@ class DocumentsController < ApplicationController # TODO: auth restrictions?
     @document = Document.find_by_content_hash(params[:id],
         :include => :classifications)
     raise ActiveRecord::RecordNotFound if not @document
+    @classifications = @document.classifications.
+        order("weighting DESC"). # XXX: redundant (cf. model)!?
+        page(params[:page])
 
     respond_to do |format|
       format.html
@@ -57,6 +60,9 @@ class DocumentsController < ApplicationController # TODO: auth restrictions?
   def edit
     @document = Document.find_by_content_hash(params[:id],
         :include => :classifications)
+    @classifications = @document.classifications.
+        order("weighting DESC"). # XXX: redundant (cf. model)!?
+        page(params[:page])
   end
 
   def update

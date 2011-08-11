@@ -6,3 +6,7 @@ div.new_comment {
 .new_comment #comment_submit {
 	float: right;
 }
+
+.autoclassify .pagination {
+	margin-bottom: 1em;
+}
