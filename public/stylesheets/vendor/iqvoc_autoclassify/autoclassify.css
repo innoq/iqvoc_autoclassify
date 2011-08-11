@@ -10,3 +10,8 @@ div.new_comment {
 .autoclassify .pagination {
 	margin-bottom: 1em;
 }
+
+.weighting {
+	font-size: 0.9em;
+	color: #666;
+}
