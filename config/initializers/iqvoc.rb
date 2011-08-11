@@ -3,4 +3,4 @@
 Iqvoc.title = "iQvoc AutoClassify"
 
 Iqvoc.additional_css_files += ["vendor/iqvoc_autoclassify/autoclassify.css"]
-#Iqvoc.additional_js_files += ["vendor/iqvoc_autoclassify/autoclassify.js"]
+Iqvoc.additional_js_files += ["vendor/iqvoc_autoclassify/autoclassify.js"]
