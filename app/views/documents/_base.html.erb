@@ -24,7 +24,7 @@
   <%- @classifications.each { |classification| -%>
     <li>
       <%= link_to classification.to_s, classification.concept_uri %>
-      [<%= classification.weighting %>]
+      [<%= "%5.2f" % classification.weighting %>]
     </li>
   <%- } -%>
 </ol>
