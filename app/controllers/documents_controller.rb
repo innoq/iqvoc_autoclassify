@@ -32,11 +32,12 @@ class DocumentsController < ApplicationController # TODO: auth restrictions?
   def create # TODO: restrict the amount of requests from the same IP?
     content = params[:document] ? params[:document][:content] : nil
     url = params[:url]
-    if content && content.strip.length > 0
+    has_content = content && content.strip.length > 0
+    has_url = url && url.strip.length > 0
+    if has_content && (not has_url)
       title = nil # TODO: optional form field?
       text = content
-      url = nil # disallow simultaneous occurrence of both content and URL
-    elsif url
+    elsif has_url && (not has_content)
       begin
         title, text = Textractor.extract(url)
       rescue Textractor::ExcessiveSize => exception
