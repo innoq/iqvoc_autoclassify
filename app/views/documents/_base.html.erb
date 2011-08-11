@@ -1,6 +1,8 @@
+<%- if @document.uri -%>
+<h1><%= link_to(@document.title || @document.content_hash, @document.uri) %></h1>
+<%- else -%>
 <h1><%= @document.title || @document.content_hash %></h1>
-
-<%= link_to(@document.title || @document.uri, @document.uri) if @document.uri %>
+<%- end -%>
 
 <% if defined?(display_comment_form) && display_comment_form %>
 <div class="new_comment">
