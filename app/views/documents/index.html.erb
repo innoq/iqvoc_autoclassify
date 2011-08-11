@@ -6,8 +6,8 @@
 
 <table>
   <tr>
-    <th><%= t("txt.views.document.last_update") %></th>
-    <th>Hash</th> <!-- TODO: i18n? -->
+    <th><%= Document.human_attribute_name(:updated_at) %></th>
+    <th><%= Document.human_attribute_name(:title) %></th>
     <th><%= Concept::Base.model_name.human(:count => 2) %></th>
   </tr>
 

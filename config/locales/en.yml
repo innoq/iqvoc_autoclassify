@@ -18,7 +18,6 @@ en:
           success: comment created successfully
     views:
       document:
-        last_update: last updated
         new: new document
         reclassify: recalculate classifications
         index: document index

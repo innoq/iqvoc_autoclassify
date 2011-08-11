@@ -18,7 +18,6 @@ de:
           success: Kommentar erfolgreich übermittelt
     views:
       document:
-        last_update: letzte Aktualisierung
         new: neues Dokument
         reclassify: Klassifizierung neu berechnen
         index: Dokumentübersicht

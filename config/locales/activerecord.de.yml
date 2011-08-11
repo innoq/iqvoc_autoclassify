@@ -7,3 +7,7 @@ de:
       comment:
         one: Kommentar
         other: Kommentare
+    attributes:
+      document:
+        updated_at: letzte Aktualisierung
+        title: Titel
