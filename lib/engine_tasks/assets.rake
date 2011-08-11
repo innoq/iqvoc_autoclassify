@@ -1,8 +1,9 @@
 require 'fileutils'
 
 module Iqvoc
+
   def AutoClassify.for_static_folders
-    engine_public_dir = Iqvoc::Engine.find_root_with_flag("public").join('public')
+    engine_public_dir = Iqvoc::AutoClassify::Engine.find_root_with_flag("public").join("public")
     app_public_dir = Rails.public_path
 
     if File.directory?(app_public_dir)
@@ -17,6 +18,7 @@ module Iqvoc
       end
     end
   end
+
 end
 
 namespace :iqvoc_autoclassify do
