@@ -26,6 +26,7 @@
     </li>
   <%- } -%>
 </ol>
+<p><%= t("txt.views.document.last_update") %>: <%= @document.updated_at %></p>
 
 <h2><%= t("txt.models.document.full_text") %></h2>
 <blockquote style="white-space: pre-wrap;"><%= @document.content.strip %></blockquote>
