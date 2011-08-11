@@ -50,8 +50,9 @@ class DocumentsControllerTest < ActionController::TestCase
     assert_select "table" do
       assert_select "tr", 3
     end
-    assert_select "tr:nth-of-type(2) a[href=/de/documents/d0d2efdf0c05081e2c3ae386215483329a653cfd.html]", 1
-    assert_select "tr:nth-of-type(3) td:nth-of-type(3)", "3"
+    assert_select "tr:nth-of-type(2) td:nth-of-type(3)", "3"
+    assert_select "tr:nth-of-type(3) a[href=/de/documents/d0d2efdf0c05081e2c3ae386215483329a653cfd.html]", 1
+    assert_select "tr:nth-of-type(3) td:nth-of-type(3)", "0"
   end
 
   test "list matching concepts for the respective document" do
