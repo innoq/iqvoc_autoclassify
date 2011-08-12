@@ -18,6 +18,10 @@
     <label>
       <%= text_field_tag :url %>
     </label>
+
+    <div class="actions">
+      <%= f.submit t("txt.common.save"), :id => nil %>
+    </div>
   </fieldset>
 
   <fieldset>
@@ -29,9 +33,9 @@
     <label>
       <%= f.text_area :content %>
     </label>
-  </fieldset>
 
-  <div class="actions">
-    <%= f.submit t("txt.common.save") %>
-  </div>
+    <div class="actions">
+      <%= f.submit t("txt.common.save") %>
+    </div>
+  </fieldset>
 <% end %>
