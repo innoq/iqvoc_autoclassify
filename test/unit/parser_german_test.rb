@@ -7,7 +7,7 @@ class ParserGermanTest < ActiveSupport::TestCase
 
   test "word normalization" do
     text = "Nord- und Südgefälle"
-    doc = GermanDocumentParser.new text
+    doc = DocumentParser::German.new text
 
     assert_equal 1, doc.sentences.length
     assert_equal "Nord", doc.sentences[0][0]
@@ -15,7 +15,7 @@ class ParserGermanTest < ActiveSupport::TestCase
     assert_equal "Südgefälle", doc.sentences[0][2]
 
     text = "solch überflüssige Äußerlichkeiten - Gruß!"
-    doc = GermanDocumentParser.new text
+    doc = DocumentParser::German.new text
 
     assert_equal 1, doc.sentences.length
     assert_equal "solch", doc.sentences[0][0]
@@ -26,13 +26,13 @@ class ParserGermanTest < ActiveSupport::TestCase
 
   test "decompose hyphenated words" do
     text = "deutsch-französisch"
-    doc = GermanDocumentParser.new text
+    doc = DocumentParser::German.new text
 
     assert_equal 1, doc.sentences.length
     assert_equal ["deutsch-französisch", "deutsch", "französisch"], doc.sentences[0]
 
     text = "saar-lor-lux"
-    doc = GermanDocumentParser.new text
+    doc = DocumentParser::German.new text
 
     assert_equal 1, doc.sentences.length
     assert_equal ["saar-lor-lux", "saar", "lor", "lux"], doc.sentences[0]
@@ -40,27 +40,27 @@ class ParserGermanTest < ActiveSupport::TestCase
 
   test "abbreviation handling" do
     text = "lorem ipsum z. B. dolor sit amet"
-    doc = GermanDocumentParser.new text
+    doc = DocumentParser::German.new text
 
     assert_equal 1, doc.sentences.length
 
     text = "lorem ipsum z.B. dolor sit amet"
-    doc = GermanDocumentParser.new text
+    doc = DocumentParser::German.new text
 
     assert_equal 1, doc.sentences.length
 
     text = "lorem ipsum i. d. R. dolor sit amet"
-    doc = GermanDocumentParser.new text
+    doc = DocumentParser::German.new text
 
     assert_equal 1, doc.sentences.length
 
     text = "lorem ipsum i.d.R. dolor sit amet"
-    doc = GermanDocumentParser.new text
+    doc = DocumentParser::German.new text
 
     assert_equal 1, doc.sentences.length
 
     text = "lorem d.h. ipsum s.o. dolor Nr. sit etc. amet"
-    doc = GermanDocumentParser.new text
+    doc = DocumentParser::German.new text
 
     assert_equal 1, doc.sentences.length
   end

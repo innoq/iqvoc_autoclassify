@@ -82,10 +82,10 @@ class ParserDocumentTest < ActiveSupport::TestCase
     doc = DocumentParser::Base.new @@doc1
     assert_equal 13, doc.sentences.length # base parser doesn't handle abbreviations
 
-    doc = GermanDocumentParser.new @@doc1
+    doc = DocumentParser::German.new @@doc1
     assert_equal 11, doc.sentences.length
 
-    doc = GermanDocumentParser.new @@doc2
+    doc = DocumentParser::German.new @@doc2
     assert_equal 47, doc.sentences.length # NB: the actual value here was in manually checking the parser output against the original
   end
 end
