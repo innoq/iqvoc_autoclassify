@@ -11,8 +11,9 @@ jQuery(document).ready(function($) {
 
 	var fieldsets = $("fieldset", root);
 	fieldsets.mouseenter(function(ev) {
-		fieldsets.not(this).find("input, textarea")
-			.prop("disabled", true).animate({ opacity: 0.2 });
-		$(":disabled", this).prop("disabled", false).animate({ opacity: 1 });
+		fieldsets.not(this).animate({ opacity: 0.2 })
+			.find("input, textarea").prop("disabled", true);
+		$(this).animate({ opacity: 1 })
+			.find(":disabled").prop("disabled", false);
 	});
 });
