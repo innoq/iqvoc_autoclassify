@@ -23,6 +23,10 @@
   <fieldset>
     <legend><%= t("txt.models.document.full_text") %></legend>
     <label>
+      <%= Document.human_attribute_name(:title) %>
+      <%= f.text_field :title %>
+    </label>
+    <label>
       <%= f.text_area :content %>
     </label>
   </fieldset>

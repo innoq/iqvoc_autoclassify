@@ -9,7 +9,13 @@
 
 .new_document fieldset input,
 .new_document fieldset textarea {
+	display: block;
 	width: 90%;
+	margin: 0;
+}
+
+.new_document fieldset textarea {
+	margin-top: 1em;
 }
 
 div.new_comment {

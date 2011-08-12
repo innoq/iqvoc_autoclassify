@@ -35,7 +35,7 @@ class DocumentsController < ApplicationController # TODO: auth restrictions?
     has_content = content && content.strip.length > 0
     has_url = url && url.strip.length > 0
     if has_content && (not has_url)
-      title = nil # TODO: optional form field?
+      title = params[:document] ? params[:document][:title] : nil
       text = content
     elsif has_url && (not has_content)
       begin
