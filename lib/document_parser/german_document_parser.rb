@@ -2,7 +2,7 @@
 
 require 'document_parser/base'
 
-class GermanDocumentParser < DocumentParser::Base
+class GermanDocumentParser < DocumentParser::Base # XXX: should also be in DocumentParser module
 
   Irrelevant_abbreviations = [
     "ca.", "etc.", "usw.", "bzw.", "vgl.", "evtl.",
@@ -18,6 +18,17 @@ class GermanDocumentParser < DocumentParser::Base
     # discard semantically irrelevant abbreviations (to avoid erroneous sentence termination)
     Irrelevant_abbreviations.each { |abbr| text = text.gsub(abbr, "") }
     return text
+  end
+
+  def end_word # NB: closely tied to behavior of super's method
+    word = normalize_word(@current_token) if @current_token
+    super
+    # extract hyphenated components
+    if word and word.length > 1 and word.include? "-"
+      word.split("-").each { |word|
+        @current_sentence.push(word) if word.length > 1 # ignore dashes, slashes etc.
+      }
+    end
   end
 
   def normalize_word(token)

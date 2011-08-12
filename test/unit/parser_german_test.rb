@@ -24,6 +24,20 @@ class ParserGermanTest < ActiveSupport::TestCase
     assert_equal "Gruß", doc.sentences[0][3]
   end
 
+  test "decompose hyphenated words" do
+    text = "deutsch-französisch"
+    doc = GermanDocumentParser.new text
+
+    assert_equal 1, doc.sentences.length
+    assert_equal ["deutsch-französisch", "deutsch", "französisch"], doc.sentences[0]
+
+    text = "saar-lor-lux"
+    doc = GermanDocumentParser.new text
+
+    assert_equal 1, doc.sentences.length
+    assert_equal ["saar-lor-lux", "saar", "lor", "lux"], doc.sentences[0]
+  end
+
   test "abbreviation handling" do
     text = "lorem ipsum z. B. dolor sit amet"
     doc = GermanDocumentParser.new text
