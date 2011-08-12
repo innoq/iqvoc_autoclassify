@@ -86,7 +86,8 @@ class Document < ActiveRecord::Base
     # XXX: it might be more efficient to adopt a streaming approach, processing
     #      each sentence as they're identified instead of separating the
     #      processing steps
-    GermanDocumentParser.new(self.content).sentences.map { |sentence| # XXX: simply assuming German for now
+    text = self.title ? self.title + ".\n\n" + self.content : self.content
+    GermanDocumentParser.new(text).sentences.map { |sentence| # XXX: simply assuming German for now
       WordMatcher.new(sentence).labels
     }.flatten.uniq # XXX: this could be made more efficient
   end
