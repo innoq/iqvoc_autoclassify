@@ -5,7 +5,7 @@ module DocumentParser
 
     attr_reader :sentences
 
-    Delimiters = {
+    @@delimiters = {
       "sentence" => [".", "?", "!"],
       "word" => [" ", "\t", ",", ":", ";", '"', "'", "(", ")"]
     }
@@ -40,10 +40,10 @@ module DocumentParser
         else
           end_word
         end
-      elsif (Delimiters["sentence"].include? char) and
+      elsif (@@delimiters["sentence"].include? char) and
           (@next_char =~ /\s/) != nil # XXX: too simplistic?
         end_sentence
-      elsif Delimiters["word"].include? char
+      elsif @@delimiters["word"].include? char
         end_word
       else
         @current_token = @current_token ? "#{@current_token}#{char}" : char
