@@ -9,7 +9,7 @@ de:
         save:
           success: Dokument erfolgreich angelegt
         create:
-          invalid: weder URL noch Volltext übermittelt
+          invalid: entweder URL oder Volltext müssen übermittelt werden
         update:
           success: Dokument wurde erfolgreich aktualisiert.
           invalid: Bestätigung wurde nicht angewählt.

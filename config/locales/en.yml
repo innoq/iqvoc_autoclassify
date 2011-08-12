@@ -9,7 +9,7 @@ en:
         save:
           success: document created successfully
         create:
-          invalid: missing content or URI reference
+          invalid: either content or URL have to be provided
         update:
           success: Document was successfully reclassified.
           invalid: missing reclassify flag
