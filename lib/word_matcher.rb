@@ -49,7 +49,7 @@ class WordMatcher # XXX: does this really need to be a class? (makes for a bad A
           if components.first == label
             indexes = components.map { |component| labels.index component }
             unless indexes.include? nil # all components must be present in the sentence
-              # sequence of occurence within the sentence must match the compound's
+              # sequence of occurrence within the sentence must match the compound's
               results.push(candidate) if align(labels, components)
             end
           end
