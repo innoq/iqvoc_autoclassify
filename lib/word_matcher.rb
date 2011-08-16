@@ -23,8 +23,10 @@ class WordMatcher # XXX: does this really need to be a class? (makes for a bad A
   end
 
   def inflectionals
+    hashes = @words.map { |word| Inflectional::Base.normalize(word) }
     unordered = Inflectional::Base.
-        where(:value => @words). # NB: does not retain order nor duplicates -- FIXME: needs to be case-insensitive!?
+        select([:value, :label_id]).
+        where(:normal_hash => hashes). # NB: does not retain order nor duplicates
         includes(:label)
     # restore order of occurrence -- XXX: inefficient?
     ordered = []
