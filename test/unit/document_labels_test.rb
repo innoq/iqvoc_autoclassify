@@ -54,4 +54,15 @@ class DocumentLabelsTest < ActiveSupport::TestCase
     assert labels.include? @labels["Weltraumkampfpilot"]
   end
 
+  test "avoiding sentence conflation" do
+    text = "Im Weltraum tobt ein Kampf. Darin verwickelt ist unser Pilot."
+
+    labels = make_document(:content => text).determine_labels
+    assert_equal 3, labels.length
+    assert labels.include? @labels["Weltraum"]
+    assert labels.include? @labels["Pilot"]
+    assert labels.include? @labels["Kampf"]
+    assert (not labels.include? @labels["Weltraumkampfpilot"])
+  end
+
 end

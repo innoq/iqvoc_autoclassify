@@ -87,9 +87,8 @@ class Document < ActiveRecord::Base
     #      each sentence as they're identified instead of separating the
     #      processing steps
     text = self.title ? self.title + ".\n\n" + self.content : self.content
-    DocumentParser::German.new(text).sentences.map { |sentence| # XXX: simply assuming German for now
-      WordMatcher.new(sentence).labels
-    }.flatten.uniq # XXX: this could be made more efficient
+    sentences = DocumentParser::German.new(text).sentences # simply assuming DE, for now
+    return WordMatcher.new(sentences).labels
   end
 
 end

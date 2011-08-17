@@ -30,13 +30,13 @@ class CompoundLabelIdentificationTest < ActiveSupport::TestCase
 
   test "compound discovery" do
     sentence = ["der", "Weltraum", "der", "Kampf", "und", "der", "Pilot"]
-    labels = WordMatcher.new(sentence).labels
+    labels = WordMatcher.new([sentence]).labels
     assert_equal 4, labels.length
     assert labels.include? @labels["Weltraumkampfpilot"]
     assert (not labels.include? @labels["Weltraumfrachtpilot"])
 
     sentence = ["Weltraum", "des", "Kampfes", "und", "der", "Piloten"]
-    labels = WordMatcher.new(sentence).labels
+    labels = WordMatcher.new([sentence]).labels
     assert_equal 4, labels.length
     assert labels.include? @labels["Weltraumkampfpilot"]
     assert (not labels.include? @labels["Weltraumfrachtpilot"])
@@ -44,7 +44,7 @@ class CompoundLabelIdentificationTest < ActiveSupport::TestCase
 
   test "order of occurrence is significant" do
     sentence = ["der", "Kampf", "der", "Weltraum", "und", "der", "Pilot"]
-    labels = WordMatcher.new(sentence).labels
+    labels = WordMatcher.new([sentence]).labels
     assert_equal 3, labels.length
     assert (not labels.include? @labels["Weltraumkampfpilot"])
     assert (not labels.include? @labels["Weltraumfrachtpilot"])
@@ -52,13 +52,13 @@ class CompoundLabelIdentificationTest < ActiveSupport::TestCase
 
   test "duplicates are retained" do
     sentence = "Weltraum Pilot Kampf Pilot".split(" ")
-    labels = WordMatcher.new(sentence).labels
+    labels = WordMatcher.new([sentence]).labels
     assert_equal 4, labels.length
     assert labels.include? @labels["Weltraumkampfpilot"]
     assert (not labels.include? @labels["Weltraumfrachtpilot"])
 
     sentence = "foo Fracht bar Weltraum baz Pilot ... Kampf ... Pilot".split(" ")
-    labels = WordMatcher.new(sentence).labels
+    labels = WordMatcher.new([sentence]).labels
     assert_equal 5, labels.length
     assert labels.include? @labels["Weltraumkampfpilot"]
     assert (not labels.include? @labels["Weltraumfrachtpilot"])
