@@ -30,10 +30,12 @@ class WordMatcher # XXX: does this really need to be a class? (makes for a bad A
       #      the current implementation (model: inflectional belongs_to label)
       hsh[inf.normal_hash] = inf.label
     }
+    inflectionals = nil # manual GC
     label_seq = hash_seq.map { |seq|
       seq.map { |hash| label_index[hash] }.
           compact # discard unmatched words
     }
+    hash_seq = nil; label_index = nil # manual GC
 
     return label_seq.map { |seq|
       labels = seq.find_all(&:published?) # XXX: this might be moved into Inflectional's AR query above for efficiency
