@@ -28,6 +28,17 @@ class DocumentLabelsTest < ActiveSupport::TestCase
     @labels = data[:labels]
   end
 
+  test "title inclusion during classification" do
+    title = "Weltraumkampfpiloten"
+    text = "Im Weltraum fliegt ein Pilot."
+
+    labels = make_document(:title => title, :content => text).determine_labels
+    assert_equal 3, labels.length
+    assert labels.include? @labels["Weltraum"]
+    assert labels.include? @labels["Pilot"]
+    assert labels.include? @labels["Weltraumkampfpilot"]
+  end
+
   test "label discovery and redundancy elimination" do
     text = <<-EOF
       Im Weltraum fliegt ein Pilot. Es besteht die Gefahr eines Kampfes. Dazu
@@ -40,17 +51,6 @@ class DocumentLabelsTest < ActiveSupport::TestCase
     assert labels.include? @labels["Weltraum"]
     assert labels.include? @labels["Pilot"]
     assert labels.include? @labels["Kampf"]
-    assert labels.include? @labels["Weltraumkampfpilot"]
-  end
-
-  test "title inclusion during classification" do
-    title = "Weltraumkampfpiloten"
-    text = "Im Weltraum fliegt ein Pilot."
-
-    labels = make_document(:title => title, :content => text).determine_labels
-    assert_equal 3, labels.length
-    assert labels.include? @labels["Weltraum"]
-    assert labels.include? @labels["Pilot"]
     assert labels.include? @labels["Weltraumkampfpilot"]
   end
 
