@@ -16,21 +16,20 @@ class WordMatcher # XXX: does this really need to be a class? (makes for a bad A
       sentence.map { |word| Inflectional::Base.normalize(word) }
     }
 
-    # determine inflectionals
-    inflectionals = Inflectional::Base.
-        select([:normal_hash, :label_id]).
-        where(:normal_hash => hash_seq.flatten.uniq). # NB: does not retain order or duplicates
+    # determine labels based on inflectionals -- NB: does not retain order or duplicates
+    label_set = Iqvoc::XLLabel.base_class.
+        published.
         # FIXME: do we need to filter based on label language here?
-        includes(:label)
+        includes(:inflectionals).
+        where(:inflectionals => { :normal_hash => hash_seq.flatten.uniq })
 
     # restore order of occurrence
-    label_index = inflectionals.each_with_object({}) { |inf, hsh|
-      # XXX: the concept document states that a single inflectional might be
-      #      associated with more than one label - however, this does not match
-      #      the current implementation (model: inflectional belongs_to label)
-      hsh[inf.normal_hash] = inf.label
+    label_index = label_set.each_with_object({}) { |label, hsh|
+      label.inflectionals.each { |inf|
+        hsh[inf.normal_hash] = label # XXX: this risks discarding inflectionals with identical value
+      }
     }
-    inflectionals = nil # manual GC
+    label_set = nil # manual GC
     label_seq = hash_seq.map { |seq|
       seq.map { |hash| label_index[hash] }.
           compact # discard unmatched words
