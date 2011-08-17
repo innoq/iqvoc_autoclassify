@@ -36,15 +36,15 @@ class LabelIdentificationTest < ActiveSupport::TestCase
     assert_equal 3, WordMatcher.new(sentence).inflectionals.length
   end
 
-  test "case-insensitive identification of inflectionals" do # FIXME: these currently fail
+  test "case-insensitive identification of inflectionals" do
     sentence = ["Kinder", "Fenster", "Bäume"]
     assert_equal 3, WordMatcher.new(sentence).inflectionals.length
 
-    #sentence = ["kinder", "fenster", "bäume"]
-    #assert_equal 3, WordMatcher.new(sentence).inflectionals.length
+    sentence = ["kinder", "fenster", "bäume"]
+    assert_equal 3, WordMatcher.new(sentence).inflectionals.length
 
-    #sentence = ["kinder", "fenSter", "bÄume"]
-    #assert_equal 3, WordMatcher.new(sentence).inflectionals.length
+    sentence = ["kinder", "fenSter", "bÄume"]
+    assert_equal 3, WordMatcher.new(sentence).inflectionals.length
   end
 
   test "identifying matching labels" do

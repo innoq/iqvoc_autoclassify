@@ -45,14 +45,14 @@ class WordMatcher # XXX: does this really need to be a class? (makes for a bad A
   def inflectionals
     hashes = @words.map { |word| Inflectional::Base.normalize(word) }
     unordered = Inflectional::Base.
-        select([:value, :label_id]).
-        where(:normal_hash => hashes). # NB: does not retain order nor duplicates
+        select([:normal_hash, :label_id]).
+        where(:normal_hash => hashes). # NB: does not retain order or duplicates
         includes(:label)
-    # restore order of occurrence -- XXX: inefficient?
+    # restore order of occurrence
     ordered = []
-    @words.each { |word|
+    hashes.each { |hash|
       unordered.each { |inf|
-        if inf.value == word
+        if inf.normal_hash == hash
           ordered.push inf
           break
         end
