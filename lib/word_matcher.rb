@@ -12,31 +12,31 @@ class WordMatcher # XXX: does this really need to be a class? (makes for a bad A
 
   def labels
     # use normalized form for case-insensitivity (and performance)
-    hashes = @sentences.map { |sentence|
+    hash_seq = @sentences.map { |sentence|
       sentence.map { |word| Inflectional::Base.normalize(word) }
     }
 
     # determine inflectionals
     inflectionals = Inflectional::Base.
         select([:normal_hash, :label_id]).
-        where(:normal_hash => hashes.flatten.uniq). # NB: does not retain order or duplicates
+        where(:normal_hash => hash_seq.flatten.uniq). # NB: does not retain order or duplicates
         # FIXME: do we need to filter based on label language here?
-        includes(:label) # XXX: it might be nice to limit the attributes/columns being retrieved here, similar to `select` above
+        includes(:label)
 
     # restore order of occurrence
-    labels = inflectionals.each_with_object({}) { |inf, hsh|
+    label_index = inflectionals.each_with_object({}) { |inf, hsh|
       # XXX: the concept document states that a single inflectional might be
       #      associated with more than one label - however, this does not match
       #      the current implementation (model: inflectional belongs_to label)
       hsh[inf.normal_hash] = inf.label
     }
-    sentences = hashes.map { |sentence|
-      sentence.map { |hash| labels[hash] }.
+    label_seq = hash_seq.map { |seq|
+      seq.map { |hash| label_index[hash] }.
           compact # discard unmatched words
     }
 
-    return sentences.map { |sentence|
-      labels = sentence.find_all(&:published?) # XXX: this might be moved into Inflectional's AR query above for efficiency
+    return label_seq.map { |seq|
+      labels = seq.find_all(&:published?) # XXX: this might be moved into Inflectional's AR query above for efficiency
       (labels + compound_forms(labels)).uniq # order and duplicates no longer relevant
     }.flatten.uniq
   end
