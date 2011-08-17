@@ -25,10 +25,7 @@ class WordMatcher # XXX: does this really need to be a class? (makes for a bad A
 
     # restore order of occurrence
     label_index = inflectionals.each_with_object({}) { |inf, hsh|
-      # XXX: the concept document states that a single inflectional might be
-      #      associated with more than one label - however, this does not match
-      #      the current implementation (model: inflectional belongs_to label)
-      hsh[inf.normal_hash] = inf.label
+      hsh[inf.normal_hash] = inf.label # XXX: this risks discarding two inflectionals with identical value
     }
     inflectionals = nil # manual GC
     label_seq = hash_seq.map { |seq|
