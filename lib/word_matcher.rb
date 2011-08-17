@@ -11,12 +11,32 @@ class WordMatcher # XXX: does this really need to be a class? (makes for a bad A
   end
 
   def labels
-    return inflectionals.map { |sentence|
+    # use normalized form for case-insensitivity (and performance)
+    hashes = @sentences.map { |sentence|
+      sentence.map { |word| Inflectional::Base.normalize(word) }
+    }
+
+    # determine inflectionals
+    inflectionals = Inflectional::Base.
+        select([:normal_hash, :label_id]).
+        where(:normal_hash => hashes.flatten.uniq). # NB: does not retain order or duplicates
+        # FIXME: do we need to filter based on label language here?
+        includes(:label) # XXX: it might be nice to limit the attributes/columns being retrieved here, similar to `select` above
+
+    # restore order of occurrence
+    labels = inflectionals.each_with_object({}) { |inf, hsh|
       # XXX: the concept document states that a single inflectional might be
       #      associated with more than one label - however, this does not match
       #      the current implementation (model: inflectional belongs_to label)
-      labels = sentence.map(&:label).
-          find_all(&:published?) # XXX: this might be moved into `inflectionals`'s AR query for efficiency
+      hsh[inf.normal_hash] = inf.label
+    }
+    sentences = hashes.map { |sentence|
+      sentence.map { |hash| labels[hash] }.
+          compact # discard unmatched words
+    }
+
+    return sentences.map { |sentence|
+      labels = sentence.find_all(&:published?) # XXX: this might be moved into Inflectional's AR query above for efficiency
       (labels + compound_forms(labels)).uniq # order and duplicates no longer relevant
     }.flatten.uniq
   end
@@ -39,26 +59,6 @@ class WordMatcher # XXX: does this really need to be a class? (makes for a bad A
       }
     }
     return results
-  end
-
-  # returns an array of sentences, with each sentence an array inflectionals
-  def inflectionals
-    hashes = @sentences.map { |sentence|
-      sentence.map { |word| Inflectional::Base.normalize(word) }
-    }
-
-    infs = Inflectional::Base.
-        select([:normal_hash, :label_id]).
-        where(:normal_hash => hashes.flatten.uniq). # NB: does not retain order or duplicates
-        # FIXME: do we need to filter based on label language here?
-        includes(:label) # XXX: it might be nice to limit the attributes/columns being retrieved here, similar to `select` above
-    infs = infs.each_with_object({}) { |inf, hsh| hsh[inf.normal_hash] = inf } # XXX: it would be more efficient to directly use labels here
-
-    # restore order of occurrence
-    return hashes.map { |sentence|
-      sentence.map { |hash| infs[hash] }.
-          compact # discard unmatched words
-    }
   end
 
   private

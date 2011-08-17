@@ -25,26 +25,15 @@ class LabelIdentificationTest < ActiveSupport::TestCase
     EOF
   end
 
-  test "identifying matching inflectionals" do
+  test "case-insensitive matching" do
     sentence = ["Kinder", "Fenster", "Bäume"]
-    assert_equal 3, WordMatcher.new([sentence]).inflectionals[0].length
-
-    sentence = ["Kinder", "Fenster", "Bäume", "Kinder", "Baum"]
-    assert_equal 5, WordMatcher.new([sentence]).inflectionals[0].length
-
-    sentence = ["Das", "Kind", "am", "Fenster", "sieht", "Bäume", "und", "Gras"]
-    assert_equal 3, WordMatcher.new([sentence]).inflectionals[0].length
-  end
-
-  test "case-insensitive identification of inflectionals" do
-    sentence = ["Kinder", "Fenster", "Bäume"]
-    assert_equal 3, WordMatcher.new([sentence]).inflectionals[0].length
+    assert_equal 3, WordMatcher.new([sentence]).labels.length
 
     sentence = ["kinder", "fenster", "bäume"]
-    assert_equal 3, WordMatcher.new([sentence]).inflectionals[0].length
+    assert_equal 3, WordMatcher.new([sentence]).labels.length
 
     sentence = ["kinder", "fenSter", "bÄume"]
-    assert_equal 3, WordMatcher.new([sentence]).inflectionals[0].length
+    assert_equal 3, WordMatcher.new([sentence]).labels.length
   end
 
   test "identifying matching labels" do
