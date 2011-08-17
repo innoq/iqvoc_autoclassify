@@ -37,8 +37,8 @@ class WordMatcher # XXX: does this really need to be a class? (makes for a bad A
     }
     hash_seq = nil; label_index = nil # manual GC
 
-    return label_seq.map { |seq|
-      labels = seq.find_all(&:published?) # XXX: this might be moved into Inflectional's AR query above for efficiency
+    return label_seq.map { |labels|
+      labels = labels.find_all(&:published?)
       (labels + compound_forms(labels)).uniq # order and duplicates no longer relevant
     }.flatten.uniq
   end
