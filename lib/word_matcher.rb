@@ -20,7 +20,6 @@ class WordMatcher # XXX: does this really need to be a class? (makes for a bad A
     inflectionals = Inflectional::Base.
         select([:normal_hash, :label_id]).
         where(:normal_hash => hash_seq.flatten.uniq). # NB: does not retain order or duplicates
-        # FIXME: do we need to filter based on label language here?
         includes(:label)
 
     # restore order of occurrence
