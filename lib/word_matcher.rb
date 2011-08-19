@@ -33,35 +33,36 @@ class WordMatcher # XXX: does this really need to be a class? (makes for a bad A
     }
     hash_seqs = nil; label_index = nil # manual GC
 
-    return label_seqs.map { |labels|
-      labels = labels.find_all(&:published?)
-      (labels + compound_forms(labels)).uniq # order and duplicates no longer relevant
-    }.flatten.uniq
+    label_set = label_seqs.flatten.uniq
+    label_set = label_set + compound_forms(label_seqs, label_set)
+    return label_set.uniq.find_all(&:published?)
   end
 
-  # label_seq is an array representing a sentence (i.e. order is significant)
-  def compound_forms(label_seq)
-    label_ids = label_seq.map(&:id)
+  def compound_forms(label_seqs, label_set)
+    label_ids = label_set.map(&:id)
 
     # determine compound forms _beginning_ with any of the given labels
     candidates = CompoundForm::Content::Base.
-        where(:order => 0, :label_id => label_ids.uniq).
+        where(:order => 0, :label_id => label_ids).
         includes(:compound_form => [:compound_form_contents])
     candidates = candidates.map(&:compound_form) # TODO: might as well query CompoundForm::Base above!?
 
-    # determine compound forms whose components are present in the sentence, in
-    # the right order
+    # for each sentence, determine compound forms whose components are present
+    # in the sentence, in the right order
     results = []
-    candidates.each { |compound_form|
-      component_ids = compound_form.compound_form_contents.map(&:label_id)
-      indexes = component_ids.map { |component_id| label_ids.index(component_id) }
-      unless indexes.include? nil # all components must be present in the sentence
-        # sequence of occurrence within the sentence must match the compound form's
-        results.push(compound_form.domain) if align(label_ids, component_ids)
-      end
+    label_seqs.each { |seq|
+      candidates.each { |compound_form| # XXX: iterating over all candidates seems inefficient; can't we pre-filter based on what appears in the current sentence?
+        id_seq = seq.map(&:id)
+        component_ids = compound_form.compound_form_contents.map(&:label_id)
+        indexes = component_ids.map { |component_id| label_ids.index(component_id) }
+        unless indexes.include? nil # all components must be present in the sentence
+          # sequence of occurrence within the sentence must match the compound form's
+          results.push(compound_form.domain) if align(id_seq, component_ids) # FIXME: `domain` (label) is currently being loaded lazily, based on the _assumption_ that eager loading would be less efficient due to a high percentage of rejects
+        end
+      }
     }
 
-    return results
+    return results.uniq
   end
 
   private
