@@ -45,6 +45,9 @@ class WordMatcher # XXX: does this really need to be a class? (makes for a bad A
     candidates = CompoundForm::Content::Base.
         where(:order => 0, :label_id => label_ids).
         includes(:compound_form => [:compound_form_contents])
+        # NB: intentionally not including `domain` (label), based on the
+        #     assumption that eager loading would be less efficient due to a
+        #     high percentage of rejects
     candidates = candidates.map(&:compound_form) # TODO: might as well query CompoundForm::Base above!?
 
     # for each sentence, determine compound forms whose components are present
@@ -57,12 +60,12 @@ class WordMatcher # XXX: does this really need to be a class? (makes for a bad A
         indexes = component_ids.map { |component_id| label_ids.index(component_id) }
         unless indexes.include? nil # all components must be present in the sentence
           # sequence of occurrence within the sentence must match the compound form's
-          results.push(compound_form.domain) if align(id_seq, component_ids) # FIXME: `domain` (label) is currently being loaded lazily, based on the _assumption_ that eager loading would be less efficient due to a high percentage of rejects
+          results.push(compound_form.domain_id) if align(id_seq, component_ids)
         end
       }
     }
 
-    return results.uniq
+    return Iqvoc::XLLabel.base_class.find(results.uniq)
   end
 
   private
