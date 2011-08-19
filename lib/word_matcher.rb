@@ -12,14 +12,14 @@ class WordMatcher # XXX: does this really need to be a class? (makes for a bad A
 
   def labels
     # use normalized form for case-insensitivity (and performance)
-    hash_seq = @sentences.map { |sentence|
+    hash_seqs = @sentences.map { |sentence|
       sentence.map { |word| Inflectional::Base.normalize(word) }
     }
 
     # determine inflectionals
     inflectionals = Inflectional::Base.
         select([:normal_hash, :label_id]).
-        where(:normal_hash => hash_seq.flatten.uniq). # NB: does not retain order or duplicates
+        where(:normal_hash => hash_seqs.flatten.uniq). # NB: does not retain order or duplicates
         includes(:label)
 
     # restore order of occurrence
@@ -27,13 +27,13 @@ class WordMatcher # XXX: does this really need to be a class? (makes for a bad A
       hsh[inf.normal_hash] = inf.label # XXX: this risks discarding two inflectionals with identical value
     }
     inflectionals = nil # manual GC
-    label_seq = hash_seq.map { |seq|
+    label_seqs = hash_seqs.map { |seq|
       seq.map { |hash| label_index[hash] }.
           compact # discard unmatched words
     }
-    hash_seq = nil; label_index = nil # manual GC
+    hash_seqs = nil; label_index = nil # manual GC
 
-    return label_seq.map { |labels|
+    return label_seqs.map { |labels|
       labels = labels.find_all(&:published?)
       (labels + compound_forms(labels)).uniq # order and duplicates no longer relevant
     }.flatten.uniq
