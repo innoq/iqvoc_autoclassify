@@ -5,6 +5,8 @@ require 'document_parser/base'
 module DocumentParser
   class German < DocumentParser::Base
 
+    @@stop_words = ["und", "oder"]
+
     @@irrelevant_abbreviations = [
       "ca.", "etc.", "usw.", "bzw.", "vgl.", "evtl.",
       "P.S.", "z. B.", "d. h.", "s. o.", "u.a.", "z. T.", "z. Zt.", "i. A.", "i. V.",
@@ -17,6 +19,9 @@ module DocumentParser
         map { |abbr| abbr.gsub(". ", ".") }
 
     def preprocess(text)
+      # discard stop words
+      @@stop_words.each { |word| text = text.gsub(/\b#{Regexp.quote word}\b/, "") } # XXX: might be more efficient to construct one big RegEx instead
+
       # discard semantically irrelevant abbreviations (to avoid erroneous sentence termination)
       @@irrelevant_abbreviations.each { |abbr| text = text.gsub(abbr, "") }
       return text

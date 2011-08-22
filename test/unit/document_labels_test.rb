@@ -30,6 +30,14 @@ class DocumentLabelsTest < ActiveSupport::TestCase
       -
         value: bar
         published_at:
+      -
+        value: Oder
+      -
+        value: Moder
+      -
+        value: moderat
+      -
+        value: oderfoo
     EOF
     @labels = data[:labels]
   end
@@ -76,6 +84,23 @@ class DocumentLabelsTest < ActiveSupport::TestCase
 
     labels = make_document(:content => text).determine_labels
     assert_equal 0, labels.length
+  end
+
+  test "handling of Oder river vs. 'oder' conjunction" do
+    text = "er oder sie"
+
+    labels = make_document(:content => text).determine_labels
+    assert_equal 0, labels.length
+
+    text = "auf der Oder"
+
+    labels = make_document(:content => text).determine_labels
+    assert_equal 1, labels.length
+
+    text = "moderat Moder oderfoo" # "oderfoo" since there's no actual word starting with lowercase "oder"
+
+    labels = make_document(:content => text).determine_labels
+    assert_equal 3, labels.length
   end
 
 end
