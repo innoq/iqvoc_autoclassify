@@ -23,7 +23,7 @@ class Document < ActiveRecord::Base
       uri = concept_url(concept, :host => @url_info[:host],
           :lang => @url_info[:lang])
       document.classifications.create!(:concept_uri => uri,
-          :weighting => weighting, :title => concept.to_s)
+          :weighting => weighting, :title => concept.to_s) # XXX: `to_s` is slow (label loaded lazily)
     }
   end
 
@@ -57,7 +57,10 @@ class Document < ActiveRecord::Base
 
   def determine_concepts
     concepts = {}
-    determine_labels.each do |label|
+
+    labels = determine_labels.
+        includes(:labelings => { :owner => { :relations => :target } })
+    labels.each do |label|
       label.labelings.each do |labeling|
         concept = labeling.owner
         next if not concept.published?
@@ -69,6 +72,7 @@ class Document < ActiveRecord::Base
         end
       end
     end
+
     return concepts
   end
 
