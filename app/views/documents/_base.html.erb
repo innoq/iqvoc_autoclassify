@@ -20,7 +20,7 @@
 </div>
 
 <h2><%= Concept::Base.model_name.human(:count => 2) %></h2>
-<ol>
+<ol start="<%= (@classifications.current_page - 1) * @classifications.limit_value + 1 %>">
   <%- @classifications.each { |classification| -%>
     <li>
       <%= link_to classification.to_s, classification.concept_uri %>
