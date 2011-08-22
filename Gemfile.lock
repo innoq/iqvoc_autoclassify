@@ -8,7 +8,7 @@ PATH
       iq_rdf (~> 0.0.14)
       json
       kaminari
-      rails (= 3.0.9)
+      rails (~> 3.0.9)
 
 PATH
   remote: ../iqvoc_skosxl
