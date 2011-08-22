@@ -24,6 +24,12 @@ class DocumentLabelsTest < ActiveSupport::TestCase
       -
         value: Weltraumfrachtpilot
         components: [Weltraum, Fracht, Pilot]
+      -
+        value: foo
+        published_at:
+      -
+        value: bar
+        published_at:
     EOF
     @labels = data[:labels]
   end
@@ -63,6 +69,13 @@ class DocumentLabelsTest < ActiveSupport::TestCase
     assert labels.include? @labels["Pilot"]
     assert labels.include? @labels["Kampf"]
     assert (not labels.include? @labels["Weltraumkampfpilot"])
+  end
+
+  test "ignore unpublished labels" do
+    text = "lorem foo ipsum bar"
+
+    labels = make_document(:content => text).determine_labels
+    assert_equal 0, labels.length
   end
 
 end

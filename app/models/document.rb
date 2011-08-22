@@ -82,13 +82,18 @@ class Document < ActiveRecord::Base
     end
   end
 
+  # NB: returns an ActiveRecord::Relation
   def determine_labels
     # XXX: it might be more efficient to adopt a streaming approach, processing
     #      each sentence as they're identified instead of separating the
     #      processing steps
     text = self.title ? self.title + ".\n\n" + self.content : self.content
     sentences = DocumentParser::German.new(text).sentences # simply assuming DE, for now
-    return WordMatcher.new(sentences).labels
+    label_ids = WordMatcher.new(sentences).labels
+    return Iqvoc::XLLabel.base_class.
+        published.
+        where(:id => label_ids.uniq).
+        select(:id)
   end
 
 end

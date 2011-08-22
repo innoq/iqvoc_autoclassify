@@ -16,12 +16,6 @@ class LabelIdentificationTest < ActiveSupport::TestCase
         inflectionals: [Kinder, Kinde, Kindes]
       -
         value: Fenster
-      -
-        value: foo
-        published_at:
-      -
-        value: bar
-        published_at:
     EOF
   end
 
@@ -45,11 +39,6 @@ class LabelIdentificationTest < ActiveSupport::TestCase
 
     sentence = ["Das", "Kind", "am", "Fenster", "sieht", "Bäume", "und", "Gras"]
     assert_equal 3, WordMatcher.new([sentence]).labels.length
-  end
-
-  test "ignore unpublished labels" do
-    sentence = ["lorem", "foo", "ipsum", "bar", "dolor", "sit", "amet"]
-    assert_equal 0, WordMatcher.new([sentence]).labels.length
   end
 
 end
