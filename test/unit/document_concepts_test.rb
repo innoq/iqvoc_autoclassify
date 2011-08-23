@@ -85,7 +85,6 @@ class DocumentConceptsTest < ActiveSupport::TestCase
     EOF
     doc = make_document(:content => text)
 
-    # simple analysis
     concepts = doc.concepts
     assert_equal 3, concepts.keys.length
     assert_equal 2.0, concepts[@concepts["Weltraum"]]
@@ -100,7 +99,6 @@ class DocumentConceptsTest < ActiveSupport::TestCase
     EOF
     doc = make_document(:content => text)
 
-    # full analysis
     concepts = doc.concepts
     assert_equal 3, concepts.keys.length
     assert_equal 2.0, concepts[@concepts["Weltraum"]]
