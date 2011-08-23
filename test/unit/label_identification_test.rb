@@ -6,7 +6,7 @@ require 'word_matcher'
 class LabelIdentificationTest < ActiveSupport::TestCase
 
   setup do
-    Iqvoc::Maker.from_yaml <<-EOF
+    data = Iqvoc::Maker.from_yaml <<-EOF
       labels:
       -
         value: Baum
@@ -17,6 +17,8 @@ class LabelIdentificationTest < ActiveSupport::TestCase
       -
         value: Fenster
     EOF
+    @label_ids = data[:labels]
+    @label_ids.each { |term, label| @label_ids[term] = label.id }
   end
 
   test "case-insensitive matching" do
@@ -35,7 +37,9 @@ class LabelIdentificationTest < ActiveSupport::TestCase
     assert_equal 3, WordMatcher.new([sentence]).labels.length
 
     sentence = ["Kinder", "Fenster", "Bäume", "Kinder", "Baum"]
-    assert_equal 3, WordMatcher.new([sentence]).labels.length
+    labels = WordMatcher.new([sentence]).labels
+    assert_equal 5, labels.length
+    assert_equal 2, labels.find_all { |id| id == @label_ids["Baum"] }.length
 
     sentence = ["Das", "Kind", "am", "Fenster", "sieht", "Bäume", "und", "Gras"]
     assert_equal 3, WordMatcher.new([sentence]).labels.length

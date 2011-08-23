@@ -15,6 +15,7 @@ class DocumentConceptsTest < ActiveSupport::TestCase
         value: Fracht
       -
         value: Kampf
+        inflectionals: [Kampfes, Kämpfe]
       -
         value: Pilot
       -
@@ -104,6 +105,18 @@ class DocumentConceptsTest < ActiveSupport::TestCase
     assert_equal 2.0, concepts[@concepts["Weltraum"]]
     assert_equal 2.0, concepts[@concepts["Kampf"]]
     assert_equal 1.5, concepts[@concepts["Auseinandersetzung"]]
+  end
+
+  test "multiple occurence increases weighting" do
+    text = <<-EOF
+      Weltraum Weltraum Kampf Weltraum Kampfes
+    EOF
+    doc = make_document(:content => text)
+
+    concepts = doc.concepts
+    assert_equal 2, concepts.keys.length
+    assert_equal 3.0, concepts[@concepts["Weltraum"]]
+    assert_equal 2.0, concepts[@concepts["Kampf"]]
   end
 
 end

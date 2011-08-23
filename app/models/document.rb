@@ -58,13 +58,11 @@ class Document < ActiveRecord::Base
   def determine_concepts
     concepts = {}
 
-    labels = determine_labels.
-        includes(:labelings => { :owner => { :relations => :target } })
-    labels.each do |label|
+    determine_labels.each do |label, occurrences|
       label.labelings.each do |labeling|
         concept = labeling.owner
         next if not concept.published?
-        weighting = weightings[labeling.type]
+        weighting = occurrences * weightings[labeling.type]
         if concepts.has_key?(concept)
           concepts[concept] += weighting
         else
@@ -86,18 +84,24 @@ class Document < ActiveRecord::Base
     end
   end
 
-  # NB: returns an ActiveRecord::Relation
+  # returns a hash pairing labels with the respective number of occurrences
   def determine_labels
-    # XXX: it might be more efficient to adopt a streaming approach, processing
-    #      each sentence as they're identified instead of separating the
-    #      processing steps
     text = self.title ? self.title + ".\n\n" + self.content : self.content
     sentences = DocumentParser::German.new(text).sentences # simply assuming DE, for now
     label_ids = WordMatcher.new(sentences).labels
-    return Iqvoc::XLLabel.base_class.
+    labels = Iqvoc::XLLabel.base_class.
         published.
         where(:id => label_ids.uniq).
-        select(:id)
+        select(:id).
+        includes(:labelings => { :owner => { :relations => :target } }) # required for subsequent concept analysis
+    labels = labels.index_by(&:id)
+    return label_ids.inject({}) { |hsh, id|
+      label = labels[id]
+      if label
+        hsh[label] = hsh[label] ? hsh[label] + 1 : 1
+      end
+      hsh
+    }
   end
 
 end

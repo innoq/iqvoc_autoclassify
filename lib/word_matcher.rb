@@ -34,9 +34,9 @@ class WordMatcher # XXX: does this really need to be a class? (makes for a bad A
     }
     hash_seqs = nil; label_index = nil # manual GC
 
-    label_ids = label_seqs.flatten.uniq
-    label_ids += compound_forms(label_seqs, label_ids)
-    return label_ids.uniq
+    label_ids = label_seqs.flatten
+    label_ids += compound_forms(label_seqs, label_ids.uniq)
+    return label_ids
   end
 
   def compound_forms(label_seqs, label_ids)
@@ -63,7 +63,7 @@ class WordMatcher # XXX: does this really need to be a class? (makes for a bad A
       }
     }
 
-    return results.uniq
+    return results
   end
 
   private

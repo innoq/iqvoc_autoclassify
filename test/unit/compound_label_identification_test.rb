@@ -54,15 +54,17 @@ class CompoundLabelIdentificationTest < ActiveSupport::TestCase
   test "duplicates are retained" do
     sentence = "Weltraum Pilot Kampf Pilot".split(" ")
     labels = WordMatcher.new([sentence]).labels
-    assert_equal 4, labels.length
-    assert labels.include? @label_ids["Weltraumkampfpilot"]
-    assert (not labels.include? @label_ids["Weltraumfrachtpilot"])
-
-    sentence = "foo Fracht bar Weltraum baz Pilot ... Kampf ... Pilot".split(" ")
-    labels = WordMatcher.new([sentence]).labels
     assert_equal 5, labels.length
     assert labels.include? @label_ids["Weltraumkampfpilot"]
     assert (not labels.include? @label_ids["Weltraumfrachtpilot"])
+    assert_equal 2, labels.find_all { |id| id == @label_ids["Pilot"] }.length
+
+    sentence = "foo Fracht bar Weltraum baz Pilot ... Kampf ... Pilot".split(" ")
+    labels = WordMatcher.new([sentence]).labels
+    assert_equal 6, labels.length
+    assert labels.include? @label_ids["Weltraumkampfpilot"]
+    assert (not labels.include? @label_ids["Weltraumfrachtpilot"])
+    assert_equal 2, labels.find_all { |id| id == @label_ids["Pilot"] }.length
   end
 
 end
