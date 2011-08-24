@@ -32,9 +32,9 @@ class Document < ActiveRecord::Base
     content_hash
   end
 
-  def concepts
+  def concepts(trace=false)
     return @concepts if @concepts
-    @concepts = determine_concepts
+    @concepts = determine_concepts(trace)
     analyze_concept_relations
     return @concepts
   end
@@ -55,10 +55,10 @@ class Document < ActiveRecord::Base
     }
   end
 
-  def determine_concepts
+  def determine_concepts(trace=false)
     concepts = {}
 
-    determine_labels.each do |label, occurrences|
+    determine_labels(trace).each do |label, occurrences|
       label.labelings.each do |labeling|
         concept = labeling.owner
         next if not concept.published?
@@ -85,16 +85,21 @@ class Document < ActiveRecord::Base
   end
 
   # returns a hash pairing labels with the respective number of occurrences
-  def determine_labels
+  def determine_labels(trace=false)
     text = self.title ? self.title + ".\n\n" + self.content : self.content
     sentences = DocumentParser::German.new(text).sentences # simply assuming DE, for now
-    label_ids = WordMatcher.new(sentences).labels
+
+    matcher = WordMatcher.new(sentences, trace)
+    label_ids = matcher.labels
+    @trace = matcher.trace # XXX: instance variable seems inappropriate
+
     labels = Iqvoc::XLLabel.base_class.
         published.
         where(:id => label_ids.uniq).
         select(:id).
         includes(:labelings => { :owner => { :relations => :target } }) # required for subsequent concept analysis
     labels = labels.index_by(&:id)
+
     return label_ids.inject({}) { |hsh, id|
       label = labels[id]
       if label
