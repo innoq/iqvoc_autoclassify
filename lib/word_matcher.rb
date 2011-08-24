@@ -3,11 +3,15 @@
 # XXX / NB: This currently relies on UMT, as inflectionals and compounds are
 #           not yet separate engines.
 
-class WordMatcher # XXX: does this really need to be a class? (makes for a bad API)
+class WordMatcher
+
+  attr_reader :trace
 
   # each sentence is an array words (i.e. simple strings)
-  def initialize(sentences)
+  # if trace is true, `#trace` returns a hash with :label_index and :compound_index
+  def initialize(sentences, trace=false)
     @sentences = sentences
+    @trace = trace ? {} : nil
   end
 
   # NB: returns label IDs rather than label instances (for performance reasons),
@@ -27,6 +31,10 @@ class WordMatcher # XXX: does this really need to be a class? (makes for a bad A
     label_index = inflectionals.each_with_object({}) { |inf, hsh|
       hsh[inf.normal_hash] = inf.label_id # XXX: this risks discarding two inflectionals with identical value
     }
+    if @trace
+      # label IDs by inflectionals' normal_hash
+      @trace[:label_index] = label_index
+    end
     inflectionals = nil # manual GC
     label_seqs = hash_seqs.map { |seq|
       seq.map { |hash| label_index[hash] }.
@@ -35,8 +43,7 @@ class WordMatcher # XXX: does this really need to be a class? (makes for a bad A
     hash_seqs = nil; label_index = nil # manual GC
 
     label_ids = label_seqs.flatten
-    label_ids += compound_forms(label_seqs, label_ids.uniq)
-    return label_ids
+    return label_ids + compound_forms(label_seqs, label_ids.uniq)
   end
 
   def compound_forms(label_seqs, label_ids)
@@ -52,6 +59,7 @@ class WordMatcher # XXX: does this really need to be a class? (makes for a bad A
     # for each sentence, determine compound forms whose components are present
     # in the sentence, in the right order
     results = []
+    @trace[:compound_index] = {} if @trace
     label_seqs.each { |label_seq|
       candidates.each { |compound_form| # XXX: iterating over all candidates seems inefficient; can't we pre-filter based on what appears in the current sentence?
         component_ids = compound_form.compound_form_contents.map(&:label_id)
@@ -59,6 +67,10 @@ class WordMatcher # XXX: does this really need to be a class? (makes for a bad A
         unless indexes.include? nil # all components must be present in the sentence
           # sequence of occurrence within the sentence must match the compound form's
           results.push(compound_form.domain_id) if align(label_seq, component_ids)
+          if @trace
+            # label IDs by first component's label ID
+            @trace[:compound_index][label_seq.first] = compound_form.domain_id
+          end
         end
       }
     }
