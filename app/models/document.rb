@@ -9,6 +9,7 @@ class Document < ActiveRecord::Base
 
   has_many :classifications, :order => "weighting DESC", :dependent => :destroy
   has_many :comments, :dependent => :destroy
+  has_one :classification_trace, :dependent => :destroy
 
   validates_presence_of :content
   validates_uniqueness_of :content_hash
@@ -30,6 +31,15 @@ class Document < ActiveRecord::Base
   # use content_hash as entity identifier
   def to_param
     content_hash
+  end
+
+  def trace # TODO: rename to indicate this is expensive
+    self.concepts(true)
+    return @trace
+  end
+
+  def trace!
+    raise NotImplementedError, "YAGNI?" # TODO: `trace` plus persistence (for both `classifications` and `classification_trace`)
   end
 
   def concepts(trace=false)
