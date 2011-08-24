@@ -13,7 +13,7 @@ PATH
 PATH
   remote: ../iqvoc_skosxl
   specs:
-    iqvoc_skosxl (1.0.0)
+    iqvoc_skosxl (1.0.1)
       bundler
       iqvoc
 
