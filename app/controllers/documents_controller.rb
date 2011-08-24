@@ -88,7 +88,23 @@ class DocumentsController < ApplicationController # TODO: auth restrictions?
     else
       flash[:error] = I18n.t("txt.controllers.documents.update.invalid")
       render "errors/blank", :status => 400
-      return
+    end
+  end
+
+  def trace
+    if params[:trace]
+      doc = Document.find_by_content_hash(params[:id])
+      unless data = doc.classification_trace
+        data = doc.create_classification_trace
+      end
+      respond_to do |format|
+        format.json do
+          render :json => data.trace
+        end
+      end
+    else
+      flash[:error] = I18n.t("txt.controllers.documents.update.invalid") # FIXME: inappropriate
+      render "errors/blank", :status => 400
     end
   end
 
