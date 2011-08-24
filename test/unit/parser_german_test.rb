@@ -81,4 +81,12 @@ class ParserGermanTest < ActiveSupport::TestCase
     assert_equal ["moderat", "Moder", "oderfoo"], doc.sentences[0]
   end
 
+  test "do not discard potentially meaningful single-character tokens" do
+    text = "lorem Euro 5 ipsum"
+    doc = DocumentParser::Base.new text
+
+    assert_equal 1, doc.sentences.length
+    assert_equal ["lorem", "Euro", "5", "ipsum"], doc.sentences[0]
+  end
+
 end

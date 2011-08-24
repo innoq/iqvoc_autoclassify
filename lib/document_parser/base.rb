@@ -64,9 +64,13 @@ module DocumentParser
     def end_word
       if @current_token
         word = normalize_word @current_token
-        @current_sentence.push(word) if word.length > 1 # ignore dashes, slashes etc.
+        @current_sentence.push(word) if validate(word) # ignore dashes, slashes etc.
       end
       @current_token = nil
+    end
+
+    def validate(word) # XXX: rename
+      word.length > 1 or word =~ /^[0-9A-Za-z]$/
     end
 
     def normalize_word(token)

@@ -24,6 +24,13 @@ class CompoundLabelIdentificationTest < ActiveSupport::TestCase
       -
         value: Weltraumfrachtpilot
         components: [Weltraum, Fracht, Pilot]
+      -
+        value: Euro
+      -
+        value: "5"
+      -
+        value: Euro 5
+        components: [Euro, "5"]
     EOF
     @label_ids = data[:labels]
     @label_ids.each { |term, label| @label_ids[term] = label.id }
@@ -32,12 +39,14 @@ class CompoundLabelIdentificationTest < ActiveSupport::TestCase
   test "compound discovery" do
     sentence = ["der", "Weltraum", "der", "Kampf", "und", "der", "Pilot"]
     labels = WordMatcher.new([sentence]).labels
+
     assert_equal 4, labels.length
     assert labels.include? @label_ids["Weltraumkampfpilot"]
     assert (not labels.include? @label_ids["Weltraumfrachtpilot"])
 
     sentence = ["Weltraum", "des", "Kampfes", "und", "der", "Piloten"]
     labels = WordMatcher.new([sentence]).labels
+
     assert_equal 4, labels.length
     assert labels.include? @label_ids["Weltraumkampfpilot"]
     assert (not labels.include? @label_ids["Weltraumfrachtpilot"])
@@ -46,6 +55,7 @@ class CompoundLabelIdentificationTest < ActiveSupport::TestCase
   test "order of occurrence is significant" do
     sentence = ["der", "Kampf", "der", "Weltraum", "und", "der", "Pilot"]
     labels = WordMatcher.new([sentence]).labels
+
     assert_equal 3, labels.length
     assert (not labels.include? @label_ids["Weltraumkampfpilot"])
     assert (not labels.include? @label_ids["Weltraumfrachtpilot"])
@@ -54,6 +64,7 @@ class CompoundLabelIdentificationTest < ActiveSupport::TestCase
   test "duplicates are retained" do
     sentence = "Weltraum Pilot Kampf Pilot".split(" ")
     labels = WordMatcher.new([sentence]).labels
+
     assert_equal 5, labels.length
     assert labels.include? @label_ids["Weltraumkampfpilot"]
     assert (not labels.include? @label_ids["Weltraumfrachtpilot"])
@@ -61,10 +72,27 @@ class CompoundLabelIdentificationTest < ActiveSupport::TestCase
 
     sentence = "foo Fracht bar Weltraum baz Pilot ... Kampf ... Pilot".split(" ")
     labels = WordMatcher.new([sentence]).labels
+
     assert_equal 6, labels.length
     assert labels.include? @label_ids["Weltraumkampfpilot"]
     assert (not labels.include? @label_ids["Weltraumfrachtpilot"])
     assert_equal 2, labels.find_all { |id| id == @label_ids["Pilot"] }.length
+  end
+
+  test "special cases" do
+    sentence = "die Euro 5 Norm".split(" ")
+    labels = WordMatcher.new([sentence]).labels
+
+    assert_equal 3, labels.length
+    assert_equal [@label_ids["Euro"], @label_ids["5"], @label_ids["Euro 5"]], labels
+
+    sentence = "zum Euro gibt es 5 Alternativen".split(" ")
+    labels = WordMatcher.new([sentence]).labels
+
+    # XXX: the following is not actually desirable, but inevitable due to the way
+    #      compound forms are handled (allowing arbitrary tokens between components)
+    assert_equal 3, labels.length
+    assert_equal [@label_ids["Euro"], @label_ids["5"], @label_ids["Euro 5"]], labels
   end
 
 end

@@ -33,7 +33,7 @@ module DocumentParser
       # extract hyphenated components
       if word and word.length > 1 and word.include? "-"
         word.split("-").each { |word|
-          @current_sentence.push(word) if word.length > 1 # ignore dashes, slashes etc.
+          @current_sentence.push(word) if validate(word) # ignore dashes, slashes etc.
         }
       end
     end

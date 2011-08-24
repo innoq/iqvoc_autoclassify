@@ -80,7 +80,7 @@ class ParserDocumentTest < ActiveSupport::TestCase
 
   test "sample documents" do
     doc = DocumentParser::Base.new @@doc1
-    assert_equal 13, doc.sentences.length # base parser doesn't handle abbreviations
+    assert_equal 15, doc.sentences.length # base parser doesn't handle abbreviations
 
     doc = DocumentParser::German.new @@doc1
     assert_equal 11, doc.sentences.length
