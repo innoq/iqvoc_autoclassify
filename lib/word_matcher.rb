@@ -66,10 +66,12 @@ class WordMatcher
         indexes = component_ids.map { |component_id| label_ids.index(component_id) }
         unless indexes.include? nil # all components must be present in the sentence
           # sequence of occurrence within the sentence must match the compound form's
-          results.push(compound_form.domain_id) if align(label_seq, component_ids)
-          if @trace
-            # label IDs by first component's label ID
-            @trace[:compound_index][label_seq.first] = compound_form.domain_id
+          if align(label_seq, component_ids)
+            results.push(compound_form.domain_id)
+            if @trace
+              # label IDs by first component's label ID
+              @trace[:compound_index][component_ids.first] = compound_form.domain_id
+            end
           end
         end
       }
