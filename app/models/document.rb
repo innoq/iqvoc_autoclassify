@@ -79,12 +79,8 @@ class Document < ActiveRecord::Base
           @trace[:concept_index][concept.id] ||= []
           @trace[:concept_index][concept.id].push(label.id)
         end
-        weighting = occurrences * weightings[labeling.type]
-        if concepts.has_key?(concept)
-          concepts[concept] += weighting
-        else
-          concepts[concept] = weighting
-        end
+        concepts[concept] ||= 0
+        concepts[concept] += occurrences * weightings[labeling.type]
       end
     end
 
