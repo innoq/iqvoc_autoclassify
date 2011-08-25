@@ -32,4 +32,4 @@
 <p><%= Document.human_attribute_name(:updated_at) %>: <%= @document.updated_at %></p>
 
 <h2><%= t("txt.models.document.full_text") %></h2>
-<blockquote style="white-space: pre-wrap;"><%= @document.content.strip %></blockquote>
+<blockquote class="plaintext"><%= @document.content.strip %></blockquote>

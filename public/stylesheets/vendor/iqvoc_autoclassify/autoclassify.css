@@ -1,3 +1,7 @@
+blockquote.plaintext {
+	white-space: pre-wrap;
+}
+
 .autoclassify .pagination {
 	margin-bottom: 1em;
 }

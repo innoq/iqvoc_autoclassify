@@ -4,11 +4,12 @@
 jQuery(document).ready(function($) {
 	"use strict";
 
+	// deactivate conflicting input fields on New Document page (by URL vs.
+	// direct input)
 	var root = $("#new_document");
 	if(root.length === 0) {
 		return;
 	}
-
 	var fieldsets = $("fieldset", root);
 	fieldsets.mouseenter(function(ev) {
 		fieldsets.not(this).animate({ opacity: 0.2 })
