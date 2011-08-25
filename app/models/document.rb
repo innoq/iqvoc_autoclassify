@@ -20,12 +20,15 @@ class Document < ActiveRecord::Base
 
   after_save do |document|
     document.classifications.each(&:destroy)
-    document.concepts.each { |concept, weighting|
+    document.concepts(true).each { |concept, weighting|
       uri = concept_url(concept, :host => @url_info[:host],
           :lang => @url_info[:lang])
       document.classifications.create!(:concept_uri => uri,
           :weighting => weighting, :title => concept.to_s) # XXX: `to_s` is slow (label loaded lazily)
     }
+
+    # NB: trace only stores references (IDs)
+    document.create_classification_trace(:trace => @trace.to_json)
   end
 
   # use content_hash as entity identifier
@@ -33,17 +36,8 @@ class Document < ActiveRecord::Base
     content_hash
   end
 
-  def trace # TODO: rename to indicate this is expensive
-    self.concepts(true)
-    return @trace
-  end
-
-  def trace!
-    raise NotImplementedError, "YAGNI?" # TODO: `trace` plus persistence (for both `classifications` and `classification_trace`)
-  end
-
   def concepts(trace=false)
-    return @concepts if (@concepts and not trace) # XXX: trace condition icky
+    return @concepts if (trace ? @concepts && @trace : @concept)
     @concepts = determine_concepts(trace)
     analyze_concept_relations
     return @concepts
@@ -104,7 +98,7 @@ class Document < ActiveRecord::Base
 
     matcher = WordMatcher.new(sentences, trace)
     label_ids = matcher.labels
-    @trace = matcher.trace # XXX: instance variable seems inappropriate
+    @trace = matcher.trace
 
     labels = Iqvoc::XLLabel.base_class.
         published.

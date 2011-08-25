@@ -36,46 +36,14 @@ class TraceConceptsTest < ActiveSupport::TestCase
     @concept_ids.each { |term, concept| @concept_ids[term] = concept.id }
   end
 
-  test "trace not created by default" do
-    text = "lorem Weltraum ipsum Pilot"
-    doc = make_document(:content => text)
-
-    assert_equal nil, doc.classification_trace
-  end
-
   test "tracing exposes discovered concepts by label ID" do
     text = "lorem Weltraum ... Pilot ipsum All"
-    trace = make_document(:content => text).trace
-
-    assert_equal 3, trace[:label_index].length
-    assert_equal 0, trace[:compound_index].length
-    assert_equal 2, trace[:concept_index].length
-    assert_equal 1, trace[:concept_index][@concept_ids["Pilot"]].length
-    assert trace[:concept_index][@concept_ids["Pilot"]].include? @label_ids["Pilot"]
-    assert_equal 2, trace[:concept_index][@concept_ids["Weltraum"]].length
-    assert trace[:concept_index][@concept_ids["Weltraum"]].include? @label_ids["Weltraum"]
-    assert trace[:concept_index][@concept_ids["Weltraum"]].include? @label_ids["All"]
-  end
-
-  test "trace is persisted explicitly (rather than automatically)" do
-    text = "lorem Weltraum ... Pilot ipsum All"
-
     doc = make_document(:content => text)
-
-    assert_equal nil, doc.classification_trace
-
-    _ = doc.trace
-
-    assert_equal nil, doc.classification_trace
-
-    doc.destroy
-    doc = make_document(:content => text)
-    classification_trace = doc.create_classification_trace
 
     assert_instance_of ClassificationTrace, doc.classification_trace
-    assert_instance_of String, classification_trace.trace
 
-    trace = JSON.parse(classification_trace.trace) # NB: both symbols and integer keys become strings
+    trace = JSON.parse(doc.classification_trace.trace) # NB: both symbols and integer keys become strings
+
     assert_equal 3, trace["label_index"].length
     assert_equal 0, trace["compound_index"].length
     assert_equal 2, trace["concept_index"].length
