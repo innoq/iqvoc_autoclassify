@@ -12,7 +12,7 @@ class TraceLabelsTest < ActiveSupport::TestCase
         value: Weltraum
       -
         value: Kampf
-        inflectionals: [Kämpfe, Kampfes]
+        inflectionals: [Kampfes, Kämpfe]
       -
         value: Fracht
       -

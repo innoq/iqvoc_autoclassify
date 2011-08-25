@@ -43,7 +43,7 @@ class Document < ActiveRecord::Base
   end
 
   def concepts(trace=false)
-    return @concepts if @concepts
+    return @concepts if (@concepts and not trace) # XXX: trace condition icky
     @concepts = determine_concepts(trace)
     analyze_concept_relations
     return @concepts
@@ -67,11 +67,18 @@ class Document < ActiveRecord::Base
 
   def determine_concepts(trace=false)
     concepts = {}
+    labels = determine_labels(trace)
+    @trace[:concept_index] = {} if trace
 
-    determine_labels(trace).each do |label, occurrences|
+    labels.each do |label, occurrences|
       label.labelings.each do |labeling|
         concept = labeling.owner
         next if not concept.published?
+        if trace
+          # list of label IDs by concept ID -- XXX: inconsistent with label indexes!?
+          @trace[:concept_index][concept.id] ||= []
+          @trace[:concept_index][concept.id].push(label.id)
+        end
         weighting = occurrences * weightings[labeling.type]
         if concepts.has_key?(concept)
           concepts[concept] += weighting
