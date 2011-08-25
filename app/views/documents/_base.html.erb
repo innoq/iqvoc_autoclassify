@@ -32,4 +32,10 @@
 <p><%= Document.human_attribute_name(:updated_at) %>: <%= @document.updated_at %></p>
 
 <h2><%= t("txt.models.document.full_text") %></h2>
+
+<%- if @trace -%>
+<%#= javascript_include_tag "vendor/iqvoc_autoclassify/trace.js" TODO %>
+<blockquote class="plaintext"><%= raw augmented_fulltext(@document) %></blockquote>
+<%- else -%>
 <blockquote class="plaintext"><%= @document.content.strip %></blockquote>
+<%- end -%>

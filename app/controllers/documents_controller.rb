@@ -19,7 +19,7 @@ class DocumentsController < ApplicationController # TODO: auth restrictions?
         page(params[:page])
 
     if params[:trace]
-      @trace = JSON.parse(doc.classification_trace.trace)
+      @trace = true
     end
 
     respond_to do |format|

@@ -2,6 +2,11 @@ blockquote.plaintext {
 	white-space: pre-wrap;
 }
 
+blockquote .hint {
+	color: #00A;
+	cursor: help;
+}
+
 .autoclassify .pagination {
 	margin-bottom: 1em;
 }
