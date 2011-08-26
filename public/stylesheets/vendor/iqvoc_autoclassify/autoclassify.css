@@ -6,13 +6,21 @@ blockquote.trace p {
 	margin-bottom: 0.5em;
 }
 
-blockquote .hint {
-	color: #00A;
+.trace .hint {
+	color: #308110;
 	cursor: help;
 }
 
-blockquote .hint:hover {
+.trace .hint:hover {
 	opacity: 0.5;
+}
+
+.trace .compounds {
+	font-weight: bold;
+}
+
+.trace .concepts {
+	color: #00A;
 }
 
 .autoclassify .pagination {

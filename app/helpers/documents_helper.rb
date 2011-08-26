@@ -24,25 +24,29 @@ module DocumentsHelper
       sentence.map! { |word|
         normal_hash = Inflectional::Base.normalize(word)
         label_id = trace["label_index"][normal_hash.to_s]
+
         if label_id
           label = labels[label_id]
+          classes = ["hint"]
           hint = "label: #{label}"
 
           compound_ids = trace["compound_index"][label_id.to_s]
           if compound_ids
+            classes.push("compounds")
             hint += " | compound forms: "
             hint += compound_ids.map { |id| labels[id] }.join("; ")
           end
 
           concept_ids = trace["concept_index"][label_id.to_s]
           if concept_ids
+            classes.push("concepts")
             hint += " | concepts: "
             hint += concept_ids.map { |id|
               Iqvoc::Concept.base_class.find(id).to_s
             }.join("; ") # XXX: `to_s` is expensive (label loaded lazily)
           end
 
-          %Q(<span class="hint" title="#{h hint}">#{h word}</span>)
+          %Q(<span class="#{classes.join " "}" title="#{h hint}">#{h word}</span>)
         else
           word
         end
