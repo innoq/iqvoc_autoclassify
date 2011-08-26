@@ -25,12 +25,20 @@ module DocumentsHelper
         label_id = trace["label_index"][normal_hash.to_s]
         if label_id
           label = labels[label_id]
-          compound_ids = trace["compound_index"][label_id.to_s]
           hint = "label: #{label}"
+
+          compound_ids = trace["compound_index"][label_id.to_s]
           if compound_ids
             hint += " | compound forms: "
             hint += compound_ids.map { |id| labels[id] }.join("; ")
           end
+
+          concept_ids = trace["concept_index"][label_id.to_s]
+          if concept_ids
+            hint += " | concepts: "
+            hint += concept_ids.map { |id| Concept::Base.find(id).to_s }.join("; ") # XXX: `to_s` is expensive (label loaded lazily)
+          end
+
           %Q(<span class="hint" title="#{h hint}">#{h word}</span>)
         else
           word
