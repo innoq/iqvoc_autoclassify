@@ -15,7 +15,8 @@ module DocumentsHelper
 
     label_ids = trace["label_index"].values.uniq
     label_ids += trace["compound_index"].values.uniq
-    labels = Label::Base.where(:id => label_ids.uniq).select([:id, :value]) # XXX: database queries don't belong into helpers!?
+    labels = Iqvoc::XLLabel.base_class.where(:id => label_ids.uniq).
+        select([:id, :value]) # XXX: database queries don't belong into helpers!?
     # label values by ID
     labels = labels.each_with_object({}) { |label, hsh| hsh[label.id] = label.value }
 
@@ -36,7 +37,9 @@ module DocumentsHelper
           concept_ids = trace["concept_index"][label_id.to_s]
           if concept_ids
             hint += " | concepts: "
-            hint += concept_ids.map { |id| Concept::Base.find(id).to_s }.join("; ") # XXX: `to_s` is expensive (label loaded lazily)
+            hint += concept_ids.map { |id|
+              Iqvoc::Concept.base_class.find(id).to_s
+            }.join("; ") # XXX: `to_s` is expensive (label loaded lazily)
           end
 
           %Q(<span class="hint" title="#{h hint}">#{h word}</span>)
