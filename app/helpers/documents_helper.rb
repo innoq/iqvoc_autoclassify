@@ -19,19 +19,22 @@ module DocumentsHelper
     # label values by ID
     labels = labels.each_with_object({}) { |label, hsh| hsh[label.id] = label.value }
 
-    return DocumentParser::German.new(document.content).sentences.flatten.map { |word| # simply assuming DE, for now -- XXX: repeated parsing inefficient
-      normal_hash = Inflectional::Base.normalize(word)
-      label_id = trace["label_index"][normal_hash.to_s]
-      if label_id
-        label = labels[label_id]
-        compound_id = trace["compound_index"][label_id.to_s]
-        hint = "label: #{label}"
-        hint += " | compound form: #{labels[compound_id]}" if compound_id
-        %Q(<span class="hint" title="#{h hint}">#{h word}</span>)
-      else
-        word
-      end
-    }.join(" ") # XXX: discards punctuation, line breaks etc.; should only replace matches in the original string
+    return DocumentParser::German.new(document.content).sentences.map { |sentence| # simply assuming DE, for now -- XXX: repeated parsing inefficient
+      sentence.map! { |word|
+        normal_hash = Inflectional::Base.normalize(word)
+        label_id = trace["label_index"][normal_hash.to_s]
+        if label_id
+          label = labels[label_id]
+          compound_id = trace["compound_index"][label_id.to_s]
+          hint = "label: #{label}"
+          hint += " | compound form: #{labels[compound_id]}" if compound_id
+          %Q(<span class="hint" title="#{h hint}">#{h word}</span>)
+        else
+          word
+        end
+      }
+      %Q(<p>#{sentence.join(" ")}</p>)
+    }.join("\n\n") # XXX: discards punctuation, line breaks etc.; should only replace matches in the original string
   end
 
 end
