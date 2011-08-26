@@ -11,6 +11,10 @@ blockquote .hint {
 	cursor: help;
 }
 
+blockquote .hint:hover {
+	opacity: 0.5;
+}
+
 .autoclassify .pagination {
 	margin-bottom: 1em;
 }
