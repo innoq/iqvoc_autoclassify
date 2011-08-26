@@ -50,14 +50,17 @@ class TraceLabelsTest < ActiveSupport::TestCase
   end
 
   test "tracing exposes discovered compound labels by first component's label ID" do
-    sentence = "foo Weltraum bar Kampf baz Pilot".split(" ")
+    sentence = "lorem Weltraum ipsum Kampf dolor Fracht sit Pilot amet".split(" ")
     matcher = WordMatcher.new([sentence], true)
     _ = matcher.labels
     trace = matcher.trace
 
-    assert_equal 3, trace[:label_index].length
+    assert_equal 4, trace[:label_index].length
     assert_equal 1, trace[:compound_index].length
-    assert_equal @label_ids["Weltraumkampfpilot"], trace[:compound_index][@label_ids["Weltraum"]]
+    label_ids = trace[:compound_index][@label_ids["Weltraum"]]
+    assert_equal 2, label_ids.length
+    assert label_ids.include?(@label_ids["Weltraumkampfpilot"])
+    assert label_ids.include?(@label_ids["Weltraumfrachtpilot"])
   end
 
 end

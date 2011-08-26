@@ -25,9 +25,12 @@ module DocumentsHelper
         label_id = trace["label_index"][normal_hash.to_s]
         if label_id
           label = labels[label_id]
-          compound_id = trace["compound_index"][label_id.to_s]
+          compound_ids = trace["compound_index"][label_id.to_s]
           hint = "label: #{label}"
-          hint += " | compound form: #{labels[compound_id]}" if compound_id
+          if compound_ids
+            hint += " | compound forms: "
+            hint += compound_ids.map { |id| labels[id] }.join("; ")
+          end
           %Q(<span class="hint" title="#{h hint}">#{h word}</span>)
         else
           word

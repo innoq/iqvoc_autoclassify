@@ -69,8 +69,9 @@ class WordMatcher
           if align(label_seq, component_ids)
             results.push(compound_form.domain_id)
             if @trace
-              # label IDs by first component's label ID
-              @trace[:compound_index][component_ids.first] = compound_form.domain_id
+              # list of label IDs by first component's label ID
+              @trace[:compound_index][component_ids.first] ||= []
+              @trace[:compound_index][component_ids.first].push(compound_form.domain_id)
             end
           end
         end
