@@ -69,9 +69,9 @@ class Document < ActiveRecord::Base
         concept = labeling.owner
         next if not concept.published?
         if trace
-          # list of label IDs by concept ID -- XXX: inconsistent with label indexes!?
-          @trace[:concept_index][concept.id] ||= []
-          @trace[:concept_index][concept.id].push(label.id)
+          # list of concept IDs by label ID
+          @trace[:concept_index][label.id] ||= []
+          @trace[:concept_index][label.id].push(concept.id)
         end
         concepts[concept] ||= 0
         concepts[concept] += occurrences * weightings[labeling.type]

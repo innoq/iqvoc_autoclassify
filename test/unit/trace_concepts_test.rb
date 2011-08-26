@@ -23,6 +23,8 @@ class TraceConceptsTest < ActiveSupport::TestCase
         pref_labels: [Weltraum]
         alt_labels: [All]
       -
+        pref_labels: [All]
+      -
         pref_labels: [Fracht]
       -
         pref_labels: [Pilot]
@@ -46,12 +48,14 @@ class TraceConceptsTest < ActiveSupport::TestCase
 
     assert_equal 3, trace["label_index"].length
     assert_equal 0, trace["compound_index"].length
-    assert_equal 2, trace["concept_index"].length
-    assert_equal 1, trace["concept_index"][@concept_ids["Pilot"].to_s].length
-    assert trace["concept_index"][@concept_ids["Pilot"].to_s].include? @label_ids["Pilot"]
-    assert_equal 2, trace["concept_index"][@concept_ids["Weltraum"].to_s].length
-    assert trace["concept_index"][@concept_ids["Weltraum"].to_s].include? @label_ids["Weltraum"]
-    assert trace["concept_index"][@concept_ids["Weltraum"].to_s].include? @label_ids["All"]
+    assert_equal 3, trace["concept_index"].length
+    assert_equal 1, trace["concept_index"][@label_ids["Pilot"].to_s].length
+    assert trace["concept_index"][@label_ids["Pilot"].to_s].include? @concept_ids["Pilot"]
+    assert_equal 1, trace["concept_index"][@label_ids["Weltraum"].to_s].length
+    assert trace["concept_index"][@label_ids["Weltraum"].to_s].include? @concept_ids["Weltraum"]
+    assert_equal 2, trace["concept_index"][@label_ids["All"].to_s].length
+    assert trace["concept_index"][@label_ids["All"].to_s].include? @concept_ids["All"]
+    assert trace["concept_index"][@label_ids["All"].to_s].include? @concept_ids["Weltraum"]
   end
 
 end
