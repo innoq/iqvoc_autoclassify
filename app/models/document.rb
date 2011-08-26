@@ -19,7 +19,7 @@ class Document < ActiveRecord::Base
   end
 
   after_save do |document|
-    document.classifications.each(&:destroy)
+    document.classifications.destroy_all
     document.concepts(true).each { |concept, weighting|
       uri = concept_url(concept, :host => @url_info[:host],
           :lang => @url_info[:lang])

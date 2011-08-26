@@ -29,7 +29,7 @@ class WordMatcher
 
     # restore order of occurrence
     label_index = inflectionals.each_with_object({}) { |inf, hsh|
-      hsh[inf.normal_hash] = inf.label_id # XXX: this risks discarding two inflectionals with identical value
+      hsh[inf.normal_hash] = inf.label_id # FIXME: this risks discarding two inflectionals with identical value
     }
     if @trace
       # label IDs by inflectionals' normal_hash
