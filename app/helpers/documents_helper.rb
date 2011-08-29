@@ -30,7 +30,7 @@ module DocumentsHelper
           classes = ["hint"]
           details = [
             "<h3>Label</h3>", # TODO: i18n
-            link_to(label.to_s, label)
+            link_to(label.to_s, label_path(:id => label_id))
           ]
 
           compound_ids = trace["compound_index"][label_id.to_s]
@@ -38,7 +38,8 @@ module DocumentsHelper
             classes << "compounds"
             details << render_list("Compound Forms", compound_ids) do |id| # TODO: i18n
               label = labels[id]
-              link_to(label.to_s, label)
+              uri = label_path(:id => id)
+              link_to(label.to_s, uri)
             end
           end
 
@@ -47,8 +48,8 @@ module DocumentsHelper
             classes << "concepts"
             details << render_list("Concepts", concept_ids) do |id| # TODO: i18n
               concept = Iqvoc::Concept.base_class.find(id)
-              path = concept_path(:id => concept) # XXX: using `concept` in `link_to` raises "NoMethodError: concept_skos_basis_path"
-              link_to(concept.to_s, path) # XXX: `to_s` is expensive (label loaded lazily)
+              uri = concept_path(:id => id)
+              link_to(concept.to_s, uri) # XXX: `to_s` is expensive (label loaded lazily)
             end
           end
 
