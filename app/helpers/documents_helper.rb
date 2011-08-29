@@ -36,7 +36,7 @@ module DocumentsHelper
           compound_ids = trace["compound_index"][label_id.to_s]
           if compound_ids
             classes << "compounds"
-            details << render_list("Compound Forms", compound_ids) do |id| # TODO: i18n
+            details << render_list("Compound Forms", compound_ids.uniq) do |id| # TODO: i18n
               label = labels[id]
               uri = label_path(:id => label.origin)
               link_to(label.to_s, uri)
