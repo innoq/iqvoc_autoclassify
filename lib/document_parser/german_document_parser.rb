@@ -31,9 +31,9 @@ module DocumentParser
     def end_word # NB: closely tied to behavior of super's method
       word = normalize_word(@current_token) if @current_token
       super
-      # extract hyphenated components
+      # extract hyphenated components -- FIXME: this risks skewing weightings by adding duplicate terms
       if word and word.length > 1 and word.include? "-"
-        word.split("-").each { |word|
+        word.split("-").reverse.each { |word| # NB: reverse avoids additional compound forms
           @current_sentence.push(word) if validate(word) # ignore dashes, slashes etc.
         }
       end

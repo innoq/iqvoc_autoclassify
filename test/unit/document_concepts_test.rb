@@ -24,6 +24,13 @@ class DocumentConceptsTest < ActiveSupport::TestCase
         value: Messerkampf
       -
         value: foo
+      -
+        value: Kyoto
+      -
+        value: Protokoll
+      -
+        value: Kyoto-Protokoll
+        components: [Kyoto, Protokoll]
 
       concepts:
       -
@@ -44,6 +51,12 @@ class DocumentConceptsTest < ActiveSupport::TestCase
       -
         pref_labels: [foo]
         published_at:
+      -
+        pref_labels: [Kyoto]
+      -
+        pref_labels: [Protokoll]
+      -
+        pref_labels: [Kyoto-Protokoll]
     EOF
     @labels = data[:labels]
     @concepts = data[:concepts]
@@ -117,6 +130,17 @@ class DocumentConceptsTest < ActiveSupport::TestCase
     assert_equal 2, concepts.keys.length
     assert_equal 3.0, concepts[@concepts["Weltraum"]]
     assert_equal 2.0, concepts[@concepts["Kampf"]]
+  end
+
+  test "decompose hyphenated words without adding compound forms" do
+    text = "Kyoto-Protokoll"
+    doc = make_document(:content => text)
+
+    concepts = doc.concepts
+    assert_equal 3, concepts.keys.length
+    assert_equal 1.0, concepts[@concepts["Kyoto-Protokoll"]]
+    assert_equal 1.0, concepts[@concepts["Kyoto"]]
+    assert_equal 1.0, concepts[@concepts["Protokoll"]]
   end
 
 end
