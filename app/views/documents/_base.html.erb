@@ -34,7 +34,10 @@
 <h2><%= t("txt.models.document.full_text") %></h2>
 
 <%- if @trace -%>
-<%#= javascript_include_tag "vendor/iqvoc_autoclassify/trace.js" TODO %>
+<%= stylesheet_link_tag "vendor/iqvoc_autoclassify/jquery.mintip.css" %>
+<%= content_for :scripts do %>
+  <%= javascript_include_tag "vendor/iqvoc_autoclassify/jquery.mintip.min.js" %>
+<% end %>
 <blockquote class="trace"><%= raw augmented_fulltext(@document) %></blockquote>
 <%- else -%>
 <blockquote class="plaintext"><%= @document.content.strip %></blockquote>

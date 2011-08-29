@@ -2,7 +2,7 @@ blockquote.plaintext {
 	white-space: pre-wrap;
 }
 
-blockquote.trace p {
+.trace .sentence {
 	margin-bottom: 0.5em;
 }
 

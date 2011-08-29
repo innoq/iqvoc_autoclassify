@@ -28,31 +28,48 @@ module DocumentsHelper
         if label_id
           label = labels[label_id]
           classes = ["hint"]
-          hint = "label: #{label}"
+          details = [
+            "<h3>Label</h3>", # TODO: i18n
+            link_to(label.to_s, label)
+          ]
 
           compound_ids = trace["compound_index"][label_id.to_s]
           if compound_ids
-            classes.push("compounds")
-            hint += " | compound forms: "
-            hint += compound_ids.map { |id| labels[id] }.join("; ")
+            classes << "compounds"
+            details << render_list("Compound Forms", compound_ids) do |id| # TODO: i18n
+              label = labels[id]
+              link_to(label.to_s, label)
+            end
           end
 
           concept_ids = trace["concept_index"][label_id.to_s]
           if concept_ids
-            classes.push("concepts")
-            hint += " | concepts: "
-            hint += concept_ids.map { |id|
-              Iqvoc::Concept.base_class.find(id).to_s
-            }.join("; ") # XXX: `to_s` is expensive (label loaded lazily)
+            classes << "concepts"
+            details << render_list("Concepts", concept_ids) do |id| # TODO: i18n
+              concept = Iqvoc::Concept.base_class.find(id)
+              path = concept_path(:id => concept) # XXX: using `concept` in `link_to` raises "NoMethodError: concept_skos_basis_path"
+              link_to(concept.to_s, path) # XXX: `to_s` is expensive (label loaded lazily)
+            end
           end
 
-          %Q(<span class="#{classes.join " "}" title="#{h hint}">#{h word}</span>)
+          %Q(<span class="#{classes.join " "}">#{h word}</span>) +
+              %Q(<div class="details">#{details.join("\n")}</div>)
         else
           word
         end
       }
-      %Q(<p>#{sentence.join(" ")}</p>)
+      content_tag(:div, sentence.join(" ").html_safe, { :class => "sentence" })
     }.join("\n\n") # XXX: discards punctuation, line breaks etc.; should only replace matches in the original string
+  end
+
+  def render_list(caption, items, &block)
+    caption = "<h3>#{h caption}</h3>"
+    list = content_tag :ul do
+      items.map { |item|
+        content_tag :li, yield(item)
+      }.join("\n").html_safe
+    end
+    return caption + list
   end
 
 end

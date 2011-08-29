@@ -4,13 +4,16 @@
 jQuery(document).ready(function($) {
 	"use strict";
 
+	// activate trace tooltips on Show Document page
+	$(".trace .hint").each(function(i, node) {
+		var el = $(this);
+		var html = el.next(".details").remove().html();
+		el.mintip({ content: html, allowHTML: true });
+	});
+
 	// deactivate conflicting input fields on New Document page (by URL vs.
 	// direct input)
-	var root = $("#new_document");
-	if(root.length === 0) {
-		return;
-	}
-	var fieldsets = $("fieldset", root);
+	var fieldsets = $("#new_document fieldset");
 	fieldsets.mouseenter(function(ev) {
 		fieldsets.not(this).animate({ opacity: 0.2 })
 			.find("input, textarea").prop("disabled", true);
