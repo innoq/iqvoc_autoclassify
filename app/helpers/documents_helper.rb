@@ -16,9 +16,9 @@ module DocumentsHelper
     label_ids = trace["label_index"].values.uniq
     label_ids += trace["compound_index"].values.uniq
     labels = Iqvoc::XLLabel.base_class.where(:id => label_ids.uniq).
-        select([:id, :value]) # XXX: database queries don't belong into helpers!?
+        select([:id, :origin, :value, :language]) # XXX: database queries don't belong into helpers!?
     # label values by ID
-    labels = labels.each_with_object({}) { |label, hsh| hsh[label.id] = label.value }
+    labels = labels.each_with_object({}) { |label, hsh| hsh[label.id] = label }
 
     return DocumentParser::German.new(document.content).sentences.map { |sentence| # simply assuming DE, for now -- XXX: repeated parsing inefficient
       sentence.map! { |word|
@@ -30,7 +30,7 @@ module DocumentsHelper
           classes = ["hint"]
           details = [
             "<h3>Label</h3>", # TODO: i18n
-            link_to(label.to_s, label_path(:id => label_id))
+            link_to(label.to_s, label_path(:id => label.origin))
           ]
 
           compound_ids = trace["compound_index"][label_id.to_s]
@@ -38,7 +38,7 @@ module DocumentsHelper
             classes << "compounds"
             details << render_list("Compound Forms", compound_ids) do |id| # TODO: i18n
               label = labels[id]
-              uri = label_path(:id => id)
+              uri = label_path(:id => label.origin)
               link_to(label.to_s, uri)
             end
           end
@@ -48,7 +48,7 @@ module DocumentsHelper
             classes << "concepts"
             details << render_list("Concepts", concept_ids) do |id| # TODO: i18n
               concept = Iqvoc::Concept.base_class.find(id)
-              uri = concept_path(:id => id)
+              uri = concept_path(:id => concept.origin)
               link_to(concept.to_s, uri) # XXX: `to_s` is expensive (label loaded lazily)
             end
           end
