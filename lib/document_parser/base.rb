@@ -52,7 +52,7 @@ module DocumentParser
     end
 
     def preprocess(text)
-      text
+      text.gsub("\r\n", "\n")
     end
 
     def end_sentence

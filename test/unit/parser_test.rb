@@ -93,6 +93,27 @@ class ParserTest < ActiveSupport::TestCase
     assert_equal 2, doc.sentences.length
     assert_equal 2, doc.sentences[0].length
     assert_equal 3, doc.sentences[1].length
+
+    [
+      "lorem ipsum\ndolor sit amet.",
+      "lorem ipsum\r\ndolor sit amet."
+    ].each { |text|
+      doc = DocumentParser::Base.new text
+
+      assert_equal 1, doc.sentences.length
+      assert_equal 5, doc.sentences[0].length
+    }
+
+    [
+      "lorem ipsum\n\ndolor sit amet.",
+      "lorem ipsum\r\n\r\ndolor sit amet."
+    ].each { |text|
+      doc = DocumentParser::Base.new text
+
+      assert_equal 2, doc.sentences.length
+      assert_equal 2, doc.sentences[0].length
+      assert_equal 3, doc.sentences[1].length
+    }
   end
 
   test "do not discard potentially meaningful single-character tokens" do

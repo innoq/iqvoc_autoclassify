@@ -5,6 +5,42 @@ require 'document_parser/german_document_parser'
 
 class ParserGermanTest < ActiveSupport::TestCase
 
+  test "implicit sentence termination" do
+    text = "lorem ipsum dolor sit amet"
+    doc = DocumentParser::German.new text
+
+    assert_equal 1, doc.sentences.length
+    assert_equal 5, doc.sentences[0].length
+
+    text = "lorem ipsum. dolor sit amet"
+    doc = DocumentParser::German.new text
+
+    assert_equal 2, doc.sentences.length
+    assert_equal 2, doc.sentences[0].length
+    assert_equal 3, doc.sentences[1].length
+
+    [
+      "lorem ipsum\ndolor sit amet.",
+      "lorem ipsum\r\ndolor sit amet."
+    ].each { |text|
+      doc = DocumentParser::German.new text
+
+      assert_equal 1, doc.sentences.length
+      assert_equal 5, doc.sentences[0].length
+    }
+
+    [
+      "lorem ipsum\n\ndolor sit amet.",
+      "lorem ipsum\r\n\r\ndolor sit amet."
+    ].each { |text|
+      doc = DocumentParser::German.new text
+
+      assert_equal 2, doc.sentences.length
+      assert_equal 2, doc.sentences[0].length
+      assert_equal 3, doc.sentences[1].length
+    }
+  end
+
   test "word normalization" do
     text = "Nord- und Südgefälle"
     doc = DocumentParser::German.new text
@@ -83,7 +119,7 @@ class ParserGermanTest < ActiveSupport::TestCase
 
   test "do not discard potentially meaningful single-character tokens" do
     text = "lorem Euro 5 ipsum"
-    doc = DocumentParser::Base.new text
+    doc = DocumentParser::German.new text
 
     assert_equal 1, doc.sentences.length
     assert_equal ["lorem", "Euro", "5", "ipsum"], doc.sentences[0]

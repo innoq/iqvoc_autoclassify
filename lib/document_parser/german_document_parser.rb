@@ -19,6 +19,7 @@ module DocumentParser
         map { |abbr| abbr.gsub(". ", ".") }
 
     def preprocess(text)
+      text = super
       # discard stop words
       @@stop_words.each { |word| text = text.gsub(/\b#{Regexp.quote word}\b/, "") } # XXX: might be more efficient to construct one big RegEx instead
 
