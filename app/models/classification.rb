@@ -1,5 +1,6 @@
 class Classification < ActiveRecord::Base
   belongs_to :document
+  belongs_to :concept
 
   def build_rdf(document, result)
     result.Sdc::link(IqRdf.build_uri(concept_uri))

@@ -23,8 +23,9 @@ class Document < ActiveRecord::Base
     document.concepts(true).each { |concept, weighting|
       uri = concept_url(concept, :host => @url_info[:host],
           :lang => @url_info[:lang])
-      document.classifications.create!(:concept_uri => uri,
-          :weighting => weighting, :title => concept.to_s) # XXX: `to_s` is expensive (label loaded lazily)
+      document.classifications.create!(:concept_id => concept.id,
+          :concept_uri => uri, :weighting => weighting,
+          :title => concept.to_s) # XXX: `to_s` is expensive (label loaded lazily)
     }
 
     # NB: trace only stores references (IDs)
@@ -71,7 +72,7 @@ class Document < ActiveRecord::Base
         if trace
           # list of concept IDs by label ID
           @trace[:concept_index][label.id] ||= []
-          @trace[:concept_index][label.id].push(concept.id)
+          @trace[:concept_index][label.id] << concept.id
         end
         concepts[concept] ||= 0
         concepts[concept] += occurrences * weightings[labeling.type]

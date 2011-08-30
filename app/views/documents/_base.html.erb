@@ -19,25 +19,31 @@
 <% end %>
 </div>
 
+<%- if @trace -%>
+  <%= stylesheet_link_tag "vendor/iqvoc_autoclassify/jquery.mintip.css" %>
+  <%= content_for :scripts do %>
+    <%= javascript_include_tag "vendor/iqvoc_autoclassify/jquery.mintip.min.js" %>
+  <% end %>
+<%- end -%>
+
 <h2><%= Concept::Base.model_name.human(:count => 2) %></h2>
-<ol start="<%= (@classifications.current_page - 1) * @classifications.limit_value + 1 %>">
+<%= content_tag(:ol, :class => @trace ? "trace" : nil,
+        :start => (@classifications.current_page - 1) * @classifications.limit_value + 1) do %>
   <%- @classifications.each { |classification| -%>
     <li>
       <%= link_to classification.to_s, classification.concept_uri %>
+      <%- if @trace -%>
+        <%= raw classification_augmentation(@document, @classifications, classification) %>
+      <%- end -%>
       <span class="weighting">[<%= "%4.2f" % classification.weighting %>]</span>
     </li>
   <%- } -%>
-</ol>
+<%- end -%>
 <div class="autoclassify"><%= paginate @classifications %></div> <!-- XXX: divitis!? -->
 <p><%= Document.human_attribute_name(:updated_at) %>: <%= @document.updated_at %></p>
 
 <h2><%= t("txt.models.document.full_text") %></h2>
-
 <%- if @trace -%>
-<%= stylesheet_link_tag "vendor/iqvoc_autoclassify/jquery.mintip.css" %>
-<%= content_for :scripts do %>
-  <%= javascript_include_tag "vendor/iqvoc_autoclassify/jquery.mintip.min.js" %>
-<% end %>
 <blockquote class="trace"><%= raw augmented_fulltext(@document) %></blockquote>
 <%- else -%>
 <blockquote class="plaintext"><%= @document.content.strip %></blockquote>
