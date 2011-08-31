@@ -59,7 +59,8 @@ module DocumentsHelper
     return @augmented_classifications = classifications.each_with_object({}) { |classification, hsh|
       hsh[classification.id] = content_tag(:div, { :class => "details" }) do
         label_index[classification.concept_id].map { |type, labels|
-          render_list("Label (#{type})", labels) do |label| # TODO: i18n
+          caption = type.constantize.model_name.human(:count => 2)
+          render_list(caption, labels) do |label|
             uri = label_path(:id => label.origin)
             link_to(label.to_s, uri)
           end
@@ -87,25 +88,28 @@ module DocumentsHelper
           label = labels[label_id]
           classes = ["hint"]
           details = [
-            "<h3>Label</h3>", # TODO: i18n
+            "<h3>#{label.class.model_name.human(:count => 1)}</h3>",
             link_to(label.to_s, label_path(:id => label.origin))
           ]
 
           compound_ids = trace["compound_index"][label_id.to_s]
           if compound_ids
             classes << "compounds"
-            details << render_list("Compound Forms", compound_ids.uniq) do |id| # TODO: i18n
+            caption = CompoundForm::Base.model_name.human(:count => 2)
+            details << render_list(caption, compound_ids.uniq) do |id| # TODO: i18n
               label = labels[id]
               uri = label_path(:id => label.origin)
               link_to(label.to_s, uri)
             end
           end
 
-          concept_ids = trace["concept_index"][label_id.to_s]
-          if concept_ids
+          concepts = trace["concept_index"][label_id.to_s]
+          if concepts
+            concepts = Iqvoc::Concept.base_class.where(:id => concepts) # XXX: database queries don't belong into helpers!?
+            concepts = concepts.index_by(&:id)
             classes << "concepts"
-            details << render_list("Concepts", concept_ids) do |id| # TODO: i18n
-              concept = Iqvoc::Concept.base_class.find(id) # FIXME: inefficient; should do batch retrieval -- XXX: database queries don't belong into helpers!?
+            caption = concepts.first.last.class.model_name.human(:count => 2)
+            details << render_list(caption, concepts) do |id, concept|
               uri = concept_path(:id => concept.origin)
               link_to(concept.to_s, uri) # XXX: `to_s` is expensive (label loaded lazily)
             end
