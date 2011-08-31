@@ -20,6 +20,7 @@ class DocumentsController < ApplicationController # TODO: auth restrictions?
 
     if params[:trace]
       @trace = true
+      @classifications = @classifications.per(100)
     end
 
     respond_to do |format|
