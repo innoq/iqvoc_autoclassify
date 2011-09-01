@@ -64,13 +64,13 @@ class ParserGermanTest < ActiveSupport::TestCase
     doc = DocumentParser::German.new text
 
     assert_equal 1, doc.sentences.length
-    assert_equal ["deutsch-französisch", "deutsch", "französisch"], doc.sentences[0]
+    assert_equal ["deutsch-französisch", "französisch", "deutsch"], doc.sentences[0]
 
     text = "saar-lor-lux"
     doc = DocumentParser::German.new text
 
     assert_equal 1, doc.sentences.length
-    assert_equal ["saar-lor-lux", "saar", "lor", "lux"], doc.sentences[0]
+    assert_equal ["saar-lor-lux", "lux", "lor", "saar"], doc.sentences[0]
   end
 
   test "abbreviation handling" do
