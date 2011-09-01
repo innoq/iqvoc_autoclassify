@@ -31,6 +31,9 @@ class DocumentLabelsTest < ActiveSupport::TestCase
         value: bar
         published_at:
       -
+        value: baz
+        language: en
+      -
         value: Oder
       -
         value: Moder
@@ -77,6 +80,13 @@ class DocumentLabelsTest < ActiveSupport::TestCase
     assert labels.include? @labels["Pilot"]
     assert labels.include? @labels["Kampf"]
     assert (not labels.include? @labels["Weltraumkampfpilot"])
+  end
+
+  test "ignore foreign-language labels" do
+    text = "lorem baz ipsum"
+
+    labels = make_document(:content => text).determine_labels
+    assert_equal 0, labels.length
   end
 
   test "ignore unpublished labels" do
