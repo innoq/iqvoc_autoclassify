@@ -71,14 +71,6 @@ class DocumentsController < ApplicationController # TODO: auth restrictions?
     end
   end
 
-  def edit
-    @document = Document.find_by_content_hash(params[:id],
-        :include => :classifications)
-    @classifications = @document.classifications.
-        order("weighting DESC"). # XXX: redundant (cf. model)!?
-        page(params[:page])
-  end
-
   def update
     if params[:reclassify]
       @document = Document.find_by_content_hash(params[:id])

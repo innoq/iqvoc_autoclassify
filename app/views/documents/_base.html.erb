@@ -39,7 +39,11 @@
     </li>
   <%- } -%>
 <%- end -%>
+
+<%= content_tag(:div, render(:partial => "edit")) if current_user %>
+
 <div class="autoclassify"><%= paginate @classifications %></div> <!-- XXX: divitis!? -->
+
 <p><%= Document.human_attribute_name(:updated_at) %>: <%= @document.updated_at %></p>
 
 <h2><%= t("txt.models.document.full_text") %></h2>
