@@ -98,6 +98,11 @@ class ParserGermanTest < ActiveSupport::TestCase
     doc = DocumentParser::German.new text
 
     assert_equal 1, doc.sentences.length
+
+    text = "lorem 1. ipsum 10. dolor 99. sit 13.07.2011 amet"
+    doc = DocumentParser::German.new text
+
+    assert_equal 1, doc.sentences.length
   end
 
   test "stop-word handling" do

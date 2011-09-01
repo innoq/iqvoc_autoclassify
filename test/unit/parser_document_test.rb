@@ -86,6 +86,6 @@ class ParserDocumentTest < ActiveSupport::TestCase
     assert_equal 11, doc.sentences.length
 
     doc = DocumentParser::German.new @@doc2
-    assert_equal 47, doc.sentences.length # NB: the actual value here was in manually checking the parser output against the original
+    assert_equal 46, doc.sentences.length # NB: the actual value here was in manually checking the parser output against the original
   end
 end
