@@ -78,7 +78,18 @@ class Document < ActiveRecord::Base
       end
     end
 
+    determine_title_concepts.each { |concept, weighting|
+      concepts[concept] += weighting * 0.5 # in addition to the regular analysis
+                                           # (which already includes the title)
+    }
+
     return concepts
+  end
+
+  def determine_title_concepts
+    return {} unless self.title
+    doc = Document.new(:content => self.title)
+    return doc.concepts
   end
 
   def analyze_concept_relations

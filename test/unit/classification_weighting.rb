@@ -18,6 +18,13 @@ class ClassificationWeightingTest < ActiveSupport::TestCase
         inflectionals: [Kampfes, Kämpfe]
       -
         value: Pilot
+        inflectionals: [Piloten]
+      -
+        value: Weltraumkampfpilot
+        components: [Weltraum, Kampf, Pilot]
+      -
+        value: Weltraumfrachtpilot
+        components: [Weltraum, Fracht, Pilot]
       -
         value: Auseinandersetzung
       -
@@ -31,6 +38,10 @@ class ClassificationWeightingTest < ActiveSupport::TestCase
         pref_labels: [Fracht]
       -
         pref_labels: [Pilot]
+      -
+        pref_labels: [Weltraumkampfpilot]
+      -
+        pref_labels: [Weltraumfrachtpilot]
       -
         pref_labels: [Auseinandersetzung]
       -
@@ -50,10 +61,11 @@ class ClassificationWeightingTest < ActiveSupport::TestCase
     doc = make_document(:content => text)
 
     concepts = doc.concepts
-    assert_equal 3, concepts.keys.length
+    assert_equal 4, concepts.keys.length
     assert_equal 2.0, concepts[@concepts["Weltraum"]]
     assert_equal 1.0, concepts[@concepts["Kampf"]]
     assert_equal 1.0, concepts[@concepts["Pilot"]]
+    assert_equal 1.0, concepts[@concepts["Weltraumkampfpilot"]]
   end
 
   test "full concept weighting" do
@@ -70,7 +82,29 @@ class ClassificationWeightingTest < ActiveSupport::TestCase
     assert_equal 1.5, concepts[@concepts["Auseinandersetzung"]]
   end
 
-  test "multiple occurence increases weighting" do
+  test "occurence in document title increases weighting" do
+    title = "Fracht"
+    text = "Weltraum"
+    doc = make_document(:title => title, :content => text)
+
+    concepts = doc.concepts
+    assert_equal 2, concepts.keys.length
+    assert_equal 1.0, concepts[@concepts["Weltraum"]]
+    assert_equal 1.5, concepts[@concepts["Fracht"]]
+
+    title = "der Weltraum, ein Kampf der Pilot"
+    text = "ein Weltraumkampfpilot im All"
+    doc = make_document(:title => title, :content => text)
+
+    concepts = doc.concepts
+    assert_equal 4, concepts.keys.length
+    assert_equal 2.5, concepts[@concepts["Weltraum"]]
+    assert_equal 1.5, concepts[@concepts["Kampf"]]
+    assert_equal 1.5, concepts[@concepts["Pilot"]]
+    assert_equal 2.5, concepts[@concepts["Weltraumkampfpilot"]]
+  end
+
+  test "multiple occurence of the same label increases weighting" do
     text = <<-EOF
       Weltraum Weltraum Kampf Weltraum Kampfes
     EOF
@@ -80,6 +114,14 @@ class ClassificationWeightingTest < ActiveSupport::TestCase
     assert_equal 2, concepts.keys.length
     assert_equal 3.0, concepts[@concepts["Weltraum"]]
     assert_equal 2.0, concepts[@concepts["Kampf"]]
+
+    # same concept, different labels - does not increase weighting -- FIXME: desired?
+    text = "Weltraum und All"
+    doc = make_document(:content => text)
+
+    concepts = doc.concepts
+    assert_equal 1, concepts.keys.length
+    assert_equal 2.0, concepts[@concepts["Weltraum"]]
   end
 
 end
