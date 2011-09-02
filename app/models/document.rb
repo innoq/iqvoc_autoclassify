@@ -20,7 +20,7 @@ class Document < ActiveRecord::Base
 
   after_save do |document|
     document.classifications.destroy_all
-    document.concepts(true).each { |concept, weighting|
+    document.concepts.each { |concept, weighting|
       uri = concept_url(concept, :host => @url_info[:host],
           :lang => @url_info[:lang])
       document.classifications.create!(:concept_id => concept.id,
@@ -37,9 +37,9 @@ class Document < ActiveRecord::Base
     content_hash
   end
 
-  def concepts(trace=false)
-    return @concepts if (trace ? @concepts && @trace : @concept)
-    @concepts = determine_concepts(trace)
+  def concepts
+    return @concepts if (@concepts && @trace)
+    @concepts = determine_concepts
     analyze_concept_relations
     return @concepts
   end
@@ -60,20 +60,19 @@ class Document < ActiveRecord::Base
     }
   end
 
-  def determine_concepts(trace=false)
+  def determine_concepts
     concepts = {}
-    labels = determine_labels(trace)
-    @trace[:concept_index] = {} if trace
+    labels = determine_labels
+    @trace[:concept_index] = {}
 
     labels.each do |label, occurrences|
       label.labelings.each do |labeling|
         concept = labeling.owner
         next if not concept.published?
-        if trace
-          # list of concept IDs by label ID
-          @trace[:concept_index][label.id] ||= []
-          @trace[:concept_index][label.id] << concept.id
-        end
+        # list of concept IDs by label ID
+        @trace[:concept_index][label.id] ||= []
+        @trace[:concept_index][label.id] << concept.id
+        # weighting
         concepts[concept] ||= 0
         concepts[concept] += occurrences * weightings[labeling.type]
       end
@@ -93,11 +92,11 @@ class Document < ActiveRecord::Base
   end
 
   # returns a hash pairing labels with the respective number of occurrences
-  def determine_labels(trace=false)
+  def determine_labels
     text = self.title ? self.title + ".\n\n" + self.content : self.content
     sentences = DocumentParser::German.new(text).sentences # simply assuming DE, for now
 
-    matcher = WordMatcher.new(sentences, trace)
+    matcher = WordMatcher.new(sentences)
     label_ids = matcher.labels
     @trace = matcher.trace
 

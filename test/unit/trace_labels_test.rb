@@ -29,17 +29,9 @@ class TraceLabelsTest < ActiveSupport::TestCase
     @label_ids.each { |term, label| @label_ids[term] = label.id }
   end
 
-  test "tracing deactivated by default" do
-    sentence = "lorem Weltraum ipsum Pilot".split(" ")
-    matcher = WordMatcher.new([sentence])
-    _ = matcher.labels
-
-    assert_equal nil, matcher.trace
-  end
-
   test "tracing exposes discovered labels by inflectionals' normal_hash" do
     sentence = "lorem Weltraum ipsum Pilot".split(" ")
-    matcher = WordMatcher.new([sentence], true)
+    matcher = WordMatcher.new([sentence])
     _ = matcher.labels
     trace = matcher.trace
 
@@ -51,7 +43,7 @@ class TraceLabelsTest < ActiveSupport::TestCase
 
   test "tracing exposes discovered compound labels by first component's label ID" do
     sentence = "lorem Weltraum ipsum Kampf dolor Fracht sit Pilot amet".split(" ")
-    matcher = WordMatcher.new([sentence], true)
+    matcher = WordMatcher.new([sentence])
     _ = matcher.labels
     trace = matcher.trace
 

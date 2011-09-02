@@ -5,13 +5,14 @@
 
 class WordMatcher
 
+  # @trace[:label_index]: list of label IDs by inflectionals' normal_hash
+  # @trace[:compound_index]: list of label IDs by first component's label ID
   attr_reader :trace
 
   # each sentence is an array words (i.e. simple strings)
-  # if trace is true, `#trace` returns a hash with :label_index and :compound_index
-  def initialize(sentences, trace=false)
+  def initialize(sentences)
     @sentences = sentences
-    @trace = trace ? {} : nil
+    @trace = {}
   end
 
   # NB: returns label IDs rather than label instances (for performance reasons),
@@ -31,10 +32,8 @@ class WordMatcher
     label_index = inflectionals.each_with_object({}) { |inf, hsh|
       hsh[inf.normal_hash] = inf.label_id # FIXME: this risks discarding two inflectionals with identical value
     }
-    if @trace
-      # label IDs by inflectionals' normal_hash
-      @trace[:label_index] = label_index
-    end
+    # list of label IDs by inflectionals' normal_hash
+    @trace[:label_index] = label_index
     inflectionals = nil # manual GC
     label_seqs = hash_seqs.map { |seq|
       seq.map { |hash| label_index[hash] }.
@@ -59,7 +58,7 @@ class WordMatcher
     # for each sentence, determine compound forms whose components are present
     # in the sentence, in the right order
     results = []
-    @trace[:compound_index] = {} if @trace
+    @trace[:compound_index] = {}
     label_seqs.each { |label_seq|
       candidates.each { |compound_form| # XXX: iterating over all candidates seems inefficient; can't we pre-filter based on what appears in the current sentence?
         component_ids = compound_form.compound_form_contents.map(&:label_id)
@@ -68,11 +67,9 @@ class WordMatcher
           # sequence of occurrence within the sentence must match the compound form's
           if align(label_seq, component_ids)
             results.push(compound_form.domain_id)
-            if @trace
-              # list of label IDs by first component's label ID
-              @trace[:compound_index][component_ids.first] ||= []
-              @trace[:compound_index][component_ids.first].push(compound_form.domain_id)
-            end
+            # list of label IDs by first component's label ID
+            @trace[:compound_index][component_ids.first] ||= []
+            @trace[:compound_index][component_ids.first].push(compound_form.domain_id)
           end
         end
       }
