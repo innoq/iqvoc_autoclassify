@@ -82,20 +82,23 @@ class Document < ActiveRecord::Base
       end
     end
 
-    determine_title_concepts.each { |concept|
+    # increase weighting for concepts derived from the title
+    determine_title_concepts(concepts.keys).each { |concept|
       concepts[concept] *= 1.5 # NB: regular analysis already includes the title
     }
 
     return concepts
   end
 
-  def determine_title_concepts
+  # concepts is a list of known Concept instances, merely used for efficiency
+  def determine_title_concepts(concepts)
     return {} unless self.title
     sentences = @parser.new(self.title).sentences
     matcher = WordMatcher.new(sentences)
     concept_ids = matcher.labels.map { |id| @trace[:concept_index][id] }.
-        flatten.uniq
-    return Concept::Base.where(:id => concept_ids)
+        flatten.uniq # avoids excessive bonuses
+    concepts = concepts.index_by(&:id)
+    return concept_ids.map { |id| concepts[id] }
   end
 
   def analyze_concept_relations

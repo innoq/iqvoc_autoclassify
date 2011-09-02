@@ -41,6 +41,10 @@ class DocumentLabelsTest < ActiveSupport::TestCase
         value: moderat
       -
         value: oderfoo
+
+      concepts:
+      -
+        pref_labels: [Weltraumkampfpilot]
     EOF
     @labels = data[:labels]
   end
