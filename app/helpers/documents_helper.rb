@@ -81,7 +81,8 @@ module DocumentsHelper
     # labels by ID
     labels = labels.each_with_object({}) { |label, hsh| hsh[label.id] = label }
 
-    return DocumentParser::German.new(document.content).sentences.map { |sentence| # simply assuming DE, for now -- XXX: repeated parsing inefficient
+    text = document.title ? document.title + ".\n\n" + document.content : document.content
+    return DocumentParser::German.new(text).sentences.map { |sentence| # simply assuming DE, for now
       sentence.map! { |word|
         normal_hash = Inflectional::Base.normalize(word)
         label_id = trace["label_index"][normal_hash.to_s]
