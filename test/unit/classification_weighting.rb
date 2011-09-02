@@ -98,10 +98,10 @@ class ClassificationWeightingTest < ActiveSupport::TestCase
 
     concepts = doc.concepts
     assert_equal 4, concepts.keys.length
-    assert_equal 2.5, concepts[@concepts["Weltraum"]]
+    assert_equal 3.0, concepts[@concepts["Weltraum"]]
     assert_equal 1.5, concepts[@concepts["Kampf"]]
     assert_equal 1.5, concepts[@concepts["Pilot"]]
-    assert_equal 2.5, concepts[@concepts["Weltraumkampfpilot"]]
+    assert_equal 3.0, concepts[@concepts["Weltraumkampfpilot"]]
   end
 
   test "multiple occurence of the same label increases weighting" do

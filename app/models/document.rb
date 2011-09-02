@@ -11,6 +11,10 @@ class Document < ActiveRecord::Base
   has_many :comments, :dependent => :destroy
   has_one :classification_trace, :dependent => :destroy
 
+  after_initialize do
+    @parser = DocumentParser::German
+  end
+
   validates_presence_of :content
   validates_uniqueness_of :content_hash
 
@@ -78,9 +82,8 @@ class Document < ActiveRecord::Base
       end
     end
 
-    determine_title_concepts.each { |concept, weighting|
-      concepts[concept] += weighting * 0.5 # in addition to the regular analysis
-                                           # (which already includes the title)
+    determine_title_concepts.each { |concept|
+      concepts[concept] *= 1.5 # NB: regular analysis already includes the title
     }
 
     return concepts
@@ -88,8 +91,11 @@ class Document < ActiveRecord::Base
 
   def determine_title_concepts
     return {} unless self.title
-    doc = Document.new(:content => self.title)
-    return doc.concepts
+    sentences = @parser.new(self.title).sentences
+    matcher = WordMatcher.new(sentences)
+    concept_ids = matcher.labels.map { |id| @trace[:concept_index][id] }.
+        flatten.uniq
+    return Concept::Base.where(:id => concept_ids)
   end
 
   def analyze_concept_relations
@@ -105,7 +111,7 @@ class Document < ActiveRecord::Base
   # returns a hash pairing labels with the respective number of occurrences
   def determine_labels
     text = self.title ? self.title + ".\n\n" + self.content : self.content
-    sentences = DocumentParser::German.new(text).sentences # simply assuming DE, for now
+    sentences = @parser.new(text).sentences
 
     matcher = WordMatcher.new(sentences)
     label_ids = matcher.labels
