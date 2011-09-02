@@ -21,6 +21,10 @@ class DocumentConceptsTest < ActiveSupport::TestCase
       -
         value: foo
       -
+        value: bar
+      -
+        value: baz
+      -
         value: Kyoto
       -
         value: Protokoll
@@ -81,6 +85,15 @@ class DocumentConceptsTest < ActiveSupport::TestCase
     doc = make_document(:content => text)
 
     assert_equal 0, doc.concepts.keys.length
+  end
+
+  test "ignore labels without matching concepts" do
+    title = "bar"
+    text = "baz"
+    doc = make_document(:title => title, :content => text)
+
+    concepts = doc.concepts
+    assert_equal 0, concepts.keys.length
   end
 
   test "decompose hyphenated words without adding compound forms" do

@@ -96,7 +96,7 @@ class Document < ActiveRecord::Base
     sentences = @parser.new(self.title).sentences
     matcher = WordMatcher.new(sentences)
     concept_ids = matcher.labels.map { |id| @trace[:concept_index][id] }.
-        flatten.uniq # avoids excessive bonuses
+        flatten.compact.uniq # `uniq` avoids multiple bonuses for the same concept
     concepts = concepts.index_by(&:id)
     return concept_ids.map { |id| concepts[id] }
   end
@@ -127,6 +127,7 @@ class Document < ActiveRecord::Base
         includes(:labelings => { :owner => { :relations => :target } }) # required for subsequent concept analysis
     labels = labels.index_by(&:id)
 
+    # count number of occurrences
     return label_ids.inject({}) { |hsh, id|
       label = labels[id]
       if label
