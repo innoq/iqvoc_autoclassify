@@ -39,8 +39,9 @@ module DocumentsHelper
     # FIXME: inefficient; duplicates `augmented_fulltext` functionality
     label_ids = trace["label_index"].values.uniq
     label_ids += trace["compound_index"].values.uniq
-    labels = Iqvoc::XLLabel.base_class.where(:id => label_ids.uniq).
-        select([:id, :origin, :value, :language]) # XXX: database queries don't belong into helpers!?
+    labels = Iqvoc::XLLabel.base_class. # XXX: database queries don't belong into helpers!?
+        where(:id => label_ids.uniq, :language => I18n.locale).
+        select([:id, :origin, :value, :language])
     # labels by ID
     labels = labels.each_with_object({}) { |label, hsh| hsh[label.id] = label }
 
@@ -74,8 +75,9 @@ module DocumentsHelper
 
     label_ids = trace["label_index"].values.uniq
     label_ids += trace["compound_index"].values.uniq
-    labels = Iqvoc::XLLabel.base_class.where(:id => label_ids.uniq).
-        select([:id, :origin, :value, :language]) # XXX: database queries don't belong into helpers!?
+    labels = Iqvoc::XLLabel.base_class. # XXX: database queries don't belong into helpers!?
+        where(:id => label_ids.uniq, :language => I18n.locale).
+        select([:id, :origin, :value, :language])
     # labels by ID
     labels = labels.each_with_object({}) { |label, hsh| hsh[label.id] = label }
 
@@ -84,8 +86,8 @@ module DocumentsHelper
         normal_hash = Inflectional::Base.normalize(word)
         label_id = trace["label_index"][normal_hash.to_s]
 
-        if label_id
-          label = labels[label_id]
+        label = labels[label_id]
+        if label
           classes = ["hint"]
           details = [
             "<h3>#{label.class.model_name.human(:count => 1)}</h3>",
