@@ -7,7 +7,7 @@ gem 'iqvoc_skosxl', :path => '../iqvoc_skosxl'
 gem 'iqvoc_umt', :path => '../iqvoc_umt'
 
 gem 'ruby-readability', :require => 'readability'
-gem 'nokogiri', '1.5.0'
+gem 'nokogiri', '1.4.7'
 gem 'pdf-reader', '~> 0.10.0'
 
 # Hotfix for the problem of engine/plugin helpers not being mixed in.
