@@ -20,7 +20,7 @@ end
 
 group :development, :test do
   platforms :ruby do
-    gem 'mysql2', '0.2.7'
+    gem 'mysql2'
   end
   platforms :jruby do
     gem 'activerecord-jdbcmysql-adapter'
