@@ -16,6 +16,11 @@ gem 'pdf-reader', '~> 0.10.0'
 gem 'rails_helpers_fix'
 
 group :development do
+  gem 'awesome_print'
+end
+
+group :assets do
+  gem 'uglifier'
 end
 
 group :development, :test do
