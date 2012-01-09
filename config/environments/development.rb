@@ -26,6 +26,12 @@ if Iqvoc::AutoClassify.const_defined?(:Application)
     # The default URI prefix for RDF data. This will be followed by a document-
     # specific snippet like (specimenType) and the id.
 
+    # Do not compress assets
+    config.assets.compress = false
+
+    # Expands the lines which load the assets
+    config.assets.debug = true
+
     # The JDBC driver URL for the connection to the virtuoso triple store.
     # Login credentials have to be stored here too. See
     # http://docs.openlinksw.com/virtuoso/VirtuosoDriverJDBC.html#jdbcurl4mat for
