@@ -10,11 +10,6 @@ gem 'ruby-readability', :require => 'readability'
 gem 'nokogiri', '1.5.0'
 gem 'pdf-reader', '~> 0.10.0'
 
-# Hotfix for the problem of engine/plugin helpers not being mixed in.
-# https://rails.lighthouseapp.com/projects/8994/tickets/1905-apphelpers-within-plugin-not-being-mixed-in
-# http://github.com/drogus/rails_helpers_fix
-gem 'rails_helpers_fix'
-
 group :development do
   gem 'awesome_print'
 end
