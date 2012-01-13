@@ -1,10 +1,11 @@
-source "http://rubygems.org"
+source 'http://rubygems.org'
+source 'http://iqvoc:REMOVED@gems.innoq.com/iqvoc'
 
 gem 'rails', '3.1.3'
 
-gem 'iqvoc', :path => '../iqvoc'
-gem 'iqvoc_skosxl', :path => '../iqvoc_skosxl'
-gem 'iqvoc_umt', :path => '../iqvoc_umt'
+gem 'iqvoc',              '~> 3.3.3' #, :path => '../iqvoc'
+gem 'iqvoc_skosxl',       '~> 1.1.3' #, :path => '../iqvoc_skosxl'
+gem 'iqvoc_autoclassify', '~> 1.1.0' #, :path => '../iqvoc_autoclassify'
 
 gem 'ruby-readability', :require => 'readability'
 gem 'nokogiri', '1.5.0'
@@ -21,6 +22,7 @@ end
 group :development, :test do
   platforms :ruby do
     gem 'mysql2'
+    gem 'sqlite3'
   end
   platforms :jruby do
     gem 'activerecord-jdbcmysql-adapter'
