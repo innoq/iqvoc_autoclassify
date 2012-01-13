@@ -5,6 +5,7 @@ gem 'rails', '3.1.3'
 
 gem 'iqvoc',              '~> 3.3.3' #, :path => '../iqvoc'
 gem 'iqvoc_skosxl',       '~> 1.1.3' #, :path => '../iqvoc_skosxl'
+gem 'iqvoc_umt',          '~> 1.1.0' #, :path => '../iqvoc_umt'
 gem 'iqvoc_autoclassify', '~> 1.1.0' #, :path => '../iqvoc_autoclassify'
 
 gem 'ruby-readability', :require => 'readability'

@@ -75,6 +75,10 @@ GEM
     iqvoc_skosxl (1.1.3)
       bundler
       iqvoc
+    iqvoc_umt (1.1.0)
+      bundler
+      iqvoc
+      iqvoc_skosxl
     json (1.6.4)
     kaminari (0.13.0)
       actionpack (>= 3.0.0)
@@ -161,6 +165,7 @@ DEPENDENCIES
   iqvoc (~> 3.3.3)
   iqvoc_autoclassify (~> 1.1.0)
   iqvoc_skosxl (~> 1.1.3)
+  iqvoc_umt (~> 1.1.0)
   mysql2
   nokogiri (= 1.5.0)
   pdf-reader (~> 0.10.0)
