@@ -13,6 +13,10 @@ Gem::Specification.new do |s|
   s.description = ""
 
   s.add_dependency "iqvoc"
+  s.add_dependency "iqvoc"
+  s.add_dependency "iqvoc_skosxl"
+  s.add_dependency "iqvoc_inflectionals"
+  s.add_dependency "iqvoc_compound_forms"
   s.add_dependency "bundler"
   s.add_dependency "ruby-readability"
   s.add_dependency "pdf-reader", "~> 0.10.0"
