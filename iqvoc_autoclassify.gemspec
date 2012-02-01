@@ -13,7 +13,6 @@ Gem::Specification.new do |s|
   s.description = ""
 
   s.add_dependency "iqvoc"
-  s.add_dependency "iqvoc"
   s.add_dependency "iqvoc_skosxl"
   s.add_dependency "iqvoc_inflectionals"
   s.add_dependency "iqvoc_compound_forms"
