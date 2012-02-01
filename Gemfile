@@ -1,13 +1,13 @@
 source 'http://rubygems.org'
 source 'http://iqvoc:REMOVED@gems.innoq.com/iqvoc'
 
-gem 'rails', '3.1.3'
+gem 'rails', '3.2.1'
 
-gem 'iqvoc',                '~> 3.3.3'
-gem 'iqvoc_skosxl',         '~> 1.1.4'
+gem 'iqvoc',                '~> 3.5.3'
+gem 'iqvoc_skosxl',         '~> 1.2.0'
 gem 'iqvoc_umt',            '~> 1.1.0'
-gem 'iqvoc_inflectionals',  '~> 1.0.1'
-gem 'iqvoc_compound_forms', '~> 1.0.2'
+gem 'iqvoc_inflectionals',  '~> 1.1.0'
+gem 'iqvoc_compound_forms', '~> 1.1.0'
 
 gem 'ruby-readability', :require => 'readability'
 gem 'nokogiri', '1.5.0'
