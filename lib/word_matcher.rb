@@ -1,8 +1,5 @@
 # encoding: UTF-8
 
-# XXX / NB: This currently relies on UMT, as inflectionals and compounds are
-#           not yet separate engines.
-
 class WordMatcher
 
   # @trace[:label_index]: list of label IDs by inflectionals' normal_hash
