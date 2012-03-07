@@ -7,4 +7,4 @@ Iqvoc.navigation_items.insert(-5, { # in front of search, users, instance config
   :controller => "documents"
 })
 
-Iqvoc.core_assets += %w(jquery.mintip.css jquery.mintip.min.js)
+Iqvoc.core_assets += %w(iqvoc_autoclassify/jquery.mintip.css iqvoc_autoclassify/jquery.mintip.js)
