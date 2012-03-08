@@ -33,6 +33,11 @@ module Textractor
           title, content = from_html(data.read)
       end
     }
+    
+    if RUBY_VERSION >= "1.9"
+      title = title.encode("UTF-8")
+    end
+    
     return title, content
   end
 
