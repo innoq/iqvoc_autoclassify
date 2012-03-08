@@ -37,7 +37,7 @@ module Textractor
   end
 
   def self.from_html(html)
-    doc = Readability::Document.new(html)
+    doc = Readability::Document.new(html, :encoding => "UTF-8")
     title = doc.html.css("title").first
     title = title ? title.text : nil
     content = Nokogiri::HTML(doc.content).text # invoking Nokogiri seems a bit
