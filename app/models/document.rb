@@ -24,13 +24,13 @@ class Document < ActiveRecord::Base
 
   after_save do |document|
     document.classifications.destroy_all
-    document.concepts.each { |concept, weighting|
+    document.concepts.each do |concept, weighting|
       uri = concept_url(concept, :host => @url_info[:host],
           :lang => @url_info[:lang])
       document.classifications.create!(:concept_id => concept.id,
           :concept_uri => uri, :weighting => weighting,
           :title => concept.to_s) # XXX: `to_s` is expensive (label loaded lazily)
-    }
+    end
 
     # NB: trace only stores references (IDs)
     document.create_classification_trace(:trace => @trace.to_json)
@@ -128,13 +128,13 @@ class Document < ActiveRecord::Base
     labels = labels.index_by(&:id)
 
     # count number of occurrences
-    return label_ids.inject({}) { |hsh, id|
+    return label_ids.inject({}) do |hsh, id|
       label = labels[id]
       if label
         hsh[label] = hsh[label] ? hsh[label] + 1 : 1
       end
       hsh
-    }
+    end
   end
 
 end
