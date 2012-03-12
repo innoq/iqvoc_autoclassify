@@ -22,6 +22,8 @@ Spork.prefork do
     end
 
   end
+
+  I18n.locale = :de
 end
 
 Spork.each_run do
