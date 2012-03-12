@@ -28,6 +28,7 @@ group :development, :test do
   end
   platforms :jruby do
     gem 'activerecord-jdbcmysql-adapter'
+    gem 'activerecord-jdbcsqlite3-adapter'
   end
 end
 
