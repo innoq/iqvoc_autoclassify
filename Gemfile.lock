@@ -131,7 +131,7 @@ GEM
       activesupport (= 3.2.2)
       bundler (~> 1.0)
       railties (= 3.2.2)
-    rails_autolink (1.0.5)
+    rails_autolink (1.0.6)
       rails (~> 3.1)
     railties (3.2.2)
       actionpack (= 3.2.2)
@@ -196,7 +196,7 @@ DEPENDENCIES
   pry
   rails (= 3.2.2)
   ruby-readability
-  spork (~> 0.9.0.rc)
+  spork
   spork-testunit
   sqlite3
   test-unit

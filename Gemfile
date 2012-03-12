@@ -37,7 +37,7 @@ group :test do
   gem 'capybara'
   gem 'database_cleaner'
   gem 'fakeweb'
-  gem 'spork', '~> 0.9.0.rc'
+  gem 'spork'
   gem 'spork-testunit'
 end
 
