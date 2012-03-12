@@ -24,6 +24,7 @@ group :development, :test do
   platforms :ruby do
     gem 'mysql2'
     gem 'sqlite3'
+    gem 'pry' # for interactive debugging
   end
   platforms :jruby do
     gem 'activerecord-jdbcmysql-adapter'
