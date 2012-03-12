@@ -36,12 +36,12 @@ class ParserDocumentTest < ActiveSupport::TestCase
     Die Ergebnisse der wasserhygienischen Untersuchungen aus den Bundesländern fasst das Umweltbundesamt zusammen, prüft sie auf Stimmigkeit und leitet sie über das Bundesministerium für Umwelt, Naturschutz und Reaktorsicherheit an die Europäische Kommission. Diese erstellt eine Qualitätseinstufung aller europäischen Badestellen. Die Ergebnisse werden als „Jährlicher Bericht zur Badewasserqualität” veröffentlicht. Die EU bietet auch einen Data viewer zur Badewasserqualität (auf Englisch) an.
 
     Die Bundesländer sind für die Überwachung der Badegewässer verantwortlich. Die meisten Bundesländer stellen aktuelle Daten im Internet zur Verfügung. In den Ländern, die noch keine zentrale Internetinformation bereitstellen, erteilen die zuständigen Gesundheitsbehörden Auskunft.
-    Baden-Württemberg 	Mecklenburg-Vorpommern 	Sachsen
-    Bayern 	Niedersachsen 	Sachsen-Anhalt
-    Berlin 	Nordrhein-Westfalen 	Schleswig-Holstein
-    Brandenburg 	Rheinland-Pfalz 	Thüringen
-    Bremen 	Hessen
-    Hamburg 	Saarland
+    Baden-Württemberg	Mecklenburg-Vorpommern	Sachsen
+    Bayern	Niedersachsen	Sachsen-Anhalt
+    Berlin	Nordrhein-Westfalen	Schleswig-Holstein
+    Brandenburg	Rheinland-Pfalz	Thüringen
+    Bremen	Hessen
+    Hamburg	Saarland
 
     Am 24. März 2006 trat die novellierte europäische Richtlinie über die Qualität der Badegewässer und deren Bewirtschaftung in Kraft. Die Richtlinie wurde in Deutschland in 16 Länderverordnungen umgesetzt. Seit der Badesaison 2008 werden die Badegewässer nach der neuen Richtlinie überwacht. Für die Einstufung der Badegewässer nach den Vorgaben der neuen Richtlinie werden Daten aus vier Jahren benötigt; die erste Einstufung wird daher im Jahr 2011 erfolgen.
 

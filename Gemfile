@@ -31,6 +31,7 @@ group :development, :test do
 end
 
 group :test do
+  gem 'test-unit'
   gem 'capybara'
   gem 'database_cleaner'
   gem 'fakeweb'
