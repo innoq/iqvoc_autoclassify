@@ -1,7 +1,7 @@
 source 'http://rubygems.org'
 source 'http://iqvoc:REMOVED@gems.innoq.com/iqvoc'
 
-gem 'rails', '3.2.2'
+gem 'rails', '3.2.3'
 
 gem 'iqvoc',                '~> 3.5.5'
 gem 'iqvoc_skosxl',         '~> 1.2.0'
