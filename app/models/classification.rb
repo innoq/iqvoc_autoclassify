@@ -4,7 +4,7 @@ class Classification < ActiveRecord::Base
 
   def build_rdf(document, result)
     result.Sdc::link(IqRdf.build_uri(concept_uri))
-    result.Dc::title(title) if title
+    result.Dct::title(title) if title
     result.Sdc::rank(weighting) # XXX: "rank" invalid; not an integer, not unique(?)
   end
 

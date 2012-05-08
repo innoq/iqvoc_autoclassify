@@ -142,7 +142,7 @@ class DocumentsControllerTest < ActionController::TestCase
     expected = <<-EOS
       search:result1 a sdc:Result;
       \tsdc:link :http://localhost/de/concepts/_00000001;
-      \tdc:title "Foo";
+      \tdct:title "Foo";
       \tsdc:rank 1.0.
     EOS
     expected.gsub!(/^ +/, "")
@@ -152,7 +152,7 @@ class DocumentsControllerTest < ActionController::TestCase
     expected = <<-EOS
       search:result2 a sdc:Result;
       \tsdc:link :http://localhost/de/concepts/_00000002;
-      \tdc:title "Bar";
+      \tdct:title "Bar";
       \tsdc:rank 1.0.
     EOS
     expected.gsub!(/^ +/, "")
@@ -162,7 +162,7 @@ class DocumentsControllerTest < ActionController::TestCase
     expected = <<-EOS
       search:result3 a sdc:Result;
       \tsdc:link :http://localhost/de/concepts/_00000003;
-      \tdc:title "Baz";
+      \tdct:title "Baz";
       \tsdc:rank 1.0.
     EOS
     expected.gsub!(/^ +/, "")
