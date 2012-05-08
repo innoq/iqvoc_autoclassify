@@ -1,5 +1,4 @@
 source 'http://rubygems.org'
-source 'http://iqvoc:REMOVED@gems.innoq.com/iqvoc'
 
 gem 'rails', '3.2.3'
 
