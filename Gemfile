@@ -1,6 +1,6 @@
 source 'http://rubygems.org'
 
-gem 'rails', '3.2.3'
+gem 'rails', '3.2.8'
 
 gem 'iqvoc',                '~> 3.5.5'
 gem 'iqvoc_skosxl',         '~> 1.2.0'
