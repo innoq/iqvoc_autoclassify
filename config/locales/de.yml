@@ -18,8 +18,8 @@ de:
           success: Kommentar erfolgreich übermittelt
     views:
       document:
-        new: neues Dokument
+        new: Neues Dokument
         reclassify: Klassifizierung neu berechnen
-        index: Dokumentübersicht
+        index: Übersicht
         too_large: angefordertes Dokument ist zu umfangreich
         comment: Kommentar hinterlassen

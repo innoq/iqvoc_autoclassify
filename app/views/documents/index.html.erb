@@ -1,27 +1,26 @@
-<h1><%= Document.model_name.human(:count => 2) %></h1>
+<%= page_header :title => Document.model_name.human(:count => 2) %>
+<%= render "sidebar" %>
 
-<p>
-  <%= link_to t("txt.views.document.new"), new_document_path, :class => "button" %>
-</p>
-
-<table>
-  <tr>
-    <th><%= Document.human_attribute_name(:updated_at) %></th>
-    <th><%= Document.human_attribute_name(:title) %></th>
-    <th><%= Concept::Base.model_name.human(:count => 2) %></th>
-  </tr>
-
-<%- @documents.each do |doc| -%>
-  <tr>
-    <td><%= doc.updated_at %></td>
-    <td>
-      <%= link_to short_title(doc) || doc.content_hash,
-              document_path(:id => doc.content_hash) %>
-    </td>
-    <td><%= doc.classifications.length %></td>
-  </tr>
-<% end %>
-
+<table class="table">
+  <thead>
+    <tr>
+      <th><%= Document.human_attribute_name(:updated_at) %></th>
+      <th><%= Document.human_attribute_name(:title) %></th>
+      <th><%= Concept::Base.model_name.human(:count => 2) %></th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @documents.each do |doc| %>
+      <tr>
+        <td><%= doc.updated_at %></td>
+        <td>
+          <%= link_to short_title(doc) || doc.content_hash,
+                  document_path(:id => doc.content_hash) %>
+        </td>
+        <td><%= doc.classifications.length %></td>
+      </tr>
+    <% end %>
+  </tbody>
 </table>
 
 <%= paginate @documents %>

@@ -1,23 +1,9 @@
-<%- if @document.uri -%>
-<h1><%= link_to(@document.title || @document.content_hash, @document.uri) %></h1>
-<%- else -%>
-<h1><%= @document.title || @document.content_hash %></h1>
-<%- end -%>
-
-<% if defined?(display_comment_form) && display_comment_form %>
-<div class="new_comment">
-  <h3><%= t("txt.views.document.comment") %></h3>
-  <%= form_for([@document, @document.comments.build]) do |f| %>
-    <label>
-      <%= f.text_area :body %>
-    </label>
-
-    <div class="actions">
-      <%= f.submit t("txt.common.save") %>
-    </div>
-  <% end %>
+<% if @document.uri %>
+<%= page_header :title => link_to(@document.title || @document.content_hash, @document.uri),
+  :desc => "<br />#{Document.human_attribute_name(:updated_at)} #{l(@document.updated_at)}".html_safe %>
+<% else %>
+<%= page_header :title => @document.title || @document.content_hash %></h1>
 <% end %>
-</div>
 
 <%- if @trace -%>
   <%= stylesheet_link_tag "iqvoc_autoclassify/jquery.mintip.css" %>
@@ -44,11 +30,21 @@
 
 <div class="autoclassify"><%= paginate @classifications %></div> <!-- XXX: divitis!? -->
 
-<p><%= Document.human_attribute_name(:updated_at) %>: <%= @document.updated_at %></p>
+<% if defined?(display_comment_form) && display_comment_form %>
+<div class="new_comment">
+  <%= simple_form_for([@document, @document.comments.build]) do |f| %>
+    <%= f.input :body, :label => false, :input_html => {:rows => 10, :cols => 100} %>
+
+    <div class="actions">
+      <%= f.submit t("txt.views.document.comment"), :class => "btn btn-primary" %>
+    </div>
+  <% end %>
+<% end %>
+</div>
 
 <h2><%= t("txt.models.document.full_text") %></h2>
 <%- if @trace -%>
-<blockquote class="trace"><%= raw augmented_fulltext(@document) %></blockquote>
+<p><blockquote class="trace"><%= raw augmented_fulltext(@document) %></blockquote></p>
 <%- else -%>
-<blockquote class="plaintext"><%= @document.content.strip %></blockquote>
+<p><blockquote class="plaintext"><%= @document.content.strip %></blockquote></p>
 <%- end -%>

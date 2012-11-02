@@ -18,8 +18,8 @@ en:
           success: comment created successfully
     views:
       document:
-        new: new document
+        new: New document
         reclassify: recalculate classifications
-        index: document index
+        index: Index
         too_large: requested document is to large
         comment: leave comment

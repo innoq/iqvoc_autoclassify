@@ -1,5 +1,3 @@
-<h1><%= t("txt.views.document.new") %></h1>
-
+<%= page_header :title => t("txt.views.document.new") %>
+<%= render "sidebar" %>
 <%= render "form" %>
-
-<%= link_to t("txt.views.document.index"), documents_path %>

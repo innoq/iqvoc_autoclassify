@@ -1,0 +1,10 @@
+<%= sidebar do %>
+  <%= sidebar_item :text => t("txt.views.document.index"),
+      :icon => "list-alt",
+      :path => documents_path,
+      :active => params[:action] == "index" %>
+  <%= sidebar_item :text => t("txt.views.document.new"),
+      :icon => 'edit',
+      :path => new_document_path,
+      :active => params[:controller] == 'documents' && ["new", "create"].include?(params[:action]) %>
+<% end %>

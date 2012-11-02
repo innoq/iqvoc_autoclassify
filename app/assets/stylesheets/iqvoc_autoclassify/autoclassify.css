@@ -1,56 +1,53 @@
 blockquote.plaintext {
-	white-space: pre-wrap;
+  white-space: pre-wrap;
 }
 
 .trace .sentence {
-	margin-bottom: 0.5em;
+  margin-bottom: 0.5em;
 }
 
 .trace .hint {
-	color: #308110;
-	cursor: help;
+  color: #308110;
+  cursor: help;
 }
 
 .trace .hint:hover {
-	opacity: 0.5;
+  opacity: 0.5;
 }
 
 .trace .compounds {
-	font-weight: bold;
+  font-weight: bold;
 }
 
 .trace .concepts {
-	color: #00A;
+  color: #00A;
 }
 
 .autoclassify .pagination {
-	margin-bottom: 1em;
+  margin-bottom: 1em;
 }
 
 .weighting {
-	font-size: 0.9em;
-	color: #666;
+  font-size: 0.9em;
+  color: #666;
 }
 
 .new_document fieldset input[type="text"],
 .new_document fieldset textarea {
-	display: block;
-	width: 90%;
+  display: block;
+  width: 90%;
 }
 
 .new_document #url { /* XXX: hacky? */
-	margin-top: 0;
+  margin-top: 0;
 }
 
 .new_document fieldset textarea {
-	margin-top: 1em;
+  margin-top: 1em;
 }
 
-div.new_comment {
-	float: right;
-	margin: 2em 0 1em 1em;
-}
-
-.new_comment #comment_submit {
-	float: right;
+.new_comment textarea {
+  /* disable some bootstrap styles */
+  width: inherit;
+  height: inherit;
 }
