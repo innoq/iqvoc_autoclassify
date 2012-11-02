@@ -2,13 +2,13 @@ source 'http://rubygems.org'
 
 gem 'rails', '3.2.8'
 
-gem 'iqvoc',                '~> 3.5.5'
-gem 'iqvoc_skosxl',         '~> 1.2.0'
-gem 'iqvoc_inflectionals',  '~> 1.1.0'
-gem 'iqvoc_compound_forms', '~> 1.1.0'
+gem 'iqvoc', '~> 4.0.2'
+gem 'iqvoc_skosxl', '~> 2.0.1'
+gem 'iqvoc_inflectionals', '~> 2.0.1'
+gem 'iqvoc_compound_forms', '~> 2.0.2'
 
 gem 'ruby-readability', :require => 'readability'
-gem 'nokogiri', '1.5.0'
+gem 'nokogiri', '~> 1.5.0'
 gem 'pdf-reader', '~> 0.10.0'
 
 group :development do
