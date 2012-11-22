@@ -50,7 +50,6 @@ class DocumentsControllerTest < ActionController::TestCase
 
     assert_response :success
     assert_not_nil assigns(:documents)
-    ap assigns(:documents)
     assert_select "table tbody" do
       assert_select "tr", 2
     end
