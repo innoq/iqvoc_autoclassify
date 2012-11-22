@@ -21,12 +21,10 @@ end
 
 group :development, :test do
   platforms :ruby do
-    gem 'mysql2'
     gem 'sqlite3'
     gem 'pry' # for interactive debugging
   end
   platforms :jruby do
-    gem 'activerecord-jdbcmysql-adapter'
     gem 'activerecord-jdbcsqlite3-adapter'
   end
 end
