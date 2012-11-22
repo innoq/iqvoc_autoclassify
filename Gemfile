@@ -23,8 +23,6 @@ group :development, :test do
     gem 'pry' # for interactive debugging
   end
   platforms :jruby do
-    gem 'activerecord-mysql-adapter'
-    gem 'activerecord-jdbcsqlite3-adapter'
   end
 end
 
@@ -36,14 +34,15 @@ group :test do
   gem 'fakeweb'
   gem 'spork'
   gem 'spork-testunit'
+  gem 'activerecord-oracle_enhanced-adapter', '~> 1.4.1', :platforms => :jruby
 end
 
-group :production, :production_internal do
+group :production do
   platforms :ruby do
     gem 'sqlite3'
   end
 
   platforms :jruby do
-    gem 'activerecord-oracle_enhanced-adapter'
+    gem 'activerecord-oracle_enhanced-adapter', '~> 1.4.1'
   end
 end
