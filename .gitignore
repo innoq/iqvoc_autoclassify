@@ -1,6 +1,7 @@
 *.gem
 .bundle
 pkg/*
+*.sqlite
 
 config/database.yml
 db/schema.rb
