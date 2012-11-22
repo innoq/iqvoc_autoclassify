@@ -50,12 +50,13 @@ class DocumentsControllerTest < ActionController::TestCase
 
     assert_response :success
     assert_not_nil assigns(:documents)
-    assert_select "table" do
-      assert_select "tr", 3
+    ap assigns(:documents)
+    assert_select "table tbody" do
+      assert_select "tr", 2
     end
-    assert_select "tr:nth-of-type(2) td:nth-of-type(3)", "3"
-    assert_select "tr:nth-of-type(3) a[href=/de/documents/d0d2efdf0c05081e2c3ae386215483329a653cfd.html]", 1
-    assert_select "tr:nth-of-type(3) td:nth-of-type(3)", "0"
+    assert_select "tbody tr:nth-of-type(1) td:nth-of-type(3)", "3"
+    assert_select "tbody tr:nth-of-type(2) a[href=/de/documents/d0d2efdf0c05081e2c3ae386215483329a653cfd.html]", 1
+    assert_select "tbody tr:nth-of-type(2) td:nth-of-type(3)", "0"
   end
 
   test "list matching concepts for the respective document" do
@@ -84,7 +85,7 @@ class DocumentsControllerTest < ActionController::TestCase
     get :show, :id => id, :lang => "de", :format => :html
 
     assert_select "a[href=#{@urls["html"]}]", 1
-    assert_select "h1", { :text => "Lipsum" }
+    assert_select "h1", /Lipsum/
     assert_select "ol li", 3
   end
 
@@ -99,7 +100,7 @@ class DocumentsControllerTest < ActionController::TestCase
     get :show, :id => id, :lang => "de", :format => :html
 
     assert_select "a[href=#{@urls["pdf"]}]", 1
-    assert_select "h1", { :text => "(Unsaved Publication)" }
+    assert_select "h1", /\(Unsaved Publication\)/
     assert_select "blockquote", {
         :text => "This is a sample PDF file.If you can read this,you already " +
             "have Adobe AcrobatReader installed on your computer." }
