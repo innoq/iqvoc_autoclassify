@@ -1,3 +1,8 @@
+if RUBY_PLATFORM =~ /java/
+  require 'java'
+  $CLASSPATH << File.expand_path('../../lib/ojdbc6.jar', __FILE__)
+end
+
 require File.expand_path('../boot', __FILE__)
 
 require 'rails/all'
