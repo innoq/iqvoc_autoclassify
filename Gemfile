@@ -34,8 +34,6 @@ group :test do
   gem 'capybara', '~> 1.1.2'
   gem 'database_cleaner'
   gem 'fakeweb'
-  gem 'spork'
-  gem 'spork-testunit'
   gem 'activerecord-oracle_enhanced-adapter', '~> 1.4.1', :platforms => :jruby
 end
 
