@@ -2,6 +2,7 @@
 .bundle
 pkg/*
 *.sqlite
+*.sqlite3
 
 config/database.yml
 db/schema.rb
