@@ -6,7 +6,7 @@ class AutoclassifyController < ApplicationController # TODO: auth restrictions?
     has_uri =  uri && uri.strip.length > 0
     url_info = { :host => request.host_with_port, :lang => I18n.locale }
     return head :bad_request unless has_uri
-    @document = Document.from_uri(uri, url_info) 
+    @document = Document.from_uri(uri, url_info)
     @document.autoclassify!
 
     if @document.valid?
@@ -28,7 +28,7 @@ class AutoclassifyController < ApplicationController # TODO: auth restrictions?
     return head :bad_request unless content_type.text? or content_type.html?
 
     if content_type.text?
-      @document = Document.from_text(content, url_info)  
+      @document = Document.from_text(content, url_info)
     elsif content_type.html?
       @document = Document.from_html(content, url_info)
     else

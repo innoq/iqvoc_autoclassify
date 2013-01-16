@@ -87,11 +87,11 @@ class Document < ActiveRecord::Base
       self.classifications.destroy_all
       self.concepts.each do |concept, weighting|
         uri = concept_url(concept, :host => @url_info[:host], :lang => @url_info[:lang])
-        self.classifications.new(:concept_id => concept.id, 
-        :concept_uri => uri, :weighting => weighting, 
+        self.classifications.new(:concept_id => concept.id,
+        :concept_uri => uri, :weighting => weighting,
         :title => concept.to_s) # XXX: `to_s` is expensive (label loaded lazily)
       end
-      self.classifications.sort_by!{ |c| -c.weighting }      
+      self.classifications.sort_by!{ |c| -c.weighting }
     end
     return self
   end
