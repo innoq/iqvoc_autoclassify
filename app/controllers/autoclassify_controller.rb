@@ -28,14 +28,13 @@ class AutoclassifyController < ApplicationController # TODO: auth restrictions?
     has_content_type = !content_type.nil?
     url_info = { :host => request.host_with_port, :lang => I18n.locale }
     return head :bad_request unless has_content and has_content_type
-    return head :bad_request unless content_type.text? or content_type.html?
 
     if content_type.text?
       @document = Document.from_text(content, url_info)
     elsif content_type.html?
       @document = Document.from_html(content, url_info)
     else
-      @document = Document.new
+      return head :bad_request
     end
 
     @document.autoclassify!
