@@ -10,6 +10,7 @@ class AutoclassifyController < ApplicationController # TODO: auth restrictions?
     @document.autoclassify!
 
     if @document.valid?
+      @results = @document.classifications
       respond_to do |format|
         format.rdf { render("index.rdf") }
         format.ttl { render("index.rdf") }
@@ -40,6 +41,7 @@ class AutoclassifyController < ApplicationController # TODO: auth restrictions?
     @document.autoclassify!
 
     if @document.valid?
+      @results = @document.classifications
       respond_to do |format|
         format.rdf { render("index.rdf") }
         format.ttl { render("index.rdf") }
