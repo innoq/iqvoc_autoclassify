@@ -4,7 +4,7 @@ Rails.application.routes.draw do
       resources :comments
     end
 
-    match 'autoclassify.:format' => 'autoclassify#from_content',  :via => [:post],  :defaults => { :format => ['rdf'] }
-    match 'autoclassify.:format' => 'autoclassify#from_uri',  :via => [:get],  :defaults => { :format => ['rdf'] }
+		match 'autoclassify' => 'autoclassify#from_content',  :via => [:post],  :defaults => { :format => 'rdf' }
+		match 'autoclassify' => 'autoclassify#from_uri',  :via => [:get],  :defaults => { :format => 'rdf' }
   end
 end
