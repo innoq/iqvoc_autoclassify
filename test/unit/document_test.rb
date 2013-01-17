@@ -32,7 +32,7 @@ class DocumentTest < ActiveSupport::TestCase
   test "ensures content is supplied" do
     doc = Document.new
 
-    assert_raises(TypeError) { doc.save }
+    assert doc.errors[:content]
     assert_equal 0, Document.count
     assert doc.errors[:content]
   end
