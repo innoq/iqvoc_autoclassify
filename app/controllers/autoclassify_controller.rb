@@ -10,7 +10,10 @@ class AutoclassifyController < ApplicationController # TODO: auth restrictions?
     @document.autoclassify!
 
     if @document.valid?
-      render :text => "#{@document.classifications.each{|c| puts c}}"
+      respond_to do |format|
+        format.rdf { render("index.rdf") }
+        format.ttl { render("index.rdf") }
+      end
     elsif @document.errors.include? :too_large
       return head :request_entity_too_large
     else
@@ -38,7 +41,10 @@ class AutoclassifyController < ApplicationController # TODO: auth restrictions?
     @document.autoclassify!
 
     if @document.valid?
-      render :text => "#{@document.classifications.each{|c| puts c}}"
+      respond_to do |format|
+        format.rdf { render("index.rdf") }
+        format.ttl { render("index.rdf") }
+      end
     elsif @document.errors.include? :too_large
       return head :request_entity_too_large
     else
