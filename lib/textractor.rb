@@ -17,31 +17,22 @@ module Textractor
     validate_size = lambda { |content_length|
       raise ExcessiveSize if (content_length && content_length > 512000) # TODO: configurable
     }
-    # TODO add here better http error handling 
-    begin 
-      open(url, :content_length_proc => validate_size) { |data|
-        case data.content_type
-          when "application/pdf"
-            file = Tempfile.new "textractor"
-            file.binmode
-            file.write data.read
-            file.close
-            title, content = from_pdf(file.path)
-            file.delete
-          when "text/plain"
-           content = data.read
-          when "text/html"
-            title, content = from_html(data.read)
-          when "application/xhtml+xml"
-            title, content = from_html(data.read)
-          else # assume HTML
-            title, content = nil, nil
-          #title, content = from_html(data.read)
-        end
-      }
-    rescue
-      title, content = nil, nil
-    end
+
+    open(url, :content_length_proc => validate_size) { |data|
+      case data.content_type
+        when "application/pdf"
+          file = Tempfile.new "textractor"
+          file.binmode
+          file.write data.read
+          file.close
+          title, content = from_pdf(file.path)
+          file.delete
+        when "text/plain"
+          content = data.read
+        else # assume HTML
+          title, content = from_html(data.read)
+      end
+    }
 
     if RUBY_VERSION >= "1.9"
       title = title.encode("UTF-8") unless title.nil?
