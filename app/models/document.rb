@@ -82,7 +82,7 @@ class Document < ActiveRecord::Base
     end
   end
 
-  def autoclassify!
+  def autoclassify
     if self.valid?
       self.classifications.destroy_all
       self.concepts.each do |concept, weighting|
