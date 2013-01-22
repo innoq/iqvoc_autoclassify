@@ -31,6 +31,7 @@ end
 group :test do
   # gem 'minitest'
   # gem 'test-unit'
+  gem 'turn'
   gem 'capybara', '~> 1.1.2'
   gem 'database_cleaner'
   gem 'fakeweb'

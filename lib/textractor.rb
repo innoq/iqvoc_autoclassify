@@ -35,7 +35,7 @@ module Textractor
     }
 
     if RUBY_VERSION >= "1.9"
-      title = title.encode("UTF-8")
+      title = title.encode("UTF-8") unless title.nil?
     end
 
     return title, content
