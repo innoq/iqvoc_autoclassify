@@ -47,18 +47,18 @@ class Document < ActiveRecord::Base
   def self.from_uri(uri, url_info)
     document = Document.new(:uri => uri, :url_info => url_info)
     document.extract_from_uri(uri)
-    return document
+    document
   end
 
   def self.from_html(html, url_info)
     document = Document.new(:url_info => url_info)
     document.extract_from_html(html)
-    return document
+    document
   end
 
   def self.from_text(text, url_info)
     document = Document.new(:content => text, :url_info => url_info)
-    return document
+    document
   end
 
   def too_large?
@@ -93,7 +93,7 @@ class Document < ActiveRecord::Base
       end
       self.classifications.sort_by!{ |c| -c.weighting }
     end
-    return self
+    self
   end
 
   # use content_hash as entity identifier
@@ -105,7 +105,7 @@ class Document < ActiveRecord::Base
     return @concepts if (@concepts && @trace)
     @concepts = determine_concepts
     analyze_concept_relations
-    return @concepts
+    @concepts
   end
 
   def weightings
@@ -143,11 +143,11 @@ class Document < ActiveRecord::Base
     end
 
     # increase weighting for concepts derived from the title
-    determine_title_concepts(concepts.keys).each { |concept|
+    determine_title_concepts(concepts.keys).each do |concept|
       concepts[concept] *= 1.5 # NB: regular analysis already includes the title
-    }
+    end
 
-    return concepts
+    concepts
   end
 
   # concepts is a list of known Concept instances, merely used for efficiency
@@ -158,7 +158,7 @@ class Document < ActiveRecord::Base
     concept_ids = matcher.labels.map { |id| @trace[:concept_index][id] }.
         flatten.compact.uniq # `uniq` avoids multiple bonuses for the same concept
     concepts = concepts.index_by(&:id)
-    return concept_ids.map { |id| concepts[id] }
+    concept_ids.map { |id| concepts[id] }
   end
 
   def analyze_concept_relations
