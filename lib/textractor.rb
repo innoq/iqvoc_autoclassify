@@ -18,7 +18,7 @@ module Textractor
       raise ExcessiveSize if (content_length && content_length > 512000) # TODO: configurable
     }
 
-    open(url, :content_length_proc => validate_size) { |data|
+    open(url, :content_length_proc => validate_size) do |data|
       case data.content_type
         when "application/pdf"
           file = Tempfile.new "textractor"
@@ -32,7 +32,7 @@ module Textractor
         else # assume HTML
           title, content = from_html(data.read)
       end
-    }
+    end
 
     if RUBY_VERSION >= "1.9"
       title = title.encode("UTF-8") unless title.nil?
