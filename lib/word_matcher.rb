@@ -16,9 +16,9 @@ class WordMatcher
   #     *not* distinguishing between published and unpublished
   def labels
     # use normalized form for case-insensitivity (and performance)
-    hash_seqs = @sentences.map { |sentence|
+    hash_seqs = @sentences.map do |sentence|
       sentence.map { |word| Inflectional::Base.normalize(word) }
-    }
+    end
 
     # determine inflectionals
     inflectionals = Inflectional::Base.
@@ -26,16 +26,16 @@ class WordMatcher
         where(:normal_hash => hash_seqs.flatten.uniq) # NB: does not retain order or duplicates
 
     # restore order of occurrence
-    label_index = inflectionals.each_with_object({}) { |inf, hsh|
+    label_index = inflectionals.each_with_object({}) do |inf, hsh|
       hsh[inf.normal_hash] = inf.label_id # FIXME: this risks discarding two inflectionals with identical value
-    }
+    end
     # list of label IDs by inflectionals' normal_hash
     @trace[:label_index] = label_index
     inflectionals = nil # manual GC
-    label_seqs = hash_seqs.map { |seq|
+    label_seqs = hash_seqs.map do |seq|
       seq.map { |hash| label_index[hash] }.
           compact # discard unmatched words
-    }
+    end
     hash_seqs = nil; label_index = nil # manual GC
 
     label_ids = label_seqs.flatten
