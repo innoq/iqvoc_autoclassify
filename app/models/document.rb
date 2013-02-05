@@ -71,6 +71,8 @@ class Document < ActiveRecord::Base
       self.title, self.content = Textractor.extract(uri)
     rescue Textractor::ExcessiveSize => exception
       self.too_large = true
+    rescue Textractor::HTTPError => exception
+      self.errors[:extraction] = exception.message
     end
   end
 

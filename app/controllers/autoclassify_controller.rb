@@ -5,20 +5,27 @@ class AutoclassifyController < ApplicationController # TODO: auth restrictions?
     uri = params[:uri]
     has_uri =  uri && uri.strip.length > 0
     url_info = { :host => request.host_with_port, :lang => I18n.locale }
-    return head :bad_request unless has_uri
+    return head 422 unless has_uri
+
     @document = Document.from_uri(uri, url_info)
+
+    if @document.errors[:extraction].any?
+      render :text => @document.errors[:extraction].join(" "), :status => 422
+      return
+    end
+
     @document.autoclassify
 
     if @document.valid?
       @results = @document.classifications
       respond_to do |format|
-        format.rdf { render("index.rdf") }
-        format.ttl { render("index.rdf") }
+        format.rdf { render "index.rdf" }
+        format.ttl { render "index.rdf" }
       end
-    elsif @document.errors.include? :too_large
-      return head :request_entity_too_large
+    elsif @document.errors[:too_large].any?
+      head 413
     else
-      return head :bad_request
+      head 422
     end
   end
 

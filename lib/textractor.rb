@@ -18,20 +18,24 @@ module Textractor
       raise ExcessiveSize if (content_length && content_length > 512000) # TODO: configurable
     }
 
-    open(url, :content_length_proc => validate_size) do |data|
-      case data.content_type
-        when "application/pdf"
-          file = Tempfile.new "textractor"
-          file.binmode
-          file.write data.read
-          file.close
-          title, content = from_pdf(file.path)
-          file.delete
-        when "text/plain"
-          content = data.read
-        else # assume HTML
-          title, content = from_html(data.read)
+    begin
+      open(url, :content_length_proc => validate_size) do |data|
+        case data.content_type
+          when "application/pdf"
+            file = Tempfile.new "textractor"
+            file.binmode
+            file.write data.read
+            file.close
+            title, content = from_pdf(file.path)
+            file.delete
+          when "text/plain"
+            content = data.read
+          else # assume HTML
+            title, content = from_html(data.read)
+        end
       end
+    rescue OpenURI::HTTPError => e
+      raise HTTPError.new(e.io.status[0], e.io.status[1])
     end
 
     if RUBY_VERSION >= "1.9"
@@ -60,6 +64,12 @@ module Textractor
   end
 
   class ExcessiveSize < StandardError; end
+  class HTTPError < StandardError
+    attr_accessor :code, :message
+    def initialize(code, message)
+      @code, @message = code, "#{code} #{message}"
+    end
+  end
 
   # required due to pdf-reader v0.10's awkward API
   # largely cargo-culted from pdf-reader examples
