@@ -21,9 +21,14 @@ class WordMatcher
     end
 
     # determine inflectionals
-    inflectionals = Inflectional::Base.
-        select([:normal_hash, :label_id]).
-        where(:normal_hash => hash_seqs.flatten.uniq) # NB: does not retain order or duplicates
+    inflectionals = Inflectional::Base.select([:normal_hash, :label_id])
+    # Trying to avoid ORA-01795 by limiting
+    # the number of values per IN clause to 1000
+    #
+    # NB: does not retain order or duplicates
+    hash_seqs.flatten.compact.uniq.in_groups_of(1000, false).each do |group|
+      inflectionals = inflectionals.where(:normal_hash => group)
+    end
 
     # restore order of occurrence
     label_index = inflectionals.each_with_object({}) do |inf, hsh|
