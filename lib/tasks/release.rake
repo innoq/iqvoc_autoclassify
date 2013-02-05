@@ -39,7 +39,7 @@ EOF
   desc "Bumps and pushes the version"
   task :push, [:version] => :bump do
     system "git push origin master --tags"
-    system "iq_gem --gemspec #{gemspec} --tag #{args[:version]} --gem-repo iqvoc"
+    system "iq_gem --gemspec #{gemspec} --tag v#{args[:version]} --gem-repo iqvoc"
   end
 
   def gemspec
