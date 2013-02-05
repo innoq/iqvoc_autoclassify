@@ -33,7 +33,6 @@ EOF
     system "git add #{file_name.relative_path_from(Rails.root)}"
     system "git commit -m \"v#{args[:version]}\""
     system "git tag v#{args[:version]} -am \"v#{args[:version]}\""
-    system "gem build #{gemspec}"
   end
 
   desc "Bumps and pushes the version"
