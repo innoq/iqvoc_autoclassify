@@ -19,8 +19,8 @@ class AutoclassifyController < ApplicationController # TODO: auth restrictions?
     if @document.valid?
       @results = @document.classifications
       respond_to do |format|
-        format.rdf { render "index.rdf" }
-        format.ttl { render "index.rdf" }
+        format.rdf { render "index", :formats => [:rdf] }
+        format.ttl { render "index", :formats => [:rdf] }
       end
     elsif @document.errors[:too_large].any?
       head 413
