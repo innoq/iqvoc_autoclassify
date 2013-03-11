@@ -74,8 +74,7 @@ class AutoclassifyControllerTest < ActionController::TestCase
   end
 
   test "create classification from uri pdf" do
-    get :from_uri, :uri=>@urls["service"], :format => 'rdf'
-    puts response.body
+    get :from_uri, :uri=> @urls["service"], :format => 'rdf'
     assert_response 200
   end
 
