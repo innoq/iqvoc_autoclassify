@@ -17,10 +17,13 @@ class DocumentsControllerTest < ActionController::TestCase
 
       concepts:
       -
+        origin: foo
         pref_labels: [Foo]
       -
+        origin: bar
         pref_labels: [Bar]
       -
+        origin: baz
         pref_labels: [Baz]
     EOF
 
@@ -53,9 +56,9 @@ class DocumentsControllerTest < ActionController::TestCase
     assert_select "table tbody" do
       assert_select "tr", 2
     end
-    assert_select "tbody tr:nth-of-type(1) td:nth-of-type(3)", "3"
-    assert_select "tbody tr:nth-of-type(2) a[href=/de/documents/d0d2efdf0c05081e2c3ae386215483329a653cfd.html]", 1
-    assert_select "tbody tr:nth-of-type(2) td:nth-of-type(3)", "0"
+    assert_select "tbody tr:nth-of-type(2) td:nth-of-type(3)", "3"
+    assert_select "tbody tr:nth-of-type(1) a[href=/de/documents/d0d2efdf0c05081e2c3ae386215483329a653cfd.html]", 1
+    assert_select "tbody tr:nth-of-type(1) td:nth-of-type(3)", "0"
   end
 
   test "list matching concepts for the respective document" do
@@ -141,7 +144,7 @@ class DocumentsControllerTest < ActionController::TestCase
     assert ttl.include? "sdc:result search:result1;"
     expected = <<-EOS
       search:result1 a sdc:Result;
-      \tsdc:link :http://localhost/de/concepts/_00000001;
+      \tsdc:link :http://localhost/de/concepts/foo;
       \tdct:title "Foo";
       \tsdc:rank 1.0.
     EOS
@@ -151,7 +154,7 @@ class DocumentsControllerTest < ActionController::TestCase
     assert ttl.include? "sdc:result search:result2;"
     expected = <<-EOS
       search:result2 a sdc:Result;
-      \tsdc:link :http://localhost/de/concepts/_00000002;
+      \tsdc:link :http://localhost/de/concepts/bar;
       \tdct:title "Bar";
       \tsdc:rank 1.0.
     EOS
@@ -161,7 +164,7 @@ class DocumentsControllerTest < ActionController::TestCase
     assert ttl.include? "sdc:result search:result3."
     expected = <<-EOS
       search:result3 a sdc:Result;
-      \tsdc:link :http://localhost/de/concepts/_00000003;
+      \tsdc:link :http://localhost/de/concepts/baz;
       \tdct:title "Baz";
       \tsdc:rank 1.0.
     EOS
