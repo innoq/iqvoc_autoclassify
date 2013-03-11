@@ -22,13 +22,13 @@ Operate Iqvoc::AutoClassify and Iqvoc as Engines running in a custom App.
     `rake db:migrate`
 3. Populate iQvoc seeds:
     `rake iqvoc:db:seed_all`
-    
+
 ## Release
 
 ### Prerequisites
 
 As iqvoc_autoclassify is closed source it cannot be pushed to Rubygems. Therefore
-you have to use [iq_gem](https://github.com/innoq/iq_gem) in order to push it to 
+you have to use [iq_gem](https://github.com/innoq/iq_gem) in order to push it to
 gems.innoq.com.
 
 ### Push
