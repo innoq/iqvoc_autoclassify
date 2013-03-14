@@ -69,7 +69,7 @@ class AutoclassifyControllerTest < ActionController::TestCase
   end
 
   test "create classification from uri html" do
-    get :from_uri, :uri=>@urls["html"], :format => 'rdf'
+    get :from_uri, :uri=> @urls["html"], :format => 'rdf'
     assert_response 200
   end
 
