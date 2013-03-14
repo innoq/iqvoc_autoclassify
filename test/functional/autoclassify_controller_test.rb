@@ -56,7 +56,7 @@ class AutoclassifyControllerTest < ActionController::TestCase
     request.env['RAW_POST_DATA'] = @content["text"]
     request.env['CONTENT_TYPE'] = 'text/plain'
 
-    post :from_content , :format => 'rdf'
+    post :from_content, :format => 'rdf'
     assert_response 200
   end
 
@@ -64,17 +64,17 @@ class AutoclassifyControllerTest < ActionController::TestCase
     request.env['RAW_POST_DATA'] = @content["html"]
     request.env['CONTENT_TYPE'] = 'text/html'
 
-    post :from_content , :format => 'rdf'
+    post :from_content, :format => 'rdf'
     assert_response 200
   end
 
   test "create classification from uri html" do
-    get :from_uri, :uri=> @urls["html"], :format => 'rdf'
+    get :from_uri, :uri => @urls["html"], :format => 'rdf'
     assert_response 200
   end
 
   test "create classification from uri pdf" do
-    get :from_uri, :uri=> @urls["service"], :format => 'rdf'
+    get :from_uri, :uri => @urls["service"], :format => 'rdf'
     assert_response 200
   end
 
