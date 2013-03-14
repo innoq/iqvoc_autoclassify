@@ -1,12 +1,10 @@
 source 'http://rubygems.org'
 
-gem 'rails', '3.2.9'
-
-gem 'iqvoc', '~> 4.0.2'
+gem 'rails', '3.2.12'
+gem 'iqvoc', '~> 4.0.2', :git => 'git://github.com/innoq/iqvoc'
 gem 'iqvoc_skosxl', '~> 2.0.1'
 gem 'iqvoc_inflectionals', '~> 2.0.1'
 gem 'iqvoc_compound_forms', '~> 2.0.2'
-
 gem 'ruby-readability', :require => 'readability'
 gem 'nokogiri', '~> 1.5.0'
 gem 'pdf-reader', '~> 0.10.0'
@@ -29,8 +27,7 @@ group :development, :test do
 end
 
 group :test do
-  # gem 'minitest'
-  # gem 'test-unit'
+  gem 'minitest'
   gem 'turn'
   gem 'capybara', '~> 1.1.2'
   gem 'database_cleaner'
