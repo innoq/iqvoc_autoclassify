@@ -38,9 +38,7 @@ module Textractor
       raise HTTPError.new(e.io.status[0], e.io.status[1])
     end
 
-    if RUBY_VERSION >= "1.9"
-      title = title.encode("UTF-8") unless title.nil?
-    end
+    title = title.encode("UTF-8") unless title.nil?
 
     return title, content
   end
