@@ -4,7 +4,6 @@ require File.join(File.expand_path(File.dirname(__FILE__)), '../test_helper')
 require 'fake_web'
 
 class AutoclassifyControllerTest < ActionController::TestCase
-
   setup do
     data = Iqvoc::Maker.from_yaml <<-EOF
       labels:
@@ -39,17 +38,27 @@ class AutoclassifyControllerTest < ActionController::TestCase
       "html" => "http://example.org/sample.html",
       "huge" => "http://example.org/huge.pdf"
     }
+
     @content = {
       "html" => File.open(File.join(File.expand_path(File.dirname(__FILE__)), '../fixtures/sample.html')).read,
       "text" => File.open(File.join(File.expand_path(File.dirname(__FILE__)), '../fixtures/sample.txt')).read
     }
-    FakeWeb.register_uri(:get, @urls["service"], :body => "test/fixtures/service.pdf",
-        :content_type => "application/pdf")
-    FakeWeb.register_uri(:get, @urls["pdf"], :body => "test/fixtures/sample.pdf",
-        :content_type => "application/pdf")
-    FakeWeb.register_uri(:get, @urls["html"], :body => "test/fixtures/sample.html")
-    FakeWeb.register_uri(:get, @urls["huge"], :body => "test/fixtures/huge.pdf",
-        :content_type => "application/pdf", :content_length => 512001)
+
+    FakeWeb.register_uri :get, @urls["service"],
+      :body => "test/fixtures/service.pdf",
+      :content_type => "application/pdf"
+
+    FakeWeb.register_uri :get, @urls["pdf"],
+      :body => "test/fixtures/sample.pdf",
+      :content_type => "application/pdf"
+
+    FakeWeb.register_uri :get, @urls["html"],
+      :body => "test/fixtures/sample.html"
+
+    FakeWeb.register_uri :get, @urls["huge"],
+      :body => "test/fixtures/huge.pdf",
+      :content_type => "application/pdf",
+      :content_length => 512001
   end
 
   test "create classification from text" do
@@ -82,5 +91,4 @@ class AutoclassifyControllerTest < ActionController::TestCase
     get :from_uri, :uri => @urls["huge"], :format => 'rdf'
     assert_response 413
   end
-
 end
