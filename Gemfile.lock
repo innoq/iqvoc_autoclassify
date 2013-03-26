@@ -17,7 +17,7 @@ GIT
       simple_form
 
 GEM
-  remote: http://rubygems.org/
+  remote: https://rubygems.org/
   specs:
     Ascii85 (1.0.2)
     actionmailer (3.2.12)
@@ -117,6 +117,8 @@ GEM
       coderay (~> 1.0.5)
       method_source (~> 0.8)
       slop (~> 3.3.1)
+    pry-nav (0.2.3)
+      pry (~> 0.9.10)
     rack (1.4.5)
     rack-cache (1.2)
       rack (>= 0.4)
@@ -203,6 +205,7 @@ DEPENDENCIES
   nokogiri (~> 1.5.0)
   pdf-reader (~> 0.10.0)
   pry
+  pry-nav
   rails (= 3.2.12)
   ruby-readability
   sqlite3

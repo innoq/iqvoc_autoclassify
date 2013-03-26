@@ -1,4 +1,4 @@
-source 'http://rubygems.org'
+source 'https://rubygems.org'
 
 gem 'rails', '3.2.12'
 gem 'iqvoc', '~> 4.0.2', :git => 'git://github.com/innoq/iqvoc'
@@ -18,7 +18,8 @@ group :development, :test do
   platforms :ruby do
     gem 'mysql2'
     gem 'sqlite3'
-    gem 'pry' # for interactive debugging
+    gem 'pry'
+    gem 'pry-nav'
   end
   platforms :jruby do
     gem 'activerecord-jdbcmysql-adapter'
