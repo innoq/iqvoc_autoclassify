@@ -22,10 +22,8 @@ class AutoclassifyController < ApplicationController # TODO: auth restrictions?
         format.rdf { render "index", :formats => [:rdf] }
         format.ttl { render "index", :formats => [:rdf] }
       end
-    elsif @document.errors[:too_large].any?
-      head 413
-    else
-      head 422
+    elsif @document.errors[:excessive_size].any?
+      render :text => @document.errors[:excessive_size].join(" "), :status => 413
     end
   end
 

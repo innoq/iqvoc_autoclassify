@@ -21,5 +21,5 @@ en:
         new: New document
         reclassify: recalculate classifications
         index: Index
-        too_large: requested document is to large
+        excessive_size: requested document is too large
         comment: leave comment

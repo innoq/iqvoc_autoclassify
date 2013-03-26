@@ -46,7 +46,7 @@ class DocumentsController < ApplicationController # TODO: auth restrictions?
       begin
         title, text = Textractor.extract(url)
       rescue Textractor::ExcessiveSize => exception
-        flash[:error] = I18n.t("txt.views.document.too_large")
+        flash[:error] = I18n.t("txt.views.document.excessive_size")
         render "errors/blank", :status => 413
         return
       end

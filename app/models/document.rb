@@ -18,7 +18,6 @@ class Document < ActiveRecord::Base
 
   validates_presence_of :content
   validates_uniqueness_of :content_hash
-  validate :document_is_too_large
 
   before_validation do |document|
     self.content_hash = Digest::SHA1.hexdigest(content) if content
@@ -38,12 +37,6 @@ class Document < ActiveRecord::Base
     document.create_classification_trace(:trace => @trace.to_json)
   end
 
-  def document_is_too_large
-    if too_large?
-      errors.add(:too_large, "Document is too large.")
-    end
-  end
-
   def self.from_uri(uri, url_info)
     document = Document.new(:uri => uri, :url_info => url_info)
     document.extract_from_uri(uri)
@@ -61,17 +54,14 @@ class Document < ActiveRecord::Base
     document
   end
 
-  def too_large?
-    return false if too_large.nil?
-    return too_large
-  end
-
   def extract_from_uri(uri)
     begin
       self.title, self.content = Textractor.extract(uri)
     rescue Textractor::ExcessiveSize => exception
-      self.too_large = true
+      self.errors[:excessive_size] = I18n.t("txt.views.document.excessive_size")
     rescue Textractor::HTTPError => exception
+      self.errors[:extraction] = exception.message
+    rescue Textractor::UnsupportedContentType => exception
       self.errors[:extraction] = exception.message
     end
   end
@@ -80,7 +70,7 @@ class Document < ActiveRecord::Base
     begin
       self.title, self.content = Textractor.from_html(html)
     rescue Textractor::ExcessiveSize => exception
-      self.too_large = true
+      errors[:excessive_size] = "Document is too large"
     end
   end
 
@@ -198,8 +188,5 @@ class Document < ActiveRecord::Base
       hsh
     end
   end
-
-  private
-  attr_accessor :too_large
 
 end
