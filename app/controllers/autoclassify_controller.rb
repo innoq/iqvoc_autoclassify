@@ -3,7 +3,7 @@ class AutoclassifyController < ApplicationController # TODO: auth restrictions?
 
   def from_uri
     uri = params[:uri]
-    has_uri =  uri && uri.strip.length > 0
+    has_uri = uri && uri.strip.length > 0
     url_info = { :host => request.host_with_port, :lang => I18n.locale }
     return head 422 unless has_uri
 
