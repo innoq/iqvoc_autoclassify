@@ -61,22 +61,6 @@ class AutoclassifyControllerTest < ActionController::TestCase
       :content_length => 512001
   end
 
-  test "create classification from text" do
-    request.env['RAW_POST_DATA'] = @content["text"]
-    request.env['CONTENT_TYPE'] = 'text/plain'
-
-    post :from_content, :format => 'rdf'
-    assert_response 200
-  end
-
-  test "create classification from html" do
-    request.env['RAW_POST_DATA'] = @content["html"]
-    request.env['CONTENT_TYPE'] = 'text/html'
-
-    post :from_content, :format => 'rdf'
-    assert_response 200
-  end
-
   test "create classification from uri html" do
     get :from_uri, :uri => @urls["html"], :format => 'rdf'
     assert_response 200
