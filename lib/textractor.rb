@@ -21,6 +21,8 @@ module Textractor
     begin
       open(url, :content_length_proc => validate_size) do |data|
         case data.content_type
+          when "text/html"
+            title, content = from_html(data.read)
           when "application/pdf"
             file = Tempfile.new "textractor"
             file.binmode
@@ -30,8 +32,8 @@ module Textractor
             file.delete
           when "text/plain"
             content = data.read
-          else # assume HTML
-            title, content = from_html(data.read)
+          else
+            raise UnsupportedContentType.new(data.content_type)
         end
       end
     rescue OpenURI::HTTPError => e
@@ -62,6 +64,12 @@ module Textractor
   end
 
   class ExcessiveSize < StandardError; end
+  class UnsupportedContentType < StandardError
+    attr_accessor :message
+    def initialize(content_type)
+      @message = "Unsupported content type: #{content_type}"
+    end
+  end
   class HTTPError < StandardError
     attr_accessor :code, :message
     def initialize(code, message)
@@ -72,7 +80,6 @@ module Textractor
   # required due to pdf-reader v0.10's awkward API
   # largely cargo-culted from pdf-reader examples
   class PDFReceiver
-
     attr_reader :meta, :content
 
     def initialize
@@ -99,7 +106,6 @@ module Textractor
       params = params.first
       params.each { |str| show_text(str) if str.is_a?(String) }
     end
-
   end
 
 end

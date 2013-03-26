@@ -53,7 +53,8 @@ class AutoclassifyControllerTest < ActionController::TestCase
       :content_type => "application/pdf"
 
     FakeWeb.register_uri :get, @urls["html"],
-      :body => "test/fixtures/sample.html"
+      :body => "test/fixtures/sample.html",
+      :content_type => "text/html"
 
     FakeWeb.register_uri :get, @urls["huge"],
       :body => "test/fixtures/huge.pdf",
