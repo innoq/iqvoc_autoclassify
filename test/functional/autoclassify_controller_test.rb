@@ -59,7 +59,7 @@ class AutoclassifyControllerTest < ActionController::TestCase
     FakeWeb.register_uri :get, @urls["huge"],
       :body => "test/fixtures/huge.pdf",
       :content_type => "application/pdf",
-      :content_length => 512001
+      :content_length => 751945
   end
 
   test "create classification from uri html" do
