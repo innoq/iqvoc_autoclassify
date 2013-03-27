@@ -1,6 +1,6 @@
 source 'https://rubygems.org'
 
-gem 'rails', '3.2.12'
+gem 'rails', '~> 3.2.12'
 gem 'iqvoc', '~> 4.0.2', :git => 'git://github.com/innoq/iqvoc'
 gem 'iqvoc_skosxl', '~> 2.0.1'
 gem 'iqvoc_inflectionals', '~> 2.0.1'
