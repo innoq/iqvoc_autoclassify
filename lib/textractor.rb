@@ -8,8 +8,8 @@ require 'pdf-reader'
 
 module Textractor
 
-  def self.extract(url)
-    raise(ArgumentError, "HTTP URL expected") unless url =~ /^https?:\/\/[^\s]+$/
+  def self.from_uri(uri)
+    raise(ArgumentError, "HTTP URL expected") unless uri =~ /^https?:\/\/[^\s]+$/
     title = nil
     content = nil
 
@@ -19,7 +19,7 @@ module Textractor
     }
 
     begin
-      open(url, :content_length_proc => validate_size) do |data|
+      open uri, :content_length_proc => validate_size do |data|
         case data.content_type
           when "text/html"
             title, content = from_html(data.read)

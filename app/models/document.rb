@@ -56,7 +56,7 @@ class Document < ActiveRecord::Base
 
   def extract_from_uri(uri)
     begin
-      self.title, self.content = Textractor.extract(uri)
+      self.title, self.content = Textractor.from_uri(uri)
     rescue Textractor::ExcessiveSize => exception
       self.errors[:excessive_size] = I18n.t("txt.views.document.excessive_size")
     rescue Textractor::HTTPError => exception

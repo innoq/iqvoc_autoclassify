@@ -44,7 +44,7 @@ class DocumentsController < ApplicationController # TODO: auth restrictions?
       text = content
     elsif has_url && (not has_content) && (not title)
       begin
-        title, text = Textractor.extract(url)
+        title, text = Textractor.from_uri(url)
       rescue Textractor::ExcessiveSize => exception
         flash[:error] = I18n.t("txt.views.document.excessive_size")
         render "errors/blank", :status => 413
