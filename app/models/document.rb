@@ -5,6 +5,7 @@ require 'textractor'
 
 class Document < ActiveRecord::Base
   include Rails.application.routes.url_helpers
+  include Workflow
 
   attr_accessor :url_info # required for classifications' concept URLs
 
@@ -16,75 +17,51 @@ class Document < ActiveRecord::Base
     @parser = DocumentParser::German
   end
 
-  validates_presence_of :content
-  validates_uniqueness_of :content_hash
+  workflow do
+    state :new do
+      event :extract, :transitions_to => :extracted
+    end
+    state :extracted do
+      event :classify, :transitions_to => :classified
+    end
+    state :classified
+  end
+
+  with_options :if => :extracted? do |doc|
+    doc.validates_presence_of :content
+    doc.validates_uniqueness_of :content_hash
+  end
 
   before_validation do |document|
     self.content_hash = Digest::SHA1.hexdigest(content) if content
   end
 
-  after_save do |document|
-    document.classifications.destroy_all
-    document.concepts.each do |concept, weighting|
-      uri = concept_url(concept, :host => @url_info[:host],
-          :lang => @url_info[:lang])
-      document.classifications.create!(:concept_id => concept.id,
-          :concept_uri => uri, :weighting => weighting,
-          :title => concept.to_s) # XXX: `to_s` is expensive (label loaded lazily)
-    end
+  def extract
+    return self if content.present?
 
-    # NB: trace only stores references (IDs)
-    document.create_classification_trace(:trace => @trace.to_json)
-  end
-
-  def self.from_uri(uri, url_info)
-    document = Document.new(:uri => uri, :url_info => url_info)
-    document.extract_from_uri(uri)
-    document
-  end
-
-  def self.from_html(html, url_info)
-    document = Document.new(:url_info => url_info)
-    document.extract_from_html(html)
-    document
-  end
-
-  def self.from_text(text, url_info)
-    document = Document.new(:content => text, :url_info => url_info)
-    document
-  end
-
-  def extract_from_uri(uri)
     begin
       self.title, self.content = Textractor.from_uri(uri)
     rescue Textractor::ExcessiveSize => exception
-      self.errors[:excessive_size] = I18n.t("txt.views.document.excessive_size")
+      halt! :excessive_size
     rescue Textractor::HTTPError => exception
-      self.errors[:extraction] = exception.message
+      halt! :http_error
     rescue Textractor::UnsupportedContentType => exception
-      self.errors[:extraction] = exception.message
+      halt! :unsupported_content_type
     end
+
+    self
   end
 
-  def extract_from_html(html)
-    begin
-      self.title, self.content = Textractor.from_html(html)
-    rescue Textractor::ExcessiveSize => exception
-      errors[:excessive_size] = "Document is too large"
-    end
-  end
-
-  def autoclassify
-    if self.valid?
-      self.classifications.destroy_all
-      self.concepts.each do |concept, weighting|
-        uri = concept_url(concept, :host => @url_info[:host], :lang => @url_info[:lang])
-        self.classifications.new(:concept_id => concept.id,
+  def classify
+    classifications.destroy_all
+    concepts.each do |concept, weighting|
+      uri = concept_url(concept, :host => @url_info[:host], :lang => @url_info[:lang])
+      classifications.build(
+        :concept_id => concept.id,
         :concept_uri => uri, :weighting => weighting,
-        :title => concept.to_s) # XXX: `to_s` is expensive (label loaded lazily)
-      end
-      self.classifications.sort_by!{ |c| -c.weighting }
+        :title => concept.to_s)
     end
+    # classifications.sort_by! { |c| -c.weighting }
     self
   end
 
