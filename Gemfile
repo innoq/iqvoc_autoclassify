@@ -8,6 +8,7 @@ gem 'iqvoc_compound_forms', '~> 2.0.2'
 gem 'ruby-readability', :require => 'readability'
 gem 'nokogiri', '~> 1.5.0'
 gem 'pdf-reader', '~> 0.10.0'
+gem 'workflow', '~> 1.0.0'
 
 group :assets do
   gem 'uglifier'
@@ -20,6 +21,7 @@ group :development, :test do
     gem 'sqlite3'
     gem 'pry'
     gem 'pry-nav'
+    gem 'pry-remote'
   end
   platforms :jruby do
     gem 'activerecord-jdbcmysql-adapter'

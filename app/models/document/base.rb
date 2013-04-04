@@ -3,94 +3,44 @@ require 'document_parser/german_document_parser'
 require 'word_matcher'
 require 'textractor'
 
-class Document < ActiveRecord::Base
-  include Rails.application.routes.url_helpers
+class Document::Base < ActiveRecord::Base
+  self.table_name = 'documents'
 
+  include Rails.application.routes.url_helpers
+  include Workflow
+
+  attr_writer :persist
   attr_accessor :url_info # required for classifications' concept URLs
 
-  has_many :classifications, :order => "weighting DESC", :dependent => :destroy
-  has_many :comments, :dependent => :destroy
-  has_one :classification_trace, :dependent => :destroy
+  has_many :classifications, :foreign_key => "document_id", :order => "weighting DESC", :dependent => :destroy
+  has_many :comments, :foreign_key => "document_id", :dependent => :destroy
+  has_one :classification_trace, :foreign_key => "document_id", :dependent => :destroy
 
   after_initialize do
     @parser = DocumentParser::German
+    @persist = true
   end
-
-  validates_presence_of :content
-  validates_uniqueness_of :content_hash
 
   before_validation do |document|
     self.content_hash = Digest::SHA1.hexdigest(content) if content
   end
 
-  after_save do |document|
-    document.classifications.destroy_all
-    document.concepts.each do |concept, weighting|
-      uri = concept_url(concept, :host => @url_info[:host],
-          :lang => @url_info[:lang])
-      document.classifications.create!(:concept_id => concept.id,
-          :concept_uri => uri, :weighting => weighting,
-          :title => concept.to_s) # XXX: `to_s` is expensive (label loaded lazily)
-    end
-
-    # NB: trace only stores references (IDs)
-    document.create_classification_trace(:trace => @trace.to_json)
-  end
-
-  def self.from_uri(uri, url_info)
-    document = Document.new(:uri => uri, :url_info => url_info)
-    document.extract_from_uri(uri)
-    document
-  end
-
-  def self.from_html(html, url_info)
-    document = Document.new(:url_info => url_info)
-    document.extract_from_html(html)
-    document
-  end
-
-  def self.from_text(text, url_info)
-    document = Document.new(:content => text, :url_info => url_info)
-    document
-  end
-
-  def extract_from_uri(uri)
-    begin
-      self.title, self.content = Textractor.extract(uri)
-    rescue Textractor::ExcessiveSize => exception
-      self.errors[:excessive_size] = I18n.t("txt.views.document.excessive_size")
-    rescue Textractor::HTTPError => exception
-      self.errors[:extraction] = exception.message
-    rescue Textractor::UnsupportedContentType => exception
-      self.errors[:extraction] = exception.message
-    end
-  end
-
-  def extract_from_html(html)
-    begin
-      self.title, self.content = Textractor.from_html(html)
-    rescue Textractor::ExcessiveSize => exception
-      errors[:excessive_size] = "Document is too large"
-    end
-  end
-
-  def autoclassify
-    if self.valid?
-      self.classifications.destroy_all
-      self.concepts.each do |concept, weighting|
-        uri = concept_url(concept, :host => @url_info[:host], :lang => @url_info[:lang])
-        self.classifications.new(:concept_id => concept.id,
+  def classify
+    classifications.destroy_all
+    method = persist? ? :create : :build
+    concepts.each do |concept, weighting|
+      uri = concept_url(concept, :host => @url_info[:host], :lang => @url_info[:lang])
+      classifications.send(method,
+        :concept_id => concept.id,
         :concept_uri => uri, :weighting => weighting,
-        :title => concept.to_s) # XXX: `to_s` is expensive (label loaded lazily)
-      end
-      self.classifications.sort_by!{ |c| -c.weighting }
+        :title => concept.to_s)
     end
-    self
-  end
-
-  # use content_hash as entity identifier
-  def to_param
-    content_hash
+    # classifications.sort_by! { |c| -c.weighting }
+    if persist?
+      save!
+      create_classification_trace(:trace => @trace.to_json)
+    end
+    halt if invalid?
   end
 
   def concepts
@@ -189,4 +139,30 @@ class Document < ActiveRecord::Base
     end
   end
 
+  def persist?
+    @persist || !new_record?
+  end
+
+  def persist_workflow_state(new_value)
+    if persist?
+      super
+    else
+      @workflow_state = new_value
+    end
+  end
+
+  def load_workflow_state
+    if persist?
+      super
+    else
+      @workflow_state
+    end
+  end
+
+  def save(*)
+    raise PersistenceNotAllowed, "Allow persisting of records with record.persist = true" unless persist?
+    super
+  end
+
+  class PersistenceNotAllowed < StandardError; end
 end

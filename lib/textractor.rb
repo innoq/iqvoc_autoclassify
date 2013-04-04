@@ -8,8 +8,8 @@ require 'pdf-reader'
 
 module Textractor
 
-  def self.extract(url)
-    raise(ArgumentError, "HTTP URL expected") unless url =~ /^https?:\/\/[^\s]+$/
+  def self.from_uri(uri)
+    raise InvalidUri, "HTTP URL expected" unless uri =~ /^https?:\/\/[^\s]+$/
     title = nil
     content = nil
 
@@ -19,7 +19,7 @@ module Textractor
     }
 
     begin
-      open(url, :content_length_proc => validate_size) do |data|
+      open uri, :content_length_proc => validate_size do |data|
         case data.content_type
           when "text/html"
             title, content = from_html(data.read)
@@ -38,6 +38,8 @@ module Textractor
       end
     rescue OpenURI::HTTPError => e
       raise HTTPError.new(e.io.status[0], e.io.status[1])
+    rescue SocketError
+      raise HTTPError.new(422, "Socket Error")
     end
 
     title = title.encode("UTF-8") unless title.nil?
@@ -63,6 +65,7 @@ module Textractor
     return rcv.meta[:Title], rcv.content.join("\n\n")
   end
 
+  class InvalidUri < ArgumentError; end
   class ExcessiveSize < StandardError; end
   class UnsupportedContentType < StandardError
     attr_accessor :message

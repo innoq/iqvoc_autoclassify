@@ -29,42 +29,24 @@ class DocumentTest < ActiveSupport::TestCase
     EOF
   end
 
-  test "ensures content is supplied" do
-    doc = Document.new
-
-    assert doc.errors[:content]
-    assert_equal 0, Document.count
-    assert doc.errors[:content]
-  end
-
-  test "ensures content is unique" do
-    doc = Document.new(:content => "lipsum")
-    doc.url_info = @url_info
-    doc.save!
-
-    doc = Document.new(:content => "lipsum")
-    doc.save
-
-    assert doc.errors[:content]
-  end
-
   test "classification creation" do
     text = "der Weltraum - Piloten im Kampf"
 
-    doc = Document.new(:content => text)
+    doc = Document::Plain.create(:content => text)
     doc.url_info = { :host => "localhost", :lang => "de" }
 
-    assert_equal 0, Classification.count
+    assert_equal 0, doc.classifications.count
 
-    doc.save!
+    doc.classify!
+    assert doc.classified?
 
-    assert_equal 3, Classification.count
-    assert_equal 3, doc.classifications.length
+    assert_equal 3, doc.classifications.count
+
     uri_pattern = Regexp.new("^http://localhost/de/concepts/_\\d+")
-    doc.classifications.each { |classification|
+    doc.classifications.each do |classification|
       assert_equal 1.0, classification.weighting
       assert_equal 0, classification.concept_uri =~ uri_pattern
-    }
+    end
   end
 
 end
