@@ -1,4 +1,4 @@
-<%= simple_form_for @document, :url => extracted_documents_path, :html => { :class => '' } do |f| %>
+<%= simple_form_for @document, :url => extracted_documents_path, :html => { :class => 'document-form' } do |f| %>
   <fieldset>
     <legend><%= Document::Base.human_attribute_name :url %></legend>
     <%= input_block do %>
@@ -11,7 +11,7 @@
   </fieldset>
 <% end %>
 
-<%= simple_form_for @document, :as => :document, :url => plain_documents_path, :html => { :class => '' } do |f| %>
+<%= simple_form_for @document, :as => :document, :url => plain_documents_path, :html => { :class => 'document-form' } do |f| %>
   <fieldset>
     <legend><%= Document::Base.human_attribute_name :content %></legend>
 

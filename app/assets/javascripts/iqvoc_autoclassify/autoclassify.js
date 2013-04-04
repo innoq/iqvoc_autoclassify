@@ -13,7 +13,7 @@ jQuery(document).ready(function($) {
 
 	// deactivate conflicting input fields on New Document page (by URL vs.
 	// direct input)
-	var fieldsets = $("#new_document fieldset");
+	var fieldsets = $(".document-form");
 	fieldsets.mouseenter(function(ev) {
 		fieldsets.not(this).animate({ opacity: 0.2 })
 			.find("input, textarea").prop("disabled", true);
