@@ -1,9 +1,5 @@
 en:
   txt:
-    models:
-      document:
-        url: URL
-        full_text: Full text
     controllers:
       documents:
         save:
@@ -23,3 +19,7 @@ en:
         index: Index
         excessive_size: requested document is too large
         comment: leave comment
+    textractor:
+      http_error: HTTP Error
+      excessive_size: Excessive response body size
+      unsupported_content_type: Content type is not supported

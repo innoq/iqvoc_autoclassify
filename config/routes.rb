@@ -4,6 +4,9 @@ Rails.application.routes.draw do
       resources :comments
     end
 
-    get 'autoclassify' => 'autoclassify#from_uri',  :defaults => { :format => 'rdf' }
+    post 'documents/extracted' => 'documents/extracted#create', :as => 'extracted_documents'
+    post 'documents/plain' => 'documents/plain#create', :as => 'plain_documents'
+
+    # post 'autoclassify' => 'documents/extracted#create'
   end
 end

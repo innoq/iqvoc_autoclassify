@@ -1,13 +1,15 @@
 en:
   activerecord:
     models:
-      document:
+      document/base:
         one: Document
         other: Documents
       comment:
         one: Comment
         other: Comments
     attributes:
-      document:
+      document/base:
         updated_at: last updated
         title: title
+        url: URL
+        content: Full text

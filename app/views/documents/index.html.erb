@@ -1,11 +1,11 @@
-<%= page_header :title => Document.model_name.human(:count => 2) %>
+<%= page_header :title => Document::Base.model_name.human(:count => 2) %>
 <%= render "sidebar" %>
 
 <table class="table">
   <thead>
     <tr>
-      <th><%= Document.human_attribute_name(:updated_at) %></th>
-      <th><%= Document.human_attribute_name(:title) %></th>
+      <th><%= Document::Base.human_attribute_name(:updated_at) %></th>
+      <th><%= Document::Base.human_attribute_name(:title) %></th>
       <th><%= Concept::Base.model_name.human(:count => 2) %></th>
     </tr>
   </thead>
@@ -14,8 +14,7 @@
       <tr>
         <td><%= doc.updated_at %></td>
         <td>
-          <%= link_to short_title(doc) || doc.content_hash,
-                  document_path(:id => doc.content_hash) %>
+          <%= link_to short_title(doc) || doc.content_hash, document_path(:id => doc) %>
         </td>
         <td><%= doc.classifications.length %></td>
       </tr>

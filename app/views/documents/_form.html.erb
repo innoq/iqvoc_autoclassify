@@ -1,31 +1,19 @@
-<%= simple_form_for @document, :html => { :class => '' } do |f| %>
-  <%- if @document.errors.any? -%>
-    <div id="error_explanation">
-      <h2>
-        <%= pluralize(@document.errors.count, "error") %>
-        prohibited this document from being saved: <!-- TODO: i18n -->
-      </h2>
-      <ul>
-      <% @document.errors.full_messages.each do |msg| %>
-        <li><%= msg %></li>
-      <% end %>
-      </ul>
-    </div>
-  <% end %>
-
+<%= simple_form_for @document, :url => extracted_documents_path, :html => { :class => '' } do |f| %>
   <fieldset>
-    <legend><%= t("txt.models.document.url") %></legend>
+    <legend><%= Document::Base.human_attribute_name :url %></legend>
     <%= input_block do %>
-      <%= text_field_tag :url, nil, :class => "span6" %>
+      <%= text_field_tag :uri, nil, :class => "span6" %>
     <% end %>
 
     <div class="form-actions">
       <%= f.submit t("txt.common.save"), :class => "btn btn-primary", :id => nil %>
     </div>
   </fieldset>
+<% end %>
 
+<%= simple_form_for @document, :as => :document, :url => plain_documents_path, :html => { :class => '' } do |f| %>
   <fieldset>
-    <legend><%= t("txt.models.document.full_text") %></legend>
+    <legend><%= Document::Base.human_attribute_name :content %></legend>
 
     <%= f.input :title, :input_html => { :class => "span6" }  %>
     <%= f.input :content, :input_html => { :class => "span6" } %>

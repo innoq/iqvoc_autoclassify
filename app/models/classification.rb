@@ -1,5 +1,5 @@
 class Classification < ActiveRecord::Base
-  belongs_to :document
+  belongs_to :document, :class_name => Document::Base
   belongs_to :concept
 
   def build_rdf(document, result)

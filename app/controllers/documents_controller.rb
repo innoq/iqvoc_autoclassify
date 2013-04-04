@@ -1,91 +1,45 @@
-require 'textractor'
-
-class DocumentsController < ApplicationController # TODO: auth restrictions?
-  skip_before_filter :require_user
-
-  respond_to :html # TODO: JSON, RDF
+class DocumentsController < ApplicationController
+  respond_to :html, :rdf, :ttl
 
   def index
-    @documents = Document.order("updated_at DESC").page(params[:page])
+    @documents = Document::Base.order("updated_at DESC").page(params[:page])
     respond_with @documents
   end
 
   def show
-    @document = Document.find_by_content_hash(params[:id],
-        :include => :classifications)
-    raise ActiveRecord::RecordNotFound if not @document
-    @classifications = @document.classifications.
-        order("weighting DESC"). # XXX: redundant (cf. model)!?
-        page(params[:page])
+    get_document
 
     if params[:trace]
       @trace = true
       @classifications = @classifications.per(100)
     end
-
-    respond_to do |format|
-      format.html
-      format.ttl { render("show.iqrdf") }
-      format.rdf { render("show.iqrdf") }
-    end
   end
 
   def new
-    @document = Document.new
-  end
-
-  def create # TODO: restrict the amount of requests from the same IP?
-    title = params[:document] ? params[:document][:title] : nil
-    content = params[:document] ? params[:document][:content] : nil
-    url = params[:url]
-    has_content = content && content.strip.length > 0
-    has_url = url && url.strip.length > 0
-    if has_content && (not has_url)
-      text = content
-    elsif has_url && (not has_content) && (not title)
-      begin
-        title, text = Textractor.from_uri(url)
-      rescue Textractor::ExcessiveSize => exception
-        flash[:error] = I18n.t("txt.views.document.excessive_size")
-        render "errors/blank", :status => 413
-        return
-      end
-    else
-      flash[:error] = I18n.t("txt.controllers.documents.create.invalid")
-      render "errors/blank", :status => 400
-      return
-    end
-
-    @document = Document.new(:title => title, :content => text, :uri => url)
-    @document.url_info = { # required for classifications' concept URLs
-      :host => request.host_with_port,
-      :lang => I18n.locale
-    }
-
-    if @document.save
-      respond_with @document, :location => document_path(:id => @document.content_hash)
-    elsif @document.errors.has_key?(:content_hash) && @document.errors.keys.length == 1
-      redirect_to document_path(:id => @document.content_hash)
-    else
-      respond_with @document.errors.full_messages, :status => 400
-    end
+    @document = Document::Base.new
   end
 
   def update
     if params[:reclassify]
-      @document = Document.find_by_content_hash(params[:id])
-      @document.url_info = { # required for classifications' concept URLs
-        :host => request.host_with_port,
-        :lang => I18n.locale
-      }
-      @document.save!
+      get_document
+
+      @document.reclassify!
 
       flash[:notice] = I18n.t("txt.controllers.documents.update.success")
-      redirect_to document_path(:id => @document.content_hash)
+      redirect_to document_path(:id => @document)
     else
       flash[:error] = I18n.t("txt.controllers.documents.update.invalid")
-      render "errors/blank", :status => 400
+      render :show, :status => 400
     end
   end
 
+  protected
+  def get_document
+    @document = Document::Base.find(params[:id], :include => :classifications)
+    @document.url_info = { # required for classifications' concept URLs
+      :host => request.host_with_port,
+      :lang => I18n.locale
+    }
+    @classifications = @document.classifications.order("weighting DESC").page(params[:page])
+  end
 end
