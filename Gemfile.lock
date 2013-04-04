@@ -119,6 +119,9 @@ GEM
       slop (~> 3.3.1)
     pry-nav (0.2.3)
       pry (~> 0.9.10)
+    pry-remote (0.1.6)
+      pry (~> 0.9)
+      slop (~> 3.0)
     rack (1.4.5)
     rack-cache (1.2)
       rack (>= 0.4)
@@ -207,6 +210,7 @@ DEPENDENCIES
   pdf-reader (~> 0.10.0)
   pry
   pry-nav
+  pry-remote
   rails (~> 3.2.12)
   ruby-readability
   sqlite3
