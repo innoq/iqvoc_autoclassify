@@ -4,9 +4,10 @@ Rails.application.routes.draw do
       resources :comments
     end
 
-    post 'documents/extracted' => 'documents/extracted#create', :as => 'extracted_documents'
-    post 'documents/plain' => 'documents/plain#create', :as => 'plain_documents'
+    get  'autoclassify/extract' => 'documents/extracted#create'
+    post 'autoclassify/extract' => 'documents/extracted#create', :as => 'extracted_documents', :commit => /.+/
 
-    # post 'autoclassify' => 'documents/extracted#create'
+    get  'autoclassify/plain' => 'documents/plain#create'
+    post 'autoclassify/plain' => 'documents/plain#create', :as => 'plain_documents', :commit => /.+/
   end
 end
