@@ -23,10 +23,6 @@ group :development, :test do
     gem 'pry-nav'
     gem 'pry-remote'
   end
-  platforms :jruby do
-    gem 'activerecord-jdbcmysql-adapter'
-    gem 'activerecord-jdbcsqlite3-adapter'
-  end
 end
 
 group :test do
