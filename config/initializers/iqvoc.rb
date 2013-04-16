@@ -5,7 +5,7 @@ Iqvoc.config.register_settings({
   "languages.pref_labeling" => ["de", "en"]
 })
 
-Iqvoc.navigation_items.insert(-5, { # in front of search, users, instance configuration and about
+Iqvoc.navigation_items.insert(-6, { # in front of search, users, configuration, help and about
   :content => proc { link_to "AutoClassify", documents_path }, # XXX: i18n
   :controller => "documents"
 })
