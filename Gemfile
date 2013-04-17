@@ -1,10 +1,10 @@
 source 'https://rubygems.org'
 
 gem 'rails', '~> 3.2.12'
-gem 'iqvoc', '~> 4.0.2', :git => 'git://github.com/innoq/iqvoc'
-gem 'iqvoc_skosxl', '~> 2.0.1'
-gem 'iqvoc_inflectionals', '~> 2.0.1'
-gem 'iqvoc_compound_forms', '~> 2.0.2'
+gem 'iqvoc', :git => 'git://github.com/innoq/iqvoc'
+gem 'iqvoc_skosxl', :git => 'git://github.com/innoq/iqvoc_skosxl'
+gem 'iqvoc_inflectionals', :path => '../inflectionals' #:git => 'git://github.com/innoq/iqvoc_inflectionals'
+gem 'iqvoc_compound_forms', :path => '../compound_forms' #:git => 'git://github.com/innoq/iqvoc_compound_forms'
 gem 'ruby-readability', :require => 'readability'
 gem 'nokogiri', '~> 1.5.0'
 gem 'pdf-reader', '~> 0.10.0'
@@ -19,9 +19,13 @@ group :development, :test do
   platforms :ruby do
     gem 'mysql2'
     gem 'sqlite3'
+
     gem 'pry'
-    gem 'pry-nav'
+    gem 'pry-rails'
+    gem 'pry-debugger'
     gem 'pry-remote'
+    gem 'hirb-unicode'
+    gem 'cane'
   end
 end
 

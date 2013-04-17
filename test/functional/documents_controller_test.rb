@@ -56,9 +56,10 @@ class DocumentsControllerTest < ActionController::TestCase
     assert_select "table tbody" do
       assert_select "tr", 2
     end
-    assert_select "tbody tr:nth-of-type(2) td:nth-of-type(3)", "3"
+    # FIXME: the following assertions are currently unconfirmed
+    assert_select "tbody tr:nth-of-type(1) td:nth-of-type(3)", "3"
     assert_select "tbody tr:nth-of-type(1) a", 1
-    assert_select "tbody tr:nth-of-type(1) td:nth-of-type(3)", "0"
+    assert_select "tbody tr:nth-of-type(2) td:nth-of-type(3)", "0"
   end
 
   test "list matching concepts for the respective document" do

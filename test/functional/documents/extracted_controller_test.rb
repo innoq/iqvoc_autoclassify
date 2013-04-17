@@ -68,7 +68,7 @@ class Documents::ExtractedControllerTest < ActionController::TestCase
     end
     assert_not_nil assigns(:document)
     assert_response 200
-    assert_equal 'application/xml+rdf', response.content_type
+    assert_equal 'application/rdf+xml', response.content_type
   end
 
   test "classify pdf via uri" do
@@ -77,7 +77,7 @@ class Documents::ExtractedControllerTest < ActionController::TestCase
     end
     assert_not_nil assigns(:document)
     assert_response 200
-    assert_equal 'application/xml+rdf', response.content_type
+    assert_equal 'application/rdf+xml', response.content_type
   end
 
   test "classify and persist via uri" do
@@ -89,7 +89,7 @@ class Documents::ExtractedControllerTest < ActionController::TestCase
   test "refuse large documents" do
     post :create, :uri => @urls[:huge], :format => 'rdf'
     assert_response 413
-    assert_equal 'application/xml+rdf', response.content_type
+    assert_equal 'application/rdf+xml', response.content_type
   end
 
   test "extraction errors" do
