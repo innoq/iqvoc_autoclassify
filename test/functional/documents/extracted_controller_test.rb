@@ -64,7 +64,7 @@ class Documents::ExtractedControllerTest < ActionController::TestCase
 
   test "classify html via uri" do
     assert_no_difference "Document::Extracted.count" do
-      post :create, :uri => @urls[:html], :format => 'rdf'
+      post :create, :uri => @urls[:html], :format => 'rdf', :lang => "de"
     end
     assert_not_nil assigns(:document)
     assert_response 200
@@ -73,7 +73,7 @@ class Documents::ExtractedControllerTest < ActionController::TestCase
 
   test "classify pdf via uri" do
     assert_no_difference "Document::Extracted.count" do
-      post :create, :uri => @urls[:service], :format => 'rdf'
+      post :create, :uri => @urls[:service], :format => 'rdf', :lang => "de"
     end
     assert_not_nil assigns(:document)
     assert_response 200
@@ -82,21 +82,21 @@ class Documents::ExtractedControllerTest < ActionController::TestCase
 
   test "classify and persist via uri" do
     assert_difference "Document::Extracted.count" do
-      post :create, :uri => @urls[:html], :format => 'rdf', :commit => "1"
+      post :create, :uri => @urls[:html], :format => 'rdf', :commit => "1", :lang => "de"
     end
   end
 
   test "refuse large documents" do
-    post :create, :uri => @urls[:huge], :format => 'rdf'
+    post :create, :uri => @urls[:huge], :format => 'rdf', :lang => "de"
     assert_response 413
     assert_equal 'application/rdf+xml', response.content_type
   end
 
   test "extraction errors" do
-    post :create, :uri => @urls[:not_found], :format => 'rdf'
+    post :create, :uri => @urls[:not_found], :format => 'rdf', :lang => "de"
     assert_response 422
 
-    post :create, :uri => @urls[:unsupported_content_type], :format => 'rdf'
+    post :create, :uri => @urls[:unsupported_content_type], :format => 'rdf', :lang => "de"
     assert_response 422
   end
 end

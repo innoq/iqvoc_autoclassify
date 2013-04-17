@@ -49,7 +49,7 @@ class DocumentsControllerTest < ActionController::TestCase
   end
 
   test "list documents at index" do
-    get :index, :format => :html
+    get :index, :format => :html, :lang => "de"
 
     assert_response 200
     assert_not_nil assigns(:documents)
@@ -63,32 +63,32 @@ class DocumentsControllerTest < ActionController::TestCase
   end
 
   test "list matching concepts for the respective document" do
-    get :show, :id => @documents[1].id, :format => :html
+    get :show, :id => @documents[1].id, :format => :html, :lang => "de"
 
     assert_response 200
     assert_select "ol li", 3
   end
 
   test "reclassify document" do
-    get :show, :id => @documents[0].id, :format => :html
+    get :show, :id => @documents[0].id, :format => :html, :lang => "de"
     assert_response 200
     assert_select "ol li", 0
 
     Iqvoc::Maker.concept :pref_labels => [Iqvoc::Maker.label("lorem")]
     Iqvoc::Maker.concept :pref_labels => [Iqvoc::Maker.label("dolor")]
 
-    post :update, :id => @documents[0].id, :reclassify => "1"
+    post :update, :id => @documents[0].id, :reclassify => "1", :lang => "de"
     assert_redirected_to document_path(assigns(:document), :lang => "de")
     assert_equal "Dokument wurde erfolgreich aktualisiert.", flash[:notice]
 
-    get :show, :id => @documents[0].id, :format => :html
+    get :show, :id => @documents[0].id, :format => :html, :lang => "de"
     assert_select "ol li", 2
   end
 
   test "turtle rdf representation" do
     id = @documents[1].id
 
-    get :show, :id => id, :format => :ttl
+    get :show, :id => id, :format => :ttl, :lang => "de"
 
     ttl = response.body.gsub(/^ +/, "\t") # simplifies testing
     assert_response 200
@@ -130,7 +130,7 @@ class DocumentsControllerTest < ActionController::TestCase
   test "XML/RDF representation" do
     id = @documents[1].id
 
-    get :show, :id => id, :format => :rdf
+    get :show, :id => id, :format => :rdf, :lang => "de"
 
     host = "http://#{request.host}"
     assert_response 200
