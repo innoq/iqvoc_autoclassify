@@ -13,11 +13,11 @@ module Textractor
     title = nil
     content = nil
 
+    uri = URI.parse(uri)
+    http = Net::HTTP.new(uri.host, uri.port)
+    http.read_timeout = timeout if timeout
+    req = Net::HTTP::Get.new(uri)
     begin
-      uri = URI.parse(uri)
-      http = Net::HTTP.new(uri.host, uri.port)
-      http.read_timeout = timeout if timeout
-      req = Net::HTTP::Get.new(uri)
       http.request(req) do |response|
         raise HTTPError.new(502, response.message) unless response.code == "200"
 
@@ -45,6 +45,8 @@ module Textractor
       raise ResponseLimitExceeded
     rescue PDF::Reader::UnsupportedFeatureError
       raise UnsupportedContentType, "encrypted PDF" # XXX: hacky; inappropriate
+    rescue SocketError, Errno::ECONNREFUSED
+      raise ConnectionError, "could not retrieve document"
     end
 
     title = title.encode("UTF-8") unless title.nil?
@@ -71,6 +73,7 @@ module Textractor
   end
 
   class InvalidUri < ArgumentError; end
+  class ConnectionError < StandardError; end
   class ResponseLimitExceeded < StandardError; end
   class UnsupportedContentType < StandardError
     attr_accessor :message
