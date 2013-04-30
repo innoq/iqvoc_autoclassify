@@ -34,6 +34,7 @@ class DocumentsController < ApplicationController
   end
 
   protected
+
   def get_document
     @document = Document::Base.find(params[:id], :include => :classifications)
     @document.url_info = { # required for classifications' concept URLs

@@ -64,7 +64,7 @@ class Documents::ExtractedControllerTest < ActionController::TestCase
 
   test "classify html via uri" do
     assert_no_difference "Document::Extracted.count" do
-      post :create, :uri => @urls[:html], :format => 'rdf', :lang => "de"
+      post :create, :uri => @urls[:html], :format => "rdf", :lang => "de"
     end
     assert_not_nil assigns(:document)
     assert_response 200
@@ -88,7 +88,7 @@ class Documents::ExtractedControllerTest < ActionController::TestCase
 
   test "refuse large documents" do
     post :create, :uri => @urls[:huge], :format => 'rdf', :lang => "de"
-    assert_response 413
+    assert_response 504
     assert_equal 'application/rdf+xml', response.content_type
   end
 
