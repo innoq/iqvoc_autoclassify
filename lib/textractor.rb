@@ -13,15 +13,17 @@ module Textractor
     title = nil
     content = nil
 
+    uri = URI.parse(uri)
+    http = Net::HTTP.new(uri.host, uri.port)
+    http.read_timeout = timeout if timeout
+    req = Net::HTTP::Get.new(uri)
     begin
-      uri = URI.parse(uri)
-      http = Net::HTTP.new(uri.host, uri.port)
-      http.read_timeout = timeout if timeout
-      req = Net::HTTP::Get.new(uri.to_s)
       http.request(req) do |response|
         raise HTTPError.new(502, response.message) unless response.code == "200"
 
         case response.content_type
+          when "text/plain"
+            content = response.body
           when "text/html"
             title, content = from_html(response.body)
           when "application/pdf"
@@ -29,16 +31,24 @@ module Textractor
             file.binmode
             response.read_body { |chunk| file.write chunk }
             file.close
-            title, content = from_pdf(file.path)
+            begin
+              title, content = from_pdf(file.path)
+            rescue ArgumentError
+              raise UnprocessablePDF, "PDF encoding error"
+            rescue PDF::Reader::MalformedPDFError
+              raise UnprocessablePDF, "malformed PDF document"
+            rescue PDF::Reader::UnsupportedFeatureError
+              raise UnprocessablePDF, "encrypted PDF not supported"
+            end
             file.delete
-          when "text/plain"
-            content = response.body
           else
             raise UnsupportedContentType.new(response.content_type)
         end
       end
-    rescue Net::ReadTimeout => exc
+    rescue Net::ReadTimeout
       raise ResponseLimitExceeded
+    rescue SocketError, Errno::ECONNREFUSED
+      raise ConnectionError, "could not retrieve document"
     end
 
     title = title.encode("UTF-8") unless title.nil?
@@ -65,7 +75,9 @@ module Textractor
   end
 
   class InvalidUri < ArgumentError; end
+  class ConnectionError < StandardError; end
   class ResponseLimitExceeded < StandardError; end
+  class UnprocessablePDF < StandardError; end
   class UnsupportedContentType < StandardError
     attr_accessor :message
     def initialize(content_type)

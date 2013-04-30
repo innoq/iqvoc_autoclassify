@@ -21,12 +21,14 @@ class Document::Extracted < Document::Base
   def extract
     begin
       self.title, self.content = Textractor.from_uri(uri)
-    rescue Textractor::ResponseLimitExceeded => exc
+    rescue Textractor::ResponseLimitExceeded
       halt :response_limit_exceeded
-    rescue Textractor::HTTPError => exc
+    rescue Textractor::HTTPError, Textractor::ConnectionError
       halt :http_error
-    rescue Textractor::UnsupportedContentType => exc
+    rescue Textractor::UnsupportedContentType
       halt :unsupported_content_type
+    rescue Textractor::UnprocessablePDF
+      halt :unprocessable_pdf
     end
 
     save if persist?

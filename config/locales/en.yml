@@ -23,3 +23,4 @@ en:
       http_error: HTTP Error
       response_limit_exceeded: request did not receive a timely response
       unsupported_content_type: Content type is not supported
+      unprocessable_pdf: PDF document could not be processed
