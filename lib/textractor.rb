@@ -34,7 +34,11 @@ module Textractor
             begin
               title, content = from_pdf(file.path)
             rescue ArgumentError
-              raise UnsupportedContentType, "PDF encoding error" # XXX: hacky; inappropriate
+              raise UnprocessablePDF, "PDF encoding error"
+            rescue PDF::Reader::MalformedPDFError
+              raise UnprocessablePDF, "malformed PDF document"
+            rescue PDF::Reader::UnsupportedFeatureError
+              raise UnprocessablePDF, "encrypted PDF not supported"
             end
             file.delete
           else
@@ -43,8 +47,6 @@ module Textractor
       end
     rescue Net::ReadTimeout
       raise ResponseLimitExceeded
-    rescue PDF::Reader::UnsupportedFeatureError
-      raise UnsupportedContentType, "encrypted PDF" # XXX: hacky; inappropriate
     rescue SocketError, Errno::ECONNREFUSED
       raise ConnectionError, "could not retrieve document"
     end
@@ -75,6 +77,7 @@ module Textractor
   class InvalidUri < ArgumentError; end
   class ConnectionError < StandardError; end
   class ResponseLimitExceeded < StandardError; end
+  class UnprocessablePDF < StandardError; end
   class UnsupportedContentType < StandardError
     attr_accessor :message
     def initialize(content_type)

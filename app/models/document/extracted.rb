@@ -27,6 +27,8 @@ class Document::Extracted < Document::Base
       halt :http_error
     rescue Textractor::UnsupportedContentType
       halt :unsupported_content_type
+    rescue Textractor::UnprocessablePDF
+      halt :unprocessable_pdf
     end
 
     save if persist?

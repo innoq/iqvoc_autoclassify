@@ -28,7 +28,8 @@ class Documents::ExtractedController < DocumentsController
     {
       :response_limit_exceeded => 413, # XXX: s/response/request/ ?
       :http_error => 422,
-      :unsupported_content_type => 422
+      :unsupported_content_type => 422,
+      :unprocessable_pdf => 422
     }
   end
 
