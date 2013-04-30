@@ -25,7 +25,7 @@ class DocumentsController < ApplicationController
 
       @document.reclassify!
 
-      flash[:notice] = I18n.t("txt.controllers.documents.update.success")
+      flash[:success] = I18n.t("txt.controllers.documents.update.success")
       redirect_to document_path(:id => @document)
     else
       flash[:error] = I18n.t("txt.controllers.documents.update.invalid")
