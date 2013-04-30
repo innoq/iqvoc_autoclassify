@@ -1,4 +1,4 @@
-<%= form_for(@document, :html => { :style => "float: right;" }) do |f| %> <%# XXX: inline styling hacky!!! %>
+<%= form_for @document, :url => document_path(:id => @document) do |f| %>
   <div class="field">
     <%= hidden_field_tag :reclassify, "1" %>
   </div>
