@@ -8,13 +8,13 @@ require 'pdf-reader'
 
 module Textractor
 
-  def self.from_uri(uri)
+  def self.from_uri(uri, timeout = 0.5)
     raise InvalidUri, "HTTP URL expected" unless uri =~ /^https?:\/\/[^\s]+$/
     title = nil
     content = nil
 
     begin
-      http_request("GET", uri, nil, nil, 0.5) do |response|
+      http_request("GET", uri, nil, nil, timeout) do |response|
         raise HTTPError.new(502, response.message) unless response.code == "200"
 
         case response.content_type
