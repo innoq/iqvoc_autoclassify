@@ -26,20 +26,21 @@ class Document::Base < ActiveRecord::Base
   end
 
   def classify
+    save! if persist?
+
     classifications.destroy_all
     method = persist? ? :create : :build
     concepts.each do |concept, weighting|
-      classifications.send(method, :concept_id => concept.id,
+      classifications.send(method,
+        :concept_id => concept.id,
         :concept_uri => rdf_path(concept.origin, :host => @url_info[:host],
-            :lang => @url_info[:lang], :format => nil),
+                                                 :lang => @url_info[:lang],
+                                                 :format => nil),
         :weighting => weighting,
         :title => concept.to_s)
     end
+    create_classification_trace(:trace => @trace.to_json) if persist?
     # classifications.sort_by! { |c| -c.weighting }
-    if persist?
-      save!
-      create_classification_trace(:trace => @trace.to_json)
-    end
     halt if invalid?
   end
 
