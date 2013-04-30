@@ -39,6 +39,8 @@ module Textractor
       end
     rescue Net::ReadTimeout => exc
       raise ResponseLimitExceeded
+    rescue PDF::Reader::UnsupportedFeatureError => exc
+      raise UnsupportedContentType, "encrypted PDF" # XXX: hacky; inappropriate
     end
 
     title = title.encode("UTF-8") unless title.nil?
