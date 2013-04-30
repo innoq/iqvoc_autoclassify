@@ -14,7 +14,11 @@ module Textractor
     content = nil
 
     begin
-      http_request("GET", uri, nil, nil, timeout) do |response|
+      uri = URI.parse(uri)
+      http = Net::HTTP.new(uri.host, uri.port)
+      http.read_timeout = timeout if timeout
+      req = Net::HTTP::Get.new(uri.to_s)
+      http.request(req) do |response|
         raise HTTPError.new(502, response.message) unless response.code == "200"
 
         case response.content_type
@@ -58,19 +62,6 @@ module Textractor
     rcv = PDFReceiver.new
     PDF::Reader.file(filepath, rcv)
     return rcv.meta[:Title], rcv.content.join("\n\n")
-  end
-
-  def self.http_request(method, uri, body=nil, headers={}, timeout=nil, &block)
-    uri = URI.parse(uri)
-
-    req = Net::HTTP.const_get(method.to_s.downcase.capitalize).new(uri.to_s)
-    (headers || {}).each { |key, value| req[key] = value }
-    req.body = body if body
-
-    http = Net::HTTP.new(uri.host, uri.port)
-    http.read_timeout = timeout if timeout
-
-    return http.request(req, &block)
   end
 
   class InvalidUri < ArgumentError; end
