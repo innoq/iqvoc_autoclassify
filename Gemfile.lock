@@ -1,3 +1,11 @@
+GIT
+  remote: git://github.com/innoq/iqvoc_compound_forms.git
+  revision: b183e24d3fb901b91f0580728f296ac80853f934
+  specs:
+    iqvoc_compound_forms (2.1.0)
+      iqvoc (~> 4.1.0)
+      iqvoc_skosxl (~> 2.1.0)
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -86,9 +94,6 @@ GEM
       rails_autolink
       sass-rails (~> 3.2.5)
       simple_form
-    iqvoc_compound_forms (2.1.0)
-      iqvoc (~> 4.1.0)
-      iqvoc_skosxl (~> 2.1.0)
     iqvoc_inflectionals (2.1.0)
       iqvoc (~> 4.1.0)
       iqvoc_skosxl (~> 2.1.0)
@@ -206,7 +211,7 @@ DEPENDENCIES
   fakeweb
   hirb-unicode
   iqvoc (~> 4.1.0)
-  iqvoc_compound_forms (~> 2.1.0)
+  iqvoc_compound_forms!
   iqvoc_inflectionals (~> 2.1.0)
   iqvoc_skosxl (~> 2.1.0)
   minitest
