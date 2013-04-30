@@ -31,7 +31,11 @@ module Textractor
             file.binmode
             response.read_body { |chunk| file.write chunk }
             file.close
-            title, content = from_pdf(file.path)
+            begin
+              title, content = from_pdf(file.path)
+            rescue ArgumentError
+              raise UnsupportedContentType, "PDF encoding error" # XXX: hacky; inappropriate
+            end
             file.delete
           else
             raise UnsupportedContentType.new(response.content_type)
