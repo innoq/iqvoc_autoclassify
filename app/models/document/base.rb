@@ -29,10 +29,10 @@ class Document::Base < ActiveRecord::Base
     classifications.destroy_all
     method = persist? ? :create : :build
     concepts.each do |concept, weighting|
-      uri = concept_url(concept, :host => @url_info[:host], :lang => @url_info[:lang])
-      classifications.send(method,
-        :concept_id => concept.id,
-        :concept_uri => uri, :weighting => weighting,
+      classifications.send(method, :concept_id => concept.id,
+        :concept_uri => rdf_path(concept.origin, :host => @url_info[:host],
+            :lang => @url_info[:lang], :format => nil),
+        :weighting => weighting,
         :title => concept.to_s)
     end
     # classifications.sort_by! { |c| -c.weighting }
