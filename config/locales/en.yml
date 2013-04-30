@@ -17,9 +17,9 @@ en:
         new: New document
         reclassify: recalculate classifications
         index: Index
-        excessive_size: requested document is too large
+        response_limit_exceeded: request did not receive a timely response
         comment: leave comment
     textractor:
       http_error: HTTP Error
-      excessive_size: Excessive response body size
+      response_limit_exceeded: request did not receive a timely response
       unsupported_content_type: Content type is not supported

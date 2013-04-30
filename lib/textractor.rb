@@ -1,6 +1,6 @@
 # encoding: UTF-8
 
-require 'open-uri'
+require 'net/http'
 require 'tempfile'
 require 'nokogiri'
 require 'readability'
@@ -8,38 +8,37 @@ require 'pdf-reader'
 
 module Textractor
 
-  def self.from_uri(uri)
+  def self.from_uri(uri, timeout = 0.5)
     raise InvalidUri, "HTTP URL expected" unless uri =~ /^https?:\/\/[^\s]+$/
     title = nil
     content = nil
 
-    # NB: Content-Length headers are not necessarily reliable
-    validate_size = lambda { |content_length|
-      raise ExcessiveSize if (content_length && content_length > 512000) # TODO: configurable
-    }
-
     begin
-      open uri, :content_length_proc => validate_size do |data|
-        case data.content_type
+      uri = URI.parse(uri)
+      http = Net::HTTP.new(uri.host, uri.port)
+      http.read_timeout = timeout if timeout
+      req = Net::HTTP::Get.new(uri.to_s)
+      http.request(req) do |response|
+        raise HTTPError.new(502, response.message) unless response.code == "200"
+
+        case response.content_type
           when "text/html"
-            title, content = from_html(data.read)
+            title, content = from_html(response.body)
           when "application/pdf"
             file = Tempfile.new "textractor"
             file.binmode
-            file.write data.read
+            response.read_body { |chunk| file.write chunk }
             file.close
             title, content = from_pdf(file.path)
             file.delete
           when "text/plain"
-            content = data.read
+            content = response.body
           else
-            raise UnsupportedContentType.new(data.content_type)
+            raise UnsupportedContentType.new(response.content_type)
         end
       end
-    rescue OpenURI::HTTPError => e
-      raise HTTPError.new(e.io.status[0], e.io.status[1])
-    rescue SocketError
-      raise HTTPError.new(422, "Socket Error")
+    rescue Net::ReadTimeout => exc
+      raise ResponseLimitExceeded
     end
 
     title = title.encode("UTF-8") unless title.nil?
@@ -61,12 +60,12 @@ module Textractor
 
   def self.from_pdf(filepath)
     rcv = PDFReceiver.new
-    pdf = PDF::Reader.file(filepath, rcv)
+    PDF::Reader.file(filepath, rcv)
     return rcv.meta[:Title], rcv.content.join("\n\n")
   end
 
   class InvalidUri < ArgumentError; end
-  class ExcessiveSize < StandardError; end
+  class ResponseLimitExceeded < StandardError; end
   class UnsupportedContentType < StandardError
     attr_accessor :message
     def initialize(content_type)

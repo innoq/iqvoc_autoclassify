@@ -17,9 +17,9 @@ de:
         new: Neues Dokument
         reclassify: Klassifizierung neu berechnen
         index: Übersicht
-        excessive_size: angefordertes Dokument ist zu groß
+        response_limit_exceeded: Zeitüberschreitung bei Bearbeitung der Anfrage
         comment: Kommentar hinterlassen
     textractor:
       http_error: HTTP-Fehler
-      excessive_size: Response zu groß
+      response_limit_exceeded: Zeitüberschreitung bei Bearbeitung der Anfrage
       unsupported_content_type: Content type nicht unterstützt

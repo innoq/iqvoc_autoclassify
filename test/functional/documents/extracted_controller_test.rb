@@ -35,7 +35,7 @@ class Documents::ExtractedControllerTest < ActionController::TestCase
     @urls = {
       :service => "http://example.org/service.pdf",
       :html => "http://example.org/sample.html",
-      :huge => "http://example.org/huge.pdf",
+      :big => "http://example.org/sample.pdf",
       :not_found => "http://example.org/not_found",
       :unsupported_content_type => "http://example.org/unsupported.zip"
     }
@@ -48,8 +48,8 @@ class Documents::ExtractedControllerTest < ActionController::TestCase
       :body => "test/fixtures/sample.html",
       :content_type => "text/html"
 
-    FakeWeb.register_uri :get, @urls[:huge],
-      :body => "test/fixtures/huge.pdf",
+    FakeWeb.register_uri :get, @urls[:big],
+      :body => "test/fixtures/sample.pdf",
       :content_type => "application/pdf",
       :content_length => 751945
 
@@ -64,7 +64,7 @@ class Documents::ExtractedControllerTest < ActionController::TestCase
 
   test "classify html via uri" do
     assert_no_difference "Document::Extracted.count" do
-      post :create, :uri => @urls[:html], :format => 'rdf', :lang => "de"
+      post :create, :uri => @urls[:html], :format => "rdf", :lang => "de"
     end
     assert_not_nil assigns(:document)
     assert_response 200
@@ -86,11 +86,12 @@ class Documents::ExtractedControllerTest < ActionController::TestCase
     end
   end
 
-  test "refuse large documents" do
-    post :create, :uri => @urls[:huge], :format => 'rdf', :lang => "de"
-    assert_response 413
-    assert_equal 'application/rdf+xml', response.content_type
-  end
+  # XXX: disabled due to inability to provoke timeouts
+  #test "timeout handling" do
+  #  post :create, :uri => @urls[:big], :format => 'rdf', :lang => "de"
+  #  assert_response 504
+  #  assert_equal 'application/rdf+xml', response.content_type
+  #end
 
   test "extraction errors" do
     post :create, :uri => @urls[:not_found], :format => 'rdf', :lang => "de"

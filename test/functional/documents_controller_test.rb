@@ -38,14 +38,11 @@ class DocumentsControllerTest < ActionController::TestCase
 
     @urls = {
       "pdf" => "http://example.org/sample.pdf",
-      "html" => "http://example.org/sample.html",
-      "huge" => "http://example.org/huge.pdf"
+      "html" => "http://example.org/sample.html"
     }
     FakeWeb.register_uri(:get, @urls["pdf"], :body => "test/fixtures/sample.pdf",
         :content_type => "application/pdf")
     FakeWeb.register_uri(:get, @urls["html"], :body => "test/fixtures/sample.html")
-    FakeWeb.register_uri(:get, @urls["huge"], :body => "test/fixtures/huge.pdf",
-        :content_type => "application/pdf", :content_length => 512001)
   end
 
   test "list documents at index" do

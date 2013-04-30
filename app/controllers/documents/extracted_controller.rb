@@ -23,9 +23,10 @@ class Documents::ExtractedController < DocumentsController
   end
 
   protected
+
   def error_response
     {
-      :excessive_size => 413,
+      :response_limit_exceeded => 413, # XXX: s/response/request/ ?
       :http_error => 422,
       :unsupported_content_type => 422
     }
