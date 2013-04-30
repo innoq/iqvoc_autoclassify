@@ -21,11 +21,11 @@ class Document::Extracted < Document::Base
   def extract
     begin
       self.title, self.content = Textractor.from_uri(uri)
-    rescue Textractor::ResponseLimitExceeded => exc
+    rescue Textractor::ResponseLimitExceeded
       halt :response_limit_exceeded
-    rescue Textractor::HTTPError => exc
+    rescue Textractor::HTTPError
       halt :http_error
-    rescue Textractor::UnsupportedContentType => exc
+    rescue Textractor::UnsupportedContentType
       halt :unsupported_content_type
     end
 

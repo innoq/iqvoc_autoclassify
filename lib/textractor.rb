@@ -37,9 +37,9 @@ module Textractor
             raise UnsupportedContentType.new(response.content_type)
         end
       end
-    rescue Net::ReadTimeout => exc
+    rescue Net::ReadTimeout
       raise ResponseLimitExceeded
-    rescue PDF::Reader::UnsupportedFeatureError => exc
+    rescue PDF::Reader::UnsupportedFeatureError
       raise UnsupportedContentType, "encrypted PDF" # XXX: hacky; inappropriate
     end
 
