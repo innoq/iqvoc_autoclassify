@@ -17,11 +17,13 @@ module Textractor
       uri = URI.parse(uri)
       http = Net::HTTP.new(uri.host, uri.port)
       http.read_timeout = timeout if timeout
-      req = Net::HTTP::Get.new(uri.to_s)
+      req = Net::HTTP::Get.new(uri)
       http.request(req) do |response|
         raise HTTPError.new(502, response.message) unless response.code == "200"
 
         case response.content_type
+          when "text/plain"
+            content = response.body
           when "text/html"
             title, content = from_html(response.body)
           when "application/pdf"
@@ -31,8 +33,6 @@ module Textractor
             file.close
             title, content = from_pdf(file.path)
             file.delete
-          when "text/plain"
-            content = response.body
           else
             raise UnsupportedContentType.new(response.content_type)
         end
