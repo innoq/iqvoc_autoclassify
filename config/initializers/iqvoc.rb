@@ -5,9 +5,12 @@ Iqvoc.config.register_settings({
   "languages.pref_labeling" => ["de", "en"]
 })
 
-Iqvoc.navigation_items.insert(-6, { # in front of search, users, configuration, help and about
-  :content => proc { link_to "AutoClassify", documents_path }, # XXX: i18n
-  :controller => "documents"
-})
+ActiveSupport.on_load :navigation_services_group_created do
+  Iqvoc.navigation_items[-3][:items] << {
+    :text       => "AutoClassify",
+    :href       => proc { documents_path },
+    :controller => "documents"
+  }
+end
 
 Iqvoc.core_assets += %w(iqvoc_autoclassify/jquery.mintip.css iqvoc_autoclassify/jquery.mintip.js)
