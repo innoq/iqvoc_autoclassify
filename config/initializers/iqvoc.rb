@@ -5,12 +5,10 @@ Iqvoc.config.register_settings({
   "languages.pref_labeling" => ["de", "en"]
 })
 
-ActiveSupport.on_load :navigation_services_group_created do
-  Iqvoc.navigation_items[-3][:items] << {
-    :text       => "AutoClassify",
-    :href       => proc { documents_path },
-    :controller => "documents"
-  }
-end
+Iqvoc::Navigation.add_grouped({
+  :text       => "AutoClassify",
+  :href       => proc { documents_path },
+  :controller => "documents"
+}, -3)
 
 Iqvoc.core_assets += %w(iqvoc_autoclassify/jquery.mintip.css iqvoc_autoclassify/jquery.mintip.js)
