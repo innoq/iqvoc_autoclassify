@@ -9,6 +9,7 @@ gem 'ruby-readability', :require => 'readability'
 gem 'nokogiri', '~> 1.5.0'
 gem 'pdf-reader', '~> 0.10.0'
 gem 'workflow', '~> 1.0.0'
+gem 'guess_html_encoding'
 
 group :assets do
   gem 'uglifier'

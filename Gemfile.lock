@@ -211,6 +211,7 @@ DEPENDENCIES
   capybara (~> 1.1.2)
   database_cleaner
   fakeweb
+  guess_html_encoding
   hirb-unicode
   iqvoc (~> 4.1.0)
   iqvoc_compound_forms!
