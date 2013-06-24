@@ -45,7 +45,7 @@ module Textractor
             raise UnsupportedContentType.new(response.content_type)
         end
       end
-    rescue Net::ReadTimeout
+    rescue Timeout::Error
       raise ResponseLimitExceeded
     rescue SocketError, Errno::ECONNREFUSED
       raise ConnectionError, "could not retrieve document"
