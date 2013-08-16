@@ -1,5 +1,13 @@
 class Documents::PlainController < DocumentsController
   def create
+    if params[:document]
+      title = params[:document][:title]
+      content = params[:document][:content]
+    else
+      title = params[:title]
+      content = params[:content]
+    end
+
     @document = Document::Plain.new do |doc|
       doc.title = params[:title]
       doc.content = params[:content]
