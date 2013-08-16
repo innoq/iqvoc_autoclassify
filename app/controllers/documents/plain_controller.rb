@@ -9,8 +9,8 @@ class Documents::PlainController < DocumentsController
     end
 
     @document = Document::Plain.new do |doc|
-      doc.title = params[:title]
-      doc.content = params[:content]
+      doc.title = title
+      doc.content = content
     end
 
     @document.persist = false if params[:commit].blank?
