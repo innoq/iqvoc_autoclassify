@@ -96,7 +96,7 @@ class DocumentsControllerTest < ActionController::TestCase
     assert ttl.include? "sdc:result search:result1;"
     expected = <<-EOS
       search:result1 a sdc:Result;
-      \tsdc:link :http://localhost/de/concepts/foo;
+      \tsdc:link :foo;
       \tdct:title "Foo";
       \tsdc:rank 1.0.
     EOS
@@ -106,7 +106,7 @@ class DocumentsControllerTest < ActionController::TestCase
     assert ttl.include? "sdc:result search:result2;"
     expected = <<-EOS
       search:result2 a sdc:Result;
-      \tsdc:link :http://localhost/de/concepts/bar;
+      \tsdc:link :bar;
       \tdct:title "Bar";
       \tsdc:rank 1.0.
     EOS
@@ -116,7 +116,7 @@ class DocumentsControllerTest < ActionController::TestCase
     assert ttl.include? "sdc:result search:result3."
     expected = <<-EOS
       search:result3 a sdc:Result;
-      \tsdc:link :http://localhost/de/concepts/baz;
+      \tsdc:link :baz;
       \tdct:title "Baz";
       \tsdc:rank 1.0.
     EOS
