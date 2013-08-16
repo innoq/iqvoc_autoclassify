@@ -1,6 +1,9 @@
 de:
   txt:
     controllers:
+      plain_documents:
+        create:
+          invalid: Volltext muss übermittelt werden
       documents:
         save:
           success: Dokument erfolgreich angelegt
