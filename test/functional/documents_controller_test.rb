@@ -53,10 +53,11 @@ class DocumentsControllerTest < ActionController::TestCase
     assert_select "table tbody" do
       assert_select "tr", 2
     end
+    # NOTE: These assertions can break on changed ordering of concepts in index
     # FIXME: the following assertions are currently unconfirmed
-    assert_select "tbody tr:nth-of-type(1) td:nth-of-type(3)", "3"
+    assert_select "tbody tr:nth-of-type(1) td:nth-of-type(3)", "0"
     assert_select "tbody tr:nth-of-type(1) a", 1
-    assert_select "tbody tr:nth-of-type(2) td:nth-of-type(3)", "0"
+    assert_select "tbody tr:nth-of-type(2) td:nth-of-type(3)", "3"
   end
 
   test "list matching concepts for the respective document" do
@@ -76,7 +77,7 @@ class DocumentsControllerTest < ActionController::TestCase
 
     post :update, :id => @documents[0].id, :reclassify => "1", :lang => "de"
     assert_redirected_to document_path(assigns(:document), :lang => "de")
-    assert_equal "Dokument wurde erfolgreich aktualisiert.", flash[:notice]
+    assert_equal "Dokument wurde erfolgreich aktualisiert.", flash[:success]
 
     get :show, :id => @documents[0].id, :format => :html, :lang => "de"
     assert_select "ol li", 2
