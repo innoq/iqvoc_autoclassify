@@ -1,7 +1,7 @@
 class Documents::ExtractedController < DocumentsController
   def create
     @document = Document::Extracted.new(:uri => params[:uri])
-    @document.persist = true if params[:commit]
+    @document.persist = false if params[:commit].blank?
     @document.url_info = {
       :host => request.host_with_port,
       :lang => I18n.locale
