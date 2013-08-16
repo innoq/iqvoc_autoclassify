@@ -1,6 +1,6 @@
 class Classification < ActiveRecord::Base
   belongs_to :document, :class_name => Document::Base
-  belongs_to :concept
+  belongs_to :concept, :class_name => Iqvoc::Concept.base_class
 
   def build_rdf(document, result)
     result.Sdc::link(IqRdf.build_uri(concept_uri))
@@ -9,7 +9,7 @@ class Classification < ActiveRecord::Base
   end
 
   def to_s
-    title || "-"
+    title || concept.to_s
   end
 
 end
