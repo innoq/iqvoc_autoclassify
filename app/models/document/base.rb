@@ -12,10 +12,25 @@ class Document::Base < ActiveRecord::Base
 
   attr_writer :persist
   attr_accessor :url_info # required for classifications' concept URLs
+  attr_reader :weightings
 
   has_many :classifications, :foreign_key => "document_id", :order => "weighting DESC", :dependent => :destroy
   has_many :comments, :foreign_key => "document_id", :dependent => :destroy
   has_one :classification_trace, :foreign_key => "document_id", :dependent => :destroy
+
+  class_attribute :weightings
+  self.weightings = {
+    'Labeling::SKOSXL::PrefLabel'   => 1.0,
+    'Labeling::SKOSXL::AltLabel'    => 1.0,
+    'Labeling::SKOSXL::HiddenLabel' => 0.3
+  }
+
+  class_attribute :weighting_factors
+  self.weighting_factors = {
+    Iqvoc::Concept.broader_relation_class_name => 1.5,
+    'Concept::Relation::SKOS::Narrower::Base'  => 2.0,
+    'Concept::Relation::SKOS::Related'         => 1.3
+  }
 
   after_initialize do
     @parser = DocumentParser::German
@@ -24,6 +39,18 @@ class Document::Base < ActiveRecord::Base
 
   before_validation do |document|
     self.content_hash = Digest::SHA1.hexdigest(content) if content
+  end
+
+  def self.register_weighting(klass_str, value)
+    Mutex.new.synchronize do
+      self.weightings[klass_str] = value
+    end
+  end
+
+  def self.register_weighting_factor(klass_str, value)
+    Mutex.new.synchronize do
+      self.weighting_factors[klass_str] = value
+    end
   end
 
   def classify
@@ -52,22 +79,6 @@ class Document::Base < ActiveRecord::Base
     @concepts
   end
 
-  def weightings
-    @weightings ||= {
-      'Labeling::SKOSXL::PrefLabel'   => 1.0,
-      'Labeling::SKOSXL::AltLabel'    => 1.0,
-      'Labeling::SKOSXL::HiddenLabel' => 0.3
-    }
-  end
-
-  def weighting_factors
-    @weighting_factors ||= {
-      Iqvoc::Concept.broader_relation_class_name => 1.5,
-      'Concept::Relation::SKOS::Narrower::Base'  => 2.0,
-      'Concept::Relation::SKOS::Related'         => 1.3
-    }
-  end
-
   def determine_concepts
     concepts = {}
     labels = determine_labels
@@ -82,7 +93,10 @@ class Document::Base < ActiveRecord::Base
         @trace[:concept_index][label.id] << concept.id
         # weighting
         concepts[concept] ||= 0
-        concepts[concept] += occurrences * weightings[labeling.type]
+        unless self.class.weightings[labeling.type]
+          raise "#{labeling.type} has no registered weighting. Please configure one using Document::Base.register_weighting('MyLabelingClass', 1.0)"
+        end
+        concepts[concept] += occurrences * self.class.weightings[labeling.type]
       end
     end
 
@@ -109,7 +123,10 @@ class Document::Base < ActiveRecord::Base
     @concepts.each do |concept, weighting|
       concept.relations.each do |relation|
         if @concepts.has_key?(relation.target)
-          @concepts[relation.target] *= weighting_factors[relation.type]
+          unless self.class.weighting_factors[relation.type]
+            raise "#{relation.type} has no registered weighting factor. Please configure one using Document::Base.register_weighting_factor('MyRelationClass', 1.0)"
+          end
+          @concepts[relation.target] *= self.class.weighting_factors[relation.type]
         end
       end
     end
