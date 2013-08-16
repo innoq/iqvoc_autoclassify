@@ -11,7 +11,6 @@ class Document::Base < ActiveRecord::Base
   include Workflow
 
   attr_writer :persist
-  attr_accessor :url_info # required for classifications' concept URLs
   attr_reader :weightings
 
   has_many :classifications, :foreign_key => "document_id", :order => "weighting DESC", :dependent => :destroy
@@ -53,6 +52,10 @@ class Document::Base < ActiveRecord::Base
     end
   end
 
+  def title
+    read_attribute(:title).presence || content_hash || '-'
+  end
+
   def classify
     save! if persist?
 
@@ -61,9 +64,6 @@ class Document::Base < ActiveRecord::Base
     concepts.each do |concept, weighting|
       classifications.send(method,
         :concept_id => concept.id,
-        :concept_uri => rdf_path(concept.origin, :host => @url_info[:host],
-                                                 :lang => @url_info[:lang],
-                                                 :format => nil),
         :weighting => weighting,
         :title => concept.to_s)
     end

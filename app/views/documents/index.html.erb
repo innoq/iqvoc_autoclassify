@@ -14,7 +14,7 @@
       <tr>
         <td><%= doc.updated_at %></td>
         <td>
-          <%= link_to short_title(doc) || doc.content_hash, document_path(:id => doc) %>
+          <%= link_to doc.title, document_path(:id => doc) %>
         </td>
         <td><%= doc.classifications.length %></td>
       </tr>

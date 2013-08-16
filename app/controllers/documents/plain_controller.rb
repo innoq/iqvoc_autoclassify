@@ -15,11 +15,6 @@ class Documents::PlainController < DocumentsController
 
     @document.persist = false if params[:commit].blank?
 
-    @document.url_info = {
-      :host => request.host_with_port,
-      :lang => I18n.locale
-    }
-
     render_errors and return if @document.invalid?
 
     @document.classify!

@@ -14,7 +14,6 @@ end
 
 def make_document(attributes)
   defaults = {
-    :url_info => { :host => "localhost", :lang => "de" }
   }
   doc = Document::Plain.create! defaults.merge(attributes)
   doc.classify!

@@ -9,7 +9,7 @@ class Classification < ActiveRecord::Base
   end
 
   def to_s
-    title || concept_uri
+    title || "-"
   end
 
 end

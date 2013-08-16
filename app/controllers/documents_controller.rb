@@ -37,10 +37,6 @@ class DocumentsController < ApplicationController
 
   def get_document
     @document = Document::Base.find(params[:id], :include => :classifications)
-    @document.url_info = { # required for classifications' concept URLs
-      :host => request.host_with_port,
-      :lang => I18n.locale
-    }
     @classifications = @document.classifications.order("weighting DESC").page(params[:page])
   end
 end

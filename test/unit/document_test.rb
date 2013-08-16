@@ -33,7 +33,6 @@ class DocumentTest < ActiveSupport::TestCase
     text = "der Weltraum - Piloten im Kampf"
 
     doc = Document::Plain.create(:content => text)
-    doc.url_info = { :host => "localhost", :lang => "de" }
 
     assert_equal 0, doc.classifications.count
 
@@ -45,7 +44,6 @@ class DocumentTest < ActiveSupport::TestCase
     uri_pattern = Regexp.new("^http://localhost/de/concepts/_\\d+")
     doc.classifications.each do |classification|
       assert_equal 1.0, classification.weighting
-      assert_equal 0, classification.concept_uri =~ uri_pattern
     end
   end
 

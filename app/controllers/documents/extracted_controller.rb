@@ -2,10 +2,6 @@ class Documents::ExtractedController < DocumentsController
   def create
     @document = Document::Extracted.new(:uri => params[:uri])
     @document.persist = true if params[:commit]
-    @document.url_info = {
-      :host => request.host_with_port,
-      :lang => I18n.locale
-    }
 
     render_errors and return if @document.invalid?
     @document.save if @document.persist?
