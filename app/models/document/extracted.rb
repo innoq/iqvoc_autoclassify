@@ -15,7 +15,7 @@ class Document::Extracted < Document::Base
     end
   end
 
-  validates_format_of :uri, :with => /^https?:\/\/[^\s]+$/
+  validates_format_of :uri, :with => /https?:\/\/[^\s]+/
   validates_presence_of :content, :if => :extracted?
 
   def extract
