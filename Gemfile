@@ -1,7 +1,6 @@
 source 'https://rubygems.org'
 
-gem 'rails', '~> 3.2.12'
-gem 'iqvoc', '~> 4.1.0'
+gem 'iqvoc', :github => 'innoq/iqvoc'
 gem 'iqvoc_skosxl', '~> 2.1.0'
 gem 'iqvoc_inflectionals', '~> 2.1.0'
 gem 'iqvoc_compound_forms', :git => 'git://github.com/innoq/iqvoc_compound_forms.git'
@@ -10,10 +9,6 @@ gem 'nokogiri', '~> 1.5.0'
 gem 'pdf-reader', '~> 0.10.0'
 gem 'workflow', '~> 1.0.0'
 gem 'guess_html_encoding'
-
-group :assets do
-  gem 'uglifier'
-end
 
 group :development, :test do
   gem 'awesome_print'
