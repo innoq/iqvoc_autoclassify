@@ -1,7 +1,7 @@
 class Documents::ExtractedController < DocumentsController
   resource_description { name 'AutoClassify URI' }
 
-  api :GET, ':lang/autoclassify/extract.ttl', <<-DOC
+  api :GET, ':lang/autoclassify/extract', <<-DOC
     Returns the most significant concepts for a given document URL.
   DOC
   formats [:html, :ttl, :rdf]

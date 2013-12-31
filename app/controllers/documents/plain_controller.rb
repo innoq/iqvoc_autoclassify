@@ -1,7 +1,7 @@
 class Documents::PlainController < DocumentsController
   resource_description { name 'AutoClassify plain text' }
 
-  api :POST, ':lang/autoclassify/plain.ttl', <<-DOC
+  api :POST, ':lang/autoclassify/plain', <<-DOC
     Returns the most significant concepts for a given document body.
   DOC
   formats [:html, :ttl, :rdf]
