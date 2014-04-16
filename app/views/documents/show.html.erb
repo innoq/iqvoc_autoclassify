@@ -46,9 +46,9 @@
 
 <h2><%= Document::Base.human_attribute_name :content %></h2>
 <%- if @trace -%>
-<p><blockquote class="trace"><%= raw augmented_fulltext(@document) %></blockquote></p>
+<pre class="trace"><%= raw augmented_fulltext(@document) %></pre>
 <%- else -%>
-<p><blockquote class="plaintext"><%= @document.content.strip %></blockquote></p>
+<pre class="plaintext"><%= @document.content.strip %></pre>
 <%- end -%>
 
 <%= render "sidebar" %>
