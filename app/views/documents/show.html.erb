@@ -33,11 +33,11 @@
 <hr />
 
 <div class="new_comment">
-  <%= simple_form_for @document.comments.build, :url => document_comments_path(:document_id => @document) do |f| %>
-    <%= f.input :body, :label => false, :input_html => {:rows => 4, :cols => 70} %>
+  <%= bootstrap_form_for @document.comments.build, :url => document_comments_path(:document_id => @document) do |f| %>
+    <%= f.text_area :body, :hide_label => true, :rows => 4, :cols => 70 %>
 
     <div class="actions">
-      <%= f.submit t("txt.views.document.comment"), :class => "btn btn-primary" %>
+      <%= f.submit t("txt.views.document.comment"), :class => "btn btn-default" %>
     </div>
   <% end %>
 </div>

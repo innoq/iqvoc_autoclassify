@@ -1,24 +1,25 @@
-<%= simple_form_for @document, :url => extracted_documents_path, :html => { :class => 'document-form' } do |f| %>
+<%= bootstrap_form_for @document, :url => extracted_documents_path, :html => { :class => 'document-form' } do |f| %>
   <fieldset>
     <legend><%= Document::Base.human_attribute_name :url %></legend>
-    <%= input_block do %>
-      <%= text_field_tag :uri, nil, :class => "span6" %>
+    <%= f.form_group nil do %>
+      <%= text_field_tag :uri, nil, :class => 'form-control' %>
     <% end %>
 
-    <div class="form-actions">
-      <%= f.submit t("txt.common.save"), :class => "btn btn-primary", :id => nil %>
+    <hr/>
+    <div class="well">
+      <%= f.submit t("txt.common.save"), :class => "btn btn-primary" %>
     </div>
   </fieldset>
 <% end %>
 
-<%= simple_form_for @document, :as => :document, :url => plain_documents_path, :html => { :class => 'document-form' } do |f| %>
+<%= bootstrap_form_for @document, :as => :document, :url => plain_documents_path, :html => { :class => 'document-form' } do |f| %>
   <fieldset>
     <legend><%= Document::Base.human_attribute_name :content %></legend>
 
-    <%= f.input :title, :input_html => { :class => "span6" }  %>
-    <%= f.input :content, :input_html => { :class => "span6" } %>
+    <%= f.text_field :title  %>
+    <%= f.text_area :content %>
 
-    <div class="form-actions">
+    <div class="well">
       <%= f.submit t("txt.common.save"), :class => "btn btn-primary" %>
     </div>
   </fieldset>
