@@ -13,7 +13,7 @@ class Document::Base < ActiveRecord::Base
   attr_writer :persist
   attr_reader :weightings
 
-  has_many :classifications, :foreign_key => "document_id", :order => "weighting DESC", :dependent => :destroy
+  has_many :classifications, -> { order "weighting DESC" }, :foreign_key => "document_id", :dependent => :destroy
   has_many :comments, :foreign_key => "document_id", :dependent => :destroy
   has_one :classification_trace, :foreign_key => "document_id", :dependent => :destroy
 
