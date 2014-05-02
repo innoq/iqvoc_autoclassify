@@ -273,6 +273,7 @@ GEM
       json (>= 1.8)
       net-http-persistent (>= 1.4)
       rdf (>= 1.1)
+    spring (1.1.2)
     sprockets (2.11.0)
       hike (~> 1.2)
       multi_json (~> 1.0)
@@ -323,5 +324,6 @@ DEPENDENCIES
   pry-rails
   pry-remote
   ruby-readability
+  spring
   sqlite3
   workflow (~> 1.0.0)

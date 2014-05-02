@@ -13,6 +13,7 @@ gem 'guess_html_encoding'
 
 group :development, :test do
   gem 'awesome_print'
+  gem 'spring'
   gem 'pry'
   gem 'pry-rails'
   gem 'pry-remote'
