@@ -8,9 +8,9 @@ Gem::Specification.new do |s|
   s.platform    = Gem::Platform::RUBY
   s.authors     = ["Robert Glaser", "Frederik Dohr", "Till Schulte-Coerne"]
   s.email       = ["robert.glaser@innoq.com"]
-  s.homepage    = "http://innoq.com"
-  s.summary     = "automatic classification of documents based on iQvoc thesauri"
-  s.description = ""
+  s.homepage    = "http://iqvoc.net"
+  s.summary     = "Automatic classification of documents based on iQvoc thesauri"
+  s.description = "Automatic classification of documents based on iQvoc thesauri"
 
   s.add_dependency "iqvoc"
   s.add_dependency "iqvoc_skosxl"
