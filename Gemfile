@@ -33,7 +33,7 @@ group :development, :test do
 end
 
 group :test do
-  gem 'capybara', '~> 1.1.2'
+  gem 'capybara'
   gem 'database_cleaner'
   gem 'fakeweb'
 end
