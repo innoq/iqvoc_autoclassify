@@ -25,6 +25,11 @@ group :development, :test do
     gem 'hirb-unicode'
     gem 'cane'
   end
+
+  platforms :jruby do
+    gem 'activerecord-jdbcmysql-adapter'
+    gem 'activerecord-jdbcsqlite3-adapter'
+  end
 end
 
 group :test do
