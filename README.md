@@ -1,3 +1,5 @@
+[![Build Status](https://ci.innoq.com/buildStatus/icon?job=iqvoc_autoclassify)](https://ci.innoq.com/job/iqvoc_autoclassify/)
+
 # Iqvoc::AutoClassify
 
 This is the iQvoc AutoClassify extension. Use this in your Gemfile to add AutoClassify features to iQvoc.
@@ -15,7 +17,7 @@ Operate Iqvoc::AutoClassify like a common iQvoc-based Application.
 
 ## Engine
 
-Operate Iqvoc::AutoClassify and Iqvoc as Engines running in a custom App.
+Operate Iqvoc::AutoClassify and iQvoc as Engines running in a custom App.
 
 1. Add iqvoc_autoclassify to your Gemfile (beneath iqvoc)
 2. Run database migrations:
