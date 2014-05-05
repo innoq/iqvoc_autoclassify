@@ -2,7 +2,11 @@ class DocumentsController < ApplicationController
   respond_to :html, :rdf, :ttl
 
   def index
-    @documents = Document::Base.order("updated_at DESC").page(params[:page])
+    @documents = Document::Base.
+        includes(:classifications).
+        order("updated_at DESC").
+        page(params[:page])
+
     respond_with @documents
   end
 
