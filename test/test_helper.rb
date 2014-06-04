@@ -2,7 +2,6 @@ ENV["RAILS_ENV"] = "test"
 require File.expand_path('../../config/environment', __FILE__)
 require 'rails/test_help'
 require 'iqvoc/maker'
-require 'yaml'
 
 class ActiveSupport::TestCase
   # Setup all fixtures in test/fixtures/*.(yml|csv) for all tests in alphabetical order.
@@ -13,9 +12,7 @@ class ActiveSupport::TestCase
 end
 
 def make_document(attributes)
-  defaults = {
-  }
-  doc = Document::Plain.create! defaults.merge(attributes)
+  doc = Document::Plain.create!(attributes)
   doc.classify!
   doc
 end
