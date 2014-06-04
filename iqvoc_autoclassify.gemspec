@@ -21,6 +21,7 @@ Gem::Specification.new do |s|
   s.add_dependency "pdf-reader", "~> 0.10.0"
   s.add_dependency "workflow", "~> 1.0.0"
   s.add_dependency "guess_html_encoding"
+  s.add_dependency "nokogiri"
 
   # s.rubyforge_project = "iqvoc_autoclassify"
 
