@@ -14,16 +14,11 @@ gem 'guess_html_encoding'
 group :development, :test do
   gem 'awesome_print'
   gem 'spring'
-  gem 'pry'
   gem 'pry-rails'
-  gem 'pry-remote'
 
   platforms :ruby do
     gem 'mysql2'
     gem 'sqlite3'
-
-    gem 'hirb-unicode'
-    gem 'cane'
   end
 
   platforms :jruby do
@@ -34,6 +29,5 @@ end
 
 group :test do
   gem 'capybara'
-  gem 'database_cleaner'
   gem 'fakeweb'
 end
