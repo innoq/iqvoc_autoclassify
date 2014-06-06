@@ -1,7 +1,7 @@
 <%= page_header :title => Document::Base.model_name.human(:count => 2) %>
 <%= render "sidebar" %>
 
-<table class="table">
+<table class="table documents-table">
   <thead>
     <tr>
       <th><%= Document::Base.human_attribute_name(:updated_at) %></th>
@@ -11,12 +11,15 @@
   </thead>
   <tbody>
     <% @documents.each do |doc| %>
-      <tr>
+      <tr class="documents-table-item">
         <td><%= doc.updated_at %></td>
         <td>
-          <%= link_to doc.title, document_path(:id => doc) %>
+          <%= link_to doc.title, document_path(:id => doc),
+            class: 'documents-table-item-link' %>
         </td>
-        <td><%= doc.classifications.length %></td>
+        <td class="documents-table-item-classifications">
+          <%= doc.classifications.length %>
+        </td>
       </tr>
     <% end %>
   </tbody>

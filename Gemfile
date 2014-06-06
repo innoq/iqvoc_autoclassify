@@ -10,6 +10,7 @@ gem 'nokogiri', '~> 1.5.0'
 gem 'pdf-reader', '~> 0.10.0'
 gem 'workflow', '~> 1.0.0'
 gem 'guess_html_encoding'
+gem 'apipie-rails', '0.1.3'
 
 group :development, :test do
   gem 'awesome_print'
@@ -29,5 +30,6 @@ end
 
 group :test do
   gem 'capybara'
+  gem 'poltergeist'
   gem 'fakeweb'
 end
