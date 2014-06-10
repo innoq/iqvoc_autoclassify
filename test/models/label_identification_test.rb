@@ -21,27 +21,27 @@ class LabelIdentificationTest < ActiveSupport::TestCase
     @label_ids.each { |term, label| @label_ids[term] = label.id }
   end
 
-  test "case-insensitive matching" do
-    sentence = ["Kinder", "Fenster", "Bäume"]
+  test 'case-insensitive matching' do
+    sentence = ['Kinder', 'Fenster', 'Bäume']
     assert_equal 3, WordMatcher.new([sentence]).labels.length
 
-    sentence = ["kinder", "fenster", "bäume"]
+    sentence = ['kinder', 'fenster', 'bäume']
     assert_equal 3, WordMatcher.new([sentence]).labels.length
 
-    sentence = ["kinder", "fenSter", "bÄume"]
+    sentence = ['kinder', 'fenSter', 'bÄume']
     assert_equal 3, WordMatcher.new([sentence]).labels.length
   end
 
-  test "identifying matching labels" do
-    sentence = ["Kinder", "Fenster", "Bäume"]
+  test 'identifying matching labels' do
+    sentence = ['Kinder', 'Fenster', 'Bäume']
     assert_equal 3, WordMatcher.new([sentence]).labels.length
 
-    sentence = ["Kinder", "Fenster", "Bäume", "Kinder", "Baum"]
+    sentence = ['Kinder', 'Fenster', 'Bäume', 'Kinder', 'Baum']
     labels = WordMatcher.new([sentence]).labels
     assert_equal 5, labels.length
-    assert_equal 2, labels.find_all { |id| id == @label_ids["Baum"] }.length
+    assert_equal 2, labels.find_all { |id| id == @label_ids['Baum'] }.length
 
-    sentence = ["Das", "Kind", "am", "Fenster", "sieht", "Bäume", "und", "Gras"]
+    sentence = ['Das', 'Kind', 'am', 'Fenster', 'sieht', 'Bäume', 'und', 'Gras']
     assert_equal 3, WordMatcher.new([sentence]).labels.length
   end
 

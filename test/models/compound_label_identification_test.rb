@@ -36,63 +36,63 @@ class CompoundLabelIdentificationTest < ActiveSupport::TestCase
     @label_ids.each { |term, label| @label_ids[term] = label.id }
   end
 
-  test "compound discovery" do
-    sentence = ["der", "Weltraum", "der", "Kampf", "und", "der", "Pilot"]
+  test 'compound discovery' do
+    sentence = ['der', 'Weltraum', 'der', 'Kampf', 'und', 'der', 'Pilot']
     labels = WordMatcher.new([sentence]).labels
 
     assert_equal 4, labels.length
-    assert labels.include? @label_ids["Weltraumkampfpilot"]
-    assert (not labels.include? @label_ids["Weltraumfrachtpilot"])
+    assert labels.include? @label_ids['Weltraumkampfpilot']
+    assert (not labels.include? @label_ids['Weltraumfrachtpilot'])
 
-    sentence = ["Weltraum", "des", "Kampfes", "und", "der", "Piloten"]
+    sentence = ['Weltraum', 'des', 'Kampfes', 'und', 'der', 'Piloten']
     labels = WordMatcher.new([sentence]).labels
 
     assert_equal 4, labels.length
-    assert labels.include? @label_ids["Weltraumkampfpilot"]
-    assert (not labels.include? @label_ids["Weltraumfrachtpilot"])
+    assert labels.include? @label_ids['Weltraumkampfpilot']
+    assert (not labels.include? @label_ids['Weltraumfrachtpilot'])
   end
 
-  test "order of occurrence is significant" do
-    sentence = ["der", "Kampf", "der", "Weltraum", "und", "der", "Pilot"]
+  test 'order of occurrence is significant' do
+    sentence = ['der', 'Kampf', 'der', 'Weltraum', 'und', 'der', 'Pilot']
     labels = WordMatcher.new([sentence]).labels
 
     assert_equal 3, labels.length
-    assert (not labels.include? @label_ids["Weltraumkampfpilot"])
-    assert (not labels.include? @label_ids["Weltraumfrachtpilot"])
+    assert (not labels.include? @label_ids['Weltraumkampfpilot'])
+    assert (not labels.include? @label_ids['Weltraumfrachtpilot'])
   end
 
-  test "duplicates are retained" do
-    sentence = "Weltraum Pilot Kampf Pilot".split(" ")
+  test 'duplicates are retained' do
+    sentence = 'Weltraum Pilot Kampf Pilot'.split(' ')
     labels = WordMatcher.new([sentence]).labels
 
     assert_equal 5, labels.length
-    assert labels.include? @label_ids["Weltraumkampfpilot"]
-    assert (not labels.include? @label_ids["Weltraumfrachtpilot"])
-    assert_equal 2, labels.find_all { |id| id == @label_ids["Pilot"] }.length
+    assert labels.include? @label_ids['Weltraumkampfpilot']
+    assert (not labels.include? @label_ids['Weltraumfrachtpilot'])
+    assert_equal 2, labels.find_all { |id| id == @label_ids['Pilot'] }.length
 
-    sentence = "foo Fracht bar Weltraum baz Pilot ... Kampf ... Pilot".split(" ")
+    sentence = 'foo Fracht bar Weltraum baz Pilot ... Kampf ... Pilot'.split(' ')
     labels = WordMatcher.new([sentence]).labels
 
     assert_equal 6, labels.length
-    assert labels.include? @label_ids["Weltraumkampfpilot"]
-    assert (not labels.include? @label_ids["Weltraumfrachtpilot"])
-    assert_equal 2, labels.find_all { |id| id == @label_ids["Pilot"] }.length
+    assert labels.include? @label_ids['Weltraumkampfpilot']
+    assert (not labels.include? @label_ids['Weltraumfrachtpilot'])
+    assert_equal 2, labels.find_all { |id| id == @label_ids['Pilot'] }.length
   end
 
-  test "special cases" do
-    sentence = "die Euro 5 Norm".split(" ")
+  test 'special cases' do
+    sentence = 'die Euro 5 Norm'.split(' ')
     labels = WordMatcher.new([sentence]).labels
 
     assert_equal 3, labels.length
-    assert_equal [@label_ids["Euro"], @label_ids["5"], @label_ids["Euro 5"]], labels
+    assert_equal [@label_ids['Euro'], @label_ids['5'], @label_ids['Euro 5']], labels
 
-    sentence = "zum Euro gibt es 5 Alternativen".split(" ")
+    sentence = 'zum Euro gibt es 5 Alternativen'.split(' ')
     labels = WordMatcher.new([sentence]).labels
 
     # XXX: the following is not actually desirable, but inevitable due to the way
     #      compound forms are handled (allowing arbitrary tokens between components)
     assert_equal 3, labels.length
-    assert_equal [@label_ids["Euro"], @label_ids["5"], @label_ids["Euro 5"]], labels
+    assert_equal [@label_ids['Euro'], @label_ids['5'], @label_ids['Euro 5']], labels
   end
 
 end

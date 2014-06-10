@@ -67,7 +67,7 @@ class Documents::ExtractedController < DocumentsController
     end
 
     if @document.errors.any?
-      messages << t("txt.controllers.documents.create.invalid")
+      messages << t('txt.controllers.documents.create.invalid')
     end
 
     respond_to do |format|

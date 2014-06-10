@@ -4,7 +4,7 @@ class DocumentsController < ApplicationController
   def index
     @documents = Document::Base.
         includes(:classifications).
-        order("updated_at DESC").
+        order('updated_at DESC').
         page(params[:page])
 
     respond_with @documents
@@ -29,10 +29,10 @@ class DocumentsController < ApplicationController
 
       @document.reclassify!
 
-      flash[:success] = I18n.t("txt.controllers.documents.update.success")
+      flash[:success] = I18n.t('txt.controllers.documents.update.success')
       redirect_to document_path(:id => @document)
     else
-      flash[:error] = I18n.t("txt.controllers.documents.update.invalid")
+      flash[:error] = I18n.t('txt.controllers.documents.update.invalid')
       render :show, :status => 400
     end
   end
@@ -41,6 +41,6 @@ class DocumentsController < ApplicationController
 
   def get_document
     @document = Document::Base.where(:id => params[:id]).includes(:classifications).first
-    @classifications = @document.classifications.order("weighting DESC").page(params[:page])
+    @classifications = @document.classifications.order('weighting DESC').page(params[:page])
   end
 end

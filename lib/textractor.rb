@@ -9,7 +9,7 @@ require 'pdf-reader'
 module Textractor
 
   def self.from_uri(uri, timeout = 0.5)
-    raise InvalidUri, "HTTP URL expected" unless uri =~ /^https?:\/\/[^\s]+$/
+    raise InvalidUri, 'HTTP URL expected' unless uri =~ /^https?:\/\/[^\s]+$/
     title = nil
     content = nil
 
@@ -19,26 +19,26 @@ module Textractor
     req = Net::HTTP::Get.new(uri.to_s)
     begin
       http.request(req) do |response|
-        raise HTTPError.new(502, response.message) unless response.code == "200"
+        raise HTTPError.new(502, response.message) unless response.code == '200'
 
         case response.content_type
-          when "text/plain"
+          when 'text/plain'
             content = response.body
-          when "text/html"
+          when 'text/html'
             title, content = from_html(response.body)
-          when "application/pdf"
-            file = Tempfile.new "textractor"
+          when 'application/pdf'
+            file = Tempfile.new 'textractor'
             file.binmode
             response.read_body { |chunk| file.write chunk }
             file.close
             begin
               title, content = from_pdf(file.path)
             rescue ArgumentError
-              raise UnprocessablePDF, "PDF encoding error"
+              raise UnprocessablePDF, 'PDF encoding error'
             rescue PDF::Reader::MalformedPDFError
-              raise UnprocessablePDF, "malformed PDF document"
+              raise UnprocessablePDF, 'malformed PDF document'
             rescue PDF::Reader::UnsupportedFeatureError
-              raise UnprocessablePDF, "encrypted PDF not supported"
+              raise UnprocessablePDF, 'encrypted PDF not supported'
             end
             file.delete
           else
@@ -48,10 +48,10 @@ module Textractor
     rescue Timeout::Error
       raise ResponseLimitExceeded
     rescue SocketError, Errno::ECONNREFUSED
-      raise ConnectionError, "could not retrieve document"
+      raise ConnectionError, 'could not retrieve document'
     end
 
-    title = title.encode("UTF-8") unless title.nil?
+    title = title.encode('UTF-8') unless title.nil?
 
     return title, content
   end
@@ -59,7 +59,7 @@ module Textractor
   def self.from_html(html)
     guessed_encoding = GuessHtmlEncoding.guess(html)
     doc = Readability::Document.new(html, :encoding => guessed_encoding)
-    title = doc.html.css("title").first
+    title = doc.html.css('title').first
     title = title ? title.text : nil
     content = Nokogiri::HTML(doc.content).text # invoking Nokogiri seems a bit
                                                # redundant, but is necessary
@@ -106,7 +106,7 @@ module Textractor
     end
 
     def begin_page(arg = nil)
-      @content << ""
+      @content << ''
     end
 
     def show_text(string, *params)

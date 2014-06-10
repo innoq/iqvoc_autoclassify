@@ -33,56 +33,56 @@ class Documents::ExtractedControllerTest < ActionController::TestCase
     end
 
     @urls = {
-      :service => "http://example.org/service.pdf",
-      :html => "http://example.org/sample.html",
-      :big => "http://example.org/sample.pdf",
-      :not_found => "http://example.org/not_found",
-      :unsupported_content_type => "http://example.org/unsupported.zip"
+      :service => 'http://example.org/service.pdf',
+      :html => 'http://example.org/sample.html',
+      :big => 'http://example.org/sample.pdf',
+      :not_found => 'http://example.org/not_found',
+      :unsupported_content_type => 'http://example.org/unsupported.zip'
     }
 
     FakeWeb.register_uri :get, @urls[:service],
-      :body => "test/fixtures/service.pdf",
-      :content_type => "application/pdf"
+      :body => 'test/fixtures/service.pdf',
+      :content_type => 'application/pdf'
 
     FakeWeb.register_uri :get, @urls[:html],
-      :body => "test/fixtures/sample.html",
-      :content_type => "text/html"
+      :body => 'test/fixtures/sample.html',
+      :content_type => 'text/html'
 
     FakeWeb.register_uri :get, @urls[:big],
-      :body => "test/fixtures/sample.pdf",
-      :content_type => "application/pdf",
+      :body => 'test/fixtures/sample.pdf',
+      :content_type => 'application/pdf',
       :content_length => 751945
 
     FakeWeb.register_uri :get, @urls[:not_found],
-      :body => "Nothing here",
-      :status => ["404", "Not Found"]
+      :body => 'Nothing here',
+      :status => ['404', 'Not Found']
 
     FakeWeb.register_uri :get, @urls[:unsupported_content_type],
-      :body => "test/fixtures/unsupported.pdf",
-      :content_type => "application/zip"
+      :body => 'test/fixtures/unsupported.pdf',
+      :content_type => 'application/zip'
   end
 
-  test "classify html via uri" do
-    assert_no_difference "Document::Extracted.count" do
-      post :create, :uri => @urls[:html], :format => "rdf", :lang => "de"
+  test 'classify html via uri' do
+    assert_no_difference 'Document::Extracted.count' do
+      post :create, :uri => @urls[:html], :format => 'rdf', :lang => 'de'
     end
     assert_not_nil assigns(:document)
     assert_response 200
     assert_equal 'application/rdf+xml', response.content_type
   end
 
-  test "classify pdf via uri" do
-    assert_no_difference "Document::Extracted.count" do
-      post :create, :uri => @urls[:service], :format => 'rdf', :lang => "de"
+  test 'classify pdf via uri' do
+    assert_no_difference 'Document::Extracted.count' do
+      post :create, :uri => @urls[:service], :format => 'rdf', :lang => 'de'
     end
     assert_not_nil assigns(:document)
     assert_response 200
     assert_equal 'application/rdf+xml', response.content_type
   end
 
-  test "classify and persist via uri" do
-    assert_difference "Document::Extracted.count" do
-      post :create, :uri => @urls[:html], :format => 'rdf', :commit => "1", :lang => "de"
+  test 'classify and persist via uri' do
+    assert_difference 'Document::Extracted.count' do
+      post :create, :uri => @urls[:html], :format => 'rdf', :commit => '1', :lang => 'de'
     end
   end
 
@@ -93,11 +93,11 @@ class Documents::ExtractedControllerTest < ActionController::TestCase
   #  assert_equal 'application/rdf+xml', response.content_type
   #end
 
-  test "extraction errors" do
-    post :create, :uri => @urls[:not_found], :format => 'rdf', :lang => "de"
+  test 'extraction errors' do
+    post :create, :uri => @urls[:not_found], :format => 'rdf', :lang => 'de'
     assert_response 422
 
-    post :create, :uri => @urls[:unsupported_content_type], :format => 'rdf', :lang => "de"
+    post :create, :uri => @urls[:unsupported_content_type], :format => 'rdf', :lang => 'de'
     assert_response 422
   end
 end

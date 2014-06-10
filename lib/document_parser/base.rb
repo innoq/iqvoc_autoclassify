@@ -6,8 +6,8 @@ module DocumentParser
     attr_reader :sentences
 
     @@delimiters = {
-      "sentence" => [".", "?", "!"],
-      "word" => [" ", "\t", ",", ":", ";", '"', "'", "(", ")"]
+      'sentence' => ['.', '?', '!'],
+      'word' => [' ', "\t", ',', ':', ';', '"', "'", '(', ')']
     }
 
     def initialize(text)
@@ -20,8 +20,8 @@ module DocumentParser
 
       text = preprocess(text)
 
-      text += "." # ensure final sentence is completed -- XXX: hacky?
-      text += " " # ensure a final iteration -- XXX: hacky?
+      text += '.' # ensure final sentence is completed -- XXX: hacky?
+      text += ' ' # ensure a final iteration -- XXX: hacky?
       current_char = text.slice!(0). # skip first iteration (for look-ahead)
           chr # required for Ruby v1.8
       text.each_char { |char|
@@ -40,10 +40,10 @@ module DocumentParser
         else
           end_word
         end
-      elsif (@@delimiters["sentence"].include? char) and
+      elsif (@@delimiters['sentence'].include? char) and
           (@next_char =~ /\s/) != nil # XXX: too simplistic?
         end_sentence
-      elsif @@delimiters["word"].include? char
+      elsif @@delimiters['word'].include? char
         end_word
       else
         @current_token = @current_token ? "#{@current_token}#{char}" : char
@@ -76,8 +76,8 @@ module DocumentParser
     def normalize_word(token)
       # strip leading and trailing non-alphanumeric characters
       return token.
-          sub(/^[^A-Za-z0-9]+/, "").
-          sub(/[^A-Za-z0-9]+$/, "")
+          sub(/^[^A-Za-z0-9]+/, '').
+          sub(/[^A-Za-z0-9]+$/, '')
     end
 
   end

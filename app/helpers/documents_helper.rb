@@ -9,7 +9,7 @@ module DocumentsHelper
     trace = get_trace(document)
 
     # invert concept index; list of label IDs by concept ID
-    index = trace["concept_index"].each_with_object({}) { |data, hsh|
+    index = trace['concept_index'].each_with_object({}) { |data, hsh|
       label_id, concept_ids = data
       concept_ids.each { |id|
         hsh[id] ||= []
@@ -26,8 +26,8 @@ module DocumentsHelper
     }
 
     # FIXME: inefficient; duplicates `augmented_fulltext` functionality
-    label_ids = trace["label_index"].values.uniq
-    label_ids += trace["compound_index"].values.uniq
+    label_ids = trace['label_index'].values.uniq
+    label_ids += trace['compound_index'].values.uniq
     labels = Iqvoc::XLLabel.base_class. # XXX: database queries don't belong into helpers!?
         where(:id => label_ids.uniq, :language => I18n.locale).
         select([:id, :origin, :value, :language])
@@ -47,7 +47,7 @@ module DocumentsHelper
     }
 
     return @augmented_classifications = classifications.each_with_object({}) { |classification, hsh|
-      hsh[classification.id] = content_tag(:div, { :class => "details" }) do
+      hsh[classification.id] = content_tag(:div, { :class => 'details' }) do
         label_index[classification.concept_id].map { |type, labels|
           caption = type.constantize.model_name.human(:count => 2)
           render_list(caption, labels) do |label|
@@ -62,8 +62,8 @@ module DocumentsHelper
   def augmented_fulltext(document)
     trace = get_trace(document)
 
-    label_ids = trace["label_index"].values.uniq
-    label_ids += trace["compound_index"].values.uniq
+    label_ids = trace['label_index'].values.uniq
+    label_ids += trace['compound_index'].values.uniq
     labels = Iqvoc::XLLabel.base_class. # XXX: database queries don't belong into helpers!?
         where(:id => label_ids.uniq, :language => I18n.locale).
         select([:id, :origin, :value, :language])
@@ -74,19 +74,19 @@ module DocumentsHelper
     return DocumentParser::German.new(text).sentences.map { |sentence| # simply assuming DE, for now
       sentence.map! { |word|
         normal_hash = Inflectional::Base.normalize(word)
-        label_id = trace["label_index"][normal_hash.to_s]
+        label_id = trace['label_index'][normal_hash.to_s]
 
         label = labels[label_id]
         if label
-          classes = ["hint"]
+          classes = ['hint']
           details = [
             "<h3>#{label.class.model_name.human(:count => 1)}</h3>",
             link_to(label.to_s, label_path(:id => label.origin))
           ]
 
-          compound_ids = trace["compound_index"][label_id.to_s]
+          compound_ids = trace['compound_index'][label_id.to_s]
           if compound_ids
-            classes << "compounds"
+            classes << 'compounds'
             caption = CompoundForm::Base.model_name.human(:count => 2)
             details << render_list(caption, compound_ids.uniq) do |id| # TODO: i18n
               label = labels[id]
@@ -95,11 +95,11 @@ module DocumentsHelper
             end
           end
 
-          concepts = trace["concept_index"][label_id.to_s]
+          concepts = trace['concept_index'][label_id.to_s]
           if concepts
             concepts = Iqvoc::Concept.base_class.where(:id => concepts) # XXX: database queries don't belong into helpers!?
             concepts = concepts.index_by(&:id)
-            classes << "concepts"
+            classes << 'concepts'
             caption = concepts.first.last.class.model_name.human(:count => 2)
             details << render_list(caption, concepts) do |id, concept|
               uri = concept_path(:id => concept.origin)
@@ -107,13 +107,13 @@ module DocumentsHelper
             end
           end
 
-          %Q(<span class="#{classes.join " "}">#{h word}</span>) +
+          %Q(<span class="#{classes.join ' '}">#{h word}</span>) +
               %Q(<div class="details">#{details.join("\n")}</div>)
         else
           word
         end
       }
-      content_tag(:div, sentence.join(" ").html_safe, { :class => "sentence" })
+      content_tag(:div, sentence.join(' ').html_safe, { :class => 'sentence' })
     }.join("\n\n") # XXX: discards punctuation, line breaks etc.; should only replace matches in the original string
   end
 

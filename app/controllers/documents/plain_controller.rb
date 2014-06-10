@@ -5,7 +5,7 @@ class Documents::PlainController < DocumentsController
     Returns the most significant concepts for a given document body.
   DOC
   formats [:html, :ttl, :rdf]
-  param :content, String, :required => true, :desc => "Plain text to be classified."
+  param :content, String, :required => true, :desc => 'Plain text to be classified.'
   example <<-DOC
     curl -X POST --data "content=Abfallwirtschaft" http://umthes.innoq.com/de/autoclassify/plain.ttl
     200
@@ -52,7 +52,7 @@ class Documents::PlainController < DocumentsController
 
   protected
   def render_errors
-    flash[:error] = t("txt.controllers.plain_documents.create.invalid")
+    flash[:error] = t('txt.controllers.plain_documents.create.invalid')
     respond_to do |format|
       format.html { render :new }
       format.any(:rdf, :ttl) { render :text => flash[:error], :status => 422 }

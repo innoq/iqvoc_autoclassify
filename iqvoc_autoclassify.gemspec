@@ -1,31 +1,31 @@
 # -*- encoding: utf-8 -*-
-$:.push File.expand_path("../lib", __FILE__)
-require "iqvoc/auto_classify/version"
+$:.push File.expand_path('../lib', __FILE__)
+require 'iqvoc/auto_classify/version'
 
 Gem::Specification.new do |s|
-  s.name        = "iqvoc_autoclassify"
+  s.name        = 'iqvoc_autoclassify'
   s.version     = Iqvoc::AutoClassify::VERSION
   s.platform    = Gem::Platform::RUBY
-  s.authors     = ["Robert Glaser", "Frederik Dohr", "Till Schulte-Coerne"]
-  s.email       = ["robert.glaser@innoq.com"]
-  s.homepage    = "http://iqvoc.net"
-  s.summary     = "Automatic classification of documents based on iQvoc thesauri"
-  s.description = "Automatic classification of documents based on iQvoc thesauri"
+  s.authors     = ['Robert Glaser', 'Frederik Dohr', 'Till Schulte-Coerne']
+  s.email       = ['robert.glaser@innoq.com']
+  s.homepage    = 'http://iqvoc.net'
+  s.summary     = 'Automatic classification of documents based on iQvoc thesauri'
+  s.description = 'Automatic classification of documents based on iQvoc thesauri'
 
-  s.add_dependency "iqvoc"
-  s.add_dependency "iqvoc_skosxl"
-  s.add_dependency "iqvoc_inflectionals"
-  s.add_dependency "iqvoc_compound_forms"
-  s.add_dependency "bundler"
-  s.add_dependency "ruby-readability"
-  s.add_dependency "pdf-reader", "~> 0.10.0"
-  s.add_dependency "workflow", "~> 1.0.0"
-  s.add_dependency "guess_html_encoding"
-  s.add_dependency "nokogiri"
+  s.add_dependency 'iqvoc'
+  s.add_dependency 'iqvoc_skosxl'
+  s.add_dependency 'iqvoc_inflectionals'
+  s.add_dependency 'iqvoc_compound_forms'
+  s.add_dependency 'bundler'
+  s.add_dependency 'ruby-readability'
+  s.add_dependency 'pdf-reader', '~> 0.10.0'
+  s.add_dependency 'workflow', '~> 1.0.0'
+  s.add_dependency 'guess_html_encoding'
+  s.add_dependency 'nokogiri'
 
   # s.rubyforge_project = "iqvoc_autoclassify"
 
   s.files         = `git ls-files`.split("\n")
   s.test_files    = `git ls-files -- {test,spec,features}/*`.split("\n")
-  s.require_paths = ["lib"]
+  s.require_paths = ['lib']
 end

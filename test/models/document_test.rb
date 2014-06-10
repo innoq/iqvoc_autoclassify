@@ -29,8 +29,8 @@ class DocumentTest < ActiveSupport::TestCase
     EOF
   end
 
-  test "classification creation" do
-    text = "der Weltraum - Piloten im Kampf"
+  test 'classification creation' do
+    text = 'der Weltraum - Piloten im Kampf'
 
     doc = Document::Plain.create(:content => text)
 
@@ -41,7 +41,7 @@ class DocumentTest < ActiveSupport::TestCase
 
     assert_equal 3, doc.classifications.count
 
-    uri_pattern = Regexp.new("^http://localhost/de/concepts/_\\d+")
+    uri_pattern = Regexp.new('^http://localhost/de/concepts/_\\d+')
     doc.classifications.each do |classification|
       assert_equal 1.0, classification.weighting
     end

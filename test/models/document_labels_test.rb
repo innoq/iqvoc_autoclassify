@@ -49,18 +49,18 @@ class DocumentLabelsTest < ActiveSupport::TestCase
     @labels = data[:labels]
   end
 
-  test "title inclusion during classification" do
-    title = "Weltraumkampfpiloten"
-    text = "Im Weltraum fliegt ein Pilot."
+  test 'title inclusion during classification' do
+    title = 'Weltraumkampfpiloten'
+    text = 'Im Weltraum fliegt ein Pilot.'
 
     labels = make_document(:title => title, :content => text).determine_labels
     assert_equal 3, labels.length
-    assert labels.include? @labels["Weltraum"]
-    assert labels.include? @labels["Pilot"]
-    assert labels.include? @labels["Weltraumkampfpilot"]
+    assert labels.include? @labels['Weltraum']
+    assert labels.include? @labels['Pilot']
+    assert labels.include? @labels['Weltraumkampfpilot']
   end
 
-  test "label discovery and redundancy elimination" do
+  test 'label discovery and redundancy elimination' do
     text = <<-EOF
       Im Weltraum fliegt ein Pilot. Es besteht die Gefahr eines Kampfes. Dazu
       gibt es Weltraumkampfpiloten, die ausgebildet sind, in den Weiten des
@@ -69,49 +69,49 @@ class DocumentLabelsTest < ActiveSupport::TestCase
 
     labels = make_document(:content => text).determine_labels
     assert_equal 4, labels.length
-    assert labels.include? @labels["Weltraum"]
-    assert labels.include? @labels["Pilot"]
-    assert labels.include? @labels["Kampf"]
-    assert labels.include? @labels["Weltraumkampfpilot"]
+    assert labels.include? @labels['Weltraum']
+    assert labels.include? @labels['Pilot']
+    assert labels.include? @labels['Kampf']
+    assert labels.include? @labels['Weltraumkampfpilot']
   end
 
-  test "avoiding sentence conflation" do
-    text = "Im Weltraum tobt ein Kampf. Darin verwickelt ist unser Pilot."
+  test 'avoiding sentence conflation' do
+    text = 'Im Weltraum tobt ein Kampf. Darin verwickelt ist unser Pilot.'
 
     labels = make_document(:content => text).determine_labels
     assert_equal 3, labels.length
-    assert labels.include? @labels["Weltraum"]
-    assert labels.include? @labels["Pilot"]
-    assert labels.include? @labels["Kampf"]
-    assert (not labels.include? @labels["Weltraumkampfpilot"])
+    assert labels.include? @labels['Weltraum']
+    assert labels.include? @labels['Pilot']
+    assert labels.include? @labels['Kampf']
+    assert (not labels.include? @labels['Weltraumkampfpilot'])
   end
 
-  test "ignore foreign-language labels" do
-    text = "lorem baz ipsum"
+  test 'ignore foreign-language labels' do
+    text = 'lorem baz ipsum'
 
     labels = make_document(:content => text).determine_labels
     assert_equal 0, labels.length
   end
 
-  test "ignore unpublished labels" do
-    text = "lorem foo ipsum bar"
+  test 'ignore unpublished labels' do
+    text = 'lorem foo ipsum bar'
 
     labels = make_document(:content => text).determine_labels
     assert_equal 0, labels.length
   end
 
   test "handling of Oder river vs. 'oder' conjunction" do
-    text = "er oder sie"
+    text = 'er oder sie'
 
     labels = make_document(:content => text).determine_labels
     assert_equal 0, labels.length
 
-    text = "auf der Oder"
+    text = 'auf der Oder'
 
     labels = make_document(:content => text).determine_labels
     assert_equal 1, labels.length
 
-    text = "moderat Moder oderfoo" # "oderfoo" since there's no actual word starting with lowercase "oder"
+    text = 'moderat Moder oderfoo' # "oderfoo" since there's no actual word starting with lowercase "oder"
 
     labels = make_document(:content => text).determine_labels
     assert_equal 3, labels.length

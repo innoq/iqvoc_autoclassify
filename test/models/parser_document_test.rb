@@ -78,7 +78,7 @@ class ParserDocumentTest < ActiveSupport::TestCase
         Publikationen
   EOF
 
-  test "sample documents" do
+  test 'sample documents' do
     doc = DocumentParser::Base.new @@doc1
     assert_equal 15, doc.sentences.length # base parser doesn't handle abbreviations
 

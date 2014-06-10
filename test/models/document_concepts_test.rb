@@ -56,55 +56,55 @@ class DocumentConceptsTest < ActiveSupport::TestCase
     @concepts = data[:concepts]
   end
 
-  test "gracefully handle lack of matches" do
-    text = "..."
+  test 'gracefully handle lack of matches' do
+    text = '...'
     doc = make_document(:content => text)
 
     assert_equal 0, doc.determine_labels.length
     assert_equal 0, doc.concepts.keys.length
   end
 
-  test "concept discovery and redundancy elimination" do
-    text = "Der Weltraum (oder das All) ist Schauplatz für den Kampf."
+  test 'concept discovery and redundancy elimination' do
+    text = 'Der Weltraum (oder das All) ist Schauplatz für den Kampf.'
     doc = make_document(:content => text)
 
     labels = doc.determine_labels
     assert_equal 3, labels.length
-    assert labels.include? @labels["Weltraum"]
-    assert labels.include? @labels["All"]
-    assert labels.include? @labels["Kampf"]
+    assert labels.include? @labels['Weltraum']
+    assert labels.include? @labels['All']
+    assert labels.include? @labels['Kampf']
 
     concepts = doc.determine_concepts
     assert_equal 2, concepts.keys.length
-    assert concepts.include? @concepts["Weltraum"]
-    assert concepts.include? @concepts["Kampf"]
+    assert concepts.include? @concepts['Weltraum']
+    assert concepts.include? @concepts['Kampf']
   end
 
-  test "ignore unpublished concepts" do
-    text = "lorem foo ipsum"
+  test 'ignore unpublished concepts' do
+    text = 'lorem foo ipsum'
     doc = make_document(:content => text)
 
     assert_equal 0, doc.concepts.keys.length
   end
 
-  test "ignore labels without matching concepts" do
-    title = "bar"
-    text = "baz"
+  test 'ignore labels without matching concepts' do
+    title = 'bar'
+    text = 'baz'
     doc = make_document(:title => title, :content => text)
 
     concepts = doc.concepts
     assert_equal 0, concepts.keys.length
   end
 
-  test "decompose hyphenated words without adding compound forms" do
-    text = "Kyoto-Protokoll"
+  test 'decompose hyphenated words without adding compound forms' do
+    text = 'Kyoto-Protokoll'
     doc = make_document(:content => text)
 
     concepts = doc.concepts
     assert_equal 3, concepts.keys.length
-    assert_equal 1.0, concepts[@concepts["Kyoto-Protokoll"]]
-    assert_equal 1.0, concepts[@concepts["Kyoto"]]
-    assert_equal 1.0, concepts[@concepts["Protokoll"]]
+    assert_equal 1.0, concepts[@concepts['Kyoto-Protokoll']]
+    assert_equal 1.0, concepts[@concepts['Kyoto']]
+    assert_equal 1.0, concepts[@concepts['Protokoll']]
   end
 
 end

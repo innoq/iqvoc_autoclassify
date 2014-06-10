@@ -5,61 +5,61 @@ require 'document_parser/base'
 
 class ParserTest < ActiveSupport::TestCase
 
-  test "simple sentence identification" do
-    text = "Lorem ipsum dolor sit amet."
+  test 'simple sentence identification' do
+    text = 'Lorem ipsum dolor sit amet.'
     doc = DocumentParser::Base.new text
 
     assert_equal 1, doc.sentences.length
     assert_equal 5, doc.sentences[0].length
 
-    text = "lorem ipsum. dolor sit amet."
+    text = 'lorem ipsum. dolor sit amet.'
     doc = DocumentParser::Base.new text
 
     assert_equal 2, doc.sentences.length
     assert_equal 2, doc.sentences[0].length
     assert_equal 3, doc.sentences[1].length
 
-    text = "lorem ipsum.dolor sit amet."
+    text = 'lorem ipsum.dolor sit amet.'
     doc = DocumentParser::Base.new text
 
     assert_equal 1, doc.sentences.length
     assert_equal 4, doc.sentences[0].length
-    assert_equal "ipsum.dolor", doc.sentences[0][1]
+    assert_equal 'ipsum.dolor', doc.sentences[0][1]
 
-    text = "lörem ipsüm dolor ßit ämet."
+    text = 'lörem ipsüm dolor ßit ämet.'
     doc = DocumentParser::Base.new text
 
     assert_equal 1, doc.sentences.length
     assert_equal 5, doc.sentences[0].length
 
-    text = "lorem ipsum, dolor sit amet."
+    text = 'lorem ipsum, dolor sit amet.'
     doc = DocumentParser::Base.new text
 
     assert_equal 1, doc.sentences.length
     assert_equal 5, doc.sentences[0].length
 
-    text = "lorem ipsum - dolor sit amet."
+    text = 'lorem ipsum - dolor sit amet.'
     doc = DocumentParser::Base.new text
 
     assert_equal 1, doc.sentences.length
     assert_equal 5, doc.sentences[0].length
 
-    text = "lorem ipsum-37-dolor sit amet."
+    text = 'lorem ipsum-37-dolor sit amet.'
     doc = DocumentParser::Base.new text
 
     assert_equal 1, doc.sentences.length
     assert_equal 4, doc.sentences[0].length
-    assert_equal "ipsum-37-dolor", doc.sentences[0][1]
+    assert_equal 'ipsum-37-dolor', doc.sentences[0][1]
   end
 
-  test "quotations and apostrophes" do
+  test 'quotations and apostrophes' do
     text = %Q(Gretchen fragt "Nun sag, wie hast du's mit der Religion?" und blickt)
     doc = DocumentParser::Base.new text
 
     assert_equal 1, doc.sentences.length # we're currently not parsing quotes as separate sentences
     assert_equal 13, doc.sentences[0].length
-    assert_equal "du", doc.sentences[0][6]
-    assert_equal "mit", doc.sentences[0][8]
+    assert_equal 'du', doc.sentences[0][6]
+    assert_equal 'mit', doc.sentences[0][8]
 
     # NB: special chars being used for quotes and apostrophe
     text = %Q(„Nun sag, wie hast du’s mit der Religion? Du bist ein herzlich guter Mann, allein ich glaub, du hältst nicht viel davon.“)
@@ -74,20 +74,20 @@ class ParserTest < ActiveSupport::TestCase
 
     assert_equal 2, doc.sentences.length
     assert_equal 4, doc.sentences[0].length
-    assert_equal "Was", doc.sentences[0][0]
-    assert_equal "gibt", doc.sentences[0][1]
-    assert_equal "s", doc.sentences[0][2]
-    assert_equal "denn", doc.sentences[0][3]
+    assert_equal 'Was', doc.sentences[0][0]
+    assert_equal 'gibt', doc.sentences[0][1]
+    assert_equal 's', doc.sentences[0][2]
+    assert_equal 'denn', doc.sentences[0][3]
   end
 
-  test "implicit sentence termination" do
-    text = "lorem ipsum dolor sit amet"
+  test 'implicit sentence termination' do
+    text = 'lorem ipsum dolor sit amet'
     doc = DocumentParser::Base.new text
 
     assert_equal 1, doc.sentences.length
     assert_equal 5, doc.sentences[0].length
 
-    text = "lorem ipsum. dolor sit amet"
+    text = 'lorem ipsum. dolor sit amet'
     doc = DocumentParser::Base.new text
 
     assert_equal 2, doc.sentences.length
@@ -116,12 +116,12 @@ class ParserTest < ActiveSupport::TestCase
     }
   end
 
-  test "do not discard potentially meaningful single-character tokens" do
-    text = "lorem Euro 5 ipsum"
+  test 'do not discard potentially meaningful single-character tokens' do
+    text = 'lorem Euro 5 ipsum'
     doc = DocumentParser::Base.new text
 
     assert_equal 1, doc.sentences.length
-    assert_equal ["lorem", "Euro", "5", "ipsum"], doc.sentences[0]
+    assert_equal ['lorem', 'Euro', '5', 'ipsum'], doc.sentences[0]
   end
 
 end
