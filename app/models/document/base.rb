@@ -13,9 +13,9 @@ class Document::Base < ActiveRecord::Base
   attr_writer :persist
   attr_reader :weightings
 
-  has_many :classifications, -> { order 'weighting DESC' }, :foreign_key => 'document_id', :dependent => :destroy
-  has_many :comments, :foreign_key => 'document_id', :dependent => :destroy
-  has_one :classification_trace, :foreign_key => 'document_id', :dependent => :destroy
+  has_many :classifications, -> { order 'weighting DESC' }, foreign_key: 'document_id', dependent: :destroy
+  has_many :comments, foreign_key: 'document_id', dependent: :destroy
+  has_one :classification_trace, foreign_key: 'document_id', dependent: :destroy
 
   class_attribute :weightings
   self.weightings = {
@@ -63,11 +63,11 @@ class Document::Base < ActiveRecord::Base
     method = persist? ? :create : :build
     concepts.each do |concept, weighting|
       classifications.send(method,
-        :concept_id => concept.id,
-        :weighting => weighting,
-        :title => concept.to_s)
+        concept_id: concept.id,
+        weighting: weighting,
+        title: concept.to_s)
     end
-    create_classification_trace(:trace => @trace.to_json) if persist?
+    create_classification_trace(trace: @trace.to_json) if persist?
     # classifications.sort_by! { |c| -c.weighting }
     halt if invalid?
   end
@@ -143,9 +143,9 @@ class Document::Base < ActiveRecord::Base
 
     labels = Iqvoc::XLLabel.base_class.
         published.
-        where(:id => label_ids.uniq, :language => I18n.locale).
+        where(id: label_ids.uniq, language: I18n.locale).
         select(:id).
-        includes(:labelings => { :owner => { :relations => :target } }) # required for subsequent concept analysis
+        includes(labelings: { owner: { relations: :target } }) # required for subsequent concept analysis
     labels = labels.index_by(&:id)
 
     # count number of occurrences

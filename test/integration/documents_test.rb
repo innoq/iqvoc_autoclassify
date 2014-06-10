@@ -40,9 +40,9 @@ class DocumentsTest < ActionDispatch::IntegrationTest
       'pdf' => 'http://example.org/sample.pdf',
       'html' => 'http://example.org/sample.html'
     }
-    FakeWeb.register_uri(:get, @urls['pdf'], :body => 'test/fixtures/sample.pdf',
-        :content_type => 'application/pdf')
-    FakeWeb.register_uri(:get, @urls['html'], :body => 'test/fixtures/sample.html')
+    FakeWeb.register_uri(:get, @urls['pdf'], body: 'test/fixtures/sample.pdf',
+        content_type: 'application/pdf')
+    FakeWeb.register_uri(:get, @urls['html'], body: 'test/fixtures/sample.html')
   end
 
   test 'list documents at index' do
@@ -68,8 +68,8 @@ class DocumentsTest < ActionDispatch::IntegrationTest
     visit document_path(id: @documents[0].id, format: 'html', lang: 'de')
     assert page.has_css?('ol li', count: 0)
 
-    Iqvoc::Maker.concept :pref_labels => [Iqvoc::Maker.label('lorem')]
-    Iqvoc::Maker.concept :pref_labels => [Iqvoc::Maker.label('dolor')]
+    Iqvoc::Maker.concept pref_labels: [Iqvoc::Maker.label('lorem')]
+    Iqvoc::Maker.concept pref_labels: [Iqvoc::Maker.label('dolor')]
 
     click_button 'Klassifizierung neu berechnen'
     assert page.has_content?('Dokument wurde erfolgreich aktualisiert.')

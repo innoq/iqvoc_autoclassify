@@ -5,7 +5,7 @@ class Documents::ExtractedController < DocumentsController
     Returns the most significant concepts for a given document URL.
   DOC
   formats [:html, :ttl, :rdf]
-  param :uri, String, :required => true, :desc => <<-DOC
+  param :uri, String, required: true, desc: <<-DOC
     HTTP URI reference of the document to be processed, needs to be escaped.
     Content type may be HTML or PDF.
   DOC
@@ -29,7 +29,7 @@ class Documents::ExtractedController < DocumentsController
   DOC
 
   def create
-    @document = Document::Extracted.new(:uri => params[:uri])
+    @document = Document::Extracted.new(uri: params[:uri])
     @document.persist = true if params[:commit]
 
     render_errors and return if @document.invalid?
@@ -42,7 +42,7 @@ class Documents::ExtractedController < DocumentsController
     render_errors and return if @document.halted?
 
     respond_to do |format|
-      format.html { redirect_to document_path(:id => @document) }
+      format.html { redirect_to document_path(id: @document) }
       format.any(:rdf, :ttl) { render :show }
     end
   end
@@ -51,10 +51,10 @@ class Documents::ExtractedController < DocumentsController
 
   def error_response
     {
-      :response_limit_exceeded => 413, # XXX: s/response/request/ ?
-      :http_error => 422,
-      :unsupported_content_type => 422,
-      :unprocessable_pdf => 422
+      response_limit_exceeded: 413, # XXX: s/response/request/ ?
+      http_error: 422,
+      unsupported_content_type: 422,
+      unprocessable_pdf: 422
     }
   end
 
@@ -77,9 +77,9 @@ class Documents::ExtractedController < DocumentsController
       end
       format.any(:rdf, :ttl) do
         if extraction_error_code
-          render :text => messages.join("\n"), :status => extraction_error_code
+          render text: messages.join("\n"), status: extraction_error_code
         else
-          render :text => messages.join("\n"), :status => 422
+          render text: messages.join("\n"), status: 422
         end
       end
     end

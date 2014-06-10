@@ -18,7 +18,7 @@ module DocumentsHelper
     }
 
     # list of labelings by concept ID
-    labelings = Labeling::Base.where(:owner_id => index.keys). # XXX: database queries don't belong into helpers!?
+    labelings = Labeling::Base.where(owner_id: index.keys). # XXX: database queries don't belong into helpers!?
         select([:type, :owner_id, :target_id])
     labelings = labelings.each_with_object({}) { |ln, hsh|
       hsh[ln.owner_id] ||= []
@@ -29,7 +29,7 @@ module DocumentsHelper
     label_ids = trace['label_index'].values.uniq
     label_ids += trace['compound_index'].values.uniq
     labels = Iqvoc::XLLabel.base_class. # XXX: database queries don't belong into helpers!?
-        where(:id => label_ids.uniq, :language => I18n.locale).
+        where(id: label_ids.uniq, language: I18n.locale).
         select([:id, :origin, :value, :language])
     # labels by ID
     labels = labels.each_with_object({}) { |label, hsh| hsh[label.id] = label }
@@ -47,11 +47,11 @@ module DocumentsHelper
     }
 
     return @augmented_classifications = classifications.each_with_object({}) { |classification, hsh|
-      hsh[classification.id] = content_tag(:div, { :class => 'details' }) do
+      hsh[classification.id] = content_tag(:div, { class: 'details' }) do
         label_index[classification.concept_id].map { |type, labels|
-          caption = type.constantize.model_name.human(:count => 2)
+          caption = type.constantize.model_name.human(count: 2)
           render_list(caption, labels) do |label|
-            uri = label_path(:id => label.origin)
+            uri = label_path(id: label.origin)
             link_to(label.to_s, uri)
           end
         }.join("\n").html_safe
@@ -65,7 +65,7 @@ module DocumentsHelper
     label_ids = trace['label_index'].values.uniq
     label_ids += trace['compound_index'].values.uniq
     labels = Iqvoc::XLLabel.base_class. # XXX: database queries don't belong into helpers!?
-        where(:id => label_ids.uniq, :language => I18n.locale).
+        where(id: label_ids.uniq, language: I18n.locale).
         select([:id, :origin, :value, :language])
     # labels by ID
     labels = labels.each_with_object({}) { |label, hsh| hsh[label.id] = label }
@@ -80,29 +80,29 @@ module DocumentsHelper
         if label
           classes = ['hint']
           details = [
-            "<h3>#{label.class.model_name.human(:count => 1)}</h3>",
-            link_to(label.to_s, label_path(:id => label.origin))
+            "<h3>#{label.class.model_name.human(count: 1)}</h3>",
+            link_to(label.to_s, label_path(id: label.origin))
           ]
 
           compound_ids = trace['compound_index'][label_id.to_s]
           if compound_ids
             classes << 'compounds'
-            caption = CompoundForm::Base.model_name.human(:count => 2)
+            caption = CompoundForm::Base.model_name.human(count: 2)
             details << render_list(caption, compound_ids.uniq) do |id| # TODO: i18n
               label = labels[id]
-              uri = label_path(:id => label.origin)
+              uri = label_path(id: label.origin)
               link_to(label.to_s, uri)
             end
           end
 
           concepts = trace['concept_index'][label_id.to_s]
           if concepts
-            concepts = Iqvoc::Concept.base_class.where(:id => concepts) # XXX: database queries don't belong into helpers!?
+            concepts = Iqvoc::Concept.base_class.where(id: concepts) # XXX: database queries don't belong into helpers!?
             concepts = concepts.index_by(&:id)
             classes << 'concepts'
-            caption = concepts.first.last.class.model_name.human(:count => 2)
+            caption = concepts.first.last.class.model_name.human(count: 2)
             details << render_list(caption, concepts) do |id, concept|
-              uri = concept_path(:id => concept.origin)
+              uri = concept_path(id: concept.origin)
               link_to(concept.to_s, uri) # XXX: `to_s` is expensive (label loaded lazily)
             end
           end
@@ -113,7 +113,7 @@ module DocumentsHelper
           word
         end
       }
-      content_tag(:div, sentence.join(' ').html_safe, { :class => 'sentence' })
+      content_tag(:div, sentence.join(' ').html_safe, { class: 'sentence' })
     }.join("\n\n") # XXX: discards punctuation, line breaks etc.; should only replace matches in the original string
   end
 

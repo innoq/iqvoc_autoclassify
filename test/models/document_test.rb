@@ -32,7 +32,7 @@ class DocumentTest < ActiveSupport::TestCase
   test 'classification creation' do
     text = 'der Weltraum - Piloten im Kampf'
 
-    doc = Document::Plain.create(:content => text)
+    doc = Document::Plain.create(content: text)
 
     assert_equal 0, doc.classifications.count
 

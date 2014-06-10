@@ -27,7 +27,7 @@ class WordMatcher
     #
     # NB: does not retain order or duplicates
     hash_seqs.flatten.compact.uniq.in_groups_of(1000, false).each do |group|
-      inflectionals = inflectionals.where(:normal_hash => group)
+      inflectionals = inflectionals.where(normal_hash: group)
     end
 
     # restore order of occurrence
@@ -50,8 +50,8 @@ class WordMatcher
   def compound_forms(label_seqs, label_ids)
     # determine compound forms _beginning_ with any of the given labels
     candidates = CompoundForm::Content::Base.
-        where(:order => 0, :label_id => label_ids).
-        includes(:compound_form => [:compound_form_contents])
+        where(order: 0, label_id: label_ids).
+        includes(compound_form: [:compound_form_contents])
         # NB: intentionally not including `domain` (label), based on the
         #     assumption that eager loading would be less efficient due to a
         #     high percentage of rejects

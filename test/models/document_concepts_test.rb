@@ -58,7 +58,7 @@ class DocumentConceptsTest < ActiveSupport::TestCase
 
   test 'gracefully handle lack of matches' do
     text = '...'
-    doc = make_document(:content => text)
+    doc = make_document(content: text)
 
     assert_equal 0, doc.determine_labels.length
     assert_equal 0, doc.concepts.keys.length
@@ -66,7 +66,7 @@ class DocumentConceptsTest < ActiveSupport::TestCase
 
   test 'concept discovery and redundancy elimination' do
     text = 'Der Weltraum (oder das All) ist Schauplatz für den Kampf.'
-    doc = make_document(:content => text)
+    doc = make_document(content: text)
 
     labels = doc.determine_labels
     assert_equal 3, labels.length
@@ -82,7 +82,7 @@ class DocumentConceptsTest < ActiveSupport::TestCase
 
   test 'ignore unpublished concepts' do
     text = 'lorem foo ipsum'
-    doc = make_document(:content => text)
+    doc = make_document(content: text)
 
     assert_equal 0, doc.concepts.keys.length
   end
@@ -90,7 +90,7 @@ class DocumentConceptsTest < ActiveSupport::TestCase
   test 'ignore labels without matching concepts' do
     title = 'bar'
     text = 'baz'
-    doc = make_document(:title => title, :content => text)
+    doc = make_document(title: title, content: text)
 
     concepts = doc.concepts
     assert_equal 0, concepts.keys.length
@@ -98,7 +98,7 @@ class DocumentConceptsTest < ActiveSupport::TestCase
 
   test 'decompose hyphenated words without adding compound forms' do
     text = 'Kyoto-Protokoll'
-    doc = make_document(:content => text)
+    doc = make_document(content: text)
 
     concepts = doc.concepts
     assert_equal 3, concepts.keys.length

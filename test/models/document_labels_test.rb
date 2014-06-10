@@ -53,7 +53,7 @@ class DocumentLabelsTest < ActiveSupport::TestCase
     title = 'Weltraumkampfpiloten'
     text = 'Im Weltraum fliegt ein Pilot.'
 
-    labels = make_document(:title => title, :content => text).determine_labels
+    labels = make_document(title: title, content: text).determine_labels
     assert_equal 3, labels.length
     assert labels.include? @labels['Weltraum']
     assert labels.include? @labels['Pilot']
@@ -67,7 +67,7 @@ class DocumentLabelsTest < ActiveSupport::TestCase
       Weltraums Kämpfe auszutragen.
     EOF
 
-    labels = make_document(:content => text).determine_labels
+    labels = make_document(content: text).determine_labels
     assert_equal 4, labels.length
     assert labels.include? @labels['Weltraum']
     assert labels.include? @labels['Pilot']
@@ -78,7 +78,7 @@ class DocumentLabelsTest < ActiveSupport::TestCase
   test 'avoiding sentence conflation' do
     text = 'Im Weltraum tobt ein Kampf. Darin verwickelt ist unser Pilot.'
 
-    labels = make_document(:content => text).determine_labels
+    labels = make_document(content: text).determine_labels
     assert_equal 3, labels.length
     assert labels.include? @labels['Weltraum']
     assert labels.include? @labels['Pilot']
@@ -89,31 +89,31 @@ class DocumentLabelsTest < ActiveSupport::TestCase
   test 'ignore foreign-language labels' do
     text = 'lorem baz ipsum'
 
-    labels = make_document(:content => text).determine_labels
+    labels = make_document(content: text).determine_labels
     assert_equal 0, labels.length
   end
 
   test 'ignore unpublished labels' do
     text = 'lorem foo ipsum bar'
 
-    labels = make_document(:content => text).determine_labels
+    labels = make_document(content: text).determine_labels
     assert_equal 0, labels.length
   end
 
   test "handling of Oder river vs. 'oder' conjunction" do
     text = 'er oder sie'
 
-    labels = make_document(:content => text).determine_labels
+    labels = make_document(content: text).determine_labels
     assert_equal 0, labels.length
 
     text = 'auf der Oder'
 
-    labels = make_document(:content => text).determine_labels
+    labels = make_document(content: text).determine_labels
     assert_equal 1, labels.length
 
     text = 'moderat Moder oderfoo' # "oderfoo" since there's no actual word starting with lowercase "oder"
 
-    labels = make_document(:content => text).determine_labels
+    labels = make_document(content: text).determine_labels
     assert_equal 3, labels.length
   end
 

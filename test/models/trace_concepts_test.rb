@@ -40,7 +40,7 @@ class TraceConceptsTest < ActiveSupport::TestCase
 
   test 'tracing exposes discovered concepts by label ID' do
     text = 'lorem Weltraum ... Pilot ipsum All'
-    doc = make_document(:content => text)
+    doc = make_document(content: text)
 
     assert_instance_of ClassificationTrace, doc.classification_trace
 

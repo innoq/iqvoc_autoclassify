@@ -6,9 +6,9 @@ Iqvoc.config.register_settings({
 })
 
 Iqvoc::Navigation.add_grouped({
-  :text       => 'AutoClassify',
-  :href       => proc { documents_path },
-  :controller => 'documents'
+  text: 'AutoClassify',
+  href: proc { documents_path },
+  controller: 'documents'
 }, -3)
 
 Iqvoc.core_assets += %w(iqvoc_autoclassify/jquery.mintip.css iqvoc_autoclassify/jquery.mintip.js)

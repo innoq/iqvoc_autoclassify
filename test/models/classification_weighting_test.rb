@@ -58,7 +58,7 @@ class ClassificationWeightingTest < ActiveSupport::TestCase
     text = <<-EOF
       Der Weltraum (oder das All) ist Schauplatz für den Kampf, sagt der Pilot.
     EOF
-    doc = make_document(:content => text)
+    doc = make_document(content: text)
 
     concepts = doc.concepts
     assert_equal 4, concepts.keys.length
@@ -73,7 +73,7 @@ class ClassificationWeightingTest < ActiveSupport::TestCase
       Der Weltraum (oder das All) ist Schauplatz für die Auseinandersetzung;
       der letzte Kampf.
     EOF
-    doc = make_document(:content => text)
+    doc = make_document(content: text)
 
     concepts = doc.concepts
     assert_equal 3, concepts.keys.length
@@ -85,7 +85,7 @@ class ClassificationWeightingTest < ActiveSupport::TestCase
   test 'occurence in document title increases weighting' do
     title = 'Fracht'
     text = 'Weltraum'
-    doc = make_document(:title => title, :content => text)
+    doc = make_document(title: title, content: text)
 
     concepts = doc.concepts
     assert_equal 2, concepts.keys.length
@@ -94,7 +94,7 @@ class ClassificationWeightingTest < ActiveSupport::TestCase
 
     title = 'der Weltraum, ein Kampf der Pilot'
     text = 'ein Weltraumkampfpilot im All'
-    doc = make_document(:title => title, :content => text)
+    doc = make_document(title: title, content: text)
 
     concepts = doc.concepts
     assert_equal 4, concepts.keys.length
@@ -108,7 +108,7 @@ class ClassificationWeightingTest < ActiveSupport::TestCase
     text = <<-EOF
       Weltraum Weltraum Kampf Weltraum Kampfes
     EOF
-    doc = make_document(:content => text)
+    doc = make_document(content: text)
 
     concepts = doc.concepts
     assert_equal 2, concepts.keys.length
@@ -117,7 +117,7 @@ class ClassificationWeightingTest < ActiveSupport::TestCase
 
     # same concept, different labels - does not increase weighting -- FIXME: desired?
     text = 'Weltraum und All'
-    doc = make_document(:content => text)
+    doc = make_document(content: text)
 
     concepts = doc.concepts
     assert_equal 1, concepts.keys.length

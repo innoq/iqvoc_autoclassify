@@ -6,9 +6,9 @@ require 'fake_web'
 class Documents::PlainControllerTest < ActionController::TestCase
   test 'create document from raw content' do
     assert_difference('Document::Plain.count') do
-      post :create, :document => { :content => 'lorem ipsum' }, :lang => 'de', :commit => '1'
+      post :create, document: { content: 'lorem ipsum' }, lang: 'de', commit: '1'
     end
 
-    assert_redirected_to document_path(assigns(:document), :lang => 'de')
+    assert_redirected_to document_path(assigns(:document), lang: 'de')
   end
 end

@@ -30,17 +30,17 @@ class DocumentsController < ApplicationController
       @document.reclassify!
 
       flash[:success] = I18n.t('txt.controllers.documents.update.success')
-      redirect_to document_path(:id => @document)
+      redirect_to document_path(id: @document)
     else
       flash[:error] = I18n.t('txt.controllers.documents.update.invalid')
-      render :show, :status => 400
+      render :show, status: 400
     end
   end
 
   protected
 
   def get_document
-    @document = Document::Base.where(:id => params[:id]).includes(:classifications).first
+    @document = Document::Base.where(id: params[:id]).includes(:classifications).first
     @classifications = @document.classifications.order('weighting DESC').page(params[:page])
   end
 end

@@ -1,5 +1,5 @@
 Rails.application.routes.draw do
-  scope ':lang', :constraints => Iqvoc.routing_constraint do
+  scope ':lang', constraints: Iqvoc.routing_constraint do
     resources :documents do
       resources :comments
     end
