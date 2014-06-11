@@ -2,7 +2,6 @@
 
 require File.join(File.expand_path(File.dirname(__FILE__)), '../test_helper')
 require 'document_parser/base'
-require 'document_parser/german_document_parser'
 
 class ParserDocumentTest < ActiveSupport::TestCase
 
