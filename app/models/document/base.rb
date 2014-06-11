@@ -1,7 +1,4 @@
 require 'digest/sha1'
-require 'document_parser/german_document_parser'
-require 'word_matcher'
-require 'textractor'
 require 'workflow'
 
 class Document::Base < ActiveRecord::Base

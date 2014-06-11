@@ -1,7 +1,5 @@
 # encoding: UTF-8
 
-require 'document_parser/base'
-
 module DocumentParser
   class German < DocumentParser::Base
 

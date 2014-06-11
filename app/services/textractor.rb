@@ -2,11 +2,8 @@
 
 require 'net/http'
 require 'tempfile'
-require 'nokogiri'
-require 'readability'
-require 'pdf-reader'
 
-module Textractor
+class Textractor
 
   def self.from_uri(uri, timeout = 0.5)
     raise InvalidUri, 'HTTP URL expected' unless uri =~ /^https?:\/\/[^\s]+$/
@@ -91,36 +88,4 @@ module Textractor
       @code, @message = code, "#{code} #{message}"
     end
   end
-
-  # required due to pdf-reader v0.10's awkward API
-  # largely cargo-culted from pdf-reader examples
-  class PDFReceiver
-    attr_reader :meta, :content
-
-    def initialize
-      @content = []
-    end
-
-    def metadata(data)
-      @meta = data
-    end
-
-    def begin_page(arg = nil)
-      @content << ''
-    end
-
-    def show_text(string, *params)
-      @content.last << string.strip
-    end
-
-    alias :super_show_text :show_text
-    alias :move_to_next_line_and_show_text :show_text
-    alias :set_spacing_next_line_show_text :show_text
-
-    def show_text_with_positioning(*params)
-      params = params.first
-      params.each { |str| show_text(str) if str.is_a?(String) }
-    end
-  end
-
 end
