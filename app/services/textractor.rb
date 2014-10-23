@@ -2,6 +2,10 @@
 
 require 'net/http'
 require 'tempfile'
+require 'readability'
+require 'guess_html_encoding'
+require 'pdf-reader'
+require 'nokogiri'
 
 class Textractor
 
