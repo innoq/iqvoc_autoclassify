@@ -1,9 +1,9 @@
 source 'https://rubygems.org'
 
-gem 'iqvoc', '~> 4.4.0', :github => 'innoq/iqvoc'
-gem 'iqvoc_skosxl', '~> 2.4.0', :github => 'innoq/iqvoc_skosxl'
-gem 'iqvoc_inflectionals', '~> 2.4.0', :github => 'innoq/iqvoc_inflectionals'
-gem 'iqvoc_compound_forms', '~> 2.4.0', :github => 'innoq/iqvoc_compound_forms'
+gem 'iqvoc', '~> 4.6.0', :github => 'innoq/iqvoc'
+gem 'iqvoc_skosxl', '~> 2.5.0', :github => 'innoq/iqvoc_skosxl'
+gem 'iqvoc_inflectionals', '~> 2.5.0', :github => 'innoq/iqvoc_inflectionals'
+gem 'iqvoc_compound_forms', '~> 2.5.0', :github => 'innoq/iqvoc_compound_forms'
 
 gem 'ruby-readability', :require => 'readability'
 gem 'nokogiri', '~> 1.5.0'
