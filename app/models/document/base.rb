@@ -88,7 +88,7 @@ class Document::Base < ActiveRecord::Base
     @trace[:concept_index] = {}
 
     labels.each do |label, occurrences|
-      label.labelings.each do |labeling|
+      label.labelings.reject { |l| l.owner.is_a?(Iqvoc::Collection.base_class) }.each do |labeling|
         concept = labeling.owner
         next if not concept.published?
         # list of concept IDs by label ID
