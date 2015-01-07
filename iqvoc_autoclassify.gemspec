@@ -12,16 +12,17 @@ Gem::Specification.new do |s|
   s.summary     = 'Automatic classification of documents based on iQvoc thesauri'
   s.description = 'Automatic classification of documents based on iQvoc thesauri'
 
-  s.add_dependency 'iqvoc'
-  s.add_dependency 'iqvoc_skosxl'
-  s.add_dependency 'iqvoc_inflectionals'
-  s.add_dependency 'iqvoc_compound_forms'
+  s.add_dependency 'iqvoc', '~> 4.8.0'
+  s.add_dependency 'iqvoc_skosxl', '~> 2.6.0'
+  s.add_dependency 'iqvoc_inflectionals', '~> 2.6.0'
+  s.add_dependency 'iqvoc_compound_forms', '~> 2.6.0'
   s.add_dependency 'bundler'
   s.add_dependency 'ruby-readability'
   s.add_dependency 'pdf-reader', '~> 0.10.0'
   s.add_dependency 'workflow', '~> 1.0.0'
   s.add_dependency 'guess_html_encoding'
   s.add_dependency 'nokogiri'
+  s.add_dependency 'responders', '~> 2.0'
 
   # s.rubyforge_project = "iqvoc_autoclassify"
 
