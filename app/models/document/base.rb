@@ -147,7 +147,6 @@ class Document::Base < ActiveRecord::Base
     labels = Iqvoc::XLLabel.base_class.
         published.
         where(id: label_ids.uniq, language: I18n.locale).
-        select(:id).
         includes(labelings: { owner: { relations: :target } }) # required for subsequent concept analysis
     labels = labels.index_by(&:id)
 
