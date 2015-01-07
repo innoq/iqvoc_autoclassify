@@ -1,3 +1,5 @@
+require 'responders'
+
 class DocumentsController < ApplicationController
   respond_to :html, :rdf, :ttl
 
