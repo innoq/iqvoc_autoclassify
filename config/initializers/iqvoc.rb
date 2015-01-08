@@ -5,7 +5,7 @@ Iqvoc.config.register_settings({
   'languages.pref_labeling' => ['de', 'en']
 })
 
-Iqvoc::Navigation.add_grouped({
+Navigation.add_grouped({
   text: 'AutoClassify',
   href: proc { documents_path },
   controller: 'documents'
