@@ -6,7 +6,7 @@ require 'fake_web'
 
 class DocumentsTest < ActionDispatch::IntegrationTest
   setup do
-    data = Iqvoc::Maker.from_yaml <<-EOF
+    data = Maker.from_yaml <<-EOF
       labels:
       -
         value: Foo
@@ -68,8 +68,8 @@ class DocumentsTest < ActionDispatch::IntegrationTest
     visit document_path(id: @documents[0].id, format: 'html', lang: 'de')
     assert page.has_css?('ol li', count: 0)
 
-    Iqvoc::Maker.concept pref_labels: [Iqvoc::Maker.label('lorem')]
-    Iqvoc::Maker.concept pref_labels: [Iqvoc::Maker.label('dolor')]
+    Maker.concept pref_labels: [Maker.label('lorem')]
+    Maker.concept pref_labels: [Maker.label('dolor')]
 
     click_button 'Klassifizierung neu berechnen'
     assert page.has_content?('Dokument wurde erfolgreich aktualisiert.')

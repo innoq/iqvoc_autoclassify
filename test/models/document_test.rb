@@ -5,7 +5,7 @@ require File.join(File.expand_path(File.dirname(__FILE__)), '../test_helper')
 class DocumentTest < ActiveSupport::TestCase
 
   setup do
-    Iqvoc::Maker.from_yaml <<-EOF
+    Maker.from_yaml <<-EOF
       labels:
       -
         value: Weltraum

@@ -5,7 +5,7 @@ require File.join(File.expand_path(File.dirname(__FILE__)), '../test_helper')
 class HelpersTest < ActiveSupport::TestCase
 
   test 'labels from YAML' do
-    Iqvoc::Maker.from_yaml <<-EOF
+    Maker.from_yaml <<-EOF
       labels:
       -
         value: Foo
@@ -43,7 +43,7 @@ class HelpersTest < ActiveSupport::TestCase
   end
 
   test 'concepts from YAML with label references' do
-    Iqvoc::Maker.from_yaml <<-EOF
+    Maker.from_yaml <<-EOF
       labels:
       -
         value: Foo
@@ -90,7 +90,7 @@ class HelpersTest < ActiveSupport::TestCase
   end
 
   test 'concepts from YAML with relation references' do
-    Iqvoc::Maker.from_yaml <<-EOF
+    Maker.from_yaml <<-EOF
       labels:
       -
         value: Foo

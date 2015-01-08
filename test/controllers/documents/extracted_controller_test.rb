@@ -5,7 +5,7 @@ require 'fake_web'
 
 class Documents::ExtractedControllerTest < ActionController::TestCase
   setup do
-    data = Iqvoc::Maker.from_yaml <<-EOF
+    data = Maker.from_yaml <<-EOF
       labels:
       -
         value: Foo
