@@ -5,7 +5,7 @@ gem 'iqvoc_skosxl', '~> 2.6.0', :github => 'innoq/iqvoc_skosxl'
 gem 'iqvoc_inflectionals', '~> 2.6.0', :github => 'innoq/iqvoc_inflectionals'
 gem 'iqvoc_compound_forms', '~> 2.6.0', :github => 'innoq/iqvoc_compound_forms'
 
-gem 'ruby-readability', :require => 'readability'
+gem 'ruby-readability'
 gem 'nokogiri', '~> 1.6.0'
 gem 'pdf-reader', '~> 0.10.0'
 gem 'workflow', '~> 1.0.0'
