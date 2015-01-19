@@ -11,8 +11,8 @@ class Textractor
 
     uri = URI.parse(uri)
     http = Net::HTTP.new(uri.host, uri.port)
-    http.read_timeout = timeout if timeout
     req = Net::HTTP::Get.new(uri.to_s)
+    http.read_timeout = timeout
     begin
       http.request(req) do |response|
         raise HTTPError.new(502, response.message) unless response.code == '200'
