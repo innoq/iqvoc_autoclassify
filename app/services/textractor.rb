@@ -47,7 +47,8 @@ class Textractor
       raise ConnectionError, 'could not retrieve document'
     end
 
-    title = title.encode('UTF-8') unless title.nil?
+    # TODO: do we still need this?
+    title = title.try(:encode, 'UTF-8')
 
     return title, content
   end
