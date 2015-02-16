@@ -12,6 +12,7 @@ gem 'workflow', '~> 1.0.0'
 gem 'guess_html_encoding'
 gem 'apipie-rails', '0.1.3'
 gem 'responders', '~> 2.0'
+gem 'therubyracer'
 
 group :development, :test do
   gem 'awesome_print'
