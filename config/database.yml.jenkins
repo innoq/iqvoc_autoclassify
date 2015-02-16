@@ -1,0 +1,7 @@
+test:
+  adapter: mysql2
+  username: <%= ENV["MYSQL_USER"] %>
+  password: <%= ENV["MYSQL_PASSWORD"] %>
+  database: <%= ENV["MYSQL_DATABASE"] %>
+  encoding: utf8
+  host: 127.0.0.1
