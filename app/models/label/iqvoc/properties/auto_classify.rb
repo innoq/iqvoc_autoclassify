@@ -15,10 +15,10 @@ class Label::Iqvoc::Properties::AutoClassify
       $1
     end
 
-    if value.casecmp('true') || value.casecmp('1')
-      rdf_subject.update_attributes(auto_classify: true)
-    else
+    if ['False', 'false', '0'].include? value
       rdf_subject.update_attributes(auto_classify: false)
+    else
+      rdf_subject.update_attributes(auto_classify: true)
     end
   end
 end

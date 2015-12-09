@@ -12,3 +12,9 @@ Iqvoc::Configuration::Navigation.add_grouped({
 }, -3)
 
 Iqvoc.core_assets += %w(iqvoc_autoclassify/jquery.mintip.css iqvoc_autoclassify/jquery.mintip.js)
+
+ActiveSupport.on_load :skos_importer do
+  SkosImporter.second_level_object_classes += [
+    Label::Iqvoc::Properties::AutoClassify
+  ]
+end
