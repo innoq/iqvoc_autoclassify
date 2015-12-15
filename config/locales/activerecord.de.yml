@@ -13,3 +13,5 @@ de:
         title: Titel
         url: URL
         content: Volltext
+      label/skosxl/base:
+        auto_classify: Textanalysefunktion
