@@ -13,6 +13,7 @@ class Textractor
     uri = URI.parse(uri)
     http = Net::HTTP.new(uri.host, uri.port)
     http.read_timeout = timeout
+    http.use_ssl = true if uri.scheme == 'https'
     req = Net::HTTP::Get.new(uri)
     begin
       http.request(req) do |response|
