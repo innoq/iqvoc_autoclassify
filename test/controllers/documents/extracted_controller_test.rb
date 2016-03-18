@@ -37,7 +37,8 @@ class Documents::ExtractedControllerTest < ActionController::TestCase
       html: 'http://example.org/sample.html',
       big: 'http://example.org/sample.pdf',
       not_found: 'http://example.org/not_found',
-      unsupported_content_type: 'http://example.org/unsupported.zip'
+      unsupported_content_type: 'http://example.org/unsupported.zip',
+      redirected: 'http://example.org/redirected',
     }
 
     FakeWeb.register_uri :get, @urls[:service],
@@ -60,6 +61,10 @@ class Documents::ExtractedControllerTest < ActionController::TestCase
     FakeWeb.register_uri :get, @urls[:unsupported_content_type],
       body: 'test/fixtures/unsupported.pdf',
       content_type: 'application/zip'
+
+    FakeWeb.register_uri :get, @urls[:redirected],
+                         status:   ['301', 'Moved Permanently'],
+                         location: @urls[:html]
   end
 
   test 'classify html via uri' do
@@ -99,5 +104,14 @@ class Documents::ExtractedControllerTest < ActionController::TestCase
 
     post :create, uri: @urls[:unsupported_content_type], format: 'rdf', lang: 'de'
     assert_response 422
+  end
+
+  test 'follow redirects, classify html and persist via uri' do
+    assert_difference 'Document::Extracted.count' do
+      post :create, uri: @urls[:redirected], format: 'rdf', commit: '1', lang: 'de'
+    end
+    assert_not_nil assigns(:document)
+    assert_response :success
+    assert_equal 'application/rdf+xml', response.content_type
   end
 end

@@ -17,6 +17,7 @@ class Textractor
     req = Net::HTTP::Get.new(uri)
     begin
       http.request(req) do |response|
+        return from_uri(response['location'], timeout) if response['location'] && response.kind_of?(Net::HTTPRedirection)
         raise HTTPError.new(502, response.message) unless response.code == '200'
 
         case response.content_type
