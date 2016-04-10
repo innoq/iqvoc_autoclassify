@@ -17,14 +17,8 @@ module DocumentParser
     @@irrelevant_abbreviations += @@irrelevant_abbreviations.
         map { |abbr| abbr.gsub('. ', '.') }
 
-    def preprocess(text)
-      text = super
-      # discard stop words
-      @@stop_words.each { |word| text = text.gsub(/\b#{Regexp.quote word}\b/, '') } # XXX: might be more efficient to construct one big RegEx instead
-
-      # discard semantically irrelevant abbreviations (to avoid erroneous sentence termination)
-      @@irrelevant_abbreviations.each { |abbr| text = text.gsub(abbr, '') }
-      return text
+    def initialize(text)
+      super(text, 'de')
     end
 
     def end_word # NB: closely tied to behavior of super's method
@@ -36,6 +30,18 @@ module DocumentParser
           @current_sentence.push(word) if validate(word) # ignore dashes, slashes etc.
         }
       end
+    end
+
+    def normalize_sentence(_text)
+      text = super _text
+
+      # discard stop words
+      @@stop_words.each { |word| text = text.gsub(/\b#{Regexp.quote word}\b/, '') } # XXX: might be more efficient to construct one big RegEx instead
+
+      # discard semantically irrelevant abbreviations (to avoid erroneous sentence termination)
+      @@irrelevant_abbreviations.each { |abbr| text = text.gsub(abbr, '') }
+
+      text
     end
 
     def normalize_word(token)
