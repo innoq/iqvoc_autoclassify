@@ -1,5 +1,7 @@
 # encoding: UTF-8
 
+require 'pragmatic_segmenter'
+
 module DocumentParser
   class Base # XXX bad API (result is instance.sentences)
 
