@@ -52,12 +52,12 @@ class CompoundLabelIdentificationTest < ActiveSupport::TestCase
     assert (not labels.include? @label_ids['Weltraumfrachtpilot'])
   end
 
-  test 'order of occurrence is significant' do
+  test 'order of occurrence is NOT significant anymore' do
     sentence = ['der', 'Kampf', 'der', 'Weltraum', 'und', 'der', 'Pilot']
     labels = WordMatcher.new([sentence]).labels
 
-    assert_equal 3, labels.length
-    assert (not labels.include? @label_ids['Weltraumkampfpilot'])
+    assert_equal 4, labels.length
+    assert (labels.include? @label_ids['Weltraumkampfpilot'])
     assert (not labels.include? @label_ids['Weltraumfrachtpilot'])
   end
 
@@ -73,9 +73,9 @@ class CompoundLabelIdentificationTest < ActiveSupport::TestCase
     sentence = 'foo Fracht bar Weltraum baz Pilot ... Kampf ... Pilot'.split(' ')
     labels = WordMatcher.new([sentence]).labels
 
-    assert_equal 6, labels.length
+    assert_equal 7, labels.length
     assert labels.include? @label_ids['Weltraumkampfpilot']
-    assert (not labels.include? @label_ids['Weltraumfrachtpilot'])
+    assert labels.include? @label_ids['Weltraumfrachtpilot']
     assert_equal 2, labels.find_all { |id| id == @label_ids['Pilot'] }.length
   end
 

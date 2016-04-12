@@ -34,6 +34,7 @@ class WordMatcher
     label_index = inflectionals.each_with_object({}) do |inf, hsh|
       hsh[inf.normal_hash] = inf.label_id # FIXME: this risks discarding two inflectionals with identical value
     end
+
     # list of label IDs by inflectionals' normal_hash
     @trace[:label_index] = label_index
     inflectionals = nil # manual GC
@@ -41,10 +42,12 @@ class WordMatcher
       seq.map { |hash| label_index[hash] }.
           compact # discard unmatched words
     end
-    hash_seqs = nil; label_index = nil # manual GC
 
+    label_seqs.reject!(&:empty?) # discard empty []
     label_ids = label_seqs.flatten
-    return label_ids + compound_forms(label_seqs, label_ids.uniq)
+    cflbl_ids = compound_forms(label_seqs, label_ids.uniq)
+
+    label_ids + cflbl_ids
   end
 
   def compound_forms(label_seqs, label_ids)
@@ -64,31 +67,17 @@ class WordMatcher
     label_seqs.each { |label_seq|
       candidates.each { |compound_form| # XXX: iterating over all candidates seems inefficient; can't we pre-filter based on what appears in the current sentence?
         component_ids = compound_form.compound_form_contents.map(&:label_id)
-        indexes = component_ids.map { |component_id| label_ids.index(component_id) }
-        unless indexes.include? nil # all components must be present in the sentence
-          # sequence of occurrence within the sentence must match the compound form's
-          if align(label_seq, component_ids)
-            results.push(compound_form.domain_id)
-            # list of label IDs by first component's label ID
-            @trace[:compound_index][component_ids.first] ||= []
-            @trace[:compound_index][component_ids.first].push(compound_form.domain_id)
-          end
+        if ((component_ids - label_seq).empty? && !label_seq.include?(compound_form.domain_id))
+          results << compound_form.domain_id
+
+          # list of label IDs by first component's label ID
+          (@trace[:compound_index][component_ids.first] ||= []) << compound_form.domain_id
         end
       }
     }
 
-    @trace[:compound_index].each { |k,v| @trace[:compound_index][k] = v.uniq }
+    @trace[:compound_index].each { |k, v| @trace[:compound_index][k] = v.uniq }
     results.uniq
-  end
-
-  private
-
-  # compares two sequences, checking whether tokens contains all items of
-  # template, in that same order
-  def align(tokens, template)
-    if pos = tokens.index(template.first)
-      template.size == 1 || align(tokens.slice(pos..-1), template.drop(1))
-    end
   end
 
 end
