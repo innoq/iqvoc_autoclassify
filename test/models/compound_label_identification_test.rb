@@ -40,14 +40,14 @@ class CompoundLabelIdentificationTest < ActiveSupport::TestCase
     sentence = ['der', 'Weltraum', 'der', 'Kampf', 'und', 'der', 'Pilot']
     labels = WordMatcher.new([sentence]).labels
 
-    assert_equal 4, labels.length
+    assert_equal 1, labels.length
     assert labels.include? @label_ids['Weltraumkampfpilot']
     assert (not labels.include? @label_ids['Weltraumfrachtpilot'])
 
     sentence = ['Weltraum', 'des', 'Kampfes', 'und', 'der', 'Piloten']
     labels = WordMatcher.new([sentence]).labels
 
-    assert_equal 4, labels.length
+    assert_equal 1, labels.length
     assert labels.include? @label_ids['Weltraumkampfpilot']
     assert (not labels.include? @label_ids['Weltraumfrachtpilot'])
   end
@@ -56,43 +56,50 @@ class CompoundLabelIdentificationTest < ActiveSupport::TestCase
     sentence = ['der', 'Kampf', 'der', 'Weltraum', 'und', 'der', 'Pilot']
     labels = WordMatcher.new([sentence]).labels
 
-    assert_equal 4, labels.length
+    assert_equal 1, labels.length
     assert (labels.include? @label_ids['Weltraumkampfpilot'])
     assert (not labels.include? @label_ids['Weltraumfrachtpilot'])
   end
 
-  test 'duplicates are retained' do
-    sentence = 'Weltraum Pilot Kampf Pilot'.split(' ')
+  test 'compound parts are retained' do
+    sentence = 'Weltraum Euro Pilot Kampf Pilot'.split(' ')
     labels = WordMatcher.new([sentence]).labels
 
-    assert_equal 5, labels.length
+    assert_equal 2, labels.length
+    assert labels.include? @label_ids['Euro']
     assert labels.include? @label_ids['Weltraumkampfpilot']
     assert (not labels.include? @label_ids['Weltraumfrachtpilot'])
-    assert_equal 2, labels.find_all { |id| id == @label_ids['Pilot'] }.length
+    assert (not labels.include? @label_ids['Weltraum'])
 
-    sentence = 'foo Fracht bar Weltraum baz Pilot ... Kampf ... Pilot'.split(' ')
+    sentence = 'foo Fracht bar Euro bla Weltraum baz Pilot ... Kampf ... Pilot'.split(' ')
     labels = WordMatcher.new([sentence]).labels
 
-    assert_equal 7, labels.length
+    assert_equal 3, labels.length
+    assert labels.include? @label_ids['Euro']
     assert labels.include? @label_ids['Weltraumkampfpilot']
     assert labels.include? @label_ids['Weltraumfrachtpilot']
-    assert_equal 2, labels.find_all { |id| id == @label_ids['Pilot'] }.length
   end
 
   test 'special cases' do
     sentence = 'die Euro 5 Norm'.split(' ')
     labels = WordMatcher.new([sentence]).labels
 
-    assert_equal 3, labels.length
-    assert_equal [@label_ids['Euro'], @label_ids['5'], @label_ids['Euro 5']], labels
+    assert_equal 1, labels.length
+    assert_equal [@label_ids['Euro 5']], labels
 
-    sentence = 'zum Euro gibt es 5 Alternativen'.split(' ')
-    labels = WordMatcher.new([sentence]).labels
+    # sentence = 'zum Euro gibt es 5 Alternativen'.split(' ')
+    # labels = WordMatcher.new([sentence]).labels
 
-    # XXX: the following is not actually desirable, but inevitable due to the way
-    #      compound forms are handled (allowing arbitrary tokens between components)
-    assert_equal 3, labels.length
-    assert_equal [@label_ids['Euro'], @label_ids['5'], @label_ids['Euro 5']], labels
+    # # XXX: the following is not actually desirable, but inevitable due to the way
+    # #      compound forms are handled (allowing arbitrary tokens between components)
+    # assert_equal 3, labels.length
+    # assert_equal [@label_ids['Euro'], @label_ids['5'], @label_ids['Euro 5']], labels
   end
 
+  # --Example--
+  # Sentence: [Die verkehrsbedingte Verunreinigung der Luft]
+  # Labels:   [Verkehrsbedingte Luftverunreinigung] -> [Verkehr, Luftverunreinigung -> [Luft, Verunreinigung]]
+  #test 'cascading compound forms' do
+  #  skip('TODO')
+  #end
 end
