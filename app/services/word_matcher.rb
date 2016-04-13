@@ -17,7 +17,13 @@ class WordMatcher
   def labels
     # use normalized form for case-insensitivity (and performance)
     hash_seqs = @sentences.map do |sentence|
-      sentence.map { |word| Inflectional::Base.normalize(word) }
+      seq = []
+      sentence.each do |word1|
+        word2 = word1.gsub /\./, '' # dots are allowed now, see TokenNormalizer.do_it
+        seq << Inflectional::Base.normalize(TokenNormalizer.do_it word2) if (word1 != word2)
+        seq << Inflectional::Base.normalize(TokenNormalizer.do_it word1)
+      end
+      seq
     end
 
     # determine inflectionals
@@ -56,7 +62,7 @@ class WordMatcher
         # NB: intentionally not including `domain` (label), based on the
         #     assumption that eager loading would be less efficient due to a
         #     high percentage of rejects
-    candidates = candidates.map(&:compound_form) # TODO: might as well query CompoundForm::Base above!?
+    candidates = candidates.map(&:compound_form).uniq # TODO: might as well query CompoundForm::Base above!?
 
     # for each sentence, determine compound forms whose components are present
     # in the sentence, in the right order
@@ -66,23 +72,22 @@ class WordMatcher
     downgraded_label_ids = []
 
     @trace[:compound_index] = {}
-    label_seqs.each { |label_seq|
-      candidates.each { |compound_form| # XXX: iterating over all candidates seems inefficient; can't we pre-filter based on what appears in the current sentence?
+    label_seqs.each do |label_seq|
+      candidates.each do |compound_form| # XXX: iterating over all candidates seems inefficient; can't we pre-filter based on what appears in the current sentence?
         component_ids = compound_form.compound_form_contents.map(&:label_id)
-        if ((component_ids - label_seq).empty? && !label_seq.include?(compound_form.domain_id))
-          results << compound_form.domain_id
-          downgraded_label_ids = downgraded_label_ids + component_ids
-
-          # list of label IDs by first component's label ID
-          (@trace[:compound_index][component_ids.first] ||= []) << compound_form.domain_id
+        if component_ids.size <= label_seq.size
+          if (component_ids - label_seq).empty? && !label_seq.include?(compound_form.domain_id)
+            results << compound_form.domain_id
+            downgraded_label_ids += component_ids
+            # list of label IDs by first component's label ID
+            (@trace[:compound_index][component_ids.first] ||= []) << compound_form.domain_id
+          end
         end
-      }
-    }
-
-    @trace[:compound_index].each { |k, v| @trace[:compound_index][k] = v.uniq }
+      end
+    end
     label_ids = label_seqs.flatten - downgraded_label_ids.uniq
 
-    [label_ids, results.uniq]
+    [label_ids, results]
   end
 
 end

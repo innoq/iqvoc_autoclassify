@@ -75,10 +75,7 @@ module DocumentParser
     end
 
     def normalize_word(token)
-      # strip leading and trailing non-alphanumeric characters
-      return token.
-          sub(/^[^A-Za-z0-9]+/, '').
-          sub(/[^A-Za-z0-9]+$/, '')
+      TokenNormalizer.do_it token
     end
 
   end

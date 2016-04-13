@@ -11,7 +11,6 @@ module DocumentParser
       'i. d. R.',
       'Min.', 'min.', 'Mio.', 'Mrd.', 'Nr.',
       'Dr.', 'Prof.', 'Fa.', 'ff.',
-      '0.', '1.', '2.', '3.', '4.', '5.', '6.', '7.', '8.', '9.'
     ]
     # add common variants
     @@irrelevant_abbreviations += @@irrelevant_abbreviations.
@@ -42,13 +41,6 @@ module DocumentParser
       @@irrelevant_abbreviations.each { |abbr| text = text.gsub(abbr, '') }
 
       text
-    end
-
-    def normalize_word(token)
-      # strip leading and trailing non-alphanumeric characters (excl. umlauts and ß)
-      return token.
-          sub(/^[^A-Za-z0-9ÄÖÜäöüß]+/, '').
-          sub(/[^A-Za-z0-9ÄÖÜäöüß]+$/, '')
     end
 
   end
