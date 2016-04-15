@@ -43,18 +43,21 @@ class WordMatcher
 
     # list of label IDs by inflectionals' normal_hash
     @trace[:label_index] = label_index
+    @trace[:compound_index] = {}
+
     label_seqs = hash_seqs.map do |seq|
       seq.map { |hash| label_index[hash] }.
           compact # discard unmatched words
     end
 
     label_seqs.reject!(&:empty?) # discard empty []
-    label_ids, cflbl_ids = compound_forms(label_seqs, (label_seqs.flatten.uniq))
 
-    label_ids + cflbl_ids
+    compound_forms(label_seqs)
   end
 
-  def compound_forms(label_seqs, label_ids)
+  def compound_forms(label_seqs)
+    label_ids = label_seqs.flatten.uniq
+
     # determine compound forms _beginning_ with any of the given labels
     candidates = CompoundForm::Content::Base.
         where(label_id: label_ids).
@@ -64,30 +67,32 @@ class WordMatcher
         #     high percentage of rejects
     candidates = candidates.map(&:compound_form).uniq # TODO: might as well query CompoundForm::Base above!?
 
-    # for each sentence, determine compound forms whose components are present
-    # in the sentence, in the right order
-    results = []
+    # for each sentence, determine compound forms whose components are present in the sentence
+    label_ids_found = []
+    label_seqs.each do |_label_seq|
+      label_seq = _label_seq
 
-    # when found retain those labels pointing to the compound_form (Thomas B. 12.04.2016)
-    downgraded_label_ids = []
-
-    @trace[:compound_index] = {}
-    label_seqs.each do |label_seq|
       candidates.each do |compound_form| # XXX: iterating over all candidates seems inefficient; can't we pre-filter based on what appears in the current sentence?
         component_ids = compound_form.compound_form_contents.map(&:label_id)
-        if component_ids.size <= label_seq.size
-          if (component_ids - label_seq).empty? && !label_seq.include?(compound_form.domain_id)
-            results << compound_form.domain_id
-            downgraded_label_ids += component_ids
-            # list of label IDs by first component's label ID
-            (@trace[:compound_index][component_ids.first] ||= []) << compound_form.domain_id
-          end
+        if component_ids.size <= _label_seq.size &&
+            (component_ids - _label_seq).empty? &&
+            !_label_seq.include?(compound_form.domain_id)
+
+          label_seq << compound_form.domain_id
+          label_seq -= component_ids
+
+          # list of label IDs by first component's label ID
+          (@trace[:compound_index][component_ids.first] ||= []) << compound_form.domain_id
         end
       end
-    end
-    label_ids = label_seqs.flatten - downgraded_label_ids.uniq
 
-    [label_ids, results]
+      # check for cascading components
+      label_seq = compound_forms([label_seq]) unless _label_seq == label_seq
+
+      label_ids_found << label_seq
+    end
+
+    label_ids_found.flatten
   end
 
 end

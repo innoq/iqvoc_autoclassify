@@ -31,6 +31,16 @@ class CompoundLabelIdentificationTest < ActiveSupport::TestCase
       -
         value: Euro 5
         components: [Euro, "5"]
+      -
+        value: Verkehr
+      -
+        value: Polizist
+      -
+        value: Verkehrspolizist
+        components: [Verkehr, Polizist]
+      -
+        value: Weltraumfrachtverkehrspolizistenpilot
+        components: [Verkehrspolizist, Weltraumfrachtpilot]
     EOF
     @label_ids = data[:labels]
     @label_ids.each { |term, label| @label_ids[term] = label.id }
@@ -99,7 +109,11 @@ class CompoundLabelIdentificationTest < ActiveSupport::TestCase
   # --Example--
   # Sentence: [Die verkehrsbedingte Verunreinigung der Luft]
   # Labels:   [Verkehrsbedingte Luftverunreinigung] -> [Verkehr, Luftverunreinigung -> [Luft, Verunreinigung]]
-  #test 'cascading compound forms' do
-  #  skip('TODO')
-  #end
+  test 'cascading compound forms' do
+    sentence = 'Polizist Euro Weltraum Verkehr Fracht Pilot'.split(' ')
+    labels = WordMatcher.new([sentence]).labels
+
+    assert_equal 2, labels.length
+    assert_equal [@label_ids['Euro'], @label_ids['Weltraumfrachtverkehrspolizistenpilot']], labels
+  end
 end
