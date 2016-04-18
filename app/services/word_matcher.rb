@@ -50,7 +50,7 @@ class WordMatcher
   def compound_forms(label_seqs, label_ids)
     # determine compound forms _beginning_ with any of the given labels
     candidates = CompoundForm::Content::Base.
-        where(order: 0, label_id: label_ids).
+        where(label_id: label_ids).
         includes(compound_form: [:compound_form_contents])
         # NB: intentionally not including `domain` (label), based on the
         #     assumption that eager loading would be less efficient due to a
@@ -77,7 +77,8 @@ class WordMatcher
       }
     }
 
-    return results
+    @trace[:compound_index].each { |k,v| @trace[:compound_index][k] = v.uniq }
+    results.uniq
   end
 
   private
