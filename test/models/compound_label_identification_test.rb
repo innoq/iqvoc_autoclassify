@@ -47,14 +47,14 @@ class CompoundLabelIdentificationTest < ActiveSupport::TestCase
   end
 
   test 'compound discovery' do
-    sentence = ['der', 'Weltraum', 'der', 'Kampf', 'und', 'der', 'Pilot']
+    sentence = %w(der Weltraum der Kampf und der Pilot)
     labels = WordMatcher.new([sentence]).labels
 
     assert_equal 1, labels.length
     assert labels.include? @label_ids['Weltraumkampfpilot']
     assert labels.exclude? @label_ids['Weltraumfrachtpilot']
 
-    sentence = ['Weltraum', 'des', 'Kampfes', 'und', 'der', 'Piloten']
+    sentence = %w('Weltraum des Kampfes und der Piloten')
     labels = WordMatcher.new([sentence]).labels
 
     assert_equal 1, labels.length
@@ -63,7 +63,7 @@ class CompoundLabelIdentificationTest < ActiveSupport::TestCase
   end
 
   test 'order of occurrence is NOT significant anymore' do
-    sentence = ['der', 'Kampf', 'der', 'Weltraum', 'und', 'der', 'Pilot']
+    sentence = %w('der Kampf der Weltraum und der Pilot')
     labels = WordMatcher.new([sentence]).labels
 
     assert_equal 1, labels.length
@@ -72,7 +72,7 @@ class CompoundLabelIdentificationTest < ActiveSupport::TestCase
   end
 
   test 'compound parts are retained' do
-    sentence = 'Weltraum Euro Pilot Kampf Pilot'.split(' ')
+    sentence = %w(Weltraum Euro Pilot Kampf Pilot)
     labels = WordMatcher.new([sentence]).labels
 
     assert_equal 2, labels.length
@@ -81,7 +81,7 @@ class CompoundLabelIdentificationTest < ActiveSupport::TestCase
     assert labels.exclude? @label_ids['Weltraumfrachtpilot']
     assert labels.exclude? @label_ids['Weltraum']
 
-    sentence = 'foo Fracht bar Euro bla Weltraum baz Pilot ... Kampf ... Pilot'.split(' ')
+    sentence = %w(foo Fracht bar Euro bla Weltraum baz Pilot ... Kampf ... Pilot)
     labels = WordMatcher.new([sentence]).labels
 
     assert_equal 3, labels.length
@@ -91,7 +91,7 @@ class CompoundLabelIdentificationTest < ActiveSupport::TestCase
   end
 
   test 'special cases' do
-    sentence = 'die Euro 5 Norm'.split(' ')
+    sentence = %w(die Euro 5 Norm)
     labels = WordMatcher.new([sentence]).labels
 
     assert_equal 1, labels.length
@@ -110,7 +110,7 @@ class CompoundLabelIdentificationTest < ActiveSupport::TestCase
   # Sentence: [Die verkehrsbedingte Verunreinigung der Luft]
   # Labels:   [Verkehrsbedingte Luftverunreinigung] -> [Verkehr, Luftverunreinigung -> [Luft, Verunreinigung]]
   test 'cascading compound forms' do
-    sentence = 'Polizist Euro Weltraum Verkehr Fracht Pilot'.split(' ')
+    sentence = %w(Polizist Euro Weltraum Verkehr Fracht Pilot)
     labels = WordMatcher.new([sentence]).labels
 
     assert_equal 2, labels.length
