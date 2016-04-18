@@ -51,13 +51,12 @@ class WordMatcher
     end
 
     label_seqs.reject!(&:empty?) # discard empty []
-
-    compound_forms(label_seqs)
-  end
-
-  def compound_forms(label_seqs)
     label_ids = label_seqs.flatten.uniq
 
+    compound_forms(label_seqs, label_ids)
+  end
+
+  def compound_forms(label_seqs, label_ids)
     # determine compound forms _beginning_ with any of the given labels
     candidates = CompoundForm::Content::Base.
         where(label_id: label_ids).
@@ -87,7 +86,7 @@ class WordMatcher
       end
 
       # check for cascading components
-      label_seq = compound_forms([label_seq]) unless _label_seq == label_seq
+      label_seq = compound_forms([label_seq], label_seqs.flatten.uniq) unless _label_seq == label_seq
 
       label_ids_found << label_seq
     end
