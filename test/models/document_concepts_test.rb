@@ -31,6 +31,24 @@ class DocumentConceptsTest < ActiveSupport::TestCase
       -
         value: Kyoto-Protokoll
         components: [Kyoto, Protokoll]
+      -
+        value: Erste
+        inflectionals: ['1.']
+      -
+        value: Sahne
+      -
+        value: ErsteSahne
+        components: [Erste, Sahne]
+      -
+        value: Zweite
+      -
+        value: '2.'
+      -
+        value: ZweiteSahnePref
+        components: [Zweite, Sahne]
+      -
+        value: ZweiteSahneAlt
+        components: ['2.', Sahne]
 
       concepts:
       -
@@ -51,6 +69,11 @@ class DocumentConceptsTest < ActiveSupport::TestCase
         pref_labels: [Protokoll]
       -
         pref_labels: [Kyoto-Protokoll]
+      -
+        pref_labels: [ErsteSahne]
+      -
+        pref_labels: [ZweiteSahnePref]
+        alt_labels: [ZweiteSahneAlt]
     EOF
     @labels = data[:labels]
     @concepts = data[:concepts]
@@ -107,4 +130,21 @@ class DocumentConceptsTest < ActiveSupport::TestCase
     assert_equal 1.0, concepts[@concepts['Protokoll']]
   end
 
+  test 'compounded ordinals as Inflectional for concept' do
+    text = 'Erste Sahne! 1. Sahne.'
+    doc = make_document(content: text)
+    concepts = doc.concepts
+
+    assert_equal 1, concepts.keys.length
+    assert_equal 2.0, concepts[@concepts['ErsteSahne']]
+  end
+
+  test 'compounded ordinals as AltLabel for concept' do
+    text = 'Zweite Sahne! 2. Sahne.'
+    doc = make_document(content: text)
+    concepts = doc.concepts
+
+    assert_equal 1, concepts.keys.length
+    assert_equal 2.0, concepts[@concepts['ZweiteSahnePref']]
+  end
 end

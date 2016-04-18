@@ -222,6 +222,8 @@ GEM
       cliver (~> 0.3.1)
       multi_json (~> 1.0)
       websocket-driver (>= 0.2.0)
+    pragmatic_segmenter (0.3.7)
+      unicode
     pry (0.10.1)
       coderay (~> 1.1.0)
       method_source (~> 0.8.1)
@@ -365,6 +367,7 @@ GEM
     uglifier (2.7.2)
       execjs (>= 0.3.0)
       json (>= 1.8.0)
+    unicode (0.4.4.2)
     websocket-driver (0.5.1)
       websocket-extensions (>= 0.1.0)
     websocket-driver (0.5.1-java)
@@ -392,6 +395,7 @@ DEPENDENCIES
   nokogiri (~> 1.6.0)
   pdf-reader (~> 0.10.0)
   poltergeist
+  pragmatic_segmenter (~> 0.3.7)
   pry-rails
   responders (~> 2.0)
   ruby-readability
@@ -400,4 +404,4 @@ DEPENDENCIES
   workflow (~> 1.0.0)
 
 BUNDLED WITH
-   1.10.6
+   1.11.2

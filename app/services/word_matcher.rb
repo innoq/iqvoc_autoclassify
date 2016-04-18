@@ -17,7 +17,13 @@ class WordMatcher
   def labels
     # use normalized form for case-insensitivity (and performance)
     hash_seqs = @sentences.map do |sentence|
-      sentence.map { |word| Inflectional::Base.normalize(word) }
+      seq = []
+      sentence.each do |word1|
+        word2 = word1.gsub /\./, '' # dots are allowed now, see TokenNormalizer.do_it
+        seq << Inflectional::Base.normalize(TokenNormalizer.do_it word2) if (word1 != word2)
+        seq << Inflectional::Base.normalize(TokenNormalizer.do_it word1)
+      end
+      seq
     end
 
     # determine inflectionals
@@ -34,17 +40,20 @@ class WordMatcher
     label_index = inflectionals.each_with_object({}) do |inf, hsh|
       hsh[inf.normal_hash] = inf.label_id # FIXME: this risks discarding two inflectionals with identical value
     end
+
     # list of label IDs by inflectionals' normal_hash
     @trace[:label_index] = label_index
-    inflectionals = nil # manual GC
+    @trace[:compound_index] = {}
+
     label_seqs = hash_seqs.map do |seq|
       seq.map { |hash| label_index[hash] }.
           compact # discard unmatched words
     end
-    hash_seqs = nil; label_index = nil # manual GC
 
-    label_ids = label_seqs.flatten
-    return label_ids + compound_forms(label_seqs, label_ids.uniq)
+    label_seqs.reject!(&:empty?) # discard empty []
+    label_ids = label_seqs.flatten.uniq
+
+    compound_forms(label_seqs, label_ids)
   end
 
   def compound_forms(label_seqs, label_ids)
@@ -55,40 +64,34 @@ class WordMatcher
         # NB: intentionally not including `domain` (label), based on the
         #     assumption that eager loading would be less efficient due to a
         #     high percentage of rejects
-    candidates = candidates.map(&:compound_form) # TODO: might as well query CompoundForm::Base above!?
+    candidates = candidates.map(&:compound_form).uniq # TODO: might as well query CompoundForm::Base above!?
 
-    # for each sentence, determine compound forms whose components are present
-    # in the sentence, in the right order
-    results = []
-    @trace[:compound_index] = {}
-    label_seqs.each { |label_seq|
-      candidates.each { |compound_form| # XXX: iterating over all candidates seems inefficient; can't we pre-filter based on what appears in the current sentence?
+    # for each sentence, determine compound forms whose components are present in the sentence
+    label_ids_found = []
+    label_seqs.each do |_label_seq|
+      label_seq = _label_seq
+
+      candidates.each do |compound_form| # XXX: iterating over all candidates seems inefficient; can't we pre-filter based on what appears in the current sentence?
         component_ids = compound_form.compound_form_contents.map(&:label_id)
-        indexes = component_ids.map { |component_id| label_ids.index(component_id) }
-        unless indexes.include? nil # all components must be present in the sentence
-          # sequence of occurrence within the sentence must match the compound form's
-          if align(label_seq, component_ids)
-            results.push(compound_form.domain_id)
-            # list of label IDs by first component's label ID
-            @trace[:compound_index][component_ids.first] ||= []
-            @trace[:compound_index][component_ids.first].push(compound_form.domain_id)
-          end
+        if component_ids.size <= _label_seq.size &&
+            (component_ids - _label_seq).empty? &&
+            !_label_seq.include?(compound_form.domain_id)
+
+          label_seq << compound_form.domain_id
+          label_seq -= component_ids
+
+          # list of label IDs by first component's label ID
+          (@trace[:compound_index][component_ids.first] ||= []) << compound_form.domain_id
         end
-      }
-    }
+      end
 
-    @trace[:compound_index].each { |k,v| @trace[:compound_index][k] = v.uniq }
-    results.uniq
-  end
+      # check for cascading components
+      label_seq = compound_forms([label_seq], label_seqs.flatten.uniq) unless _label_seq == label_seq
 
-  private
-
-  # compares two sequences, checking whether tokens contains all items of
-  # template, in that same order
-  def align(tokens, template)
-    if pos = tokens.index(template.first)
-      template.size == 1 || align(tokens.slice(pos..-1), template.drop(1))
+      label_ids_found << label_seq
     end
+
+    label_ids_found.flatten
   end
 
 end

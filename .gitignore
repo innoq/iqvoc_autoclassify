@@ -15,3 +15,6 @@ public/*/iqvoc
 nbproject
 jmeter.log
 iqvoc_autoclassify.iml
+
+.rakeTasks
+.generators

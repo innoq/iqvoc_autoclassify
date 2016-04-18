@@ -11,20 +11,13 @@ module DocumentParser
       'i. d. R.',
       'Min.', 'min.', 'Mio.', 'Mrd.', 'Nr.',
       'Dr.', 'Prof.', 'Fa.', 'ff.',
-      '0.', '1.', '2.', '3.', '4.', '5.', '6.', '7.', '8.', '9.'
     ]
     # add common variants
     @@irrelevant_abbreviations += @@irrelevant_abbreviations.
         map { |abbr| abbr.gsub('. ', '.') }
 
-    def preprocess(text)
-      text = super
-      # discard stop words
-      @@stop_words.each { |word| text = text.gsub(/\b#{Regexp.quote word}\b/, '') } # XXX: might be more efficient to construct one big RegEx instead
-
-      # discard semantically irrelevant abbreviations (to avoid erroneous sentence termination)
-      @@irrelevant_abbreviations.each { |abbr| text = text.gsub(abbr, '') }
-      return text
+    def initialize(text)
+      super(text, 'de')
     end
 
     def end_word # NB: closely tied to behavior of super's method
@@ -38,11 +31,16 @@ module DocumentParser
       end
     end
 
-    def normalize_word(token)
-      # strip leading and trailing non-alphanumeric characters (excl. umlauts and ß)
-      return token.
-          sub(/^[^A-Za-z0-9ÄÖÜäöüß]+/, '').
-          sub(/[^A-Za-z0-9ÄÖÜäöüß]+$/, '')
+    def normalize_sentence(_text)
+      text = super _text
+
+      # discard stop words
+      @@stop_words.each { |word| text = text.gsub(/\b#{Regexp.quote word}\b/, '') } # XXX: might be more efficient to construct one big RegEx instead
+
+      # discard semantically irrelevant abbreviations (to avoid erroneous sentence termination)
+      @@irrelevant_abbreviations.each { |abbr| text = text.gsub(abbr, '') }
+
+      text
     end
 
   end
