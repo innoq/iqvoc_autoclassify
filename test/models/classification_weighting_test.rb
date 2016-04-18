@@ -61,10 +61,10 @@ class ClassificationWeightingTest < ActiveSupport::TestCase
     doc = make_document(content: text)
 
     concepts = doc.concepts
-    assert_equal 4, concepts.keys.length
-    assert_equal 2.0, concepts[@concepts['Weltraum']]
-    assert_equal 1.0, concepts[@concepts['Kampf']]
-    assert_equal 1.0, concepts[@concepts['Pilot']]
+    assert_equal 2, concepts.keys.length
+    assert_equal 1.0, concepts[@concepts['Weltraum']] # via 'All' # FIXME: ?
+    assert_equal nil, concepts[@concepts['Kampf']]
+    assert_equal nil, concepts[@concepts['Pilot']]
     assert_equal 1.0, concepts[@concepts['Weltraumkampfpilot']]
   end
 
@@ -97,10 +97,10 @@ class ClassificationWeightingTest < ActiveSupport::TestCase
     doc = make_document(title: title, content: text)
 
     concepts = doc.concepts
-    assert_equal 4, concepts.keys.length
-    assert_equal 3.0, concepts[@concepts['Weltraum']]
-    assert_equal 1.5, concepts[@concepts['Kampf']]
-    assert_equal 1.5, concepts[@concepts['Pilot']]
+    assert_equal 2, concepts.keys.length
+    assert_equal 1.0, concepts[@concepts['Weltraum']] # via 'All' FIXME: ?
+    assert_equal nil, concepts[@concepts['Kampf']]
+    assert_equal nil, concepts[@concepts['Pilot']]
     assert_equal 3.0, concepts[@concepts['Weltraumkampfpilot']]
   end
 

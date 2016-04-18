@@ -13,6 +13,7 @@ gem 'guess_html_encoding'
 gem 'apipie-rails', '~> 0.3.5'
 gem 'responders', '~> 2.0'
 gem 'therubyracer'
+gem 'pragmatic_segmenter', '~> 0.3.7'
 
 group :development, :test do
   gem 'awesome_print'

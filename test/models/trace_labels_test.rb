@@ -30,7 +30,7 @@ class TraceLabelsTest < ActiveSupport::TestCase
   end
 
   test "tracing exposes discovered labels by inflectionals' normal_hash" do
-    sentence = 'lorem Weltraum ipsum Pilot'.split(' ')
+    sentence = %w(lorem Weltraum ipsum Pilot)
     matcher = WordMatcher.new([sentence])
     _ = matcher.labels
     trace = matcher.trace
@@ -42,7 +42,7 @@ class TraceLabelsTest < ActiveSupport::TestCase
   end
 
   test "tracing exposes discovered compound labels by first component's label ID" do
-    sentence = 'lorem Weltraum ipsum Kampf dolor Fracht sit Pilot amet'.split(' ')
+    sentence = %w(lorem Weltraum ipsum Kampf dolor Fracht sit Pilot amet)
     matcher = WordMatcher.new([sentence])
     _ = matcher.labels
     trace = matcher.trace

@@ -79,12 +79,15 @@ class ParserDocumentTest < ActiveSupport::TestCase
 
   test 'sample documents' do
     doc = DocumentParser::Base.new @@doc1
-    assert_equal 15, doc.sentences.length # base parser doesn't handle abbreviations
+    assert_equal 11, doc.sentences.length
 
     doc = DocumentParser::German.new @@doc1
     assert_equal 11, doc.sentences.length
 
+    doc = DocumentParser::Base.new @@doc2
+    assert_equal 48, doc.sentences.length # German date not recognized https://www.diffchecker.com/jrygbqbc
+
     doc = DocumentParser::German.new @@doc2
-    assert_equal 46, doc.sentences.length # NB: the actual value here was in manually checking the parser output against the original
+    assert_equal 47, doc.sentences.length # NB: the actual value here was in manually checking the parser output against the original
   end
 end

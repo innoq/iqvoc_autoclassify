@@ -23,6 +23,7 @@ Gem::Specification.new do |s|
   s.add_dependency 'guess_html_encoding'
   s.add_dependency 'nokogiri'
   s.add_dependency 'responders', '~> 2.0'
+  s.add_dependency 'pragmatic_segmenter', '~> 0.3.7'
 
   # s.rubyforge_project = "iqvoc_autoclassify"
 

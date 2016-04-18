@@ -41,7 +41,6 @@ class DocumentTest < ActiveSupport::TestCase
 
     assert_equal 3, doc.classifications.count
 
-    uri_pattern = Regexp.new('^http://localhost/de/concepts/_\\d+')
     doc.classifications.each do |classification|
       assert_equal 1.0, classification.weighting
     end

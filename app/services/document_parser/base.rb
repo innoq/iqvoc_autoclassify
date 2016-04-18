@@ -1,58 +1,55 @@
 # encoding: UTF-8
 
+require 'pragmatic_segmenter'
+
 module DocumentParser
   class Base # XXX bad API (result is instance.sentences)
 
     attr_reader :sentences
 
     @@delimiters = {
-      'sentence' => ['.', '?', '!'],
-      'word' => [' ', "\t", ',', ':', ';', '"', "'", '(', ')']
+        word: [' ', "\t", ',', ':', ';', '"', "'", '(', ')']
     }
 
-    def initialize(text)
+    def initialize(_text, _lang ='en')
       @sentences = []
-      @current_sentence = []
-      @current_token = nil
 
-      @previous_char = nil
-      @next_char = nil
+      text = preprocess _text
+      ps = PragmaticSegmenter::Segmenter.new(text: text, language: _lang, clean: true)
 
-      text = preprocess(text)
+      ps.segment.each { |segment|
+        @current_sentence = []
+        @current_token = nil
+        @previous_char = nil
+        @next_char = nil
 
-      text += '.' # ensure final sentence is completed -- XXX: hacky?
-      text += ' ' # ensure a final iteration -- XXX: hacky?
-      current_char = text.slice!(0). # skip first iteration (for look-ahead)
-          chr # required for Ruby v1.8
-      text.each_char { |char|
-        @next_char = char
-        process current_char
-        current_char = char
+        sentence = normalize_sentence segment
+        current_char = sentence.slice!(0) # skip first iteration (for look-ahead)
+        sentence.each_char { |char|
+          @next_char = char
+          process current_char
+          current_char = char
+        }
+        end_sentence
       }
     end
 
     private
 
+    def preprocess(text)
+      text.gsub! "\r\n", "\n" # Adapt Windows-NL
+      text.gsub! /(?<!\n)\n(?!\n)/, ' ' # Remove single NLs (or use PragmaticSegmenter::Segmenter w/ doc_type=pdf)
+
+      text
+    end
+
     def process(char)
-      if char == "\n"
-        if @previous_char == "\n" # XXX: what about >2 occurrences?
-          end_sentence
-        else
-          end_word
-        end
-      elsif (@@delimiters['sentence'].include? char) and
-          (@next_char =~ /\s/) != nil # XXX: too simplistic?
-        end_sentence
-      elsif @@delimiters['word'].include? char
+      if @@delimiters[:word].include? char
         end_word
       else
         @current_token = @current_token ? "#{@current_token}#{char}" : char
       end
       @previous_char = char
-    end
-
-    def preprocess(text)
-      text.gsub("\r\n", "\n")
     end
 
     def end_sentence
@@ -73,11 +70,12 @@ module DocumentParser
       word.length > 1 or word =~ /^[0-9A-Za-z]$/
     end
 
+    def normalize_sentence(text)
+      "#{text} "
+    end
+
     def normalize_word(token)
-      # strip leading and trailing non-alphanumeric characters
-      return token.
-          sub(/^[^A-Za-z0-9]+/, '').
-          sub(/[^A-Za-z0-9]+$/, '')
+      TokenNormalizer.do_it token
     end
 
   end
