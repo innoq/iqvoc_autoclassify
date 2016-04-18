@@ -52,14 +52,14 @@ class CompoundLabelIdentificationTest < ActiveSupport::TestCase
 
     assert_equal 1, labels.length
     assert labels.include? @label_ids['Weltraumkampfpilot']
-    assert (not labels.include? @label_ids['Weltraumfrachtpilot'])
+    assert labels.exclude? @label_ids['Weltraumfrachtpilot']
 
     sentence = ['Weltraum', 'des', 'Kampfes', 'und', 'der', 'Piloten']
     labels = WordMatcher.new([sentence]).labels
 
     assert_equal 1, labels.length
     assert labels.include? @label_ids['Weltraumkampfpilot']
-    assert (not labels.include? @label_ids['Weltraumfrachtpilot'])
+    assert labels.exclude? @label_ids['Weltraumfrachtpilot']
   end
 
   test 'order of occurrence is NOT significant anymore' do
@@ -67,8 +67,8 @@ class CompoundLabelIdentificationTest < ActiveSupport::TestCase
     labels = WordMatcher.new([sentence]).labels
 
     assert_equal 1, labels.length
-    assert (labels.include? @label_ids['Weltraumkampfpilot'])
-    assert (not labels.include? @label_ids['Weltraumfrachtpilot'])
+    assert labels.include? @label_ids['Weltraumkampfpilot']
+    assert labels.exclude? @label_ids['Weltraumfrachtpilot']
   end
 
   test 'compound parts are retained' do
@@ -78,8 +78,8 @@ class CompoundLabelIdentificationTest < ActiveSupport::TestCase
     assert_equal 2, labels.length
     assert labels.include? @label_ids['Euro']
     assert labels.include? @label_ids['Weltraumkampfpilot']
-    assert (not labels.include? @label_ids['Weltraumfrachtpilot'])
-    assert (not labels.include? @label_ids['Weltraum'])
+    assert labels.exclude? @label_ids['Weltraumfrachtpilot']
+    assert labels.exclude? @label_ids['Weltraum']
 
     sentence = 'foo Fracht bar Euro bla Weltraum baz Pilot ... Kampf ... Pilot'.split(' ')
     labels = WordMatcher.new([sentence]).labels
