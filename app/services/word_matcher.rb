@@ -64,7 +64,7 @@ class WordMatcher
         # NB: intentionally not including `domain` (label), based on the
         #     assumption that eager loading would be less efficient due to a
         #     high percentage of rejects
-    candidates = candidates.map(&:compound_form).uniq # TODO: might as well query CompoundForm::Base above!?
+    candidates = candidates.map(&:compound_form).uniq.compact # FIXME uniq+compact # TODO: might as well query CompoundForm::Base above!?
 
     # for each sentence, determine compound forms whose components are present in the sentence
     label_ids_found = []
