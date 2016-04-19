@@ -71,8 +71,7 @@ class HelpersTest < ActiveSupport::TestCase
     alt_labels = concept.send(Iqvoc::Concept.further_labeling_classes.
         first.first.name.to_relation_name).map(&:target)
     assert_equal 2, concept.pref_labels.count
-    assert_equal 'Foo', concept.pref_labels[0].value
-    assert_equal 'Bar', concept.pref_labels[1].value
+    assert_equal %w(Bar Foo), concept.pref_labels.map(&:value).sort
     assert_equal 1, alt_labels.count
     assert_equal 'Baz', alt_labels[0].value
 
