@@ -57,14 +57,14 @@ class WordMatcher
   end
 
   def compound_forms(label_seqs, label_ids)
-    # determine compound forms _beginning_ with any of the given labels
+    # determine compound forms containing any of the given labels
     candidates = CompoundForm::Content::Base.
         where(label_id: label_ids).
         includes(compound_form: [:compound_form_contents])
         # NB: intentionally not including `domain` (label), based on the
         #     assumption that eager loading would be less efficient due to a
         #     high percentage of rejects
-    candidates = candidates.map(&:compound_form).uniq # TODO: might as well query CompoundForm::Base above!?
+    candidates = candidates.map(&:compound_form).uniq.compact # FIXME uniq+compact # TODO: might as well query CompoundForm::Base above!?
 
     # for each sentence, determine compound forms whose components are present in the sentence
     label_ids_found = []
