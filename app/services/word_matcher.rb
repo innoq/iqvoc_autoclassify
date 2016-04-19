@@ -57,7 +57,7 @@ class WordMatcher
   end
 
   def compound_forms(label_seqs, label_ids)
-    # determine compound forms _beginning_ with any of the given labels
+    # determine compound forms containing any of the given labels
     candidates = CompoundForm::Content::Base.
         where(label_id: label_ids).
         includes(compound_form: [:compound_form_contents])
