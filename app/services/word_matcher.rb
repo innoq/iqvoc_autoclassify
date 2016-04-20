@@ -51,15 +51,19 @@ class WordMatcher
     end
 
     label_seqs.reject!(&:empty?) # discard empty []
-    label_ids = label_seqs.flatten.uniq
 
-    compound_forms(label_seqs, label_ids)
+    label_seqs = compound_forms(label_seqs)
+
+    label_seqs.flatten
   end
 
-  def compound_forms(label_seqs, label_ids)
+  # Gets all labels per sentence, retaining those which are part of a compound form
+  def compound_forms(_label_seqs)
+    label_seqs = []
+
     # determine compound forms containing any of the given labels
     candidates = CompoundForm::Content::Base.
-        where(label_id: label_ids).
+        where(label_id: (_label_seqs.flatten.uniq)).
         includes(compound_form: [:compound_form_contents])
         # NB: intentionally not including `domain` (label), based on the
         #     assumption that eager loading would be less efficient due to a
@@ -67,8 +71,7 @@ class WordMatcher
     candidates = candidates.map(&:compound_form).uniq.compact # FIXME uniq+compact # TODO: might as well query CompoundForm::Base above!?
 
     # for each sentence, determine compound forms whose components are present in the sentence
-    label_ids_found = []
-    label_seqs.each do |_label_seq|
+    _label_seqs.each do |_label_seq|
       label_seq = _label_seq
 
       candidates.each do |compound_form| # XXX: iterating over all candidates seems inefficient; can't we pre-filter based on what appears in the current sentence?
@@ -86,12 +89,12 @@ class WordMatcher
       end
 
       # check for cascading components
-      label_seq = compound_forms([label_seq], label_seqs.flatten.uniq) unless _label_seq == label_seq
+      label_seq = compound_forms([label_seq]).flatten unless _label_seq == label_seq
 
-      label_ids_found << label_seq
+      label_seqs << label_seq
     end
 
-    label_ids_found.flatten
+    label_seqs
   end
 
 end
