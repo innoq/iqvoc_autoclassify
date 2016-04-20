@@ -52,9 +52,51 @@ class WordMatcher
 
     label_seqs.reject!(&:empty?) # discard empty []
 
+    label_seqs = homographs(label_seqs)
     label_seqs = compound_forms(label_seqs)
 
     label_seqs.flatten
+  end
+
+  # FIXME: (architecture issue) this gem doesn't know about Label::Relation::UMT::Homograph/::Qualifier
+  def homographs(_label_seqs)
+    return _label_seqs unless Object.const_get('Label::Relation::UMT::Homograph').is_a?(Class) || Object.const_get('Label::Relation::UMT::Qualifier').is_a?(Class)
+
+    candidates = Label::Relation::Base.
+        where(range_id: (_label_seqs.flatten.uniq),
+              type: ['Label::Relation::UMT::Homograph', 'Label::Relation::UMT::Qualifier'])
+
+    candidates2 = {}
+    candidates.each do |c|
+      candidates2[c.domain_id] ||= {'Label::Relation::UMT::Homograph'.to_sym => [],
+                                    'Label::Relation::UMT::Qualifier'.to_sym => []}
+      candidates2[c.domain_id][c.class.to_s.to_sym] << c.range_id
+    end
+
+    candidates3 = candidates2.select { |label_id, relation_ids|
+      relation_ids['Label::Relation::UMT::Homograph'.to_sym].any? && relation_ids['Label::Relation::UMT::Qualifier'.to_sym].any?
+    }
+
+    label_seqs = []
+    _label_seqs.each do |_label_seq|
+      label_seq = _label_seq
+
+      candidates3.each do |label_id, relation_ids|
+
+        match_homograph = label_seq & relation_ids['Label::Relation::UMT::Homograph'.to_sym]
+        match_qualifier = label_seq & relation_ids['Label::Relation::UMT::Qualifier'.to_sym]
+
+        if match_homograph.any? && match_qualifier.any?
+          label_seq << label_id
+          label_seq -= match_homograph
+          label_seq -= match_qualifier
+        end
+      end
+
+      label_seqs << label_seq
+    end
+
+    label_seqs
   end
 
   # Gets all labels per sentence, retaining those which are part of a compound form
