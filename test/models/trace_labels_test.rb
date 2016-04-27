@@ -29,30 +29,44 @@ class TraceLabelsTest < ActiveSupport::TestCase
     @label_ids.each { |term, label| @label_ids[term] = label.id }
   end
 
-  test "tracing exposes discovered labels by inflectionals' normal_hash" do
+  test "tracing exposes discovered labels" do
     sentence = %w(lorem Weltraum ipsum Pilot)
     matcher = WordMatcher.new([sentence])
-    _ = matcher.labels
-    trace = matcher.trace
+    labels = matcher.labels
+    trace_flat = matcher.trace.transform_values { |it| it.values.flatten } # ignore sentence segmentation for now
 
-    assert_equal 2, trace[:label_index].length
-    assert_equal @label_ids['Weltraum'], trace[:label_index][Inflectional::Base.normalize('Weltraum')]
-    assert_equal @label_ids['Pilot'], trace[:label_index][Inflectional::Base.normalize('Pilot')]
-    assert_equal({}, trace[:compound_index])
+    assert_equal labels, trace_flat[:result_index]
+
+    assert_equal 2, trace_flat[:label_index].length
+    assert_empty trace_flat[:compound_index]
+    assert_empty trace_flat[:homograph_index]
+    assert_equal 2, trace_flat[:result_index].length
+
+    assert trace_flat[:label_index].include?(@label_ids['Weltraum'])
+    assert trace_flat[:label_index].include?(@label_ids['Pilot'])
+    assert trace_flat[:result_index].include?(@label_ids['Weltraum'])
+    assert trace_flat[:result_index].include?(@label_ids['Pilot'])
   end
 
-  test "tracing exposes discovered compound labels by first component's label ID" do
+  test "tracing exposes discovered compound labels" do
     sentence = %w(lorem Weltraum ipsum Kampf dolor Fracht sit Pilot amet)
     matcher = WordMatcher.new([sentence])
-    _ = matcher.labels
-    trace = matcher.trace
+    labels = matcher.labels
+    trace_flat = matcher.trace.transform_values { |it| it.values.flatten } # ignore sentence segmentation for now
 
-    assert_equal 4, trace[:label_index].length
-    assert_equal 1, trace[:compound_index].length
-    label_ids = trace[:compound_index][@label_ids['Weltraum']]
-    assert_equal 2, label_ids.length
-    assert label_ids.include?(@label_ids['Weltraumkampfpilot'])
-    assert label_ids.include?(@label_ids['Weltraumfrachtpilot'])
+    assert_equal labels, trace_flat[:result_index]
+
+    assert_equal 4, trace_flat[:label_index].length
+    assert_equal 2, trace_flat[:compound_index].length
+    assert_empty trace_flat[:homograph_index]
+    assert_equal 2, trace_flat[:result_index].length
+
+    assert trace_flat[:compound_index].include?(@label_ids['Weltraumkampfpilot'])
+    assert trace_flat[:compound_index].include?(@label_ids['Weltraumfrachtpilot'])
+  end
+
+  test "tracing exposes discovered homograph-qualifier labels" do
+    skip("@see HomographLabelIdentificationTest")
   end
 
 end

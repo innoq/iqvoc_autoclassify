@@ -16,6 +16,13 @@ class LabelIdentificationTest < ActiveSupport::TestCase
         inflectionals: [Kinder, Kinde, Kindes]
       -
         value: Fenster
+      -
+        value: Planet
+        language: de
+      -
+        value: planet
+        language: en
+
     EOF
     @label_ids = data[:labels]
     @label_ids.each { |term, label| @label_ids[term] = label.id }
@@ -45,4 +52,8 @@ class LabelIdentificationTest < ActiveSupport::TestCase
     assert_equal 3, WordMatcher.new([sentence]).labels.length
   end
 
+  test 'equally written labels' do
+    sentence = %w(PLANET)
+    assert_equal 2, WordMatcher.new([sentence]).labels.length
+  end
 end
