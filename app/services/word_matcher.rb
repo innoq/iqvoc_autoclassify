@@ -33,7 +33,7 @@ class WordMatcher
     # use normalized form for case-insensitivity (and performance)
     hash_seqs = {}
     @sentences.each_with_index { |sentence, ix|
-      key = (["SATZ", (ix+1)]+sentence).join('_').to_sym
+      key = sentence.join(' ').to_sym
       hash_seqs[key] = sentence.map { |word1| WordMatcher.normalize_word(word1) }.flatten
 
       @trace[:label_index][key] = []
@@ -79,11 +79,7 @@ class WordMatcher
     type_homograph = 'Label::Relation::UMT::Homograph'
     type_qualifier = 'Label::Relation::UMT::Qualifier'
 
-    return _label_seqs unless
-        Object.const_defined?(type_homograph) &&
-        Object.const_defined?(type_qualifier) &&
-        Object.const_get(type_homograph).is_a?(Class) &&
-        Object.const_get(type_qualifier).is_a?(Class)
+    return _label_seqs unless Object.const_get(type_homograph).is_a?(Class) && Object.const_get(type_qualifier).is_a?(Class)
 
     label_seqs = {}
 

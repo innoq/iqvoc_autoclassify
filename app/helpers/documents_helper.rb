@@ -24,11 +24,10 @@ module DocumentsHelper
       hsh[ln.owner_id] ||= []
       hsh[ln.owner_id] << ln
     }
-
     # FIXME: inefficient; duplicates `augmented_fulltext` functionality
-    label_ids = trace['label_index'].values.uniq
-    label_ids += trace['compound_index'].values.uniq
-    labels = Iqvoc::XLLabel.base_class. # XXX: database queries don't belong into helpers!?
+    label_ids = (trace['label_index']).values.flatten
+    label_ids+= (trace['result_index']).values.flatten
+    labels = Iqvoc::XLLabel.base_class.# XXX: database queries don't belong into helpers!?
         where(id: label_ids.uniq, language: I18n.locale).
         select([:id, :origin, :value, :language])
     # labels by ID
@@ -47,7 +46,7 @@ module DocumentsHelper
     }
 
     return @augmented_classifications = classifications.each_with_object({}) { |classification, hsh|
-      hsh[classification.id] = content_tag(:div, { class: 'details' }) do
+      hsh[classification.id] = content_tag(:div, {class: 'details'}) do
         label_index[classification.concept_id].map { |type, labels|
           caption = type.constantize.model_name.human(count: 2)
           render_list(caption, labels) do |label|
@@ -61,38 +60,55 @@ module DocumentsHelper
 
   def augmented_fulltext(document)
     trace = get_trace(document)
-
-    label_ids = trace['label_index'].values.uniq
-    label_ids += trace['compound_index'].values.uniq
-    labels = Iqvoc::XLLabel.base_class. # XXX: database queries don't belong into helpers!?
-        where(id: label_ids.uniq, language: I18n.locale).
+    label_ids = (trace['label_index']).values.flatten
+    label_ids+= (trace['result_index']).values.flatten
+    labels = Iqvoc::XLLabel.base_class.# XXX: database queries don't belong into helpers!!
+    where(id: label_ids.uniq, language: I18n.locale).
         select([:id, :origin, :value, :language])
     # labels by ID
     labels = labels.each_with_object({}) { |label, hsh| hsh[label.id] = label }
 
-    text = document.title ? document.title + ".\n\n" + document.content : document.content
-    return DocumentParser::German.new(text).sentences.map { |sentence| # simply assuming DE, for now
-      sentence.map! { |word|
-        normal_hash = Inflectional::Base.normalize(word)
-        label_id = trace['label_index'][normal_hash.to_s]
+    return trace['result_index'].map { |sentence_key, _|
 
+      segment = [%Q(<h5>#{h sentence_key}</h5>)]
+
+      segment << trace['label_index'][sentence_key].map { |label_id|
         label = labels[label_id]
+
         if label
           classes = ['hint']
           details = [
-            "<h3>#{label.class.model_name.human(count: 1)}</h3>",
-            link_to(label.to_s, label_path(id: label.origin))
+              "<h3>#{label.class.model_name.human(count: 1)}</h3>",
+              link_to(label.to_s, label_path(id: label.origin))
           ]
 
-          compound_ids = trace['compound_index'][label_id.to_s]
-          if compound_ids
+          %Q(<span class="#{classes.join ' '}">#{h label}</span>) +
+              %Q(<div class="details">#{details.join("\n")}</div>)
+        end
+      }
+
+      segment << "\n\n"
+
+      segment << trace['result_index'][sentence_key].map { |label_id|
+        label = labels[label_id]
+
+        if label
+          classes = ['hint']
+          details = [
+              "<h3>#{label.class.model_name.human(count: 1)}</h3>",
+              link_to(label.to_s, label_path(id: label.origin))
+          ]
+
+          if trace['compound_index'][sentence_key].include? label_id
             classes << 'compounds'
-            caption = CompoundForm::Base.model_name.human(count: 2)
-            details << render_list(caption, compound_ids.uniq) do |id| # TODO: i18n
-              label = labels[id]
-              uri = label_path(id: label.origin)
-              link_to(label.to_s, uri)
-            end
+            caption = "(#{CompoundForm::Base.model_name.human(count: 1)})"
+            details << caption
+          end
+
+          if trace['homograph_index'][sentence_key].include? label_id
+            classes << 'compounds'
+            caption = '(Homograph)'
+            details << caption
           end
 
           concepts = trace['concept_index'][label_id.to_s]
@@ -107,14 +123,13 @@ module DocumentsHelper
             end
           end
 
-          %Q(<span class="#{classes.join ' '}">#{h word}</span>) +
+          %Q(<span class="#{classes.join ' '}">#{h label}</span>) +
               %Q(<div class="details">#{details.join("\n")}</div>)
-        else
-          word
         end
       }
-      content_tag(:div, sentence.join(' ').html_safe, { class: 'sentence' })
-    }.join("\n\n") # XXX: discards punctuation, line breaks etc.; should only replace matches in the original string
+
+      content_tag(:div, segment.join(' ').html_safe, {class: 'sentence'})
+    }.join("\n\n")
   end
 
   def render_list(caption, items, &block)
