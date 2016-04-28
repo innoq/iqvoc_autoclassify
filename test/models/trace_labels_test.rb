@@ -65,8 +65,8 @@ class TraceLabelsTest < ActiveSupport::TestCase
     assert trace_flat[:compound_index].include?(@label_ids['Weltraumfrachtpilot'])
   end
 
-  test "tracing exposes discovered homograph-qualifier labels" do
-    skip("@see HomographLabelIdentificationTest")
-  end
+  # test "tracing exposes discovered homograph-qualifier labels" do
+  #   skip("@see HomographLabelIdentificationTest")
+  # end
 
 end
