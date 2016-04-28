@@ -46,8 +46,8 @@ class TraceConceptsTest < ActiveSupport::TestCase
 
     trace = JSON.parse(doc.classification_trace.trace) # NB: both symbols and integer keys become strings
 
-    assert_equal 3, trace['label_index'].length
-    assert_equal 0, trace['compound_index'].length
+    assert_equal 3, trace['label_index'].values.flatten.length
+    assert_equal 0, trace['compound_index'].values.flatten.length
     assert_equal 3, trace['concept_index'].length
     assert_equal 1, trace['concept_index'][@label_ids['Pilot'].to_s].length
     assert trace['concept_index'][@label_ids['Pilot'].to_s].include? @concept_ids['Pilot']
