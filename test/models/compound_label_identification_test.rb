@@ -54,7 +54,7 @@ class CompoundLabelIdentificationTest < ActiveSupport::TestCase
     assert labels.include? @label_ids['Weltraumkampfpilot']
     assert labels.exclude? @label_ids['Weltraumfrachtpilot']
 
-    sentence = %w('Weltraum des Kampfes und der Piloten')
+    sentence = %w(Weltraum des Kampfes und der Piloten)
     labels = WordMatcher.new([sentence]).labels
 
     assert_equal 1, labels.length
@@ -63,11 +63,19 @@ class CompoundLabelIdentificationTest < ActiveSupport::TestCase
   end
 
   test 'order of occurrence is NOT significant anymore' do
-    sentence = %w('der Kampf der Weltraum und der Pilot')
+    sentence = %w(der Kampf der Weltraum und der Pilot)
     labels = WordMatcher.new([sentence]).labels
 
     assert_equal 1, labels.length
     assert labels.include? @label_ids['Weltraumkampfpilot']
+    assert labels.exclude? @label_ids['Weltraumfrachtpilot']
+
+    sentence = %w(Foo Weltraum Kampf Pilot Fracht)
+    labels = WordMatcher.new([sentence]).labels
+
+    assert_equal 2, labels.length
+    assert labels.include? @label_ids['Weltraumkampfpilot']
+    assert labels.include? @label_ids['Fracht']
     assert labels.exclude? @label_ids['Weltraumfrachtpilot']
   end
 
@@ -81,7 +89,7 @@ class CompoundLabelIdentificationTest < ActiveSupport::TestCase
     assert labels.exclude? @label_ids['Weltraumfrachtpilot']
     assert labels.exclude? @label_ids['Weltraum']
 
-    sentence = %w(foo Fracht bar Euro bla Weltraum baz Pilot ... Kampf ... Pilot)
+    sentence = %w(foo Fracht bar Euro ... Kampf Weltraum baz Pilot ... Pilot)
     labels = WordMatcher.new([sentence]).labels
 
     assert_equal 3, labels.length

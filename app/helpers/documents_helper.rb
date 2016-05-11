@@ -99,6 +99,12 @@ module DocumentsHelper
               link_to(label.to_s, label_path(id: label.origin))
           ]
 
+          if trace['phrase_index'][sentence_key].include? label_id
+            classes << 'compounds'
+            caption = "(Phrase)"
+            details << caption
+          end
+
           if trace['compound_index'][sentence_key].include? label_id
             classes << 'compounds'
             caption = "(#{CompoundForm::Base.model_name.human(count: 1)})"

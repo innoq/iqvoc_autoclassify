@@ -27,6 +27,7 @@ class WordMatcher
 
     @trace[:label_index] = {}
     @trace[:homograph_index] = {}
+    @trace[:phrase_index] = {}
     @trace[:compound_index] = {}
     @trace[:result_index] = {}
 
@@ -38,6 +39,7 @@ class WordMatcher
 
       @trace[:label_index][key] = []
       @trace[:homograph_index][key] = []
+      @trace[:phrase_index][key] = []
       @trace[:compound_index][key] = []
       @trace[:result_index][key] = []
     }
@@ -138,26 +140,53 @@ class WordMatcher
 
     # for each sentence, determine compound forms whose components are present in the sentence
     _label_seqs.each do |ix, _label_seq|
-      label_seq = _label_seq
+      label_seq_new = _label_seq
+      label_seq_dup = _label_seq
 
-      candidates.each do |compound_form| # XXX: iterating over all candidates seems inefficient; can't we pre-filter based on what appears in the current sentence?
-        component_ids = compound_form.compound_form_contents.map(&:label_id)
-        if component_ids.size <= _label_seq.size &&
-            (component_ids - _label_seq).empty? &&
-            !_label_seq.include?(compound_form.domain_id)
+      # phrases-extraction
+      # FIXME: there might have been non-label tokens between a phrases-tupel which blurry the results
+      # example: "*Stand* foo bar *Technik*" == "*Stand* der *Technik*"
+      candidates.each do |compound_form|
+        component_ids = compound_form.compound_form_contents.sort_by(&:order).map(&:label_id)
 
-          label_seq << compound_form.domain_id
-          label_seq -= component_ids
+        if component_ids.size <= label_seq_dup.size
+          if (label_seq_dup & component_ids) === component_ids
+            #pp "---PHRASE: #{compound_form.domain}"
 
-          @trace[:compound_index][ix] << compound_form.domain_id
-          @trace[:compound_index][ix] -= component_ids
+            label_seq_new << compound_form.domain_id
+            label_seq_new -= component_ids
+
+            # don't use them for multi-label-extraction
+            label_seq_dup -= component_ids
+
+            @trace[:phrase_index][ix] << compound_form.domain_id
+            @trace[:phrase_index][ix] -= component_ids
+          end
         end
       end
 
-      # check for cascading components
-      label_seq = compound_forms({"#{ix}": label_seq}).values.flatten unless _label_seq == label_seq
+      # multi-label-extraction
+      candidates.each do |compound_form|
+        component_ids = compound_form.compound_form_contents.map(&:label_id)
 
-      label_seqs[ix] = label_seq
+        if component_ids.size <= label_seq_dup.size
+          if  (component_ids - label_seq_dup).empty? #&& !label_seq.include?(compound_form.domain_id)
+            #pp "---MEHRWORT: #{compound_form.domain}"
+
+            label_seq_new << compound_form.domain_id
+            label_seq_new -= component_ids
+
+            @trace[:compound_index][ix] << compound_form.domain_id
+            @trace[:compound_index][ix] -= component_ids
+          end
+        end
+      end
+
+
+      # check for cascading components
+      label_seq_new = compound_forms({"#{ix}": label_seq_new}).values.flatten unless _label_seq == label_seq_new
+
+      label_seqs[ix] = label_seq_new
     end
 
     label_seqs

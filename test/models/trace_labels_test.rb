@@ -49,7 +49,7 @@ class TraceLabelsTest < ActiveSupport::TestCase
   end
 
   test "tracing exposes discovered compound labels" do
-    sentence = %w(lorem Weltraum ipsum Kampf dolor Fracht sit Pilot amet)
+    sentence = %w(lorem Kampf ipsum Fracht dolor Weltraum sit Pilot amet)
     matcher = WordMatcher.new([sentence])
     labels = matcher.labels
     trace_flat = matcher.trace.transform_values { |it| it.values.flatten } # ignore sentence segmentation for now
@@ -63,6 +63,24 @@ class TraceLabelsTest < ActiveSupport::TestCase
 
     assert trace_flat[:compound_index].include?(@label_ids['Weltraumkampfpilot'])
     assert trace_flat[:compound_index].include?(@label_ids['Weltraumfrachtpilot'])
+  end
+
+  test "tracing exposes discovered compound-phrases labels" do
+    sentence = %w(lorem Weltraum Kampf ipsum Pilot amet Fracht)
+    matcher = WordMatcher.new([sentence])
+    labels = matcher.labels
+    trace_flat = matcher.trace.transform_values { |it| it.values.flatten } # ignore sentence segmentation for now
+
+    assert_equal labels, trace_flat[:result_index]
+
+    assert_equal 4, trace_flat[:label_index].length
+    assert_equal 1, trace_flat[:phrase_index].length
+    assert_empty trace_flat[:compound_index]
+    assert_empty trace_flat[:homograph_index]
+    assert_equal 2, trace_flat[:result_index].length
+
+    assert trace_flat[:phrase_index].include?(@label_ids['Weltraumkampfpilot'])
+    assert trace_flat[:compound_index].exclude?(@label_ids['Weltraumfrachtpilot'])
   end
 
   # test "tracing exposes discovered homograph-qualifier labels" do
