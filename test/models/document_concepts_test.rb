@@ -119,16 +119,19 @@ class DocumentConceptsTest < ActiveSupport::TestCase
     assert_equal 0, concepts.keys.length
   end
 
-  test 'decompose hyphenated words without adding compound forms' do
-    text = 'Kyoto-Protokoll'
-    doc = make_document(content: text)
-
-    concepts = doc.concepts
-    assert_equal 3, concepts.keys.length
-    assert_equal 1.0, concepts[@concepts['Kyoto-Protokoll']]
-    assert_equal 1.0, concepts[@concepts['Kyoto']]
-    assert_equal 1.0, concepts[@concepts['Protokoll']]
-  end
+  # Since JF wants _Phrasenerkennung_ and retaining used labels then, this isn't feasible anymore,
+  # either "Kyoto-Protokoll" or ["Kyoto", "Protokoll"] -> "Kyoto-Protokoll" is found
+  #
+  # test 'decompose hyphenated words without adding compound forms' do
+  #   text = 'Kyoto-Protokoll'
+  #   doc = make_document(content: text)
+  #
+  #   concepts = doc.concepts
+  #   assert_equal 3, concepts.keys.length
+  #   assert_equal 1.0, concepts[@concepts['Kyoto-Protokoll']]
+  #   assert_equal 1.0, concepts[@concepts['Kyoto']]
+  #   assert_equal 1.0, concepts[@concepts['Protokoll']]
+  # end
 
   test 'compounded ordinals as Inflectional for concept' do
     text = 'Erste Sahne! 1. Sahne.'
