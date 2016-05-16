@@ -35,6 +35,7 @@ class WordMatcher
     hash_seqs = {}
     @sentences.each_with_index { |sentence, ix|
       key = sentence.join(' ').to_sym
+      sentence += word_combinations(sentence, 5) # find phrases that are not compound-forms
       hash_seqs[key] = sentence.map { |word1| WordMatcher.normalize_word(word1) }.flatten
 
       @trace[:label_index][key] = []
@@ -142,6 +143,7 @@ class WordMatcher
     _label_seqs.each do |ix, _label_seq|
       label_seq_new = _label_seq
       label_seq_dup = _label_seq
+      #pp "---LABELS: " + Iqvoc::XLLabel.base_class.where(id: label_seq_dup).map(&:value).join(', ')
 
       # phrases-extraction
       # FIXME: there might have been non-label tokens between a phrases-tupel which blurry the results
@@ -150,16 +152,16 @@ class WordMatcher
         component_ids = compound_form.compound_form_contents.sort_by(&:order).map(&:label_id)
 
         if component_ids.size <= label_seq_dup.size
-          if (label_seq_dup & component_ids) === component_ids
+          if ((label_seq_dup & component_ids) === component_ids)
             #pp "---PHRASE: #{compound_form.domain}"
 
-            label_seq_new << compound_form.domain_id
+            unless label_seq_new.include?(compound_form.domain_id)
+              label_seq_new << compound_form.domain_id
+              @trace[:phrase_index][ix] << compound_form.domain_id
+            end
+
             label_seq_new -= component_ids
-
-            # don't use them for multi-label-extraction
-            label_seq_dup -= component_ids
-
-            @trace[:phrase_index][ix] << compound_form.domain_id
+            label_seq_dup -= component_ids # don't use them for multi-label-extraction
             @trace[:phrase_index][ix] -= component_ids
           end
         end
@@ -170,18 +172,19 @@ class WordMatcher
         component_ids = compound_form.compound_form_contents.map(&:label_id)
 
         if component_ids.size <= label_seq_dup.size
-          if  (component_ids - label_seq_dup).empty? #&& !label_seq.include?(compound_form.domain_id)
+          if ((component_ids - label_seq_dup).empty?)
             #pp "---MEHRWORT: #{compound_form.domain}"
 
-            label_seq_new << compound_form.domain_id
-            label_seq_new -= component_ids
+            unless label_seq_new.include?(compound_form.domain_id)
+              label_seq_new << compound_form.domain_id
+              @trace[:compound_index][ix] << compound_form.domain_id
+            end
 
-            @trace[:compound_index][ix] << compound_form.domain_id
+            label_seq_new -= component_ids
             @trace[:compound_index][ix] -= component_ids
           end
         end
       end
-
 
       # check for cascading components
       label_seq_new = compound_forms({"#{ix}": label_seq_new}).values.flatten unless _label_seq == label_seq_new
@@ -190,6 +193,24 @@ class WordMatcher
     end
 
     label_seqs
+  end
+
+
+  private
+
+  def word_combinations(words, max_tupel_size=3)
+    res = []
+    return res if max_tupel_size < 2
+    (2..max_tupel_size).each do |max|
+      ix = 0
+      while ix+1 < words.size
+        tmp = words[ix, max]
+        res << tmp.join(' ') if tmp.size == max
+        ix+=1
+      end
+    end
+
+    res
   end
 
 end

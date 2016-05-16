@@ -89,8 +89,9 @@ class CompoundLabelIdentificationTest < ActiveSupport::TestCase
     assert labels.exclude? @label_ids['Weltraumfrachtpilot']
     assert labels.exclude? @label_ids['Weltraum']
 
-    sentence = %w(foo Fracht bar Euro ... Kampf Weltraum baz Pilot ... Pilot)
+    sentence = %w(foo Fracht foo Euro foo Kampf Weltraum foo Pilot foo Pilot)
     labels = WordMatcher.new([sentence]).labels
+    #pp labels, @label_ids.invert.slice(*labels)
 
     assert_equal 3, labels.length
     assert labels.include? @label_ids['Euro']
@@ -101,6 +102,13 @@ class CompoundLabelIdentificationTest < ActiveSupport::TestCase
   test 'special cases' do
     sentence = %w(die Euro 5 Norm)
     labels = WordMatcher.new([sentence]).labels
+
+    assert_equal 1, labels.length
+    assert_equal [@label_ids['Euro 5']], labels
+
+    sentence = %w(Hier sind 5 Euro für Dich!)
+    labels = WordMatcher.new([sentence]).labels
+    #pp @label_ids.invert.slice(*labels)
 
     assert_equal 1, labels.length
     assert_equal [@label_ids['Euro 5']], labels
