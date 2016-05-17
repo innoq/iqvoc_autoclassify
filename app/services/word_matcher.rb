@@ -46,14 +46,15 @@ class WordMatcher
     }
 
     # determine inflectionals
-    inflectionals = Inflectional::Base.select([:normal_hash, :label_id])
+    inflectionals = []
+    inflectionals_sql = Inflectional::Base.select([:normal_hash, :label_id])
 
     # Trying to avoid ORA-01795 by limiting
     # the number of values per IN clause to 1000
     #
     # NB: does not retain order or duplicates
     hash_seqs.values.flatten.compact.uniq.in_groups_of(1000, false).each do |group|
-      inflectionals = inflectionals.where(normal_hash: group)
+      inflectionals += inflectionals_sql.where(normal_hash: group)
     end
 
     label_index = inflectionals.each_with_object({}) do |inf, hsh|
@@ -118,7 +119,7 @@ class WordMatcher
       end
 
       # check for cascading homographs
-      label_seq = homographs({"#{ix}": label_seq}).values.flatten unless _label_seq == label_seq
+      label_seq = homographs({"#{ix}".to_sym => label_seq}).values.flatten unless _label_seq == label_seq
 
       label_seqs[ix] = label_seq
     end
@@ -187,7 +188,7 @@ class WordMatcher
       end
 
       # check for cascading components
-      label_seq_new = compound_forms({"#{ix}": label_seq_new}).values.flatten unless _label_seq == label_seq_new
+      label_seq_new = compound_forms({"#{ix}".to_sym => label_seq_new}).values.flatten unless _label_seq == label_seq_new
 
       label_seqs[ix] = label_seq_new
     end
@@ -206,7 +207,7 @@ class WordMatcher
       while ix+1 < words.size
         tmp = words[ix, max]
         res << tmp.join(' ') if tmp.size == max
-        ix+=1
+        ix+= 1
       end
     end
 
