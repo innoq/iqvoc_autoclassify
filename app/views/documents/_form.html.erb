@@ -7,7 +7,7 @@
 
     <hr/>
     <div class="well">
-      <%= f.submit t("txt.common.save"), :class => "btn btn-primary" %>
+      <%= f.submit (current_user ? t("txt.common.save") : t("txt.common.edit")), :class => "btn btn-primary" %>
     </div>
   </fieldset>
 <% end %>
@@ -20,7 +20,7 @@
     <%= f.text_area :content %>
 
     <div class="well">
-      <%= f.submit t("txt.common.save"), :class => "btn btn-primary" %>
+      <%= f.submit (current_user ? t("txt.common.save") : t("txt.common.edit")), :class => "btn btn-primary" %>
     </div>
   </fieldset>
 <% end %>

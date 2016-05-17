@@ -4,6 +4,8 @@ require File.join(File.expand_path(File.dirname(__FILE__)), '../../test_helper')
 require 'fake_web'
 
 class Documents::ExtractedControllerTest < ActionController::TestCase
+  require 'authlogic/test_case'
+
   setup do
     data = Maker.from_yaml <<-EOF
       labels:
@@ -65,6 +67,20 @@ class Documents::ExtractedControllerTest < ActionController::TestCase
     FakeWeb.register_uri :get, @urls[:redirected],
                          status:   ['301', 'Moved Permanently'],
                          location: @urls[:html]
+
+    activate_authlogic
+
+    @admin = User.create! do |u|
+      u.forename = 'Test'
+      u.surname = 'User'
+      u.email = 'admin@iqvoc'
+      u.password = 'omgomgomg'
+      u.password_confirmation = 'omgomgomg'
+      u.role = 'administrator'
+      u.active = true
+    end
+
+    UserSession.create(@admin)
   end
 
   test 'classify html via uri' do

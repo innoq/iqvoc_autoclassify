@@ -1,6 +1,6 @@
 <% if @document.uri %>
   <%= page_header :title => link_to(@document.title || @document.content_hash, @document.uri),
-    :desc => "<br />#{Document::Base.human_attribute_name(:updated_at)} #{l(@document.updated_at)}".html_safe %>
+    :desc => "<br />#{Document::Base.human_attribute_name(:updated_at)} #{l(@document.updated_at || Time.now)}".html_safe %>
 <% else %>
   <%= page_header :title => @document.title || @document.content_hash %></h1>
 <% end %>
@@ -13,34 +13,55 @@
 <% end %>
 
 <h2><%= Concept::Base.model_name.human(:count => 2) %></h2>
-<%= content_tag(:ol, :class => @trace ? "trace" : nil,
-        :start => (@classifications.current_page - 1) * @classifications.limit_value + 1) do %>
-  <% @classifications.each do |classification| %>
-    <li>
-      <%= link_to classification.to_s, concept_path(classification.concept) %>
-      <% if @trace %>
-        <%= raw classification_augmentation(@document, @classifications, classification) %>
+
+<% if @document.persisted? && @classifications %>
+
+    <%= content_tag(:ol, :class => @trace ? "trace" : nil,
+            :start => (@classifications.current_page - 1) * @classifications.limit_value + 1) do %>
+      <% @classifications.each do |classification| %>
+        <li>
+          <%= link_to classification.to_s, concept_path(classification.concept) %>
+          <% if @trace %>
+            <%= raw classification_augmentation(@document, @classifications, classification) %>
+          <% end %>
+          <span class="weighting">[<%= "%4.2f" % classification.weighting %>]</span>
+        </li>
       <% end %>
-      <span class="weighting">[<%= "%4.2f" % classification.weighting %>]</span>
-    </li>
-  <% end %>
-<% end %>
+    <% end %>
 
-<%= content_tag(:div, render(:partial => "edit")) if current_user %>
+    <%= content_tag(:div, render(:partial => "edit")) if current_user %>
 
-<div class="autoclassify"><%= paginate @classifications %></div>
-
-<hr />
-
-<div class="new_comment">
-  <%= bootstrap_form_for @document.comments.build, :url => document_comments_path(:document_id => @document) do |f| %>
-    <%= f.text_area :body, :hide_label => true, :rows => 4, :cols => 70 %>
-
-    <div class="actions">
-      <%= f.submit t("txt.views.document.comment"), :class => "btn btn-default" %>
+    <div class="autoclassify">
+        <%= paginate @classifications %>
     </div>
-  <% end %>
-</div>
+
+    <div class="new_comment">
+        <%= bootstrap_form_for @document.comments.build, :url => document_comments_path(:document_id => @document) do |f| %>
+            <%= f.text_area :body, :hide_label => true, :rows => 4, :cols => 70 %>
+
+            <div class="actions">
+                <%= f.submit t("txt.views.document.comment"), :class => "btn btn-default" %>
+            </div>
+        <% end %>
+    </div>
+
+    <hr />
+
+<% else %>
+
+    <%= content_tag(:ol) do %>
+        <% (Array.new(@document.classifications).sort_by { |c| -1 * c.weighting }).each do |classification| %>
+            <li>
+                <%= link_to classification.to_s, concept_path(classification.concept) %>
+                <% if @trace %>
+                    <%= raw classification_augmentation(@document, @classifications, classification) %>
+                <% end %>
+                <span class="weighting">[<%= "%4.2f" % classification.weighting %>]</span>
+            </li>
+        <% end %>
+    <% end %>
+
+<% end %>
 
 <hr />
 

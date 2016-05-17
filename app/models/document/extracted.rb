@@ -1,7 +1,4 @@
 class Document::Extracted < Document::Base
-  after_initialize do
-    @persist = false
-  end
 
   workflow do
     state :new do

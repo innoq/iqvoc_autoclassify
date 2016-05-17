@@ -30,7 +30,7 @@ class Documents::ExtractedController < DocumentsController
 
   def create
     @document = Document::Extracted.new(uri: params[:uri])
-    @document.persist = true if params[:commit]
+    @document.persist = false unless params[:commit] && current_user
 
     render_errors and return if @document.invalid?
     @document.save if @document.persist?
@@ -41,9 +41,19 @@ class Documents::ExtractedController < DocumentsController
     @document.classify!
     render_errors and return if @document.halted?
 
-    respond_to do |format|
-      format.html { redirect_to document_path(id: @document) }
-      format.any(:rdf, :ttl) { render :show }
+    if @document.classified? && @document.errors.none?
+      respond_to do |format|
+        format.html {
+          if @document.persisted?
+            redirect_to document_path(id: @document)
+          else
+            render :show
+          end
+        }
+        format.any(:rdf, :ttl) { render :show }
+      end
+    else
+      render_errors
     end
   end
 

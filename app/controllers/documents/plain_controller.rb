@@ -33,8 +33,7 @@ class Documents::PlainController < DocumentsController
       doc.title = title
       doc.content = content
     end
-
-    @document.persist = false if params[:commit].blank?
+    @document.persist = false unless params[:commit] && current_user
 
     render_errors and return if @document.invalid?
 
@@ -42,7 +41,13 @@ class Documents::PlainController < DocumentsController
 
     if @document.classified? && @document.errors.none?
       respond_to do |format|
-        format.html { redirect_to document_path(id: @document) }
+        format.html {
+          if @document.persisted?
+            redirect_to document_path(id: @document)
+          else
+            render :show
+          end
+        }
         format.any(:rdf, :ttl) { render :show }
       end
     else
@@ -51,6 +56,7 @@ class Documents::PlainController < DocumentsController
   end
 
   protected
+
   def render_errors
     flash[:error] = t('txt.controllers.plain_documents.create.invalid')
     respond_to do |format|

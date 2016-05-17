@@ -15,7 +15,7 @@ class DocumentsController < ApplicationController
   def show
     get_document
 
-    if params[:trace]
+    if params[:trace] && current_user
       @trace = true
       @classifications = @classifications.per(100)
     end
