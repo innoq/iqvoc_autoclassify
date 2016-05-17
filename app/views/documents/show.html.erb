@@ -31,6 +31,8 @@
 
     <%= content_tag(:div, render(:partial => "edit")) if current_user %>
 
+    <hr />
+
     <div class="autoclassify">
         <%= paginate @classifications %>
     </div>
@@ -45,8 +47,6 @@
         <% end %>
     </div>
 
-    <hr />
-
 <% else %>
 
     <%= content_tag(:ol) do %>
@@ -60,6 +60,8 @@
             </li>
         <% end %>
     <% end %>
+
+    <hr />
 
 <% end %>
 
