@@ -128,22 +128,24 @@ class WordMatcher
   end
 
   # Gets all labels per sentence, retaining those which are part of a compound form
-  def compound_forms(_label_seqs)
+  def compound_forms(_label_seqs, level=0)
     label_seqs = {}
-
-    # determine compound forms containing any of the given labels
-    candidates = CompoundForm::Content::Base.
-        where(label_id: (_label_seqs.values.flatten.uniq)).
-        includes(compound_form: [:compound_form_contents])
-    # NB: intentionally not including `domain` (label), based on the
-    #     assumption that eager loading would be less efficient due to a
-    #     high percentage of rejects
-    candidates = candidates.map(&:compound_form).uniq.compact # FIXME uniq+compact # TODO: might as well query CompoundForm::Base above!?
 
     # for each sentence, determine compound forms whose components are present in the sentence
     _label_seqs.each do |ix, _label_seq|
       label_seq_new = _label_seq
       label_seq_dup = _label_seq
+
+      # determine compound forms containing any of the given labels
+      candidates = CompoundForm::Content::Base.
+          where(label_id: (_label_seq.uniq)).
+          includes(compound_form: [:compound_form_contents])
+      # NB: intentionally not including `domain` (label), based on the
+      #     assumption that eager loading would be less efficient due to a
+      #     high percentage of rejects
+      candidates = candidates.map(&:compound_form).uniq.compact # FIXME uniq+compact # TODO: might as well query CompoundForm::Base above!?
+
+      #pp "---CANDIDATES=#{candidates.size} LEVEL=#{level}"
       #pp "---LABELS: " + Iqvoc::XLLabel.base_class.where(id: label_seq_dup).map(&:value).join(', ')
 
       # phrases-extraction
@@ -153,7 +155,7 @@ class WordMatcher
         component_ids = compound_form.compound_form_contents.sort_by(&:order).map(&:label_id)
 
         if component_ids.size <= label_seq_dup.size
-          if ((label_seq_dup & component_ids) === component_ids)
+          if (label_seq_dup & component_ids) === component_ids
             #pp "---PHRASE: #{compound_form.domain}"
 
             unless label_seq_new.include?(compound_form.domain_id)
@@ -173,7 +175,7 @@ class WordMatcher
         component_ids = compound_form.compound_form_contents.map(&:label_id)
 
         if component_ids.size <= label_seq_dup.size
-          if ((component_ids - label_seq_dup).empty?)
+          if (component_ids - label_seq_dup).empty?
             #pp "---MEHRWORT: #{compound_form.domain}"
 
             unless label_seq_new.include?(compound_form.domain_id)
@@ -188,7 +190,7 @@ class WordMatcher
       end
 
       # check for cascading components
-      label_seq_new = compound_forms({"#{ix}".to_sym => label_seq_new}).values.flatten unless _label_seq == label_seq_new
+      label_seq_new = compound_forms({"#{ix}".to_sym => label_seq_new}, level+1).values.flatten unless _label_seq == label_seq_new
 
       label_seqs[ix] = label_seq_new
     end
