@@ -1,15 +1,15 @@
 <% if @document.uri %>
-  <%= page_header :title => link_to(@document.title || @document.content_hash, @document.uri),
-    :desc => "<br />#{Document::Base.human_attribute_name(:updated_at)} #{l(@document.updated_at || Time.now)}".html_safe %>
+    <%= page_header :title => link_to(@document.title || @document.content_hash, @document.uri),
+                    :desc => "<br />#{Document::Base.human_attribute_name(:updated_at)} #{l(@document.updated_at || Time.now)}".html_safe %>
 <% else %>
-  <%= page_header :title => @document.title || @document.content_hash %></h1>
+    <%= page_header :title => @document.title || @document.content_hash %></h1>
 <% end %>
 
 <% if @trace %>
-  <%= stylesheet_link_tag "iqvoc_autoclassify/jquery.mintip.css" %>
-  <%= content_for :scripts do %>
-    <%= javascript_include_tag "iqvoc_autoclassify/jquery.mintip.js" %>
-  <% end %>
+    <%= stylesheet_link_tag "iqvoc_autoclassify/jquery.mintip.css" %>
+    <%= content_for :scripts do %>
+        <%= javascript_include_tag "iqvoc_autoclassify/jquery.mintip.js" %>
+    <% end %>
 <% end %>
 
 <h2><%= Concept::Base.model_name.human(:count => 2) %></h2>
@@ -17,21 +17,21 @@
 <% if @document.persisted? && @classifications %>
 
     <%= content_tag(:ol, :class => @trace ? "trace" : nil,
-            :start => (@classifications.current_page - 1) * @classifications.limit_value + 1) do %>
-      <% @classifications.each do |classification| %>
-        <li>
-          <%= link_to classification.to_s, concept_path(classification.concept) %>
-          <% if @trace %>
-            <%= raw classification_augmentation(@document, @classifications, classification) %>
-          <% end %>
-          <span class="weighting">[<%= "%4.2f" % classification.weighting %>]</span>
-        </li>
-      <% end %>
+                    :start => (@classifications.current_page - 1) * @classifications.limit_value + 1) do %>
+        <% @classifications.each do |classification| %>
+            <li>
+                <%= link_to classification.to_s, concept_path(classification.concept) %>
+                <% if @trace %>
+                    <%= raw classification_augmentation(@document, @classifications, classification) %>
+                <% end %>
+                <span class="weighting">[<%= "%4.2f" % classification.weighting %>]</span>
+            </li>
+        <% end %>
     <% end %>
 
     <%= content_tag(:div, render(:partial => "edit")) if current_user %>
 
-    <hr />
+    <hr/>
 
     <div class="autoclassify">
         <%= paginate @classifications %>
@@ -61,16 +61,18 @@
         <% end %>
     <% end %>
 
-    <hr />
+    <hr/>
 
 <% end %>
 
-<hr />
+<hr/>
 
 <h2><%= Document::Base.human_attribute_name :content %></h2>
 <pre class="plaintext"><%= @document.content.strip %></pre>
 <%- if @trace -%>
     <pre class="trace"><%= raw augmented_fulltext(@document) %></pre>
+    <!--<pre><%= @document.determine_labels.keys.map(&:value) %></pre>-->
+    <% 15.times do %><br><% end %>
 <%- end -%>
 
 <%= render "sidebar" %>

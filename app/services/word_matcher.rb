@@ -2,9 +2,9 @@
 
 class WordMatcher
 
-  # @trace[:label_index]: list of label IDs by inflectionals' normal_hash
-  # @trace[:compound_index]: list of label IDs by first component's label ID
   attr_reader :trace
+
+  PHRASES_DELIM = ' '
 
   def self.normalize_word(word1)
     ret = []
@@ -18,6 +18,7 @@ class WordMatcher
   def initialize(sentences)
     @sentences = sentences
     @trace = {}
+    @phrases = {} # Labels containing spaces. Could have compound forms aswell.
   end
 
   # NB: returns label IDs rather than label instances (for performance reasons),
@@ -36,7 +37,17 @@ class WordMatcher
     @sentences.each_with_index { |sentence, ix|
       key = sentence.join(' ').to_sym
       sentence += word_combinations(sentence, 5) # find phrases that are not compound-forms
-      hash_seqs[key] = sentence.map { |word1| WordMatcher.normalize_word(word1) }.flatten
+      # pp "SENTENCE: #{sentence.join(' | ')}"
+
+      # store phrases for later removal if a corresponding label exists
+      @phrases[key] = {}
+      sentence.each do |word1|
+        if (word1.include?(PHRASES_DELIM))
+          @phrases[key][WordMatcher.normalize_word(word1).last()] = word1.split(PHRASES_DELIM).map { |word2| WordMatcher.normalize_word(word2).last() }
+        end
+      end
+
+      hash_seqs[key] = sentence.map { |word| WordMatcher.normalize_word(word) }.flatten
 
       @trace[:label_index][key] = []
       @trace[:homograph_index][key] = []
@@ -58,16 +69,26 @@ class WordMatcher
     end
 
     label_index = inflectionals.each_with_object({}) do |inf, hsh|
-      # collect _all_ label_ids per hash (Planet vs. planet issue), this risks to have remaining labels when cleaning up
-      # a sentence-seq from labels which are part of found compound_forms or homograph-qualifier pairs FIXME !?
       (hsh[inf.normal_hash] ||= []) << inf.label_id
     end
 
     label_seqs = {}
     hash_seqs.each do |key, seq|
-      label_seqs[key] = seq.map { |hash| label_index[hash] }.
-          flatten.
-          compact # discard unmatched words
+      label_hsh_idx_1 = {}
+      seq.each do |hash|
+        (label_hsh_idx_1[hash] ||= []) << label_index[hash]
+      end
+      label_hsh_idx_2 = label_hsh_idx_1.deep_dup
+
+      # If a phrase-token exists as label, remove single tokens and don't look up their labels
+      label_hsh_idx_1.each do |hsh, _|
+        if @phrases[key] && @phrases[key][hsh]
+          Array.new(@phrases[key][hsh]).each do |hsh_to_remove|
+            label_hsh_idx_2[hsh_to_remove] = [] if label_index[hsh]
+          end
+        end
+      end
+      label_seqs[key] = label_hsh_idx_2.values.flatten.compact
     end
 
     @trace[:label_index] = label_seqs.deep_dup
@@ -155,7 +176,7 @@ class WordMatcher
         component_ids = compound_form.compound_form_contents.sort_by(&:order).map(&:label_id)
 
         if component_ids.size <= label_seq_dup.size
-          if (label_seq_dup & component_ids) === component_ids
+          if label_seq_dup.join('@@@').include?(component_ids.join('@@@'))
             #pp "---PHRASE: #{compound_form.domain}"
 
             unless label_seq_new.include?(compound_form.domain_id)
@@ -167,14 +188,7 @@ class WordMatcher
             label_seq_dup -= component_ids # don't use them for multi-label-extraction
             @trace[:phrase_index][ix] -= component_ids
           end
-        end
-      end
 
-      # multi-label-extraction
-      candidates.each do |compound_form|
-        component_ids = compound_form.compound_form_contents.map(&:label_id)
-
-        if component_ids.size <= label_seq_dup.size
           if (component_ids - label_seq_dup).empty?
             #pp "---MEHRWORT: #{compound_form.domain}"
 
@@ -208,7 +222,7 @@ class WordMatcher
       ix = 0
       while ix+1 < words.size
         tmp = words[ix, max]
-        res << tmp.join(' ') if tmp.size == max
+        res << tmp.join(PHRASES_DELIM) if tmp.size == max
         ix+= 1
       end
     end
