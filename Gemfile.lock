@@ -129,6 +129,7 @@ GEM
     cliver (0.3.2)
     coderay (1.1.0)
     concurrent-ruby (1.0.1)
+    concurrent-ruby (1.0.1-java)
     crack (0.4.3)
       safe_yaml (~> 1.0.0)
     database_cleaner (1.5.3)
@@ -448,3 +449,6 @@ DEPENDENCIES
   spring
   therubyracer
   workflow (~> 1.0.0)
+
+BUNDLED WITH
+   1.12.4
