@@ -1,9 +1,9 @@
 GIT
   remote: git://github.com/innoq/iqvoc.git
-  revision: cb3809eb0c8a5cc9de3d2a2e644f764321c97283
+  revision: 872456feda103f7f3df4e771ab1ba608a985cac6
   branch: master
   specs:
-    iqvoc (4.9.0)
+    iqvoc (4.10.0)
       apipie-rails (~> 0.3.5)
       authlogic (~> 3.4.2)
       autoprefixer-rails (~> 5.1.8)
@@ -32,29 +32,29 @@ GIT
 
 GIT
   remote: git://github.com/innoq/iqvoc_compound_forms.git
-  revision: 468b21f792184ece0c6e06e3eb7fd86edb4763b3
+  revision: 7f53537b62e5e5710d90e6c61c09a1d3b85950df
   branch: master
   specs:
-    iqvoc_compound_forms (2.7.0)
-      iqvoc (~> 4.9.0)
-      iqvoc_skosxl (~> 2.7.0)
+    iqvoc_compound_forms (2.8.0)
+      iqvoc (~> 4.10, >= 4.5.0)
+      iqvoc_skosxl (~> 2.8.0)
 
 GIT
   remote: git://github.com/innoq/iqvoc_inflectionals.git
-  revision: 81b6f9398585c252a5f850272303884b28848360
+  revision: 680089ba7cc61ba3c8b48e8c4474a60bba17b322
   branch: master
   specs:
-    iqvoc_inflectionals (2.7.0)
-      iqvoc (~> 4.9, >= 4.5.0)
-      iqvoc_skosxl (~> 2.7.0)
+    iqvoc_inflectionals (2.8.0)
+      iqvoc (~> 4.10, >= 4.5.0)
+      iqvoc_skosxl (~> 2.8.0)
 
 GIT
   remote: git://github.com/innoq/iqvoc_skosxl.git
-  revision: 913cdbda19e487c8752f2b8669af1f17a16b81e3
+  revision: 76b2f925be425d8236379d7487023a7053629ad2
   branch: master
   specs:
-    iqvoc_skosxl (2.7.0)
-      iqvoc (~> 4.9.0)
+    iqvoc_skosxl (2.8.0)
+      iqvoc (~> 4.10.0)
 
 GEM
   remote: https://rubygems.org/
@@ -129,10 +129,9 @@ GEM
     cliver (0.3.2)
     coderay (1.1.0)
     concurrent-ruby (1.0.1)
-    concurrent-ruby (1.0.1-java)
     crack (0.4.3)
       safe_yaml (~> 1.0.0)
-    database_cleaner (1.5.2)
+    database_cleaner (1.5.3)
     delayed_job (4.0.6)
       activesupport (>= 3.0, < 5.0)
     delayed_job_active_record (4.0.3)
@@ -282,7 +281,7 @@ GEM
       rake (>= 0.8.7)
       thor (>= 0.18.1, < 2.0)
     rake (11.1.2)
-    rdf (2.0.0)
+    rdf (2.0.1)
       hamster (~> 3.0)
       link_header (~> 0.0, >= 0.0.8)
     rdf-aggregate-repo (2.0.0)
@@ -411,7 +410,7 @@ GEM
       execjs (>= 0.3.0, < 3)
     unicode (0.4.4.2)
     unicode (0.4.4.2-java)
-    webmock (1.24.3)
+    webmock (1.24.6)
       addressable (>= 2.3.6)
       crack (>= 0.3.2)
       hashdiff
@@ -434,10 +433,10 @@ DEPENDENCIES
   capybara
   fakeweb
   guess_html_encoding
-  iqvoc (~> 4.9.0)!
-  iqvoc_compound_forms (~> 2.7.0)!
-  iqvoc_inflectionals (~> 2.7.0)!
-  iqvoc_skosxl (~> 2.7.0)!
+  iqvoc (~> 4.10.0)!
+  iqvoc_compound_forms (~> 2.8.0)!
+  iqvoc_inflectionals (~> 2.8.0)!
+  iqvoc_skosxl (~> 2.8.0)!
   mysql2
   nokogiri (~> 1.6.0)
   pdf-reader (~> 0.10.0)
