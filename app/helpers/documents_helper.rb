@@ -74,79 +74,98 @@ module DocumentsHelper
       segment = [%Q(<h5>#{h sentence_key}</h5>)]
 
       # ROW: All given regular labels
-      segment << trace['label_index'][sentence_key].map { |label_id|
-        label = labels[label_id]
+      if trace.key?('label_index') && !trace['label_index'][sentence_key].empty?
+        segment << "Labels (1):"
+        segment << trace['label_index'][sentence_key].map { |label_id|
+          label = labels[label_id]
 
-        if label
-          classes = ['hint']
-          details = [
-              "<h3>#{label.class.model_name.human(count: 1)}</h3>",
-              link_to(label.to_s, label_path(id: label.origin))
-          ]
+          if label
+            classes = ['hint']
+            details = [
+                "<h3>#{label.class.model_name.human(count: 1)}</h3>",
+                link_to(label.to_s, label_path(id: label.origin))
+            ]
 
-          %Q(<span class="#{classes.join ' '}">#{h label}</span>) +
-              %Q(<div class="details">#{details.join("\n")}</div>)
-        end
-      }
-      segment << "\n\n"
+            %Q(<span class="#{classes.join ' '}">#{h label}</span>) +
+                %Q(<div class="details">#{details.join("\n")}</div>)
+          end
+        }.compact
+        segment << "\n\n"
+      end
 
       # ROW: All resulting labels
-      segment << trace['result_index'][sentence_key].map { |label_id|
-        label = labels[label_id]
-        #pp "LABEL: #{label_id} -> #{label}"
+      if trace.key?('result_index') && !trace['result_index'][sentence_key].empty?
+        segment << "Labels (2):"
+        segment << trace['result_index'][sentence_key].map { |label_id|
+          label = labels[label_id]
+          #pp "LABEL: #{label_id} -> #{label}"
 
-        if label
+          if label
+            classes = ['hint']
+            details = [
+                "<h3>#{label.class.model_name.human(count: 1)}</h3>",
+                link_to(label.to_s, label_path(id: label.origin))
+            ]
+
+            if trace['phrase_index'][sentence_key].include? label_id
+              classes << 'compounds'
+              caption = "#{CompoundForm::Base.model_name.human(count: 1)} (Phrase)"
+              compound_ids = CompoundForm::Base.where(domain_id: label_id).first().compound_form_contents.map(&:label_id) # XXX: database queries don't belong into helpers!!
+              details << render_olist(caption, compound_ids.uniq) do |id| # TODO: i18n
+                uri = label_path(id: labels[id].origin)
+                link_to(labels[id].to_s, uri)
+              end
+            end
+
+            if trace['compound_index'][sentence_key].include? label_id
+              classes << 'compounds'
+              caption = "#{CompoundForm::Base.model_name.human(count: 1)}"
+              compound_ids = CompoundForm::Base.where(domain_id: label_id).first().compound_form_contents.map(&:label_id) # XXX: database queries don't belong into helpers!!
+              details << render_olist(caption, compound_ids.uniq) do |id| # TODO: i18n
+                uri = label_path(id: labels[id].origin)
+                link_to(labels[id].to_s, uri)
+              end
+            end
+
+            if trace['homograph_index'][sentence_key].include? label_id
+              classes << 'compounds'
+              caption = '(Homograph)'
+              details << caption
+            end
+
+            concepts = trace['concept_index'][label_id.to_s]
+            if concepts
+              concepts = Iqvoc::Concept.base_class.where(id: concepts) # XXX: database queries don't belong into helpers!?
+              concepts = concepts.index_by(&:id)
+              classes << 'concepts'
+              caption = concepts.first.last.class.model_name.human(count: 2)
+              details << render_ulist(caption, concepts) do |id, concept|
+                uri = concept_path(id: concept.origin)
+                link_to(concept.to_s, uri) # XXX: `to_s` is expensive (label loaded lazily)
+              end
+            end
+
+            %Q(<span class="#{classes.join ' '}">#{h label}</span>) +
+                %Q(<div class="details">#{details.join("\n")}</div>)
+          end
+        }.compact
+        segment << "\n\n"
+      end
+
+      # ROW: All unused tokens
+      if trace.key?('token_index') && !trace['token_index'][sentence_key].empty?
+        segment << "Ohne Label:"
+        segment << trace['token_index'][sentence_key].map { |word|
           classes = ['hint']
-          details = [
-              "<h3>#{label.class.model_name.human(count: 1)}</h3>",
-              link_to(label.to_s, label_path(id: label.origin))
-          ]
 
-          if trace['phrase_index'][sentence_key].include? label_id
-            classes << 'compounds'
-            caption = "#{CompoundForm::Base.model_name.human(count: 1)} (Phrase)"
-            compound_ids = CompoundForm::Base.where(domain_id: label_id).first().compound_form_contents.map(&:label_id) # XXX: database queries don't belong into helpers!!
-            details << render_olist(caption, compound_ids.uniq) do |id| # TODO: i18n
-              uri = label_path(id: labels[id].origin)
-              link_to(labels[id].to_s, uri)
-            end
-          end
+          %Q(<span class="#{classes.join ' '}">#{h word}</span>)+
+              %Q(<div class="details">kein Label gefunden</div>)
+        }.compact
+        segment << "\n\n"
+      end
 
-          if trace['compound_index'][sentence_key].include? label_id
-            classes << 'compounds'
-            caption = "#{CompoundForm::Base.model_name.human(count: 1)}"
-            compound_ids = CompoundForm::Base.where(domain_id: label_id).first().compound_form_contents.map(&:label_id) # XXX: database queries don't belong into helpers!!
-            details << render_olist(caption, compound_ids.uniq) do |id| # TODO: i18n
-              uri = label_path(id: labels[id].origin)
-              link_to(labels[id].to_s, uri)
-            end
-          end
-
-          if trace['homograph_index'][sentence_key].include? label_id
-            classes << 'compounds'
-            caption = '(Homograph)'
-            details << caption
-          end
-
-          concepts = trace['concept_index'][label_id.to_s]
-          if concepts
-            concepts = Iqvoc::Concept.base_class.where(id: concepts) # XXX: database queries don't belong into helpers!?
-            concepts = concepts.index_by(&:id)
-            classes << 'concepts'
-            caption = concepts.first.last.class.model_name.human(count: 2)
-            details << render_ulist(caption, concepts) do |id, concept|
-              uri = concept_path(id: concept.origin)
-              link_to(concept.to_s, uri) # XXX: `to_s` is expensive (label loaded lazily)
-            end
-          end
-
-          %Q(<span class="#{classes.join ' '}">#{h label}</span>) +
-              %Q(<div class="details">#{details.join("\n")}</div>)
-        end
-      }
-
-      content_tag(:div, segment.join(' ').html_safe, {class: 'sentence'})
-    }.join("\n\n")
+      content_tag(:div, segment.reject(&:empty?).join(' ').html_safe, {class: 'sentence'})
+    }.join("\n")
   end
 
   def render_ulist(caption, items, &block)

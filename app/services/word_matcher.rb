@@ -26,6 +26,7 @@ class WordMatcher
   def labels
     return [] if @sentences.empty? # FIXME .labels() is called on GET walking through all(!) inflectionals then
 
+    @trace[:token_index] = {}
     @trace[:label_index] = {}
     @trace[:homograph_index] = {}
     @trace[:phrase_index] = {}
@@ -34,8 +35,17 @@ class WordMatcher
 
     # use normalized form for case-insensitivity (and performance)
     hash_seqs = {}
-    @sentences.each_with_index { |sentence, ix|
+    @sentences.each_with_index { |_sentence, _ix|
+      sentence = _sentence.map { |word| word.mb_chars.downcase.strip.normalize }
       key = sentence.join(' ').to_sym
+
+      @trace[:token_index][key] = {}
+      @trace[:label_index][key] = []
+      @trace[:homograph_index][key] = []
+      @trace[:phrase_index][key] = []
+      @trace[:compound_index][key] = []
+      @trace[:result_index][key] = []
+
       sentence += word_combinations(sentence, 5) # find phrases that are not compound-forms
       # pp "SENTENCE: #{sentence.join(' | ')}"
 
@@ -44,16 +54,12 @@ class WordMatcher
       sentence.each do |word1|
         if (word1.include?(PHRASES_DELIM))
           @phrases[key][WordMatcher.normalize_word(word1).last()] = word1.split(PHRASES_DELIM).map { |word2| WordMatcher.normalize_word(word2).last() }
+        else
+          @trace[:token_index][key][TokenNormalizer.do_it(word1).to_s.mb_chars.downcase.to_s] = WordMatcher.normalize_word(word1)
         end
       end
 
       hash_seqs[key] = sentence.map { |word| WordMatcher.normalize_word(word) }.flatten
-
-      @trace[:label_index][key] = []
-      @trace[:homograph_index][key] = []
-      @trace[:phrase_index][key] = []
-      @trace[:compound_index][key] = []
-      @trace[:result_index][key] = []
     }
 
     # determine inflectionals
@@ -88,6 +94,10 @@ class WordMatcher
           end
         end
       end
+
+      @trace[:token_index][key].reject! { |_, tokens| !(tokens & label_index.keys).empty? }
+      @trace[:token_index][key] = @trace[:token_index][key].keys
+
       label_seqs[key] = label_hsh_idx_2.values.flatten.compact
     end
 
