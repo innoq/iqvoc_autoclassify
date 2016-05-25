@@ -1,6 +1,6 @@
 GIT
   remote: git://github.com/innoq/iqvoc.git
-  revision: 872456feda103f7f3df4e771ab1ba608a985cac6
+  revision: 9d308319f98735b34375501cb226628d0abbca2b
   branch: master
   specs:
     iqvoc (4.10.0)
@@ -96,6 +96,7 @@ GEM
       thread_safe (~> 0.3, >= 0.3.4)
       tzinfo (~> 1.1)
     addressable (2.4.0)
+    afm (0.2.2)
     apipie-rails (0.3.6)
       json
     arel (6.0.3)
@@ -166,6 +167,7 @@ GEM
     hamster (3.0.0)
       concurrent-ruby (~> 1.0)
     hashdiff (0.3.0)
+    hashery (2.1.2)
     htmlentities (4.3.4)
     i18n (0.7.0)
     iq_rdf (0.1.15)
@@ -232,8 +234,12 @@ GEM
     nokogiri (1.6.7.2)
       mini_portile2 (~> 2.0.0.rc2)
     nokogiri (1.6.7.2-java)
-    pdf-reader (0.10.1)
+    pdf-reader (1.4.0)
       Ascii85 (~> 1.0.0)
+      afm (~> 0.2.1)
+      hashery (~> 2.0)
+      ruby-rc4
+      ttfunk
     poltergeist (1.6.0)
       capybara (~> 2.1)
       cliver (~> 0.3.1)
@@ -360,6 +366,7 @@ GEM
       diff-lcs (>= 1.2.0, < 2.0)
       rspec-support (~> 3.4.0)
     rspec-support (3.4.1)
+    ruby-rc4 (0.1.5)
     ruby-readability (0.7.0)
       guess_html_encoding (>= 0.0.4)
       nokogiri (>= 1.6.0)
@@ -405,6 +412,7 @@ GEM
     thread_safe (0.3.5)
     thread_safe (0.3.5-java)
     tilt (2.0.2)
+    ttfunk (1.4.0)
     tzinfo (1.2.2)
       thread_safe (~> 0.1)
     uglifier (3.0.0)
@@ -440,7 +448,7 @@ DEPENDENCIES
   iqvoc_skosxl (~> 2.8.0)!
   mysql2
   nokogiri (~> 1.6.0)
-  pdf-reader (~> 0.10.0)
+  pdf-reader (~> 1.4.0)
   poltergeist
   pragmatic_segmenter (~> 0.3.7)
   pry-rails

@@ -7,7 +7,7 @@ gem 'iqvoc_compound_forms', '~> 2.8.0', :github => 'innoq/iqvoc_compound_forms',
 
 gem 'ruby-readability'
 gem 'nokogiri', '~> 1.6.0'
-gem 'pdf-reader', '~> 0.10.0'
+gem 'pdf-reader', '~> 1.4.0'
 gem 'workflow', '~> 1.0.0'
 gem 'guess_html_encoding'
 gem 'apipie-rails', '~> 0.3.5'

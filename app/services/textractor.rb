@@ -2,6 +2,7 @@
 
 require 'tempfile'
 require 'readability'
+require 'pdf-reader'
 
 class Textractor
 
@@ -68,9 +69,8 @@ class Textractor
   end
 
   def self.from_pdf(filepath)
-    rcv = PDFReceiver.new
-    PDF::Reader.file(filepath, rcv)
-    return rcv.meta[:Title], rcv.content.join("\n\n")
+    reader = PDF::Reader.new(filepath)
+    return reader.metadata, reader.pages.map(&:text).join("\n\n")
   end
 
   class InvalidUri < ArgumentError; end
