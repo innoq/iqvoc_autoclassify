@@ -114,7 +114,7 @@ class WordMatcher
     type_homograph = 'Label::Relation::UMT::Homograph'
     type_qualifier = 'Label::Relation::UMT::Qualifier'
 
-    return _label_seqs unless Object.const_get(type_homograph).is_a?(Class) && Object.const_get(type_qualifier).is_a?(Class)
+    return _label_seqs unless Object.const_defined?(type_homograph) || Object.const_defined?(type_qualifier)
 
     label_seqs = {}
 
