@@ -24,14 +24,14 @@ class WordMatcher
   # NB: returns label IDs rather than label instances (for performance reasons),
   #     *not* distinguishing between published and unpublished
   def labels
-    return [] if @sentences.empty? # FIXME .labels() is called on GET walking through all(!) inflectionals then
-
     @trace[:token_index] = {}
     @trace[:label_index] = {}
     @trace[:homograph_index] = {}
     @trace[:phrase_index] = {}
     @trace[:compound_index] = {}
     @trace[:result_index] = {}
+
+    return [] if @sentences.empty?
 
     # use normalized form for case-insensitivity (and performance)
     hash_seqs = {}

@@ -71,7 +71,7 @@ class Document::Base < ActiveRecord::Base
     # puts _content
     # puts content
     if content.bytesize >= MAX_CONTENT_CHARS
-      super(content.mb_chars.limit((MAX_CONTENT_CHARS).to_i - MAX_CONTENT_SUFFIX.length).to_s  + MAX_CONTENT_SUFFIX)
+      super(content.mb_chars.limit(MAX_CONTENT_CHARS - MAX_CONTENT_SUFFIX.length).to_s  + MAX_CONTENT_SUFFIX)
     else
       super(content)
     end

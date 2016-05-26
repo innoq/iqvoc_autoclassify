@@ -72,7 +72,6 @@
 <pre class="plaintext"><%= @document.content.strip %></pre>
 <%- if @trace -%>
     <pre class="trace"><%= raw augmented_fulltext(@document) %></pre>
-    <!--<pre><%= @document.determine_labels.keys.map(&:value) %></pre>-->
     <% 10.times { concat '<br>'.html_safe } %>
 <%- end -%>
 
