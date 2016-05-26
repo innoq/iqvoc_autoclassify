@@ -16,7 +16,8 @@
 
 <% if @document.persisted? && @classifications %>
 
-    <%= content_tag(:ol, :class => @trace ? "trace" : nil,
+    <%= content_tag(:ol,
+                    :class => @trace ? "trace" : nil,
                     :start => (@classifications.current_page - 1) * @classifications.limit_value + 1) do %>
         <% @classifications.each do |classification| %>
             <li>
@@ -72,7 +73,7 @@
 <%- if @trace -%>
     <pre class="trace"><%= raw augmented_fulltext(@document) %></pre>
     <!--<pre><%= @document.determine_labels.keys.map(&:value) %></pre>-->
-    <% 15.times do %><br><% end %>
+    <% 10.times { concat '<br>'.html_safe } %>
 <%- end -%>
 
 <%= render "sidebar" %>

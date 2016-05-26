@@ -1,5 +1,7 @@
 source 'https://rubygems.org'
 
+# FIXME - make use of `gemspec()` possible
+
 gem 'iqvoc', '~> 4.10.0', :github => 'innoq/iqvoc', branch: 'master'
 gem 'iqvoc_skosxl', '~> 2.8.0', :github => 'innoq/iqvoc_skosxl', branch: 'master'
 gem 'iqvoc_inflectionals', '~> 2.8.0', :github => 'innoq/iqvoc_inflectionals', branch: 'master'

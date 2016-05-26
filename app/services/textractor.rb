@@ -70,7 +70,16 @@ class Textractor
 
   def self.from_pdf(filepath)
     reader = PDF::Reader.new(filepath)
-    return reader.metadata, reader.pages.map(&:text).join("\n\n")
+
+    title = reader.info.values_at(:Title, :Author).join(' / ')
+    content = reader.pages.map(&:text).join("\nn") # should this be marked somewhat?
+
+    # Regardless of the internal encoding used in the PDF all text will be converted to UTF-8 before it is passed back
+    # from PDF::Reader. https://github.com/yob/pdf-reader#text-encoding
+    title.encode!('UTF-8', invalid: :replace, undef: :replace, replace: '_')
+    content.encode!('UTF-8', invalid: :replace, undef: :replace, replace: '_')
+
+    return title, content
   end
 
   class InvalidUri < ArgumentError; end

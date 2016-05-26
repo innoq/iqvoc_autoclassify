@@ -36,13 +36,13 @@ class DocumentsTest < ActionDispatch::IntegrationTest
       make_document(content: text)
     end
 
-    @urls = {
-      'pdf' => 'http://example.org/sample.pdf',
-      'html' => 'http://example.org/sample.html'
-    }
-    FakeWeb.register_uri(:get, @urls['pdf'], body: 'test/fixtures/sample.pdf',
-        content_type: 'application/pdf')
-    FakeWeb.register_uri(:get, @urls['html'], body: 'test/fixtures/sample.html')
+    # FIXME - there is no test covering PDF-Extraction
+    # @urls = {
+    #   'pdf' => 'http://example.org/sample.pdf',
+    #   'html' => 'http://example.org/sample.html'
+    # }
+    # FakeWeb.register_uri(:get, @urls['pdf'], body: 'test/fixtures/sample.pdf', content_type: 'application/pdf')
+    # FakeWeb.register_uri(:get, @urls['html'], body: 'test/fixtures/sample.html')
   end
 
   test 'list documents at index' do

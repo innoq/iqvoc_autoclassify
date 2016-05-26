@@ -1,6 +1,6 @@
 <%= bootstrap_form_for @document, :url => extracted_documents_path, :html => { :class => 'document-form' } do |f| %>
   <fieldset>
-    <legend><%= Document::Base.human_attribute_name :url %></legend>
+    <legend><%= Document::Base.human_attribute_name :url %> (HTML/PDF)</legend>
     <%= f.form_group nil do %>
       <%= text_field_tag :uri, nil, :class => 'form-control' %>
     <% end %>
