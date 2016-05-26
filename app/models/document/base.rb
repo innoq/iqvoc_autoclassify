@@ -2,6 +2,10 @@ require 'digest/sha1'
 require 'workflow'
 
 class Document::Base < ActiveRecord::Base
+
+  MAX_CONTENT_CHARS = 10000
+  MAX_CONTENT_SUFFIX = '…'
+
   self.table_name = 'documents'
 
   include Rails.application.routes.url_helpers
@@ -19,6 +23,9 @@ class Document::Base < ActiveRecord::Base
   has_one :classification_trace,
           foreign_key: 'document_id',
           dependent: :destroy
+
+  validates :title, length: { maximum: 255 }
+  validates :content, length: { maximum: MAX_CONTENT_CHARS }
 
   class_attribute :weightings
   self.weightings = {
@@ -57,6 +64,17 @@ class Document::Base < ActiveRecord::Base
 
   def title
     read_attribute(:title).presence || content_hash || '-'
+  end
+
+  def content=(_content)
+    content = _content.squish
+    # puts _content
+    # puts content
+    if content.bytesize >= MAX_CONTENT_CHARS
+      super(content.mb_chars.limit((MAX_CONTENT_CHARS).to_i - MAX_CONTENT_SUFFIX.length).to_s  + MAX_CONTENT_SUFFIX)
+    else
+      super(content)
+    end
   end
 
   def classify
