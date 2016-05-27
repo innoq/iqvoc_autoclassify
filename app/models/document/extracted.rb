@@ -3,9 +3,11 @@ class Document::Extracted < Document::Base
   workflow do
     state :new do
       event :extract, transitions_to: :extracted
+      event :reset, transitions_to: :new
     end
     state :extracted do
       event :classify, transitions_to: :classified
+      event :reset, transitions_to: :new
     end
     state :classified do
       event :reset, transitions_to: :new
