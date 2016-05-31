@@ -20,13 +20,15 @@
                     :class => @trace ? "trace" : nil,
                     :start => (@classifications.current_page - 1) * @classifications.limit_value + 1) do %>
         <% @classifications.each do |classification| %>
-            <li>
-                <%= link_to classification.to_s, concept_path(classification.concept) %>
-                <% if @trace %>
-                    <%= raw classification_augmentation(@document, @classifications, classification) %>
-                <% end %>
-                <span class="weighting">[<%= "%4.2f" % classification.weighting %>]</span>
-            </li>
+            <% if classification.concept # only non-expired concepts are shown %>
+                <li>
+                    <%= link_to classification.to_s, concept_path(classification.concept) %>
+                    <% if @trace %>
+                        <%= raw classification_augmentation(@document, @classifications, classification) %>
+                    <% end %>
+                    <span class="weighting">[<%= "%4.2f" % classification.weighting %>]</span>
+                </li>
+            <% end %>
         <% end %>
     <% end %>
 

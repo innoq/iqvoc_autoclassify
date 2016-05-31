@@ -1,9 +1,9 @@
 class Classification < ActiveRecord::Base
   belongs_to :document, class_name: Document::Base
-  belongs_to :concept, class_name: Iqvoc::Concept.base_class
+  belongs_to :concept, -> { where 'expired_at >= ? OR expired_at IS NULL', Date.today }, class_name: Iqvoc::Concept.base_class
 
   def build_rdf(document, result)
-    result.Sdc::link(IqRdf.build_uri(concept.origin))
+    result.Sdc::link(IqRdf.build_uri(concept.origin)) if concept
     result.Dct::title(title) if title
     result.Sdc::rank(weighting) # XXX: "rank" invalid; not an integer, not unique(?)
   end
