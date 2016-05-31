@@ -12,8 +12,6 @@ module DocumentParser
         'Min.', 'min.', 'Mio.', 'Mrd.', 'Nr.',
         'Dr.', 'Prof.', 'Fa.', 'ff.',
     ]
-    # add common variants
-    # @@irrelevant_abbreviations += @@irrelevant_abbreviations.map { |abbr| abbr.gsub('. ', '.') }
 
     def initialize(text)
       super(text, 'de')
@@ -33,11 +31,9 @@ module DocumentParser
     def normalize_sentence(_text)
       text = super _text
 
-      # discard stop words
-      @@stop_words.each { |word| text = text.gsub(/\b#{Regexp.quote word}\b/, '') } # XXX: might be more efficient to construct one big RegEx instead
-
-      # discard semantically irrelevant abbreviations (to avoid erroneous sentence termination)
-      rx = Regexp.union @@irrelevant_abbreviations.map { |abbr| /\s#{ (abbr.strip.gsub '.', '\.').gsub(' ', '.?') }\s/ }
+      # discard stop words and semantically irrelevant abbreviations
+      rx = Regexp.union (@@irrelevant_abbreviations+@@stop_words)
+                            .map { |w| /\s#{ (w.strip.gsub '.', '\.').gsub(' ', '.?') }\s/ }
       text.gsub!(rx, ' ')
 
       text
