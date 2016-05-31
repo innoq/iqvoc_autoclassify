@@ -76,32 +76,38 @@ class ParserGermanTest < ActiveSupport::TestCase
     text = 'lorem ipsum z. B. dolor sit amet'
     doc = DocumentParser::German.new text
 
-    assert_equal 1, doc.sentences.length
+    assert_equal 5, doc.sentences[0].length
 
     text = 'lorem ipsum z.B. dolor sit amet'
     doc = DocumentParser::German.new text
 
-    assert_equal 1, doc.sentences.length
+    assert_equal 5, doc.sentences[0].length
 
     text = 'lorem ipsum i. d. R. dolor sit amet'
     doc = DocumentParser::German.new text
 
-    assert_equal 1, doc.sentences.length
+    assert_equal 5, doc.sentences[0].length
 
     text = 'lorem ipsum i.d.R. dolor sit amet'
     doc = DocumentParser::German.new text
 
-    assert_equal 1, doc.sentences.length
+    assert_equal 5, doc.sentences[0].length
 
     text = 'lorem d.h. ipsum s.o. dolor Nr. sit etc. amet'
     doc = DocumentParser::German.new text
 
-    assert_equal 1, doc.sentences.length
+    assert_equal 5, doc.sentences[0].length
 
     text = 'lorem 1. ipsum 10. dolor 99. sit 13.07.2011 amet'
     doc = DocumentParser::German.new text
 
-    assert_equal 1, doc.sentences.length
+    assert_equal 9, doc.sentences[0].length
+
+    text = 'lorem Kohlenwasserstoff.'
+    doc = DocumentParser::German.new text
+
+    assert_equal 2, doc.sentences[0].length
+    assert_includes doc.sentences[0], 'Kohlenwasserstoff.'  # https://github.com/innoq/iqvoc_autoclassify/issues/50
   end
 
   test 'stop-word handling' do

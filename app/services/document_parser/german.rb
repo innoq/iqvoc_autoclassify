@@ -6,15 +6,14 @@ module DocumentParser
     @@stop_words = ['und', 'oder']
 
     @@irrelevant_abbreviations = [
-      'ca.', 'etc.', 'usw.', 'bzw.', 'vgl.', 'evtl.',
-      'P.S.', 'z. B.', 'd. h.', 's. o.', 'u.a.', 'z. T.', 'z. Zt.', 'i. A.', 'i. V.',
-      'i. d. R.',
-      'Min.', 'min.', 'Mio.', 'Mrd.', 'Nr.',
-      'Dr.', 'Prof.', 'Fa.', 'ff.',
+        'ca.', 'etc.', 'usw.', 'bzw.', 'vgl.', 'evtl.',
+        'P.S.', 'z. B.', 'd. h.', 's. o.', 'u.a.', 'z. T.', 'z. Zt.', 'i. A.', 'i. V.',
+        'i. d. R.',
+        'Min.', 'min.', 'Mio.', 'Mrd.', 'Nr.',
+        'Dr.', 'Prof.', 'Fa.', 'ff.',
     ]
     # add common variants
-    @@irrelevant_abbreviations += @@irrelevant_abbreviations.
-        map { |abbr| abbr.gsub('. ', '.') }
+    # @@irrelevant_abbreviations += @@irrelevant_abbreviations.map { |abbr| abbr.gsub('. ', '.') }
 
     def initialize(text)
       super(text, 'de')
@@ -38,7 +37,8 @@ module DocumentParser
       @@stop_words.each { |word| text = text.gsub(/\b#{Regexp.quote word}\b/, '') } # XXX: might be more efficient to construct one big RegEx instead
 
       # discard semantically irrelevant abbreviations (to avoid erroneous sentence termination)
-      @@irrelevant_abbreviations.each { |abbr| text = text.gsub(abbr, '') }
+      rx = Regexp.union @@irrelevant_abbreviations.map { |abbr| /\s#{ (abbr.strip.gsub '.', '\.').gsub(' ', '.?') }\s/ }
+      text.gsub!(rx, ' ')
 
       text
     end
