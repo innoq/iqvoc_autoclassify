@@ -22,6 +22,9 @@ class LabelIdentificationTest < ActiveSupport::TestCase
       -
         value: planet
         language: en
+     -
+        value: Kuchen
+        auto_classify: false
 
     EOF
     @label_ids = data[:labels]
@@ -55,5 +58,10 @@ class LabelIdentificationTest < ActiveSupport::TestCase
   test 'equally written labels' do
     sentence = %w(PLANET)
     assert_equal 2, WordMatcher.new([sentence]).labels.length
+  end
+
+  test 'unwanted labels' do
+    sentence = %w(Kinder Fenster Bäume Kuchen)
+    assert_equal 3, WordMatcher.new([sentence]).labels.length
   end
 end

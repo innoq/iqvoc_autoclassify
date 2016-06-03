@@ -104,10 +104,13 @@ class WordMatcher
     @trace[:label_index] = label_seqs.deep_dup
     label_seqs = homographs(label_seqs)
     label_seqs = compound_forms(label_seqs)
+    label_seqs = clean_up(label_seqs)
     @trace[:result_index] = label_seqs
 
     label_seqs.values.flatten
   end
+
+  private
 
   # FIXME: (architecture) this gem doesn't know about Label::Relation::UMT::Homograph/::Qualifier
   def homographs(_label_seqs)
@@ -222,8 +225,17 @@ class WordMatcher
     label_seqs
   end
 
+  # [Remove labels flagged w/ "Benennung ohne Textanalysefunktion"](https://github.com/innoq/iqvoc_autoclassify/issues/53)
+  def clean_up(_label_seqs, level=0)
+    label_seqs = {}
 
-  private
+    found = (Iqvoc::XLLabel.base_class.where(auto_classify: true, id: _label_seqs.values.flatten.uniq)).map(&:id)
+    _label_seqs.each do |ix, _label_seq|
+      label_seqs[ix] = _label_seq.select { |id| found.include?(id) }
+    end
+
+    label_seqs
+  end
 
   def word_combinations(words, max_tupel_size=3)
     res = []
