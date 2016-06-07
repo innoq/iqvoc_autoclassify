@@ -41,7 +41,8 @@ class DocumentLabelsTest < ActiveSupport::TestCase
         value: moderat
       -
         value: oderfoo
-
+      -
+        value: 1. BImSchv
       concepts:
       -
         pref_labels: [Weltraumkampfpilot]
@@ -117,4 +118,9 @@ class DocumentLabelsTest < ActiveSupport::TestCase
     assert_equal 3, labels.length
   end
 
+  # https://github.com/innoq/iqvoc_autoclassify/issues/55
+  test 'Satzende vs. Abkürzung' do
+    labels = make_document(content: '1. BImSchv.').determine_labels
+    assert_equal 1, labels.length
+  end
 end

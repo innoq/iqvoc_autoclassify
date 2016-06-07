@@ -8,7 +8,7 @@ class WordMatcher
 
   def self.normalize_word(word1)
     ret = []
-    word2 = word1.gsub /\./, '' # dots are allowed now, see TokenNormalizer.do_it
+    word2 = word1.gsub /\.$/, '' # might be an abbreviation or end of sentence - add a version w/o dot then
     ret << Inflectional::Base.normalize(TokenNormalizer.do_it word2) if (word1 != word2)
     ret << Inflectional::Base.normalize(TokenNormalizer.do_it word1)
     ret
