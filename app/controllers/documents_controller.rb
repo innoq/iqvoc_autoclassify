@@ -42,7 +42,7 @@ class DocumentsController < ApplicationController
   protected
 
   def get_document
-    @document = Document::Base.where(id: params[:id]).includes(:classifications).first
+    @document = Document::Base.includes(:classifications).find_by!(id: params[:id])
     @classifications = @document.classifications.order('weighting DESC').page(params[:page])
   end
 end
