@@ -2,10 +2,10 @@ source 'https://rubygems.org'
 
 # FIXME - make use of `gemspec()` possible
 
-gem 'iqvoc', '~> 4.10.0', :github => 'innoq/iqvoc', branch: 'master'
-gem 'iqvoc_skosxl', '~> 2.8.0', :github => 'innoq/iqvoc_skosxl', branch: 'master'
-gem 'iqvoc_inflectionals', '~> 2.8.0', :github => 'innoq/iqvoc_inflectionals', branch: 'master'
-gem 'iqvoc_compound_forms', '~> 2.8.0', :github => 'innoq/iqvoc_compound_forms', branch: 'master'
+gem 'iqvoc', '~> 4.11.0', :github => 'innoq/iqvoc', branch: 'master'
+gem 'iqvoc_skosxl', '~> 2.9.0', :github => 'innoq/iqvoc_skosxl', branch: 'master'
+gem 'iqvoc_inflectionals', '~> 2.9.0', :github => 'innoq/iqvoc_inflectionals', branch: 'master'
+gem 'iqvoc_compound_forms', '~> 2.9.0', :github => 'innoq/iqvoc_compound_forms', branch: 'master'
 
 gem 'ruby-readability'
 gem 'nokogiri', '~> 1.6.0'
