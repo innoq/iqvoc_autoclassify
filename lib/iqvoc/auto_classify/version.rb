@@ -1,5 +1,5 @@
 module Iqvoc
   module AutoClassify
-    VERSION = '1.7.6'
+    VERSION = '1.8.0'
   end
 end
