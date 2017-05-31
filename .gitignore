@@ -18,3 +18,5 @@ iqvoc_autoclassify.iml
 
 .rakeTasks
 .generators
+
+.ruby-version
