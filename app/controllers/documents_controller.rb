@@ -4,10 +4,9 @@ class DocumentsController < ApplicationController
   respond_to :html, :rdf, :ttl
 
   def index
-    @documents = Document::Base.
-        includes(:classifications).
-        order('updated_at DESC').
-        page(params[:page])
+    @documents = Document::Base.includes(:classifications)
+                               .order('updated_at DESC')
+                               .page(params[:page])
 
     respond_with @documents
   end
@@ -42,7 +41,11 @@ class DocumentsController < ApplicationController
   protected
 
   def get_document
-    @document = Document::Base.includes(:classifications).find_by!(id: params[:id])
-    @classifications = @document.classifications.order('weighting DESC').page(params[:page])
+    @document = Document::Base.includes(:classifications)
+                              .find_by!(id: params[:id])
+
+    @classifications = @document.classifications
+                                .order('weighting DESC')
+                                .page(params[:page])
   end
 end
