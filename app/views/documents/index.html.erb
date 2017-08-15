@@ -12,7 +12,7 @@
   <tbody>
     <% @documents.each do |doc| %>
       <tr class="documents-table-item">
-        <td><%= l doc.updated_at, format: :short %></td>
+        <td class="text-nowrap"><%= l doc.updated_at, format: :short %></td>
         <td>
           <%= link_to doc.title, document_path(:id => doc),
             class: 'documents-table-item-link' %>
