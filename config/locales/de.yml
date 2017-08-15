@@ -5,6 +5,9 @@ de:
         create:
           invalid: Volltext muss übermittelt werden
       documents:
+        new:
+          classify_url: URL klassifizieren
+          classify_text: Text klassifizieren
         save:
           success: Dokument erfolgreich angelegt
         create:

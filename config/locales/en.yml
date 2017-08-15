@@ -2,6 +2,9 @@ en:
   txt:
     controllers:
       documents:
+        new:
+          classify_url: classify url
+          classify_text: classify text
         save:
           success: document created successfully
         create:
