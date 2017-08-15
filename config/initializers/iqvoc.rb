@@ -1,5 +1,7 @@
 # initializer for both iqvoc and iqvoc_skosxl
 
+Iqvoc::Concept.base_class.send(:include, DocumentsConceptExtension)
+
 Iqvoc.config.register_settings({
   'title' => 'iQvoc AutoClassify',
   'languages.pref_labeling' => ['de', 'en']
