@@ -8,7 +8,7 @@ gem 'iqvoc_inflectionals', '~> 2.9.0', :github => 'innoq/iqvoc_inflectionals', b
 gem 'iqvoc_compound_forms', '~> 2.9.0', :github => 'innoq/iqvoc_compound_forms', branch: 'master'
 
 gem 'ruby-readability'
-gem 'nokogiri', '~> 1.6.0'
+gem 'nokogiri', '~> 1.7.2'
 gem 'pdf-reader', '~> 1.4.0'
 gem 'workflow', '~> 1.0.0'
 gem 'guess_html_encoding'
