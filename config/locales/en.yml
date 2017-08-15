@@ -1,7 +1,14 @@
 en:
   txt:
     controllers:
+      plain_documents:
+        create:
+          invalid: text is required
       documents:
+        index:
+          delete_confirm: Do you really want to delete this document
+          delete_success: Document success deleted.
+          delete_error: An error occurred. Could not delete document.
         new:
           classify_url: classify url
           classify_text: classify text

@@ -38,6 +38,21 @@ class DocumentsController < ApplicationController
     end
   end
 
+  def destroy
+    get_document
+
+    # FIXME: use custom cancan ability
+    authorize! :use, :administration
+
+    if @document.destroy
+      flash[:success] = I18n.t('txt.controllers.documents.index.delete_success')
+    else
+      flash[:error] = I18n.t('txt.controllers.documents.index.delete_error')
+    end
+
+    redirect_to documents_path
+  end
+
   protected
 
   def get_document

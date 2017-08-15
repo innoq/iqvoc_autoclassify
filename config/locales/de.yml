@@ -5,6 +5,10 @@ de:
         create:
           invalid: Volltext muss übermittelt werden
       documents:
+        index:
+          delete_confirm: Soll das Dokument wirklich gelöscht werden.
+          delete_success: Dokument wurde erfolgreich gelöscht.
+          delete_error: Dokument konnte nicht gelöscht werden.
         new:
           classify_url: URL klassifizieren
           classify_text: Text klassifizieren
