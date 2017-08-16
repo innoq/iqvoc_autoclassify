@@ -84,7 +84,7 @@ class Document::Base < ActiveRecord::Base
     method = persist? ? :create : :build
     concepts.each do |concept, weighting|
       classifications.send(method,
-        concept_id: concept.id,
+        concept_origin: concept.origin,
         weighting: weighting,
         title: concept.to_s)
     end
