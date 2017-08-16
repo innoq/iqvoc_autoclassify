@@ -2,14 +2,10 @@ class AddConceptOriginToClassifications < ActiveRecord::Migration
   def up
     ActiveRecord::Base.transaction do
       # add new foreign_key column
-      add_column :classifications, :concept_origin, :string, null: false, limit: 4_000
+      add_column :classifications, :concept_origin, :string, limit: 4_000
       add_index :classifications, ['concept_origin'], name: 'ix_classifications_on_origin', length: 255
 
-      # migrate concept_ids to origin
-      Classification.find_each do |classification|
-        origin = Iqvoc::Concept.base_class.find(classification.concept_id).origin
-        classification.update_attribute(:concept_origin, origin)
-      end
+      # we do not migrate/reclassify existing classifications. Please reclassify manually via web ui
 
       # remove old foreign_key column
       remove_column :classifications, :concept_id
@@ -19,13 +15,9 @@ class AddConceptOriginToClassifications < ActiveRecord::Migration
   def down
     ActiveRecord::Base.transaction do
       # add old foreign_key column
-      add_column :classifications, :concept_id, :integer, null: false
+      add_column :classifications, :concept_id, :integer
 
-      # migrate concept_ids to origin
-      Classification.find_each do |classification|
-        concept_id = Iqvoc::Concept.base_class.where(origin: classification.concept_origin).last.id
-        classification.update_attribute(:concept_id, concept_id)
-      end
+      # we do not migrate/reclassify existing classifications. Please reclassify manualy via web ui
 
       # remove new foreign_key column
       remove_column :classifications, :concept_origin
