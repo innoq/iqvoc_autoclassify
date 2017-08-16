@@ -3,6 +3,7 @@ class AddConceptOriginToClassifications < ActiveRecord::Migration
     ActiveRecord::Base.transaction do
       # add new foreign_key column
       add_column :classifications, :concept_origin, :string, null: false, limit: 4_000
+      add_index :classifications, ['concept_origin'], name: 'ix_classifications_on_origin', length: 255
 
       # migrate concept_ids to origin
       Classification.find_each do |classification|
