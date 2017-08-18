@@ -8,7 +8,7 @@ module DocumentsConceptExtension
   included do
     has_many :classifications,
              class_name: 'Classification',
-             foreign_key: 'concept_id',
+             foreign_key: 'concept_origin',
              dependent: :destroy
 
     has_many :documents,
