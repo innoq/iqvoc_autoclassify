@@ -32,13 +32,15 @@
         <% end %>
     <% end %>
 
-    <%= content_tag(:div, render(:partial => "edit")) if current_user %>
-
-    <hr/>
-
     <div class="autoclassify">
         <%= paginate @classifications %>
     </div>
+
+    <hr/>
+
+    <%= content_tag(:div, render(:partial => "edit")) if current_user %>
+
+    <hr/>
 
     <div class="new_comment">
         <%= bootstrap_form_for @document.comments.build, :url => document_comments_path(:document_id => @document) do |f| %>
