@@ -35,7 +35,7 @@ module DocumentsHelper
 
     # list of labels by concept ID by labeling type
     label_index = classifications.each_with_object({}) { |classification, hsh|
-      concept_id = classification.concept_id
+      concept_id = classification.concept.id
       hsh[concept_id] = labelings[concept_id].each_with_object({}) { |ln, obj|
         # list of label IDs by labeling type
         if index[concept_id].include?(ln.target_id) # NB: relevant labels only
@@ -47,7 +47,7 @@ module DocumentsHelper
 
     return @augmented_classifications = classifications.each_with_object({}) { |classification, hsh|
       hsh[classification.id] = content_tag(:div, {class: 'details'}) do
-        label_index[classification.concept_id].map { |type, labels|
+        label_index[classification.concept.id].map { |type, labels|
           caption = type.constantize.model_name.human(count: 2)
           render_ulist(caption, labels) do |label|
             uri = label_path(id: label.origin)

@@ -60,6 +60,16 @@ class DocumentsTest < ActionDispatch::IntegrationTest
     visit document_path(id: @documents[1], lang: 'de')
 
     assert page.has_css? 'ol li', 3
+    assert page.has_no_selector?('pre.trace'), 'trace area should not be shown'
+  end
+
+  test 'list matching concepts for the respective document in trace mode' do
+    login 'administrator'
+    visit document_path(id: @documents[1], lang: 'de', trace: 1)
+
+    assert page.has_css? 'ol li', 3
+    binding.pry
+    assert page.has_selector?('pre.trace'), 'could not find trace area'
   end
 
   test 'reclassify document' do
