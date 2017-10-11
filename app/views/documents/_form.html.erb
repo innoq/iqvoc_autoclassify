@@ -7,7 +7,7 @@
 
     <hr/>
     <div class="well">
-      <%= f.submit t("txt.controllers.documents.new.classify_url") , :class => "btn btn-primary" %>
+      <%= f.button t("txt.controllers.documents.new.classify_url") , class: 'btn btn-primary', data: {disable_with: loading_indicator(t("txt.controllers.documents.new.classify_process"))} %>
     </div>
   </fieldset>
 <% end %>
@@ -20,7 +20,7 @@
     <%= f.text_area :content %>
 
     <div class="well">
-      <%= f.submit t("txt.controllers.documents.new.classify_text"), :class => "btn btn-primary" %>
+      <%= f.button t("txt.controllers.documents.new.classify_text"), class: 'btn btn-primary', data: {disable_with: loading_indicator(t("txt.controllers.documents.new.classify_process"))} %>
     </div>
   </fieldset>
 <% end %>

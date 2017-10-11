@@ -12,6 +12,7 @@ en:
         new:
           classify_url: classify url
           classify_text: classify text
+          classify_process: classifying...
         save:
           success: document created successfully
         create:

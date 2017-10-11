@@ -12,6 +12,7 @@ de:
         new:
           classify_url: URL klassifizieren
           classify_text: Text klassifizieren
+          classify_process: klassifiziere...
         save:
           success: Dokument erfolgreich angelegt
         create:
