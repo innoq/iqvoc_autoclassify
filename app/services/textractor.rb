@@ -7,7 +7,7 @@ require 'net/http'
 
 class Textractor
 
-  def self.from_uri(uri, timeout = 1.0)
+  def self.from_uri(uri, timeout = 2.0)
     raise InvalidUri, 'HTTP URL expected' unless uri =~ /^https?:\/\/[^\s]+$/
     title = nil
     content = nil
