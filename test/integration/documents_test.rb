@@ -68,7 +68,6 @@ class DocumentsTest < ActionDispatch::IntegrationTest
     visit document_path(id: @documents[1], lang: 'de', trace: 1)
 
     assert page.has_css? 'ol li', 3
-    binding.pry
     assert page.has_selector?('pre.trace'), 'could not find trace area'
   end
 
