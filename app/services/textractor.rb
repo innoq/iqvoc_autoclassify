@@ -3,10 +3,11 @@
 require 'tempfile'
 require 'readability'
 require 'pdf-reader'
+require 'net/http'
 
 class Textractor
 
-  def self.from_uri(uri, timeout = 0.5)
+  def self.from_uri(uri, timeout = 1.0)
     raise InvalidUri, 'HTTP URL expected' unless uri =~ /^https?:\/\/[^\s]+$/
     title = nil
     content = nil
