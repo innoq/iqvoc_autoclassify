@@ -45,6 +45,7 @@ class Documents::ExtractedController < DocumentsController
       respond_to do |format|
         format.html {
           if @document.persisted?
+            flash[:success] = I18n.t('txt.controllers.documents.save.success')
             redirect_to document_path(id: @document)
           else
             render :show

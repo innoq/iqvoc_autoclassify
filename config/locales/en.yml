@@ -14,7 +14,7 @@ en:
           classify_text: classify text
           classify_process: classifying...
         save:
-          success: document created successfully
+          success: document saved successfully
         create:
           invalid: either content or URL have to be provided
         update:

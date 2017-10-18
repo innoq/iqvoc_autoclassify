@@ -14,7 +14,7 @@ de:
           classify_text: Text klassifizieren
           classify_process: klassifiziere...
         save:
-          success: Dokument erfolgreich angelegt
+          success: Dokument erfolgreich gespeichert
         create:
           invalid: entweder URL oder Volltext müssen übermittelt werden
         update:
