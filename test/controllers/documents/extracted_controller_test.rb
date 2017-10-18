@@ -79,8 +79,6 @@ class Documents::ExtractedControllerTest < ActionController::TestCase
       u.role = 'administrator'
       u.active = true
     end
-
-    UserSession.create(@admin)
   end
 
   test 'classify html via uri' do
@@ -102,9 +100,13 @@ class Documents::ExtractedControllerTest < ActionController::TestCase
   end
 
   test 'classify and persist via uri' do
+    session = UserSession.create(@admin)
+
     assert_difference 'Document::Extracted.count' do
-      post :create, uri: @urls[:html], format: 'rdf', commit: '1', lang: 'de'
+      post :create, uri: @urls[:html], format: 'rdf', lang: 'de'
     end
+
+    session.destroy
   end
 
   # XXX: disabled due to inability to provoke timeouts
@@ -123,11 +125,15 @@ class Documents::ExtractedControllerTest < ActionController::TestCase
   end
 
   test 'follow redirects, classify html and persist via uri' do
+    session = UserSession.create(@admin)
+
     assert_difference 'Document::Extracted.count' do
       post :create, uri: @urls[:redirected], format: 'rdf', commit: '1', lang: 'de'
     end
     assert_not_nil assigns(:document)
     assert_response :success
     assert_equal 'application/rdf+xml', response.content_type
+
+    session.destroy
   end
 end

@@ -18,15 +18,25 @@ class Documents::PlainControllerTest < ActionController::TestCase
       u.role = 'administrator'
       u.active = true
     end
-
-    UserSession.create(@admin)
   end
 
-  test 'create document from raw content' do
+  test 'create and persist document from raw content' do
+    session = UserSession.create(@admin)
+
     assert_difference('Document::Plain.count') do
-      post :create, document: { content: 'lorem ipsum' }, lang: 'de', commit: '1'
+      post :create, document: { content: 'lorem ipsum' }, lang: 'de'
     end
 
     assert_redirected_to document_path(assigns(:document), lang: 'de')
+
+    session.destroy
+  end
+
+  test 'create document from raw content' do
+    assert_no_difference('Document::Plain.count') do
+      post :create, document: { content: 'lorem ipsum' }, lang: 'de'
+    end
+
+    assert_response 200
   end
 end
