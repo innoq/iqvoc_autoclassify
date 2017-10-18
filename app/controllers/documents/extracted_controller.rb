@@ -30,7 +30,7 @@ class Documents::ExtractedController < DocumentsController
 
   def create
     @document = Document::Extracted.new(uri: params[:uri])
-    @document.persist = false unless params[:commit] && current_user
+    @document.persist = false unless current_user
 
     render_errors and return if @document.invalid?
     @document.save if @document.persist?

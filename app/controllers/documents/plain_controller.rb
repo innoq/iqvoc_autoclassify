@@ -33,7 +33,7 @@ class Documents::PlainController < DocumentsController
       doc.title = title
       doc.content = content
     end
-    @document.persist = false unless params[:commit] && current_user
+    @document.persist = false unless current_user
 
     render_errors and return if @document.invalid?
 

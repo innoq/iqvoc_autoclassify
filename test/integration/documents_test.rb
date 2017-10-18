@@ -140,4 +140,31 @@ class DocumentsTest < ActionDispatch::IntegrationTest
     assert page.body.include? %{<sdc:result rdf:resource="http://www.example.com/de/documents/#{id}#result3"/>}
   end
 
+  test 'persist documents when logged in' do
+    documents_count = Document::Base.count
+
+    login 'administrator'
+    visit new_document_path(lang: 'de')
+    assert page.has_content? 'Neues Dokument'
+    fill_in 'Titel', with: 'Mein Titel'
+    fill_in 'Volltext', with: 'Foo Bar Baz'
+    click_button 'Text klassifizieren'
+
+    assert_equal Document::Base.count, documents_count+1 # one document than before
+    assert page.current_path.include? '/de/documents/'
+  end
+
+  test 'not persist documents when logged out' do
+    documents_count = Document::Base.count
+
+    visit new_document_path(lang: 'de')
+    assert page.has_content? 'Neues Dokument'
+    fill_in 'Titel', with: 'Mein Titel'
+    fill_in 'Volltext', with: 'Foo Bar Baz'
+    click_button 'Text klassifizieren'
+
+    assert_equal Document::Base.count, documents_count # same count as before
+    assert_equal page.current_path, '/de/autoclassify/plain.html'
+  end
+
 end
