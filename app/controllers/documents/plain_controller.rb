@@ -29,6 +29,8 @@ class Documents::PlainController < DocumentsController
       content = params[:content]
     end
 
+    render_errors and return if content.nil?
+
     @document = Document::Plain.new do |doc|
       doc.title = title
       doc.content = content
@@ -59,7 +61,9 @@ class Documents::PlainController < DocumentsController
   protected
 
   def render_errors
-    flash[:error] = t('txt.controllers.plain_documents.create.invalid')
+    @document = Document::Base.new unless @document
+
+    flash[:error] = t('txt.controllers.documents.create.invalid')
     respond_to do |format|
       format.html { render :new }
       format.any(:rdf, :ttl) { render text: flash[:error], status: 422 }
