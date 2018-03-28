@@ -12,7 +12,7 @@ Gem::Specification.new do |s|
   s.summary     = 'Automatic classification of documents based on iQvoc thesauri'
   s.description = 'Automatic classification of documents based on iQvoc thesauri'
 
-  s.add_dependency 'iqvoc', '>= 4.5.0', '~> 4.11'
+  s.add_dependency 'iqvoc', '>= 4.5.0', '~> 4.12'
   s.add_dependency 'iqvoc_skosxl', '~> 2.9.0'
   s.add_dependency 'iqvoc_inflectionals', '~> 2.9.0'
   s.add_dependency 'iqvoc_compound_forms', '~> 2.9.0'
@@ -21,7 +21,7 @@ Gem::Specification.new do |s|
   s.add_dependency 'pdf-reader', '~> 1.4.0'
   s.add_dependency 'workflow', '~> 1.0.0'
   s.add_dependency 'guess_html_encoding'
-  s.add_dependency 'nokogiri', '~> 1.7.2'
+  s.add_dependency 'nokogiri', '~> 1.8.2'
   s.add_dependency 'responders', '~> 2.0'
   s.add_dependency 'pragmatic_segmenter', '~> 0.3.7'
   s.add_dependency 'ffi', '~> 1.9.10'
