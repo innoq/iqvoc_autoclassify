@@ -24,6 +24,47 @@ class DocumentsController < ApplicationController
     @document = Document::Base.new
   end
 
+  def new_classification
+  end
+
+  def create_classification
+  end
+
+  def delete_classification
+    deleting_classification = Classification.find(params[:classification_id])
+    classifications = Classification.where("document_id = ? AND `rank` > ?", params[:id], deleting_classification.rank)
+    Classification.transaction do
+      deleting_classification.destroy
+      classifications.each do |c|
+        c.update rank: c.rank - 1
+      end
+    end
+    flash[:success] = I18n.t('txt.controllers.documents.classifications.delete_success')
+    redirect_to document_path(deleting_classification.document_id)
+  end
+
+  def promote_classification
+    promoting_classification = Classification.find(params[:classification_id])
+    demoting_classification = Classification.find_by(document_id: params[:id], rank: promoting_classification.rank - 1)
+    Classification.transaction do
+      promoting_classification.update rank: demoting_classification.rank
+      demoting_classification.update rank: demoting_classification.rank + 1
+    end
+    flash[:success] = I18n.t('txt.controllers.documents.classifications.promote_success')
+    redirect_to document_path(promoting_classification.document_id)
+  end
+
+  def demote_classification
+    demoting_classification = Classification.find(params[:classification_id])
+    promoting_classification = Classification.find_by(document_id: params[:id], rank: demoting_classification.rank + 1)
+    Classification.transaction do
+      promoting_classification.update rank: demoting_classification.rank
+      demoting_classification.update rank: demoting_classification.rank + 1
+    end
+    flash[:success] = I18n.t('txt.controllers.documents.classifications.demote_success')
+    redirect_to document_path(promoting_classification.document_id)
+  end
+
   def update
     if params[:reclassify]
       get_document
@@ -54,13 +95,13 @@ class DocumentsController < ApplicationController
   end
 
   protected
-
   def get_document
     @document = Document::Base.includes(:classifications)
                               .find_by!(id: params[:id])
 
     @classifications = @document.classifications
-                                .order('weighting DESC')
+                                .unscoped
+                                .order(:rank)
                                 .page(params[:page])
   end
 end

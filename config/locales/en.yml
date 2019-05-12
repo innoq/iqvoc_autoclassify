@@ -20,6 +20,8 @@ en:
         update:
           success: Document was successfully reclassified.
           invalid: missing reclassify flag
+        promote:
+          success: Classification was successfully promoted
       comments:
         save:
           success: comment created successfully

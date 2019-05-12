@@ -13,5 +13,14 @@ Rails.application.routes.draw do
     post 'autoclassify/plain' => 'documents/plain#create',
         :as => 'plain_documents',
         :commit => /.+/
+
+    scope 'documents/:id' do
+      get 'classifications/new' => 'documents#new_classification'
+      post 'classifications' => 'documents#create_classification'
+      delete 'classifications/:classification_id/delete' => 'documents#delete_classification', as: :delete_document_classification
+
+      put 'classifications/:classification_id/promote' => 'documents#promote_classification', as: :promote_document_classification
+      put 'classifications/:classification_id/demote' => 'documents#demote_classification', as: :demote_document_classification
+    end
   end
 end

@@ -20,6 +20,10 @@ de:
         update:
           success: Dokument wurde erfolgreich aktualisiert.
           invalid: Bestätigung wurde nicht angewählt.
+        classifications:
+          promote_success: Klassifikation wurde erfolgreich um einen Rang erhöht
+          demote_success: Klassifikation wurde erfolgreich um einen Rang erniedrigt
+          delete_success: Klassifikation wurde erfolgreich gelöscht
       comments:
         save:
           success: Kommentar erfolgreich übermittelt
