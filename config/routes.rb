@@ -15,8 +15,8 @@ Rails.application.routes.draw do
         :commit => /.+/
 
     scope 'documents/:id' do
-      get 'classifications/new' => 'documents#new_classification'
-      post 'classifications' => 'documents#create_classification'
+      get 'classifications/new' => 'documents#new_classification', as: :new_document_classification
+      post 'classifications' => 'documents#create_classification', as: :document_classifications
       delete 'classifications/:classification_id/delete' => 'documents#delete_classification', as: :delete_document_classification
 
       put 'classifications/:classification_id/promote' => 'documents#promote_classification', as: :promote_document_classification
