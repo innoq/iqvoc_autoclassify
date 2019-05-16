@@ -21,9 +21,10 @@ de:
           success: Dokument wurde erfolgreich aktualisiert.
           invalid: Bestätigung wurde nicht angewählt.
         classifications:
-          promote_success: Klassifikation wurde erfolgreich um einen Rang erhöht
-          demote_success: Klassifikation wurde erfolgreich um einen Rang erniedrigt
-          delete_success: Klassifikation wurde erfolgreich gelöscht
+          addition_success: Deskriptoren %{concepts} wurden erfolgreich hinzugefügt
+          promote_success: Deskriptor %{concept} wurde erfolgreich um einen Rang verbessert (von %{old_rank} auf %{new_rank})
+          demote_success: Deskriptor %{concept} wurde erfolgreich um einen Rang verschlechtert (von %{old_rank} auf %{new_rank})
+          delete_success: Deskriptor %{concept} wurde erfolgreich gelöscht
       comments:
         save:
           success: Kommentar erfolgreich übermittelt
