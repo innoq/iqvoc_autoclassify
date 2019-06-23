@@ -5,6 +5,8 @@ class Classification < ActiveRecord::Base
              foreign_key: 'concept_origin',
              primary_key: 'origin'
 
+  paginates_per 100
+
   def build_rdf(document, result)
     result.Sdc::link(IqRdf.build_uri(concept.origin)) if concept
     result.Dct::title(title) if title
