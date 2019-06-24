@@ -7,11 +7,11 @@ class Documents::PlainController < DocumentsController
   formats [:html, :ttl, :rdf]
   param :content, String, required: true, desc: 'Plain text to be classified.'
   example <<-DOC
-    curl -X POST --data "content=Abfallwirtschaft" http://umthes.innoq.com/de/autoclassify/plain.ttl
+    curl -X POST --data "content=Abfallwirtschaft" https://sns.uba.de/umthes/de/autoclassify/plain.ttl
     200
 
     # omitted namespace definitions
-    <http://umthes.innoq.com/de/autoclassify/plain> a sdc:Query;
+    <https://sns.uba.de/umthes/de/autoclassify/plain> a sdc:Query;
                                                     sdc:totalResults 1;
                                                     sdc:result search:result1.
     search:result1 a sdc:Result;

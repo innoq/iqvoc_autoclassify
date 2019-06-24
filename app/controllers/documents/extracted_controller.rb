@@ -14,7 +14,7 @@ class Documents::ExtractedController < DocumentsController
     200
 
     # omitted namespace definitions
-    <http://umthes.innoq.com/de/autoclassify/extract?uri=http%3A%2F%2Fwww.spiegel.de> a sdc:Query;
+    <https://sns.uba.de/umthes/de/autoclassify/extract?uri=http%3A%2F%2Fwww.spiegel.de> a sdc:Query;
                                                                                 sdc:totalResults 2;
                                                                                 sdc:result search:result1;
                                                                                 sdc:result search:result2.
