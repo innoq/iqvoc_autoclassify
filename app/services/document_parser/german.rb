@@ -21,11 +21,12 @@ module DocumentParser
       word = normalize_word(@current_token) if @current_token
       super
       # extract hyphenated components -- FIXME: this risks skewing weightings by adding duplicate terms
-      if word and word.length > 1 and word.include? '-'
-        word.split('-').reverse.each { |word| # NB: reverse avoids additional compound forms
-          @current_sentence.push(word) if validate(word) # ignore dashes, slashes etc.
-        }
-      end
+      # ppn: commented out because it blows up the results and also destroys label findings
+      # if word and word.length > 1 and word.include? '-'
+      #   word.split('-').reverse.each { |word| # NB: reverse avoids additional compound forms
+      #     @current_sentence.push(word) if validate(word) # ignore dashes, slashes etc.
+      #   }
+      # end
     end
 
     def normalize_sentence(_text)
