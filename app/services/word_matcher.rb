@@ -104,6 +104,7 @@ class WordMatcher
     @trace[:label_index] = label_seqs.deep_dup
     label_seqs = homographs(label_seqs)
     label_seqs = compound_forms(label_seqs)
+    label_seqs = remove_compound_part_duplicates(label_seqs)
     label_seqs = clean_up(label_seqs)
     @trace[:result_index] = label_seqs
 
@@ -223,6 +224,38 @@ class WordMatcher
     end
 
     label_seqs
+  end
+
+  # since we have way too many results and a lot of results are duplicates caused by the word word_combinations
+  # we sort out here the labels which are partially part of another
+  # starting from the last and therefore the most likely to be the most value label as it's the longest
+  def remove_compound_part_duplicates(label_seqs)
+    label_seqs.keys.each do |k|
+      hash = {}
+      label_seqs[k].each do |l|
+        hash[l] = find_compound_parts([l], [l]).flatten
+      end
+      result_hash = hash.deep_dup
+      hash.reverse_each do |hk, hv|
+        hash.delete(hk)
+        hash.reverse_each do |hk2, hv2|
+          result_hash.delete(hk2) if (hv2 & hv).any?
+        end
+      end
+      label_seqs[k] = result_hash.keys
+    end
+    label_seqs
+  end
+
+  def find_compound_parts(list, label_ids)
+    label_ids.each do |l|
+      compound_form = CompoundFrom::UMT::Base.find_by(domain_id: l)
+      return [] unless compound_form
+      compound_labels = compound_form.compound_form_contents.map {|cfc| cfc.label_id}
+      list << compound_labels
+      find_compound_parts(list, compound_labels)
+    end
+    list
   end
 
   # [Remove labels flagged w/ "Benennung ohne Textanalysefunktion"](https://github.com/innoq/iqvoc_autoclassify/issues/53)
