@@ -248,8 +248,11 @@ class WordMatcher
   end
 
   def find_compound_parts(list, label_ids)
+    compound_form_class = 'CompoundFrom::UMT::Base' # FIXME: use somthing like CompoundForm.base_class?
+    return [] unless Object.const_defined?(compound_form_class)
+
     label_ids.each do |l|
-      compound_form = CompoundFrom::UMT::Base.find_by(domain_id: l)
+      compound_form = compound_form_class.constantize.find_by(domain_id: l)
       return [] unless compound_form
       compound_labels = compound_form.compound_form_contents.map {|cfc| cfc.label_id}
       list << compound_labels

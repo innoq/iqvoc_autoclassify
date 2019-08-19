@@ -22,6 +22,7 @@ group :development, :test do
   gem 'spring'
   gem 'pry-rails'
   gem 'mysql2', '~> 0.4.0'
+  gem 'pg', '~> 0.21.0'
 end
 
 group :test do
