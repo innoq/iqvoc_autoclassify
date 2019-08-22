@@ -248,13 +248,8 @@ class WordMatcher
   end
 
   def find_compound_parts(list, label_ids)
-<<<<<<< HEAD
-    compound_form_class = 'CompoundFrom::UMT::Base' # FIXME: use somthing like CompoundForm.base_class?
-    return [] unless Object.const_defined?(compound_form_class)
-=======
     # FIXME: replace with Iqvoc::CompoundFrom.base_class?
     compound_form_class = Object.const_defined?('CompoundFrom::UMT::Base') ? 'CompoundFrom::UMT::Base' : 'CompoundForm::Base'
->>>>>>> fix some test cases
 
     label_ids.each do |l|
       compound_form = compound_form_class.constantize.find_by(domain_id: l)
