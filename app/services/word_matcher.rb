@@ -46,6 +46,14 @@ class WordMatcher
       @trace[:compound_index][key] = []
       @trace[:result_index][key] = []
 
+      # find exact matches first and skip pending analysis if an exact match found
+      full_sentence = _sentence.join(' ')
+      exact_matches = Inflectional::Base.where(value: full_sentence)
+      if exact_matches.any?
+        hash_seqs[key] = WordMatcher.normalize_word(full_sentence)
+        next # move to next full sentence
+      end
+
       sentence += word_combinations(sentence, 5) # find phrases that are not compound-forms
       # pp "SENTENCE: #{sentence.join(' | ')}"
 
