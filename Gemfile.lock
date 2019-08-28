@@ -1,6 +1,6 @@
 GIT
   remote: git://github.com/innoq/iqvoc.git
-  revision: 67a0198f80cd06489f2f4db1174e02221dff3bcb
+  revision: 98acf4537c5f980eeea48f67b8a846cb22601570
   branch: master
   specs:
     iqvoc (4.12.1)
@@ -24,7 +24,7 @@ GIT
       kaminari-bootstrap (~> 3.0.1)
       linkeddata (~> 1.1.2)
       maruku
-      nokogiri (~> 1.8.2)
+      nokogiri
       rails (>= 4.2.11, < 5.0)
       rails_autolink
       sass-rails (~> 5.0.0)
@@ -32,16 +32,16 @@ GIT
 
 GIT
   remote: git://github.com/innoq/iqvoc_compound_forms.git
-  revision: 939f01eb1761f37d779dac28378400ac3b2fe5c3
+  revision: 0a071d1de19362d45bdab36208bb4727d677393e
   branch: master
   specs:
     iqvoc_compound_forms (2.9.0)
-      iqvoc (~> 4.11, >= 4.5.0)
+      iqvoc (~> 4.12, >= 4.5.0)
       iqvoc_skosxl (~> 2.9.0)
 
 GIT
   remote: git://github.com/innoq/iqvoc_inflectionals.git
-  revision: 5776cd06d53e06fe7c737c720d1a2ecda01bf205
+  revision: aaafa3d05ebc070d4c76eb72636e068438e3c552
   branch: master
   specs:
     iqvoc_inflectionals (2.9.0)
@@ -50,7 +50,7 @@ GIT
 
 GIT
   remote: git://github.com/innoq/iqvoc_skosxl.git
-  revision: ca3b292628e4bed2da1d17fc96a6c4215ed74ce1
+  revision: b8f1d03c71e0b34995c4e173d867fc48819efce0
   branch: master
   specs:
     iqvoc_skosxl (2.9.1)
@@ -59,7 +59,7 @@ GIT
 GEM
   remote: https://rubygems.org/
   specs:
-    Ascii85 (1.0.2)
+    Ascii85 (1.0.3)
     actionmailer (4.2.11.1)
       actionpack (= 4.2.11.1)
       actionview (= 4.2.11.1)
@@ -107,7 +107,7 @@ GEM
       scrypt (>= 1.2, < 4.0)
     autoprefixer-rails (6.5.1.1)
       execjs
-    awesome_print (1.6.1)
+    awesome_print (1.8.0)
     bcp47 (0.3.3)
       i18n
     bootstrap-sass (3.4.1)
@@ -116,25 +116,27 @@ GEM
     bootstrap_form (2.2.0)
     builder (3.2.3)
     cancancan (2.3.0)
-    capybara (2.4.4)
-      mime-types (>= 1.16)
-      nokogiri (>= 1.3.3)
-      rack (>= 1.0.0)
-      rack-test (>= 0.5.4)
-      xpath (~> 2.0)
+    capybara (3.28.0)
+      addressable
+      mini_mime (>= 0.1.3)
+      nokogiri (~> 1.8)
+      rack (>= 1.6.0)
+      rack-test (>= 0.6.3)
+      regexp_parser (~> 1.5)
+      xpath (~> 3.2)
     carrierwave (1.3.1)
       activemodel (>= 4.0.0)
       activesupport (>= 4.0.0)
       mime-types (>= 1.16)
     cliver (0.3.2)
-    coderay (1.1.0)
+    coderay (1.1.2)
     concurrent-ruby (1.1.5)
     crass (1.0.4)
     database_cleaner (1.7.0)
     delayed_job (4.1.8)
       activesupport (>= 3.0, < 6.1)
-    delayed_job_active_record (4.1.3)
-      activerecord (>= 3.0, < 5.3)
+    delayed_job_active_record (4.1.4)
+      activerecord (>= 3.0, < 6.1)
       delayed_job (>= 3.0, < 5)
     ebnf (0.3.9)
       rdf (~> 1.1)
@@ -209,45 +211,42 @@ GEM
     mail (2.7.1)
       mini_mime (>= 0.1.1)
     maruku (0.7.3)
-    method_source (0.8.2)
+    method_source (0.9.2)
     mime-types (3.2.2)
       mime-types-data (~> 3.2015)
     mime-types-data (3.2019.0331)
     mini_mime (1.0.2)
-    mini_portile2 (2.3.0)
+    mini_portile2 (2.4.0)
     minitest (5.11.3)
     multi_json (1.13.1)
     multipart-post (2.1.1)
     mysql2 (0.4.10)
     net-http-persistent (2.9.4)
-    nokogiri (1.8.5)
-      mini_portile2 (~> 2.3.0)
-    nokogiri (1.8.5-java)
-    pdf-reader (1.4.0)
+    nokogiri (1.10.4)
+      mini_portile2 (~> 2.4.0)
+    nokogiri (1.10.4-java)
+    pdf-reader (1.4.1)
       Ascii85 (~> 1.0.0)
       afm (~> 0.2.1)
       hashery (~> 2.0)
       ruby-rc4
       ttfunk
     pg (0.21.0)
-    poltergeist (1.6.0)
-      capybara (~> 2.1)
+    poltergeist (1.18.1)
+      capybara (>= 2.1, < 4)
       cliver (~> 0.3.1)
-      multi_json (~> 1.0)
       websocket-driver (>= 0.2.0)
-    pragmatic_segmenter (0.3.7)
+    pragmatic_segmenter (0.3.22)
       unicode
-    pry (0.10.1)
+    pry (0.12.2)
       coderay (~> 1.1.0)
-      method_source (~> 0.8.1)
-      slop (~> 3.4)
-    pry (0.10.1-java)
+      method_source (~> 0.9.0)
+    pry (0.12.2-java)
       coderay (~> 1.1.0)
-      method_source (~> 0.8.1)
-      slop (~> 3.4)
+      method_source (~> 0.9.0)
       spoon (~> 0.0)
-    pry-rails (0.3.3)
-      pry (>= 0.9.10)
+    pry-rails (0.3.9)
+      pry (>= 0.10.4)
     public_suffix (3.1.1)
     rack (1.6.11)
     rack-test (0.6.3)
@@ -334,10 +333,12 @@ GEM
     rdf-xsd (1.1.5.1)
       rdf (~> 1.1, >= 1.1.9, < 1.99)
     ref (2.0.0)
+    regexp_parser (1.6.0)
     request_store (1.4.1)
       rack (>= 1.4)
-    responders (2.1.0)
-      railties (>= 4.2.0, < 5)
+    responders (2.4.1)
+      actionpack (>= 4.2.0, < 6.0)
+      railties (>= 4.2.0, < 6.0)
     ruby-rc4 (0.1.5)
     ruby-readability (0.7.0)
       guess_html_encoding (>= 0.0.4)
@@ -353,12 +354,10 @@ GEM
       sprockets (>= 2.8, < 4.0)
       sprockets-rails (>= 2.0, < 4.0)
       tilt (>= 1.1, < 3)
-    sassc (2.0.1)
+    sassc (2.2.0)
       ffi (~> 1.9)
-      rake
     scrypt (3.0.6)
       ffi-compiler (>= 1.0, < 2.0)
-    slop (3.6.0)
     sparql (1.1.9)
       builder (~> 3.2)
       ebnf (~> 0.3, >= 0.3.9)
@@ -370,9 +369,9 @@ GEM
     sparql-client (1.1.6.1)
       net-http-persistent (~> 2.9)
       rdf (~> 1.1, < 1.99)
-    spoon (0.0.4)
+    spoon (0.0.6)
       ffi
-    spring (1.3.1)
+    spring (2.1.0)
     sprockets (3.7.2)
       concurrent-ruby (~> 1.0)
       rack (> 1, < 3)
@@ -388,21 +387,21 @@ GEM
     thread_safe (0.3.6)
     thread_safe (0.3.6-java)
     tilt (2.0.9)
-    ttfunk (1.4.0)
+    ttfunk (1.5.1)
     tzinfo (1.2.5)
       thread_safe (~> 0.1)
     uglifier (4.1.20)
       execjs (>= 0.3.0, < 3)
-    unicode (0.4.4.2)
-    unicode (0.4.4.2-java)
-    websocket-driver (0.5.1)
+    unicode (0.4.4.4)
+    unicode (0.4.4.4-java)
+    websocket-driver (0.7.1)
       websocket-extensions (>= 0.1.0)
-    websocket-driver (0.5.1-java)
+    websocket-driver (0.7.1-java)
       websocket-extensions (>= 0.1.0)
-    websocket-extensions (0.1.1)
+    websocket-extensions (0.1.4)
     workflow (1.0.0)
-    xpath (2.0.0)
-      nokogiri (~> 1.3)
+    xpath (3.2.0)
+      nokogiri (~> 1.8)
 
 PLATFORMS
   java
@@ -419,7 +418,7 @@ DEPENDENCIES
   iqvoc_inflectionals (~> 2.9.0)!
   iqvoc_skosxl (~> 2.9.0)!
   mysql2 (~> 0.4.0)
-  nokogiri (~> 1.8.2)
+  nokogiri (~> 1.8)
   pdf-reader (~> 1.4.0)
   pg (~> 0.21.0)
   poltergeist
