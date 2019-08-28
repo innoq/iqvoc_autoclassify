@@ -58,18 +58,20 @@ class ParserGermanTest < ActiveSupport::TestCase
     assert_equal 'Gruß', doc.sentences[0][3]
   end
 
+  # this is a bit difficult if you search for negated phrases eg. nicht-motorisierter Verkehr
+  # you don't want to find motorisierter Verkehr
   test 'decompose hyphenated words' do
     text = 'deutsch-französisch'
     doc = DocumentParser::German.new text
 
     assert_equal 1, doc.sentences.length
-    assert_equal ['deutsch-französisch', 'französisch', 'deutsch'], doc.sentences[0]
+    assert_equal ['deutsch-französisch'], doc.sentences[0]
 
     text = 'saar-lor-lux'
     doc = DocumentParser::German.new text
 
     assert_equal 1, doc.sentences.length
-    assert_equal ['saar-lor-lux', 'lux', 'lor', 'saar'], doc.sentences[0]
+    assert_equal ['saar-lor-lux'], doc.sentences[0]
   end
 
   test 'abbreviation handling' do
