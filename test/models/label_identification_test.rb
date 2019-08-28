@@ -48,8 +48,7 @@ class LabelIdentificationTest < ActiveSupport::TestCase
 
     sentence = %w(Kinder Fenster Bäume Kinder Baum)
     labels = WordMatcher.new([sentence]).labels
-    assert_equal 5, labels.length
-    assert_equal 2, labels.find_all { |id| id == @label_ids['Baum'] }.length
+    assert_equal 3, labels.length # we exspect unique labels and no duplicates
 
     sentence = %w(Das Kind am Fenster sieht Bäume und Gras)
     assert_equal 3, WordMatcher.new([sentence]).labels.length
