@@ -3,7 +3,7 @@
 module DocumentParser
   class German < DocumentParser::Base
 
-    @@stop_words = ['und', 'oder']
+    @@stop_words = ['oder'] # e.g und/oder
 
     @@irrelevant_abbreviations = [
         'ca.', 'etc.', 'usw.', 'bzw.', 'vgl.', 'evtl.',
