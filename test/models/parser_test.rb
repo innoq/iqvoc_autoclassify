@@ -42,7 +42,7 @@ class ParserTest < ActiveSupport::TestCase
     doc = DocumentParser::Base.new text
 
     assert_equal 1, doc.sentences.length
-    assert_equal 5, doc.sentences[0].length
+    assert_equal 6, doc.sentences[0].length
 
     text = 'lorem ipsum-37-dolor sit amet.'
     doc = DocumentParser::Base.new text

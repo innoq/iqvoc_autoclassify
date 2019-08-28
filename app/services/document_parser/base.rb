@@ -67,7 +67,7 @@ module DocumentParser
     end
 
     def validate(word) # XXX: rename
-      word.length > 1 or word =~ /^[0-9A-Za-z]$/
+      word.length > 1 or word =~ /^[0-9A-Za-z\-]$/
     end
 
     def normalize_sentence(text)

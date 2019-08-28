@@ -4,8 +4,8 @@ class TokenNormalizer
   def self.do_it(_token)
     token = _token.to_s
     return token.
-        sub(/^[^A-Za-z0-9ÄÖÜäöüß\.]+/, '').
-        sub(/[^A-Za-z0-9ÄÖÜäöüß\.]+$/, '')
+        sub(/^[^A-Za-z0-9ÄÖÜäöüß\.\-]+/, '').
+        sub(/[^A-Za-z0-9ÄÖÜäöüß\.\-]+$/, '')
   end
 
 end

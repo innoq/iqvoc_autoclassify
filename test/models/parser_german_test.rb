@@ -45,8 +45,9 @@ class ParserGermanTest < ActiveSupport::TestCase
     doc = DocumentParser::German.new text
 
     assert_equal 1, doc.sentences.length
-    assert_equal 'Nord', doc.sentences[0][0]
-    assert_equal 'Südgefälle', doc.sentences[0][1]
+    assert_equal 'Nord-', doc.sentences[0][0]
+    assert_equal 'und', doc.sentences[0][1]
+    assert_equal 'Südgefälle', doc.sentences[0][2]
 
     text = 'solch überflüssige Äußerlichkeiten - Gruß!'
     doc = DocumentParser::German.new text
@@ -55,7 +56,8 @@ class ParserGermanTest < ActiveSupport::TestCase
     assert_equal 'solch', doc.sentences[0][0]
     assert_equal 'überflüssige', doc.sentences[0][1]
     assert_equal 'Äußerlichkeiten', doc.sentences[0][2]
-    assert_equal 'Gruß', doc.sentences[0][3]
+    assert_equal '-', doc.sentences[0][3]
+    assert_equal 'Gruß', doc.sentences[0][4]
   end
 
   # this is a bit difficult if you search for negated phrases eg. nicht-motorisierter Verkehr
@@ -110,23 +112,6 @@ class ParserGermanTest < ActiveSupport::TestCase
 
     assert_equal 2, doc.sentences[0].length
     assert_includes doc.sentences[0], 'Kohlenwasserstoff.'  # https://github.com/innoq/iqvoc_autoclassify/issues/50
-  end
-
-  test 'stop-word handling' do
-    text = 'er oder sie'
-    doc = DocumentParser::German.new text
-
-    assert_equal ['er', 'sie'], doc.sentences[0]
-
-    text = 'auf der Oder'
-    doc = DocumentParser::German.new text
-
-    assert_equal ['auf', 'der', 'Oder'], doc.sentences[0]
-
-    text = 'moderat Moder oderfoo' # "oderfoo" since there's no actual word starting with lowercase "oder"
-    doc = DocumentParser::German.new text
-
-    assert_equal ['moderat', 'Moder', 'oderfoo'], doc.sentences[0]
   end
 
   test 'do not discard potentially meaningful single-character tokens' do
