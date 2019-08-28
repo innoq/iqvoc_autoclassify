@@ -48,18 +48,18 @@ class DocumentsTest < ActionDispatch::IntegrationTest
   test 'list documents at index' do
     visit documents_path(lang: 'de')
 
-    assert page.has_css?('.documents-table .documents-table-item', count: 2)
-    assert page.has_css?('.documents-table-item-link', count: 2)
+    assert page.has_css? '.documents-table .documents-table-item', count: 2
+    assert page.has_css? '.documents-table-item-link', count: 2
 
     classifications = all('.documents-table-item-classifications')
-    assert_equal '0', classifications.first.text
-    assert_equal '3', classifications.last.text
+    assert_equal '3', classifications.first.text
+    assert_equal '0', classifications.last.text
   end
 
   test 'list matching concepts for the respective document' do
     visit document_path(id: @documents[1], lang: 'de')
 
-    assert page.has_css? 'ol li', 3
+    assert page.has_css? 'ol li', count: 3
     assert page.has_no_selector?('pre.trace'), 'trace area should not be shown'
   end
 
@@ -67,7 +67,7 @@ class DocumentsTest < ActionDispatch::IntegrationTest
     login 'administrator'
     visit document_path(id: @documents[1], lang: 'de', trace: 1)
 
-    assert page.has_css? 'ol li', 3
+    assert page.has_css? 'ol.trace > li', count: 3
     assert page.has_selector?('pre.trace'), 'could not find trace area'
   end
 

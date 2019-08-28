@@ -37,9 +37,6 @@ module DocumentParser
     private
 
     def preprocess(text)
-      text.gsub! "„", '"'
-      text.gsub! "“", '"'
-      text.gsub! "”", '"'
       text.gsub! "\r\n", "\n" # Adapt Windows-NL
       text.gsub! /(?<!\n)\n(?!\n)/, ' ' # Remove single NLs (or use PragmaticSegmenter::Segmenter w/ doc_type=pdf)
 

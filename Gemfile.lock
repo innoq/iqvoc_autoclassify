@@ -1,6 +1,6 @@
 GIT
   remote: git://github.com/innoq/iqvoc.git
-  revision: 98acf4537c5f980eeea48f67b8a846cb22601570
+  revision: 3034ff0830c0eccff0f14566ecaf20400abb4dc3
   branch: master
   specs:
     iqvoc (4.12.1)
@@ -41,7 +41,7 @@ GIT
 
 GIT
   remote: git://github.com/innoq/iqvoc_inflectionals.git
-  revision: aaafa3d05ebc070d4c76eb72636e068438e3c552
+  revision: e2b44327b3af48b2adc240728d097a96c89371c9
   branch: master
   specs:
     iqvoc_inflectionals (2.9.0)
@@ -50,7 +50,7 @@ GIT
 
 GIT
   remote: git://github.com/innoq/iqvoc_skosxl.git
-  revision: b8f1d03c71e0b34995c4e173d867fc48819efce0
+  revision: 7801bc2c98674b7866ddc6e143cc5709fd7ba40c
   branch: master
   specs:
     iqvoc_skosxl (2.9.1)
