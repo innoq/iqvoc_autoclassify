@@ -54,7 +54,7 @@ class WordMatcher
         next # move to next full sentence
       end
 
-      sentence += word_combinations(sentence, 5) # find phrases that are not compound-forms
+      sentence += phrase_recognition_variants(sentence, 10) # find phrases that are not compound-forms
       # pp "SENTENCE: #{sentence.join(' | ')}"
 
       # store phrases for later removal if a corresponding label exists
@@ -234,7 +234,7 @@ class WordMatcher
     label_seqs
   end
 
-  # since we have way too many results and a lot of results are duplicates caused by the word word_combinations
+  # since we have way too many results and a lot of results are duplicates caused by the phrase recognition variants,
   # we sort out here the labels which are partially part of another
   # starting from the last and therefore the most likely to be the most value label as it's the longest
   def remove_compound_part_duplicates(label_seqs)
@@ -281,7 +281,7 @@ class WordMatcher
     label_seqs
   end
 
-  def word_combinations(words, max_tupel_size=3)
+  def phrase_recognition_variants(words, max_tupel_size=3)
     res = []
     return res if max_tupel_size < 2
     (2..max_tupel_size).each do |max|
