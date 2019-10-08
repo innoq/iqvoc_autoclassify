@@ -47,29 +47,49 @@ class WordMatcher
       @trace[:compound_index][key] = []
       @trace[:result_index][key] = []
 
-      # find exact matches first and skip pending analysis if an exact match found
-      full_sentence = _sentence.join(' ')
-      exact_matches = Inflectional::Base.where(value: full_sentence)
-      if exact_matches.any?
-        hash_seqs[key] = WordMatcher.normalize_word(full_sentence)
-        next # move to next full sentence
-      end
-
-      sentence += phrase_recognition_variants(sentence, 10) # find phrases that are not compound-forms
+      sentence += phrase_recognition_variants(sentence, 5) # find phrases that are not compound-forms
       sentence = sanitize_variants(sentence)
       # pp "SENTENCE: #{sentence.join(' | ')}"
 
+      # sentence2 = []
+      # query = sentence.map {|w| "value ILIKE #{w}" }.join(" or ")
+      # binding.pry
+      # sentence2 = Inflectional::Base.where(query)
+      # binding.pry
+
+      sentence_words = sentence.reverse.map {|w| "'#{w.downcase}'"}
+      query = "SELECT value FROM inflectionals WHERE lower(value) IN (#{sentence_words.join(',')})"
+      sentence2 = ActiveRecord::Base.connection.execute(query).values.flatten.uniq.sort_by { |e| -e.length }.map {|w| w.downcase}
+
+      # sentence2 = []
+      # sentence.reverse.each_with_index do |word, idx|
+      #   inflectional = Inflectional::Base.where("value ILIKE ?", word)
+      #   sentence2 << word if inflectional.any?
+      # end
+
+      sentence3 = []
+      sentence2.reverse.each_with_index do |short_word, i|
+        contains = false
+        sentence2.reverse.slice(i + 1, sentence2.count).each do |long_word|
+          if long_word.include? short_word
+            contains = true
+          end
+        end
+
+        sentence3 << short_word unless contains
+      end
+
+
       # store phrases for later removal if a corresponding label exists
       @phrases[key] = {}
-      sentence.each do |word1|
+      sentence3.each do |word1|
         if (word1.include?(PHRASES_DELIM))
           @phrases[key][WordMatcher.normalize_word(word1).last()] = word1.split(PHRASES_DELIM).map { |word2| WordMatcher.normalize_word(word2).last() }
         else
           @trace[:token_index][key][TokenNormalizer.do_it(word1).to_s.mb_chars.downcase.to_s] = WordMatcher.normalize_word(word1)
         end
       end
-
-      hash_seqs[key] = sentence.map { |word| WordMatcher.normalize_word(word) }.flatten
+      hash_seqs[key] = sentence3.map { |word| WordMatcher.normalize_word(word) }.flatten
     }
 
     # determine inflectionals
@@ -114,7 +134,7 @@ class WordMatcher
     @trace[:label_index] = label_seqs.deep_dup
     label_seqs = homographs(label_seqs)
     label_seqs = compound_forms(label_seqs)
-    label_seqs = remove_compound_part_duplicates(label_seqs)
+    #label_seqs = remove_compound_part_duplicates(label_seqs)
     label_seqs = clean_up(label_seqs)
     @trace[:result_index] = label_seqs
 
