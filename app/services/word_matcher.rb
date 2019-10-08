@@ -4,6 +4,7 @@ class WordMatcher
 
   attr_reader :trace
 
+  IGNORE_CHARS = '.'
   PHRASES_DELIM = ' '
 
   def self.normalize_word(word1)
@@ -55,6 +56,7 @@ class WordMatcher
       end
 
       sentence += phrase_recognition_variants(sentence, 10) # find phrases that are not compound-forms
+      sentence = sanitize_variants(sentence)
       # pp "SENTENCE: #{sentence.join(' | ')}"
 
       # store phrases for later removal if a corresponding label exists
@@ -290,6 +292,21 @@ class WordMatcher
         tmp = words[ix, max]
         res << tmp.join(PHRASES_DELIM) if tmp.size == max
         ix+= 1
+      end
+    end
+
+    res
+  end
+
+  # add variants without IGNORE_CHARS (e.g. dots) to variants
+  # ["stand der technik."] => ["stand der technik.", "stand der technik"]
+  def sanitize_variants(variants)
+    res = []
+    variants.each do |variant|
+      res << variant
+      if variant.include? IGNORE_CHARS
+        trimmed_variant = variant.tr(IGNORE_CHARS, '') # TODO: use TokenNormalizer instead?
+        res << trimmed_variant
       end
     end
 
