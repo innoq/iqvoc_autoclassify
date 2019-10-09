@@ -41,15 +41,6 @@ class CompoundLabelIdentificationTest < ActiveSupport::TestCase
       -
         value: Weltraumfrachtverkehrspolizistenpilot
         components: [Verkehrspolizist, Weltraumfrachtpilot]
-      -
-        value: Monetäre Bewertung
-      -
-        value: monetär
-      -
-        value: Bewertung
-      -
-        value: Monetäre Bewertung von Umweltschäden
-        components: [Bewertung, monetär]
     EOF
     @label_ids = data[:labels]
     @label_ids.each { |term, label| @label_ids[term] = label.id }
@@ -144,17 +135,10 @@ class CompoundLabelIdentificationTest < ActiveSupport::TestCase
   end
 
   # Should find only exact matches without components and other concept/label matches
-  # Sentence: [Monetäre Bewertung von Umweltschäden]
-  # Labels: [Monetäre Bewertung von Umweltschäden] without compontents [Bewertung, monetär]
-  # or label Monetäre Bewertung
   test 'exact labels matches' do
     sentence = %w(Weltraumfrachtverkehrspolizistenpilot)
     labels = WordMatcher.new([sentence]).labels
     assert_equal 1, labels.length
     assert_equal [@label_ids['Weltraumfrachtverkehrspolizistenpilot']], labels
-
-    sentence = %w(Monetäre Bewertung von Umweltschäden)
-    labels = WordMatcher.new([sentence]).labels
-    assert_equal [@label_ids['Monetäre Bewertung von Umweltschäden']], labels
   end
 end

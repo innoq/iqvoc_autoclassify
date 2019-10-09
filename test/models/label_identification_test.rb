@@ -25,8 +25,6 @@ class LabelIdentificationTest < ActiveSupport::TestCase
       -
         value: Kuchen
         auto_classify: false
-      -
-        value: Fuß- und Radverkehr
     EOF
     @label_ids = data[:labels]
     @label_ids.each { |term, label| @label_ids[term] = label.id }
@@ -63,12 +61,5 @@ class LabelIdentificationTest < ActiveSupport::TestCase
   test 'unwanted labels' do
     sentence = %w(Kinder Fenster Bäume Kuchen)
     assert_equal 3, WordMatcher.new([sentence]).labels.length
-  end
-
-  test 'exact labels matches' do
-    # respects hyphens and keep stopword "und"
-    sentence = %w(Fuß- und Radverkehr)
-    labels = WordMatcher.new([sentence]).labels
-    assert_equal [@label_ids['Fuß- und Radverkehr']], labels
   end
 end

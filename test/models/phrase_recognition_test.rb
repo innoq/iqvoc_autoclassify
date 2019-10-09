@@ -13,9 +13,12 @@ class PhraseRecognitionTest < ActiveSupport::TestCase
       -
         value: Monetäre Bewertung
       -
+        value: monetär
+      -
         value: Bewertung
       -
         value: Monetäre Bewertung von Umweltschäden
+        components: [Bewertung, monetär]
     EOF
     @label_ids = data[:labels]
     @label_ids.each { |term, label| @label_ids[term] = label.id }
@@ -23,12 +26,24 @@ class PhraseRecognitionTest < ActiveSupport::TestCase
 
   test 'exact labels matches' do
     # respects hyphens and keep stopword "und"
-    sentence = %w(Fuß- und Radverkehr)
+    sentence = %w(Da ist der Fuß- und Radverkehr von heute)
     labels = WordMatcher.new([sentence]).labels
+    assert_equal 1, labels.length
     assert labels.include? @label_ids['Fuß- und Radverkehr']
   end
 
- test 'prefer longer labels matches' do
+  test 'reject components on exact label matches' do
+    sentence = %w(Hier ist die Monetäre Bewertung von Umweltschäden)
+    labels = WordMatcher.new([sentence]).labels
+
+    # should find only exact matches and reject components ("Bewetung" and "monetär")
+    assert labels.include? @label_ids['Monetäre Bewertung von Umweltschäden']
+    assert labels.exclude? @label_ids['Bewertung']
+    assert labels.exclude? @label_ids['monetär']
+
+  end
+
+ test 'prefer longer exact labels matches' do
     sentence = %w(Die Monetäre Bewertung der Umweltschäden ist mein Hobby.)
     labels = WordMatcher.new([sentence]).labels
     assert_equal 1, labels.length
