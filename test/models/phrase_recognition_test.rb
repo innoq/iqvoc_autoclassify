@@ -19,6 +19,10 @@ class PhraseRecognitionTest < ActiveSupport::TestCase
       -
         value: Monetäre Bewertung von Umweltschäden
         components: [Bewertung, monetär]
+      -
+        value: Abbau von natürlichen Ressourcen
+      -
+        value: natürlichen Ressourcen
     EOF
     @label_ids = data[:labels]
     @label_ids.each { |term, label| @label_ids[term] = label.id }
@@ -54,5 +58,12 @@ class PhraseRecognitionTest < ActiveSupport::TestCase
     labels = WordMatcher.new([sentence]).labels
     assert_equal 1, labels.length
     assert labels.include? @label_ids['Monetäre Bewertung von Umweltschäden']
+    assert labels.exclude? @label_ids['Monetäre Bewertung']
+
+    sentence = %w(Der Abbau von natürlichen Ressourcen ist nicht gut)
+    labels = WordMatcher.new([sentence]).labels
+    assert_equal 1, labels.length
+    assert labels.include? @label_ids['Abbau von natürlichen Ressourcen']
+    assert labels.exclude? @label_ids['natürlichen Ressourcen']
   end
 end
