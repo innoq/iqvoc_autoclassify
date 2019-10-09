@@ -47,7 +47,7 @@ class WordMatcher
       @trace[:compound_index][key] = []
       @trace[:result_index][key] = []
 
-      sentence += phrase_recognition_variants(sentence, 5) # find phrases that are not compound-forms
+      sentence += phrase_recognition_variants(sentence, 10) # find phrases that are not compound-forms
       sentence = add_non_dotted_variants(sentence)
       sentence = find_existing_inflectionals(sentence)
       sentence = remove_duplicate_word_partials(sentence)
