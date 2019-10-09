@@ -48,48 +48,21 @@ class WordMatcher
       @trace[:result_index][key] = []
 
       sentence += phrase_recognition_variants(sentence, 5) # find phrases that are not compound-forms
-      sentence = sanitize_variants(sentence)
+      sentence = add_non_dotted_variants(sentence)
+      sentence = find_existing_inflectionals(sentence)
+      sentence = remove_duplicate_word_partials(sentence)
       # pp "SENTENCE: #{sentence.join(' | ')}"
-
-      # sentence2 = []
-      # query = sentence.map {|w| "value ILIKE #{w}" }.join(" or ")
-      # binding.pry
-      # sentence2 = Inflectional::Base.where(query)
-      # binding.pry
-
-      sentence_words = sentence.reverse.map { |w| "'#{w}'" }
-      query = "SELECT value FROM #{Inflectional::Base.table_name} WHERE LOWER(value) IN (#{sentence_words.join(',')})"
-      sentence2 = ActiveRecord::Base.connection.execute(query).values.flatten.uniq.sort_by { |e| -e.length }.map {|w| w.downcase}
-
-      # sentence2 = []
-      # sentence.reverse.each_with_index do |word, idx|
-      #   inflectional = Inflectional::Base.where("value ILIKE ?", word)
-      #   sentence2 << word if inflectional.any?
-      # end
-
-      sentence3 = []
-      sentence2.reverse.each_with_index do |short_word, i|
-        contains = false
-        sentence2.reverse.slice(i + 1, sentence2.count).each do |long_word|
-          if long_word.include? short_word
-            contains = true
-          end
-        end
-
-        sentence3 << short_word unless contains
-      end
-
 
       # store phrases for later removal if a corresponding label exists
       @phrases[key] = {}
-      sentence3.each do |word1|
+      sentence.each do |word1|
         if (word1.include?(PHRASES_DELIM))
           @phrases[key][WordMatcher.normalize_word(word1).last()] = word1.split(PHRASES_DELIM).map { |word2| WordMatcher.normalize_word(word2).last() }
         else
           @trace[:token_index][key][TokenNormalizer.do_it(word1).to_s.mb_chars.downcase.to_s] = WordMatcher.normalize_word(word1)
         end
       end
-      hash_seqs[key] = sentence3.map { |word| WordMatcher.normalize_word(word) }.flatten
+      hash_seqs[key] = sentence.map { |word| WordMatcher.normalize_word(word) }.flatten
     }
 
     # determine inflectionals
@@ -134,8 +107,8 @@ class WordMatcher
     @trace[:label_index] = label_seqs.deep_dup
     label_seqs = homographs(label_seqs)
     label_seqs = compound_forms(label_seqs)
-    #label_seqs = remove_compound_part_duplicates(label_seqs)
-    label_seqs = clean_up(label_seqs)
+    # label_seqs = remove_compound_part_duplicates(label_seqs)
+    label_seqs = remove_autoclassify_disabled_label_seq(label_seqs)
     @trace[:result_index] = label_seqs
 
     label_seqs.values.flatten
@@ -292,7 +265,7 @@ class WordMatcher
   end
 
   # [Remove labels flagged w/ "Benennung ohne Textanalysefunktion"](https://github.com/innoq/iqvoc_autoclassify/issues/53)
-  def clean_up(_label_seqs, level=0)
+  def remove_autoclassify_disabled_label_seq(_label_seqs, level=0)
     label_seqs = {}
 
     found = (Iqvoc::XLLabel.base_class.where(auto_classify: true, id: _label_seqs.values.flatten.uniq)).map(&:id)
@@ -320,7 +293,7 @@ class WordMatcher
 
   # add variants without IGNORE_CHARS (e.g. dots) to variants
   # ["stand der technik."] => ["stand der technik.", "stand der technik"]
-  def sanitize_variants(variants)
+  def add_non_dotted_variants(variants)
     res = []
     variants.each do |variant|
       res << variant
@@ -331,6 +304,33 @@ class WordMatcher
     end
 
     res
+  end
+
+  # rejects word which does not match to any inflectional
+  # ["Monetäre Bewertung von Umweltschäden", "Bewertung von"] => ["Monetäre Bewertung von Umweltschäden"]
+  def find_existing_inflectionals(variants)
+    sql_escaped_words = variants.reverse.map { |w| "'#{w}'" }
+    query = "SELECT LOWER(value) FROM #{Inflectional::Base.table_name} WHERE LOWER(value) IN (#{sql_escaped_words.join(',')})"
+
+    ActiveRecord::Base.connection.execute(query).values.flatten.uniq.sort_by { |e| -e.length }
+  end
+
+  # rejects shorter duplicate inline word partials
+  # ["Monetäre Bewertung von Umweltschäden", "Monetäre Bewertung"] => ["Monetäre Bewertung von Umweltschäden"]
+  def remove_duplicate_word_partials(variants)
+    result = []
+    variants.reverse.each_with_index do |short_word, i|
+      contains = false
+      variants.reverse.slice(i + 1, variants.count).each do |long_word|
+        if long_word.include? short_word
+          contains = true
+        end
+      end
+
+      result << short_word unless contains
+    end
+
+    result
   end
 
 end
