@@ -322,7 +322,8 @@ class WordMatcher
     variants.reverse.each_with_index do |short_word, i|
       contains = false
       variants.reverse.slice(i + 1, variants.count).each do |long_word|
-        if long_word.include? short_word
+        # only remove phrases containing multiple word
+        if long_word.include?(short_word) && long_word.include?(' ')
           contains = true
         end
       end
