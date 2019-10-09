@@ -101,7 +101,7 @@ class WordMatcher
       @trace[:token_index][key].reject! { |_, tokens| !(tokens & label_index.keys).empty? }
       @trace[:token_index][key] = @trace[:token_index][key].keys
 
-      label_seqs[key] = label_hsh_idx_2.values.flatten.compact
+      label_seqs[key] = label_hsh_idx_2.values.flatten.compact.uniq
     end
 
     @trace[:label_index] = label_seqs.deep_dup
