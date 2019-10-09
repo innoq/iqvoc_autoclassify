@@ -298,7 +298,7 @@ class WordMatcher
     variants.each do |variant|
       res << variant
       if variant.include? IGNORE_CHARS
-        trimmed_variant = variant.tr(IGNORE_CHARS, '') # TODO: use TokenNormalizer instead?
+        trimmed_variant = variant.chomp(IGNORE_CHARS) # TODO: use TokenNormalizer instead?
         res << trimmed_variant
       end
     end
