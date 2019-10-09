@@ -57,7 +57,7 @@ class WordMatcher
       # sentence2 = Inflectional::Base.where(query)
       # binding.pry
 
-      sentence_words = sentence.reverse.map {|w| "'#{w.downcase}'"}
+      sentence_words = sentence.reverse.map { |w| "'#{w}'" }
       query = "SELECT value FROM #{Inflectional::Base.table_name} WHERE LOWER(value) IN (#{sentence_words.join(',')})"
       sentence2 = ActiveRecord::Base.connection.execute(query).values.flatten.uniq.sort_by { |e| -e.length }.map {|w| w.downcase}
 
