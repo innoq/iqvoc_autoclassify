@@ -63,7 +63,7 @@ module DocumentsHelper
     label_ids = trace.map { |_, v| v.values }.flatten.uniq
 
     labels = Iqvoc::XLLabel.base_class.# XXX: database queries don't belong into helpers!!
-    where(id: label_ids, language: I18n.locale).
+    where(id: label_ids).
         select([:id, :origin, :value, :language])
     # labels by ID
     labels = labels.each_with_object({}) { |label, hsh| hsh[label.id] = label }
@@ -97,6 +97,7 @@ module DocumentsHelper
       if trace.key?('result_index') && !trace['result_index'][sentence_key].empty?
         segment << "Labels (2):"
         segment << trace['result_index'][sentence_key].map { |label_id|
+          begin
           label = labels[label_id]
           #pp "LABEL: #{label_id} -> #{label}"
 
@@ -148,6 +149,9 @@ module DocumentsHelper
             %Q(<span class="#{classes.join ' '}">#{h label}</span>) +
                 %Q(<div class="details">#{details.join("\n")}</div>)
           end
+        rescue NoMethodError
+          binding.pry
+        end
         }.compact
         segment << "\n\n"
       end
