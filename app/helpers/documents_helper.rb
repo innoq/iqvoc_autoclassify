@@ -97,7 +97,6 @@ module DocumentsHelper
       if trace.key?('result_index') && !trace['result_index'][sentence_key].empty?
         segment << "Labels (2):"
         segment << trace['result_index'][sentence_key].map { |label_id|
-          begin
           label = labels[label_id]
           #pp "LABEL: #{label_id} -> #{label}"
 
@@ -149,9 +148,6 @@ module DocumentsHelper
             %Q(<span class="#{classes.join ' '}">#{h label}</span>) +
                 %Q(<div class="details">#{details.join("\n")}</div>)
           end
-        rescue NoMethodError
-          binding.pry
-        end
         }.compact
         segment << "\n\n"
       end
