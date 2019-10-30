@@ -70,15 +70,17 @@ class Documents::PlainController < DocumentsController
         }
         format.any(:rdf, :ttl, :nt) { render :show }
         format.json {
+          # TODO: render using jbuilder?
           render json: {
             "url": request.original_url,
             "total_results": @document.classifications.length,
             "results":
               @document.classifications
               .select { |classification| classification.concept }
-              .map {|c|
-                {"link": "#{request.original_url.split('autoclassify')[0]}#{c.concept_origin}",
-                "title": c.title
+              .map { |c|
+                {
+                  "title": c.title
+                  "link": rdf_url(id: c.concept_origin, lang: nil, only_path: false, format: nil),
                 }
               }
           }.to_json
