@@ -79,8 +79,8 @@ class Documents::PlainController < DocumentsController
               .select { |classification| classification.concept }
               .map { |c|
                 {
-                  "title": c.title
-                  "link": rdf_url(id: c.concept_origin, lang: nil, only_path: false, format: nil),
+                  "title": c.title,
+                  "link": rdf_url(id: c.concept_origin, lang: nil, only_path: false, format: nil)
                 }
               }
           }.to_json
