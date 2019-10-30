@@ -68,7 +68,7 @@ class Documents::PlainController < DocumentsController
             render :show
           end
         }
-        format.any(:rdf, :ttl) { render :show }
+        format.any(:rdf, :ttl, :nt) { render :show }
         format.json {
           render json: {
             "url": request.original_url,
