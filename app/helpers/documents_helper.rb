@@ -120,7 +120,7 @@ module DocumentsHelper
             if trace['compound_index'][sentence_key].include? label_id
               classes << 'compounds'
               caption = "#{CompoundForm::Base.model_name.human(count: 1)}"
-              compound_labels = CompoundForm::Base.where(domain_id: label_id).first().compound_form_contents..map {|cfc| cfc.label } # XXX: database queries don't belong into helpers!!
+              compound_labels = CompoundForm::Base.where(domain_id: label_id).first().compound_form_contents.map {|cfc| cfc.label } # XXX: database queries don't belong into helpers!!
               details << render_olist(caption, compound_labels.uniq) do |id| # TODO: i18n
                 uri = label_path(id: id.origin)
                 link_to(id.value, uri)
