@@ -25,9 +25,23 @@ class DocumentsController < ApplicationController
   end
 
   def new_classification
+    get_document
   end
 
   def create_classification
+    get_document
+    adding_classifications = params[:concepts].split(",") - @document.classifications.map {|c| c.concept_origin}
+    concept_pref_labels = []
+    Classification.transaction do
+      @document.update manual_update: DateTime.now
+      adding_classifications.each.with_index(@document.classifications.size + 1) do |c, r|
+        concept = Iqvoc::Concept.base_class.published.find_by(origin: c)
+        concept_pref_labels << concept.pref_label
+        Classification.find_or_create_by(document_id: params[:id], title: concept.pref_label,  concept_origin: c, weighting: 0, rank: r)
+      end
+    end
+    flash[:success] = I18n.t('txt.controllers.documents.classifications.addition_success', concepts: concept_pref_labels.join(', '))
+    redirect_to document_path(params[:id])
   end
 
   def delete_classification

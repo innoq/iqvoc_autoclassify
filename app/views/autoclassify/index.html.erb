@@ -14,7 +14,7 @@
     <%= f.label :search_text, t("txt.views.autoclassify.text_area_field") %>
     <%= f.text_area :search_text, hide_label: true, value: params[:search_text] || "", rows: 5, placeholder: t("txt.views.autoclassify.hint_analyze_text") %>
     <%= f.submit t("txt.views.autoclassify.analyze_text"), class: 'btn btn-primary' %>
-    <%= link_to t("txt.views.autoclassify.reset_search"), autoclassify_path, class: 'btn btn-default' %>
+    <%= link_to t("txt.views.autoclassify.reset_search"), autoclassify_path, class: 'btn' %>
   </div>
 <% end %>
 

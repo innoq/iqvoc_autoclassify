@@ -30,11 +30,16 @@ de:
           success: Kommentar erfolgreich übermittelt
     views:
       document:
-        new: Neues Dokument
-        reclassify: Klassifizierung neu berechnen
-        index: Übersicht
-        response_limit_exceeded: Zeitüberschreitung bei Bearbeitung der Anfrage
+        add_new_descriptors: Neue Deskriptoren hinzufügen
         comment: Kommentar hinterlassen
+        index: Übersicht
+        new_classifications_for: Neue Deskriptoren für
+        new: Neues Dokument
+        places_of_discovery: Fundstellen
+        reclassify: Klassifizierung neu berechnen
+        response_limit_exceeded: Zeitüberschreitung bei Bearbeitung der Anfrage
+        show_detailed_analysis: Detaillierte Analyse einblenden
+        weighting: Gewichtung
       autoclassify:
         thesaurus_explanation: Der Thesaurus dient als Dokumentationssprache zum Indexieren, Speichern und Finden von Dokumenten. Die Relationen ermöglichen es, bei der Indexierung und Recherche passende Benennungen für gesuchte Begriffe zu finden. Bei der Suche können Thesauri durch die automatische Erweiterung der Suchanfrage auf Synonyme und Unterbegriffe hilfreich sein. (Wikipedia)
         text_area_field: Suchtext

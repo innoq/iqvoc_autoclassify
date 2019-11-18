@@ -3,6 +3,7 @@
     <%= hidden_field_tag :reclassify, "1" %>
   </div>
   <div class="actions">
+    <%= link_to t("txt.views.document.show_detailed_analysis"), document_path(id: @document.id, trace: true), class: 'btn btn-info' unless @trace %>
     <%= f.submit t("txt.views.document.reclassify"), :class => 'btn btn-warning' %>
     <% if can? :use, :administration %>
       <%= link_to  t("txt.common.delete"), document_path(@document), method: :delete, data: { confirm: t("txt.controllers.documents.index.delete_confirm") }, class: 'btn btn-danger' %>
