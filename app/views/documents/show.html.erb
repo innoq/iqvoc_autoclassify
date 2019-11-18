@@ -52,7 +52,7 @@
               <% if classification.rank == @document.classifications.size %>
                 <span class="document-show-glyphicon-no-button"></span>
               <% end %>
-              <%= link_to("<span class='glyphicon glyphicon-remove'></span>".html_safe, delete_document_classification_path(@document.id, classification.id), method: :delete, class: "document-show-glyphicon-button") %>
+              <%= link_to("<span class='glyphicon glyphicon-remove'></span>".html_safe, document_classification_path(@document.id, classification.id), method: :delete, class: "document-show-glyphicon-button") %>
             <% end %>
           </td>
         </tr>
