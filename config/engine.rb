@@ -1,5 +1,8 @@
 require 'rails'
 
+# An engine doesn't require it's own dependencies automatically.
+require 'responders'
+
 module Iqvoc
   module AutoClassify
 
