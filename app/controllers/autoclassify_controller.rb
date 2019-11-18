@@ -8,6 +8,7 @@ class AutoclassifyController < ApplicationController
     @documents =
       if params[:search_text]
         documents = Document::Base.all
+          .where("uri LIKE ?", '%umweltbundesamt.de%')
           .joins(:classifications)
           .where("classifications.concept_origin IN (?)", @classification_origins)
           .group(:id)
