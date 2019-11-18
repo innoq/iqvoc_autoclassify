@@ -35,6 +35,16 @@ de:
         index: Übersicht
         response_limit_exceeded: Zeitüberschreitung bei Bearbeitung der Anfrage
         comment: Kommentar hinterlassen
+      autoclassify:
+        thesaurus_explanation: Der Thesaurus dient als Dokumentationssprache zum Indexieren, Speichern und Finden von Dokumenten. Die Relationen ermöglichen es, bei der Indexierung und Recherche passende Benennungen für gesuchte Begriffe zu finden. Bei der Suche können Thesauri durch die automatische Erweiterung der Suchanfrage auf Synonyme und Unterbegriffe hilfreich sein. (Wikipedia)
+        text_area_field: Suchtext
+        hint_analyze_text: ""
+        analyze_text: Mit Deskriptoren suchen
+        reset_search: Textfeld leeren
+        found_documents: "Die folgenden Deskriptoren wurden im Text gefunden:"
+        no_found_documents: "Leider konnten keine Deskriptoren im Text gefunden werden"
+        concepts: Deskriptoren
+        matching_concepts: Übereinstimmende Deskriptoren
     textractor:
       http_error: HTTP-Fehler
       response_limit_exceeded: Zeitüberschreitung bei Bearbeitung der Anfrage

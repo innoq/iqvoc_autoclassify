@@ -1,0 +1,71 @@
+<%= page_header :title => 'Thesaurus' %>
+
+<div class="row">
+  <div class="col-sm-8">
+    <%= t "txt.views.autoclassify.thesaurus_explanation" %>
+  </div>
+  <div class="col-sm-4">
+    <%= image_tag 'thesaurus_fox.png', class: "img-responsive thesaurus-fox" %>
+  </div>
+</div>
+
+<%= bootstrap_form_tag :url => autoclassify_path, :html => { :class => 'document-form' }, method: :get do |f| %>
+  <div class="well">
+    <%= f.label :search_text, t("txt.views.autoclassify.text_area_field") %>
+    <%= f.text_area :search_text, hide_label: true, value: params[:search_text] || "", rows: 5, placeholder: t("txt.views.autoclassify.hint_analyze_text") %>
+    <%= f.submit t("txt.views.autoclassify.analyze_text"), class: 'btn btn-primary' %>
+    <%= link_to t("txt.views.autoclassify.reset_search"), autoclassify_path, class: 'btn btn-default' %>
+  </div>
+<% end %>
+
+<% if params[:search_text] %>
+  <div>
+    <% if @classifications.any? %>
+      <%= t "txt.views.autoclassify.found_documents" %>
+      <div class="well">
+        <%= @classifications.map {|c| "<span class='glyphicon glyphicon-tag' aria-hidden='true'></span> #{link_to c.title, concept_path(c.concept_origin), target: :_blank}"}.join(" ").html_safe %>
+      </div>
+    <% else %>
+      <div class="well text-danger">
+        <%= t "txt.views.autoclassify.no_found_documents" %>
+      </div>
+    <% end %>
+  </div>
+
+  <table class="table documents-table">
+    <thead>
+      <tr>
+        <th><%= Document::Base.human_attribute_name(:title) %></th>
+        <th><%= t "txt.views.autoclassify.concepts" %></th>
+        <% if params[:search_text] %>
+          <th><%= t "txt.views.autoclassify.matching_concepts" %></th>
+        <% end %>
+      </tr>
+    </thead>
+    <tbody>
+      <% @documents.each do |doc| %>
+        <tr class="documents-table-item">
+          <td>
+            <%= link_to doc.title, doc.uri,
+              class: 'documents-table-item-link', target: :_blank %> <%= link_to "<span class='glyphicon glyphicon-search' aria-hidden='true'></span>".html_safe, document_path(:id => doc.id) %>
+            <div>
+              <% if params[:search_text] %>
+                <%= doc.overlapping.first(5).map {|c| "<span class='glyphicon glyphicon-tag' aria-hidden='true'></span> #{c.title}"}.join(" ").html_safe %>
+              <% else %>
+                <%= doc.classifications.first(5).map {|c| "<span class='glyphicon glyphicon-tag' aria-hidden='true'></span> #{link_to c.title, concept_path(c.concept_origin), target: :_blank}"}.join(" ").html_safe %>
+              <% end %>
+            </div>
+          </td>
+          <td class="documents-table-item-classifications">
+            <%= doc.classifications.length %>
+          </td>
+          <% if params[:search_text] %>
+            <td>
+              <%= doc.overlapping.length %>
+            </td>
+          <% end %>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+<% end %>

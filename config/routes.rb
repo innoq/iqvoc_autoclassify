@@ -4,6 +4,8 @@ Rails.application.routes.draw do
       resources :comments
     end
 
+    get 'autoclassify' => 'autoclassify#index'
+
     get  'autoclassify/extract' => 'documents/extracted#create'
     post 'autoclassify/extract' => 'documents/extracted#create',
         :as => 'extracted_documents',
