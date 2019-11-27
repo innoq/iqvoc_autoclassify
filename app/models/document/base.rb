@@ -82,14 +82,17 @@ class Document::Base < ActiveRecord::Base
 
     classifications.destroy_all
     method = persist? ? :create : :build
-    concepts.each do |concept, weighting|
+    concepts.sort_by {|_k, v| -v[0]}.each.with_index(1) do |concept_with_weighting, index|
+      concept = concept_with_weighting.first
+      weighting = concept_with_weighting.last
       classifications.send(method,
         concept_origin: concept.origin,
-        weighting: weighting,
+        findings: weighting.drop(1).join(", "),
+        weighting: weighting.first,
+        rank: index,
         title: concept.to_s)
     end
     create_classification_trace(trace: @trace.to_json) if persist?
-    # classifications.sort_by! { |c| -c.weighting }
     halt if invalid?
   end
 
@@ -113,17 +116,18 @@ class Document::Base < ActiveRecord::Base
         @trace[:concept_index][label.id] ||= []
         @trace[:concept_index][label.id] << concept.id
         # weighting
-        concepts[concept] ||= 0
+        concepts[concept] ||= [0]
         unless self.class.weightings[labeling.type]
           raise "#{labeling.type} has no registered weighting. Please configure one using Document::Base.register_weighting('MyLabelingClass', 1.0)"
         end
-        concepts[concept] += occurrences * self.class.weightings[labeling.type]
+        concepts[concept] << label.value
+        concepts[concept][0] += occurrences * self.class.weightings[labeling.type]
       end
     end
 
     # increase weighting for concepts derived from the title
     determine_title_concepts(concepts.keys).each do |concept|
-      concepts[concept] *= 1.5 # NB: regular analysis already includes the title
+      concepts[concept][0] *= 1.5 # NB: regular analysis already includes the title
     end
 
     concepts
@@ -147,7 +151,7 @@ class Document::Base < ActiveRecord::Base
           unless self.class.weighting_factors[relation.type]
             raise "#{relation.type} has no registered weighting factor. Please configure one using Document::Base.register_weighting_factor('MyRelationClass', 1.0)"
           end
-          @concepts[relation.target] *= self.class.weighting_factors[relation.type]
+          @concepts[relation.target][0] *= self.class.weighting_factors[relation.type]
         end
       end
     end
