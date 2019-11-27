@@ -29,7 +29,7 @@ class ClassificationsController < ApplicationController
         c.update rank: c.rank - 1
       end
     end
-    flash[:success] = I18n.t('txt.controllers.documents.classifications.delete_success')
+    flash[:success] = I18n.t('txt.controllers.documents.classifications.delete_success', concept: deleting_classification.concept.pref_label)
     redirect_to document_path(deleting_classification.document_id)
   end
 
@@ -40,7 +40,7 @@ class ClassificationsController < ApplicationController
       promoting_classification.update rank: demoting_classification.rank
       demoting_classification.update rank: demoting_classification.rank + 1
     end
-    flash[:success] = I18n.t('txt.controllers.documents.classifications.promote_success')
+    flash[:success] = I18n.t('txt.controllers.documents.classifications.promote_success', concept: promoting_classification.concept.pref_label, new_rank: promoting_classification.rank, old_rank: promoting_classification.rank + 1)
     redirect_to document_path(promoting_classification.document_id)
   end
 
@@ -51,7 +51,7 @@ class ClassificationsController < ApplicationController
       promoting_classification.update rank: demoting_classification.rank
       demoting_classification.update rank: demoting_classification.rank + 1
     end
-    flash[:success] = I18n.t('txt.controllers.documents.classifications.demote_success')
+    flash[:success] = I18n.t('txt.controllers.documents.classifications.demote_success', concept: demoting_classification.concept.pref_label, new_rank: demoting_classification.rank, old_rank: demoting_classification.rank - 1)
     redirect_to document_path(promoting_classification.document_id)
   end
 
