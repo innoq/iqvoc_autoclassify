@@ -33,6 +33,9 @@ en:
         new_classifications_for: Neue Deskriptoren für
         new: New document
         places_of_discovery: Place of discoery
+        last_manual_update: Manual editing of descriptors
+        last_automatic_update: Automatic editing of deskriptoren
+        add_new_descriptors: Add new descriptors
         reclassify: recalculate classifications
         response_limit_exceeded: request did not receive a timely response
         show_detailed_analysis: shwo detailed analysis
