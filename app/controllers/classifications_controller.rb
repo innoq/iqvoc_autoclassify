@@ -22,7 +22,7 @@ class ClassificationsController < ApplicationController
 
   def destroy
     deleting_classification = Classification.find(params[:classification_id])
-    classifications = Classification.where("document_id = ? AND `rank` > ?", params[:id], deleting_classification.rank)
+    classifications = Classification.where("document_id = ? AND rank > ?", params[:id], deleting_classification.rank)
     Classification.transaction do
       deleting_classification.destroy
       classifications.each do |c|
