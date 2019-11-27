@@ -30,8 +30,8 @@ class AutoclassifyController < ApplicationController
 
     document = Document::Plain.new do |doc|
       doc.content = content
-      doc.persist = false
     end
+    document.persist = false
 
     return {} if document.invalid?
 
