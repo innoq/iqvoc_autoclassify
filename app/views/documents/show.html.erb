@@ -86,8 +86,6 @@
 
 <% end %>
 
-<hr/>
-
 <h2><%= Document::Base.human_attribute_name :content %></h2>
 <pre class="plaintext"><%= @document.content.try(:strip) %></pre>
 <%- if @trace -%>
