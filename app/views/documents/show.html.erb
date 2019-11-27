@@ -38,7 +38,7 @@
           <td class="weighting">
             <%= classification.findings.try(:split, ", ").map { |f|
               label = classification.concept.labels.find {|l| l.value == f}
-              link_to "#{label.value} (#{classification.concept.pref_labels.find {|l| l.value == f} ? "Bevorzugt" : "Alternativ"})", label_path(id: label.origin)
+              link_to "#{label.value} (#{classification.concept.pref_labels.find {|l| l.value == f} ? t('txt.views.document.pref') : t('txt.views.document.alt')})", label_path(id: label.origin)
             }.join(", ").html_safe if classification.findings
             %>
           </td>
