@@ -44,7 +44,7 @@ class Documents::ExtractedController < DocumentsController
 
   def create
     @document = Document::Extracted.new(uri: params[:uri])
-    @document.persist = false unless authorize! :write, :auto_classify
+    @document.persist = false unless current_user
 
     render_errors and return if @document.invalid?
     @document.save if @document.persist?
@@ -75,7 +75,7 @@ class Documents::ExtractedController < DocumentsController
               .select { |classification| classification.concept }
               .map {|c|
                 {
-                "title": c.title
+                "title": c.title,
                 "link": rdf_url(id: c.concept_origin, lang: nil, only_path: false, format: nil)
                 }
               }
