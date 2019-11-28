@@ -1,36 +1,50 @@
 class Documents::ExtractedController < DocumentsController
   resource_description { name 'AutoClassify URI' }
 
-  api :GET, ':lang/autoclassify/extract', <<-DOC
-    Returns the most significant concepts for a given document URL.
+  api :GET, ':lang/autoclassify/extract{.html|.ttl|.rdf|.json}?uri=http://www.uri.de', <<-DOC
+    Analyzes the content found at the given uri and returns its most significant matching concepts of the thesaurus.
   DOC
-  formats [:html, :ttl, :rdf]
   param :uri, String, required: true, desc: <<-DOC
-    HTTP URI reference of the document to be processed, needs to be escaped.
+    HTTP URI reference of the document to be processed.
     Content type may be HTML or PDF.
   DOC
   example <<-DOC
-    GET /de/autoclassify/extract.ttl?uri=http%3A%2F%2Fwww.spiegel.de
-    200
+    JSON
+    ---------------
+    GET https://sns.uba.de/umthes/de/autoclassify/extract.json?uri=http://www.spiegel.de
+
+    {
+      "url": "https://sns.uba.de/umthes/de/autoclassify/extract.json?uri=http://www.spiegel.de",
+      "total_results": 2,
+      "results":
+        [
+          {"link":"http://localhost:3000/de/_00048961", "title":"Internet"},
+          {"link":"http://localhost:3000/de/_00100204","title":"Europa"}
+        ]
+    }
+
+    TURTLE/TTL
+    ---------------
+    GET https://sns.uba.de/umthes/de/autoclassify/extract.ttl?uri=http://www.spiegel.de
 
     # omitted namespace definitions
-    <https://sns.uba.de/umthes/de/autoclassify/extract?uri=http%3A%2F%2Fwww.spiegel.de> a sdc:Query;
-                                                                                sdc:totalResults 2;
-                                                                                sdc:result search:result1;
-                                                                                sdc:result search:result2.
-    search:result1 a sdc:Result;
-                   sdc:link :_00048961;
-                   dct:title "Internet";
-                   sdc:rank 1.0.
-    search:result2 a sdc:Result;
-                   sdc:link :_00100204;
-                   dct:title "Europa";
-                   sdc:rank 1.0.
-  DOC
+    <https://sns.uba.de/umthes/de/autoclassify/extract?uri=http://www.spiegel.de> a sdc:Query;
+                                                                                    sdc:totalResults 2;
+                                                                                    sdc:result search:result1;
+                                                                                    sdc:result search:result2.
+        search:result1 a sdc:Result;
+                       sdc:link :_00048961;
+                       dct:title "Internet";
+                       sdc:rank 1.0.
+        search:result2 a sdc:Result;
+                       sdc:link :_00100204;
+                       dct:title "Europa";
+                       sdc:rank 1.0.
+    DOC
 
   def create
     @document = Document::Extracted.new(uri: params[:uri])
-    @document.persist = false unless current_user
+    @document.persist = false unless authorize! :write, :auto_classify
 
     render_errors and return if @document.invalid?
     @document.save if @document.persist?
@@ -51,7 +65,22 @@ class Documents::ExtractedController < DocumentsController
             render :show
           end
         }
-        format.any(:rdf, :ttl) { render :show }
+        format.any(:rdf, :ttl, :nt) { render :show }
+        format.json {
+          render json: {
+            "url": request.original_url,
+            "total_results": @document.classifications.length,
+            "results":
+              @document.classifications
+              .select { |classification| classification.concept }
+              .map {|c|
+                {
+                "title": c.title
+                "link": rdf_url(id: c.concept_origin, lang: nil, only_path: false, format: nil)
+                }
+              }
+          }.to_json
+        }
       end
     else
       render_errors
