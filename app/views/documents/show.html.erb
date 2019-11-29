@@ -1,6 +1,6 @@
 <% if @document.uri %>
     <%= page_header :title => link_to(@document.title || @document.content_hash, @document.uri),
-                    :desc => "<br />#{Document::Base.human_attribute_name(:updated_at)} #{l(@document.updated_at || Time.now)}".html_safe %>
+                    :desc => "<br />#{Document::Base.human_attribute_name(:updated_at)}: #{l(@document.updated_at || Time.now)} <br />#{t "txt.views.document.last_automatic_update"}: #{@document.automatic_update ? l(@document.automatic_update) : '<span class="glyphicon glyphicon-minus"></span>'}<br />#{t "txt.views.document.last_manual_update"}: #{@document.manual_update ? l(@document.manual_update) : '<span class="glyphicon glyphicon-minus"></span>'}".html_safe %>
 <% else %>
     <%= page_header :title => @document.title || @document.content_hash %></h1>
 <% end %>
@@ -12,25 +12,53 @@
     <% end %>
 <% end %>
 
-<h2><%= Concept::Base.model_name.human(:count => 2) %></h2>
+<h2>
+    <%= t 'txt.views.autoclassify.concepts' %>
+<% if current_user %>
+    <%= link_to "<span class='glyphicon glyphicon-plus'></span> #{t 'txt.views.document.add_new_descriptors'}".html_safe, new_document_classification_path(@document), class: "pull-right" %>
+    <% end %>
+</h2>
 
 <% if @document.persisted? && @classifications %>
 
-    <%= content_tag(:ol,
-                    :class => @trace ? "trace" : nil,
-                    :start => (@classifications.current_page - 1) * @classifications.limit_value + 1) do %>
-        <% @classifications.each do |classification| %>
-            <% if classification.concept # only non-expired concepts are shown %>
-                <li>
-                    <%= link_to classification.to_s, concept_path(classification.concept) %>
-                    <% if @trace %>
-                        <%= raw classification_augmentation(@document, @classifications, classification) %>
-                    <% end %>
-                    <span class="weighting">[<%= "%4.2f" % classification.weighting %>]</span>
-                </li>
+  <table class="table">
+    <thead>
+      <th>#</th>
+      <th><%= t 'txt.views.autoclassify.concepts' %></th>
+      <th><%= t 'txt.views.document.weighting' %></th>
+      <th><%= t 'txt.views.document.places_of_discovery' %></th>
+      <th></th>
+    </thead>
+    <tbody>
+      <% @classifications.select {|c| c.concept}.each do |classification| %>
+        <tr class="document-classification-item">
+          <td><%= classification.rank %></td>
+          <td><%= link_to classification.to_s, concept_path(classification.concept) %></td>
+          <td class="weighting">[<%= "%4.2f" % classification.weighting if classification.weighting %>]</td>
+          <td class="weighting">
+            <%= classification.findings.try(:split, ", ").map { |f|
+              label = classification.concept.labels.find {|l| l.value == f}
+              link_to "#{label.value} (#{classification.concept.pref_labels.find {|l| l.value == f} ? t('txt.views.document.pref') : t('txt.views.document.alt')})", label_path(id: label.origin)
+            }.join(", ").html_safe if classification.findings
+            %>
+          </td>
+          <td class="document-classification-action-column">
+            <% if current_user %>
+              <%= link_to("<span class='glyphicon glyphicon-arrow-up'></span>".html_safe, promote_document_classification_path(@document.id, classification.id), method: :put, class: "document-show-glyphicon-button") if classification.rank != 1 %>
+              <% if classification.rank == 1 %>
+                <span class="document-show-glyphicon-no-button"></span>
+              <% end %>
+              <%= link_to("<span class='glyphicon glyphicon-arrow-down'></span>".html_safe, demote_document_classification_path(@document.id, classification.id), method: :put, class: "document-show-glyphicon-button") if classification.rank != @document.classifications.size %>
+              <% if classification.rank == @document.classifications.size %>
+                <span class="document-show-glyphicon-no-button"></span>
+              <% end %>
+              <%= link_to("<span class='glyphicon glyphicon-remove'></span>".html_safe, document_classification_path(@document.id, classification.id), method: :delete, class: "document-show-glyphicon-button") %>
             <% end %>
-        <% end %>
-    <% end %>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
 
     <div class="autoclassify">
         <%= paginate @classifications %>
@@ -39,18 +67,6 @@
     <hr/>
 
     <%= content_tag(:div, render(:partial => "edit")) if current_user %>
-
-    <hr/>
-
-    <div class="new_comment">
-        <%= bootstrap_form_for @document.comments.build, :url => document_comments_path(:document_id => @document) do |f| %>
-            <%= f.text_area :body, :hide_label => true, :rows => 4, :cols => 70 %>
-
-            <div class="actions">
-                <%= f.submit t("txt.views.document.comment"), :class => "btn btn-default" %>
-            </div>
-        <% end %>
-    </div>
 
 <% else %>
 
@@ -69,8 +85,6 @@
     <hr/>
 
 <% end %>
-
-<hr/>
 
 <h2><%= Document::Base.human_attribute_name :content %></h2>
 <pre class="plaintext"><%= @document.content.try(:strip) %></pre>

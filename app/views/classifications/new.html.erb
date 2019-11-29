@@ -1,0 +1,24 @@
+<h1><%= "#{t('txt.views.document.new_classifications_for')} #{@document.title}" %></h1>
+<%= bootstrap_form_for @document,
+    :url => document_classifications_path(@document.id),
+    :method => :post,
+    :layout => :horizontal do |f| %>
+  <%= f.form_group nil, :label => { :text => t('txt.views.autoclassify.concepts') } do %>
+    <%= text_field_tag 'concepts', @document.classifications.map {|c| c.concept_origin}.join(','),
+      :id => 'concepts',
+      :class => "entity_select",
+      :"data-query-url" => concepts_path(:format => :json,
+      :exclude_top_terms => nil),
+      :"data-entity-uri" => concept_path("{id}"),
+      :"data-singular" => nil,
+      :"data-entities" => [],
+      :'data-no-results-msg' => t('txt.views.search_results.no_results')
+       %>
+  <% end %>
+
+  <div class="well">
+    <%= f.submit t("txt.common.save"), :class => "btn btn-primary" %>
+
+    <%= link_to t("txt.common.cancel"), document_path(@document), :class => "btn btn-default" %>
+  </div>
+<% end %>

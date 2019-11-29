@@ -1,22 +1,29 @@
 <%= page_header :title => Document::Base.model_name.human(:count => 2) %>
 <%= render "sidebar" %>
 
+<div class="row">
+  <div class="col-sm-4 pull-right">
+    <%= image_tag 'thesaurus_fox.png', class: "img-responsive thesaurus-fox" %>
+  </div>
+</div>
+
 <table class="table documents-table">
   <thead>
     <tr>
-      <th><%= Document::Base.human_attribute_name(:updated_at) %></th>
       <th><%= Document::Base.human_attribute_name(:title) %></th>
-      <th><%= Concept::Base.model_name.human(:count => 2) %></th>
+      <th><%= t "txt.views.autoclassify.concepts" %></th>
       <th></th>
     </tr>
   </thead>
   <tbody>
     <% @documents.each do |doc| %>
       <tr class="documents-table-item">
-        <td class="text-nowrap"><%= l doc.updated_at, format: :short %></td>
         <td>
-          <%= link_to doc.title, document_path(:id => doc),
-            class: 'documents-table-item-link' %>
+          <%= link_to doc.title, document_path(:id => doc.id), class: 'documents-table-item-link' %>
+          <%= link_to "<span class='glyphicon glyphicon-share' aria-hidden='true'></span>".html_safe, doc.uri, target: :_blank if doc.uri %>
+          <div>
+            <%= doc.classifications.first(5).map {|c| "<span class='glyphicon glyphicon-tag' aria-hidden='true'></span> #{link_to c.title, concept_path(c.concept_origin), target: :_blank}"}.join(" ").html_safe %>
+          </div>
         </td>
         <td class="documents-table-item-classifications">
           <%= doc.classifications.length %>

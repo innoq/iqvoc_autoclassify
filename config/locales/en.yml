@@ -27,11 +27,32 @@ en:
           success: comment created successfully
     views:
       document:
-        new: New document
-        reclassify: recalculate classifications
-        index: Index
-        response_limit_exceeded: request did not receive a timely response
+        add_new_descriptors: Neue Deskriptoren hinzufügen
         comment: leave comment
+        index: Index
+        new_classifications_for: Neue Deskriptoren für
+        new: New document
+        places_of_discovery: Place of discoery
+        last_manual_update: Manual editing of descriptors
+        last_automatic_update: Automatic editing of deskriptoren
+        add_new_descriptors: Add new descriptors
+        reclassify: recalculate classifications
+        response_limit_exceeded: request did not receive a timely response
+        show_detailed_analysis: shwo detailed analysis
+        weighting: weighting
+        confirm_reclassify: A reclassification includes the loss of all manually changed information.
+        pref: Preferred
+        alt: Alternative
+      autoclassify:
+        thesaurus_explanation: In general usage, a thesaurus is a reference work that lists words grouped together according to similarity of meaning (containing synonyms and sometimes antonyms), in contrast to a dictionary, which provides definitions for words, and generally lists them in alphabetical order.
+        text_area_field: searchtext
+        hint_analyze_text: ""
+        analyze_text: Search for descriptors
+        reset_search: Clear
+        found_documents: "Found descriptors:"
+        no_found_documents: "Sadly we could not find any descriptors"
+        concepts: descriptor
+        matching_concepts: matching descriptors
     textractor:
       http_error: HTTP Error
       response_limit_exceeded: request did not receive a timely response

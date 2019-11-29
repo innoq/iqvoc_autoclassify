@@ -62,10 +62,10 @@ class ClassificationWeightingTest < ActiveSupport::TestCase
 
     concepts = doc.concepts
     assert_equal 2, concepts.keys.length
-    assert_equal 1.0, concepts[@concepts['Weltraum']] # via 'All' # FIXME: ?
+    assert_equal [1.0, 'All'], concepts[@concepts['Weltraum']] # via 'All' # FIXME: ?
     assert_nil concepts[@concepts['Kampf']]
     assert_nil concepts[@concepts['Pilot']]
-    assert_equal 1.0, concepts[@concepts['Weltraumkampfpilot']]
+    assert_equal [1.0, 'Weltraumkampfpilot'], concepts[@concepts['Weltraumkampfpilot']]
   end
 
   test 'full concept weighting' do
@@ -77,9 +77,9 @@ class ClassificationWeightingTest < ActiveSupport::TestCase
 
     concepts = doc.concepts
     assert_equal 3, concepts.keys.length
-    assert_equal 2.0, concepts[@concepts['Weltraum']]
-    assert_equal 2.0, concepts[@concepts['Kampf']]
-    assert_equal 1.5, concepts[@concepts['Auseinandersetzung']]
+    assert_equal [2.0, 'All', 'Weltraum'], concepts[@concepts['Weltraum']]
+    assert_equal [2.0, 'Kampf'], concepts[@concepts['Kampf']]
+    assert_equal [1.5, 'Auseinandersetzung'], concepts[@concepts['Auseinandersetzung']]
   end
 
   test 'occurence in document title increases weighting' do
@@ -89,8 +89,8 @@ class ClassificationWeightingTest < ActiveSupport::TestCase
 
     concepts = doc.concepts
     assert_equal 2, concepts.keys.length
-    assert_equal 1.0, concepts[@concepts['Weltraum']]
-    assert_equal 1.5, concepts[@concepts['Fracht']]
+    assert_equal [1.0, 'Weltraum'], concepts[@concepts['Weltraum']]
+    assert_equal [1.5, 'Fracht'], concepts[@concepts['Fracht']]
 
     title = 'der Weltraum, ein Kampf der Pilot'
     text = 'ein Weltraumkampfpilot im All'
@@ -98,10 +98,10 @@ class ClassificationWeightingTest < ActiveSupport::TestCase
 
     concepts = doc.concepts
     assert_equal 2, concepts.keys.length
-    assert_equal 1.0, concepts[@concepts['Weltraum']] # via 'All' FIXME: ?
+    assert_equal [1.0, 'All'], concepts[@concepts['Weltraum']] # via 'All' FIXME: ?
     assert_nil concepts[@concepts['Kampf']]
     assert_nil concepts[@concepts['Pilot']]
-    assert_equal 3.0, concepts[@concepts['Weltraumkampfpilot']]
+    assert_equal [3.0, 'Weltraumkampfpilot'], concepts[@concepts['Weltraumkampfpilot']]
   end
 
   test 'multiple occurence of the same label increases weighting' do
