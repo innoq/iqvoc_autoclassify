@@ -61,11 +61,16 @@ class Textractor
   def self.from_html(html)
     doc = Readability::Document.new(html)
     title = doc.html.at_css('title').try(:text)
+    if doc.html.at('.article-content')
+      description_text = doc.html.at('.article-content').at('strong:has(p)').try(:text).try(:strip)
+    end
     content = Nokogiri::HTML(doc.content).text # invoking Nokogiri seems a bit
                                                # redundant, but is necessary
                                                # because Readability's sanitize
                                                # method converts the DOM tree to
                                                # a string
+
+    content = description_text + content if description_text
     return title, content
   end
 
