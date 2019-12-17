@@ -17,7 +17,7 @@
     <legend><%= Document::Base.human_attribute_name :content %></legend>
 
     <%= f.text_field :title  %>
-    <%= f.text_area :content %>
+    <%= f.text_area :content, rows: 5 %>
 
     <div class="well">
       <%= f.button t("txt.controllers.documents.new.classify_text"), class: 'btn btn-primary', data: {disable_with: loading_indicator(t("txt.controllers.documents.new.classify_process"))} %>
