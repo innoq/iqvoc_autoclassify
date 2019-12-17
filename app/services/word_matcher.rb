@@ -299,7 +299,7 @@ class WordMatcher
       res << variant
       if variant.include? IGNORE_CHARS
         trimmed_variant = variant.chomp(IGNORE_CHARS) # TODO: use TokenNormalizer instead?
-        res << trimmed_variant
+        res << trimmed_variant.to_s
       end
     end
 
@@ -312,7 +312,11 @@ class WordMatcher
     sql_escaped_words = variants.reverse.map { |w| "'#{w}'" }
     query = "SELECT LOWER(value) FROM #{Inflectional::Base.table_name} WHERE LOWER(value) IN (#{sql_escaped_words.join(',')})"
 
-    ActiveRecord::Base.connection.execute(query).values.flatten.uniq.sort_by { |e| -e.length }
+    existing_inflectionals = ActiveRecord::Base.connection.execute(query).values.flatten.uniq
+
+    words_with_no_inflectional_match = variants.select {|v| v.is_a?(ActiveSupport::Multibyte::Chars) && existing_inflectionals.exclude?(v)}
+
+    (existing_inflectionals + words_with_no_inflectional_match).sort_by { |e| -e.length }
   end
 
   # rejects shorter duplicate inline word partials
