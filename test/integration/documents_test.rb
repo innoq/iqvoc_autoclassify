@@ -100,7 +100,7 @@ class DocumentsTest < ActionDispatch::IntegrationTest
 
     assert ttl.include? 'sdc:result search:result1;'
     expected = <<-EOS
-      search:result3 a sdc:Result;
+      search:result1 a sdc:Result;
       \tsdc:link :foo;
       \tdct:title "Foo";
       \tsdc:rank 1.0.
@@ -117,10 +117,9 @@ class DocumentsTest < ActionDispatch::IntegrationTest
     EOS
     expected.gsub!(/^ +/, '')
     assert ttl.include? expected
-
     assert ttl.include? 'sdc:result search:result3.'
     expected = <<-EOS
-      search:result1 a sdc:Result;
+      search:result3 a sdc:Result;
       \tsdc:link :baz;
       \tdct:title "Baz";
       \tsdc:rank 1.0.
