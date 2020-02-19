@@ -11,35 +11,44 @@ class Documents::ExtractedController < DocumentsController
   example <<-DOC
     JSON
     ---------------
-    GET https://sns.uba.de/umthes/de/autoclassify/extract.json?uri=http://www.spiegel.de
+    curl https://sns.uba.de/umthes/de/autoclassify/extract.json?uri=https://www.umweltbundesamt.de
 
     {
-      "url": "https://sns.uba.de/umthes/de/autoclassify/extract.json?uri=http://www.spiegel.de",
+      "url": "http://localhost:3000/de/autoclassify/extract.json?uri=https://www.umweltbundesamt.de",
       "total_results": 2,
-      "results":
-        [
-          {"link":"http://localhost:3000/de/_00048961", "title":"Internet"},
-          {"link":"http://localhost:3000/de/_00100204","title":"Europa"}
-        ]
+      "results": [
+        {
+          "title": "Stickoxidemission",
+          "link": "https://sns.uba.de/umthes/_e4ab78e3",
+          "rank": 1.69
+        },
+        {
+          "title": "Umwelt",
+          "link": "https://sns.uba.de/umthes/_00025105",
+          "rank": 1.5
+        }
+      ]
     }
 
     TURTLE/TTL
     ---------------
-    GET https://sns.uba.de/umthes/de/autoclassify/extract.ttl?uri=http://www.spiegel.de
+    curl https://sns.uba.de/umthes/de/autoclassify/extract.ttl?uri=https://www.umweltbundesamt.de
 
     # omitted namespace definitions
-    <https://sns.uba.de/umthes/de/autoclassify/extract?uri=http://www.spiegel.de> a sdc:Query;
-                                                                                    sdc:totalResults 2;
-                                                                                    sdc:result search:result1;
-                                                                                    sdc:result search:result2.
-        search:result1 a sdc:Result;
-                       sdc:link :_00048961;
-                       dct:title "Internet";
-                       sdc:rank 1.0.
-        search:result2 a sdc:Result;
-                       sdc:link :_00100204;
-                       dct:title "Europa";
-                       sdc:rank 1.0.
+    <https://sns.uba.de/umthes/de/autoclassify/extract?uri=https://www.umweltbundesamt.de> a sdc:Query;
+                                                                                            sdc:totalResults 2;
+                                                                                            sdc:result search:result1;
+                                                                                            sdc:result search:result2.
+
+    search:result1 a sdc:Result;
+                   sdc:link :_e4ab78e3;
+                   dct:title "Stickoxidemission";
+                   sdc:rank 1.69.
+    search:result2 a sdc:Result;
+                   sdc:link :_00025105;
+                   dct:title "Umwelt";
+                   sdc:rank 1.5.
+
     DOC
 
   def create
@@ -76,7 +85,8 @@ class Documents::ExtractedController < DocumentsController
               .map {|c|
                 {
                 "title": c.title,
-                "link": rdf_url(id: c.concept_origin, lang: nil, only_path: false, format: nil)
+                "link": rdf_url(id: c.concept_origin, lang: nil, only_path: false, format: nil),
+                "rank": c.weighting
                 }
               }
           }.to_json

@@ -17,7 +17,8 @@ class Documents::PlainController < DocumentsController
       [
         {
           "link": "https://sns.uba.de/umthes/de/_00000347",
-          "title": "Abfallwirtschaft"
+          "title": "Abfallwirtschaft",
+          "rank": 2.0
         }
       ]
   }
@@ -80,7 +81,8 @@ class Documents::PlainController < DocumentsController
               .map { |c|
                 {
                   "title": c.title,
-                  "link": rdf_url(id: c.concept_origin, lang: nil, only_path: false, format: nil)
+                  "link": rdf_url(id: c.concept_origin, lang: nil, only_path: false, format: nil),
+                  "rank": c.weighting
                 }
               }
           }.to_json

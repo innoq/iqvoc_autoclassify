@@ -95,6 +95,8 @@ GEM
       minitest (~> 5.1)
       thread_safe (~> 0.3, >= 0.3.4)
       tzinfo (~> 1.1)
+    activesupport-json_encoder (1.1.0)
+      activesupport (>= 4.1.0, < 5.0)
     addressable (2.6.0)
       public_suffix (>= 2.0.2, < 4.0)
     afm (0.2.2)
@@ -444,6 +446,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  activesupport-json_encoder
   apipie-rails (~> 0.3.5)
   awesome_print
   capybara
