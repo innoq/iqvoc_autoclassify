@@ -1,4 +1,4 @@
-class AddConceptReferenceToClassifications < ActiveRecord::Migration
+class AddConceptReferenceToClassifications < ActiveRecord::Migration[4.2]
 
   def self.up
     add_column :classifications, :concept_id, :integer

@@ -1,7 +1,7 @@
 require 'digest/sha1'
 require 'workflow'
 
-class Document::Base < ActiveRecord::Base
+class Document::Base < ApplicationRecord
 
   MAX_CONTENT_CHARS = 10000
   MAX_CONTENT_SUFFIX = '…'

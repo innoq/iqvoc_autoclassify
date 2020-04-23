@@ -24,7 +24,12 @@ class Documents::PlainControllerTest < ActionController::TestCase
     session = UserSession.create(@admin)
 
     assert_difference('Document::Plain.count') do
-      post :create, document: { content: 'lorem ipsum' }, lang: 'de'
+      post :create, params: {
+        document: {
+          content: 'lorem ipsum'
+        },
+        lang: 'de'
+      }
     end
 
     assert_redirected_to document_path(assigns(:document), lang: 'de')
@@ -34,7 +39,12 @@ class Documents::PlainControllerTest < ActionController::TestCase
 
   test 'create document from raw content' do
     assert_no_difference('Document::Plain.count') do
-      post :create, document: { content: 'lorem ipsum' }, lang: 'de'
+      post :create, params: {
+        document: {
+          content: 'lorem ipsum'
+        },
+        lang: 'de'
+      }
     end
 
     assert_response 200

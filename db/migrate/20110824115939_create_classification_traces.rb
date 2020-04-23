@@ -1,4 +1,4 @@
-class CreateClassificationTraces < ActiveRecord::Migration
+class CreateClassificationTraces < ActiveRecord::Migration[4.2]
 
   def self.up
     create_table :classification_traces do |t|

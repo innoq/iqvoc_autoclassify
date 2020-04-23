@@ -1,4 +1,4 @@
-class EnlargeTraceAndWeightingCols < ActiveRecord::Migration
+class EnlargeTraceAndWeightingCols < ActiveRecord::Migration[4.2]
   def change
     if ActiveRecord::Base.connection.adapter_name == 'Mysql2'
       change_column :classification_traces, :trace, :text, limit: 4294967295

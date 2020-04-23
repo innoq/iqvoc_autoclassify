@@ -1,4 +1,4 @@
-class ExtendDocumentContent < ActiveRecord::Migration
+class ExtendDocumentContent < ActiveRecord::Migration[4.2]
   def up
     change_column :documents, :content, :text, limit: 1_073_741_823
   end

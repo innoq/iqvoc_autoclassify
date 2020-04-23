@@ -1,4 +1,4 @@
-class AddTitleToDocuments < ActiveRecord::Migration
+class AddTitleToDocuments < ActiveRecord::Migration[4.2]
   def self.up
     add_column :documents, :title, :string
   end

@@ -1,4 +1,4 @@
-class AddConceptOriginToClassifications < ActiveRecord::Migration
+class AddConceptOriginToClassifications < ActiveRecord::Migration[4.2]
   def up
     ActiveRecord::Base.transaction do
       # add new foreign_key column

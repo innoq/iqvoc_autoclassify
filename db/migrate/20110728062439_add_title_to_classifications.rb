@@ -1,4 +1,4 @@
-class AddTitleToClassifications < ActiveRecord::Migration
+class AddTitleToClassifications < ActiveRecord::Migration[4.2]
 
   def self.up
     add_column :classifications, :title, :string

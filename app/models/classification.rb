@@ -1,7 +1,7 @@
-class Classification < ActiveRecord::Base
-  belongs_to :document, class_name: Document::Base
+class Classification < ApplicationRecord
+  belongs_to :document, class_name: 'Document::Base'
   belongs_to :concept, -> { where 'expired_at >= ? OR expired_at IS NULL', Date.today },
-             class_name: Iqvoc::Concept.base_class,
+             class_name: Iqvoc::Concept.base_class_name,
              foreign_key: 'concept_origin',
              primary_key: 'origin'
 

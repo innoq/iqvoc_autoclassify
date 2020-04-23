@@ -22,10 +22,9 @@ Gem::Specification.new do |s|
   s.add_dependency 'workflow', '~> 1.0.0'
   s.add_dependency 'guess_html_encoding'
   s.add_dependency 'nokogiri', '~> 1.8'
-  s.add_dependency 'responders', '~> 2.0'
-  s.add_dependency 'pragmatic_segmenter', '~> 0.3.7'
+  s.add_dependency 'responders'
+  s.add_dependency 'pragmatic_segmenter'
   s.add_dependency 'ffi', '~> 1.9.10'
-  s.add_dependency 'activesupport-json_encoder'
 
   s.files         = `git ls-files`.split("\n")
   s.test_files    = `git ls-files -- {test,spec,features}/*`.split("\n")

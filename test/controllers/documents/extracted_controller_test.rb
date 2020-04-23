@@ -83,7 +83,11 @@ class Documents::ExtractedControllerTest < ActionController::TestCase
 
   test 'classify html via uri' do
     assert_no_difference 'Document::Extracted.count' do
-      post :create, uri: @urls[:html], format: 'rdf', lang: 'de'
+      post :create, params: {
+        uri: @urls[:html],
+        format: 'rdf',
+        lang: 'de'
+      }
     end
     assert_not_nil assigns(:document)
     assert_response 200
@@ -92,7 +96,11 @@ class Documents::ExtractedControllerTest < ActionController::TestCase
 
   test 'classify pdf via uri' do
     assert_no_difference 'Document::Extracted.count' do
-      post :create, uri: @urls[:service], format: 'rdf', lang: 'de'
+      post :create, params: {
+        uri: @urls[:service],
+        format: 'rdf',
+        lang: 'de'
+      }
     end
     assert_not_nil assigns(:document)
     assert_response 200
@@ -103,7 +111,11 @@ class Documents::ExtractedControllerTest < ActionController::TestCase
     session = UserSession.create(@admin)
 
     assert_difference 'Document::Extracted.count' do
-      post :create, uri: @urls[:html], format: 'rdf', lang: 'de'
+      post :create, params: {
+        uri: @urls[:html],
+        format: 'rdf',
+        lang: 'de'
+      }
     end
 
     session.destroy
@@ -117,10 +129,18 @@ class Documents::ExtractedControllerTest < ActionController::TestCase
   #end
 
   test 'extraction errors' do
-    post :create, uri: @urls[:not_found], format: 'rdf', lang: 'de'
+    post :create, params: {
+      uri: @urls[:not_found],
+      format: 'rdf',
+      lang: 'de'
+    }
     assert_response 422
 
-    post :create, uri: @urls[:unsupported_content_type], format: 'rdf', lang: 'de'
+    post :create, params: {
+      uri: @urls[:unsupported_content_type],
+      format: 'rdf',
+      lang: 'de'
+    }
     assert_response 422
   end
 
@@ -128,7 +148,12 @@ class Documents::ExtractedControllerTest < ActionController::TestCase
     session = UserSession.create(@admin)
 
     assert_difference 'Document::Extracted.count' do
-      post :create, uri: @urls[:redirected], format: 'rdf', commit: '1', lang: 'de'
+      post :create, params: {
+        uri: @urls[:redirected],
+        format: 'rdf',
+        commit: '1',
+        lang: 'de'
+      }
     end
     assert_not_nil assigns(:document)
     assert_response :success

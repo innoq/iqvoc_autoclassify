@@ -1,4 +1,4 @@
-class AddWeightingToClassifications < ActiveRecord::Migration
+class AddWeightingToClassifications < ActiveRecord::Migration[4.2]
 
   def self.up
     add_column :classifications, :weighting, :decimal

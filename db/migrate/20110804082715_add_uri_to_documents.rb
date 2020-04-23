@@ -1,4 +1,4 @@
-class AddUriToDocuments < ActiveRecord::Migration
+class AddUriToDocuments < ActiveRecord::Migration[4.2]
   def self.up
     add_column :documents, :uri, :string
   end
