@@ -16,10 +16,14 @@ class Document::Base < ApplicationRecord
 
   has_many :classifications, -> { order 'weighting DESC' },
            foreign_key: 'document_id',
-           dependent: :destroy
+           dependent: :destroy,
+           inverse_of: :document
+
   has_many :comments,
            foreign_key: 'document_id',
-           dependent: :destroy
+           dependent: :destroy,
+           inverse_of: :document
+
   has_one :classification_trace,
           foreign_key: 'document_id',
           dependent: :destroy
