@@ -26,7 +26,8 @@ class Document::Base < ApplicationRecord
 
   has_one :classification_trace,
           foreign_key: 'document_id',
-          dependent: :destroy
+          dependent: :destroy,
+          inverse_of: :document
 
   validates :title, length: { maximum: 255 }
   validates :content, length: { maximum: MAX_CONTENT_CHARS }
