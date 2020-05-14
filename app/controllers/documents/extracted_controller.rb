@@ -127,9 +127,9 @@ class Documents::ExtractedController < DocumentsController
       end
       format.any(:rdf, :ttl) do
         if extraction_error_code
-          render text: messages.join("\n"), status: extraction_error_code
+          render plain: messages.join("\n"), status: extraction_error_code
         else
-          render text: messages.join("\n"), status: 422
+          render plain: messages.join("\n"), status: 422
         end
       end
     end
