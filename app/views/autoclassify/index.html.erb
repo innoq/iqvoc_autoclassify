@@ -14,7 +14,7 @@
     <%= f.label :search_text, t("txt.views.autoclassify.text_area_field") %>
     <%= f.text_area :search_text, hide_label: true, value: params[:search_text] || "", rows: 5, placeholder: t("txt.views.autoclassify.hint_analyze_text") %>
     <%= f.submit t("txt.views.autoclassify.analyze_text"), class: 'btn btn-primary' %>
-    <%= link_to t("txt.views.autoclassify.reset_search"), autoclassify_path, class: 'btn' %>
+    <%= link_to t("txt.views.autoclassify.reset_search"), autoclassify_path, class: 'btn btn-outline-secondary' %>
   </div>
 <% end %>
 
@@ -23,7 +23,7 @@
     <% if @classifications.any? %>
       <%= t "txt.views.autoclassify.found_documents" %>
       <div class="well">
-        <%= @classifications.map {|c| "<span class='glyphicon glyphicon-tag' aria-hidden='true'></span> #{link_to c.title, concept_path(c.concept_origin), target: :_blank}"}.join(" ").html_safe %>
+        <%= @classifications.map {|c| "#{link_to c.title, concept_path(c.concept_origin), target: :_blank, class: 'badge badge-secondary'}"}.join(" ").html_safe %>
       </div>
     <% else %>
       <div class="well text-danger">
@@ -46,13 +46,15 @@
       <% @documents.each do |doc| %>
         <tr class="documents-table-item">
           <td>
-            <%= link_to doc.title, doc.uri,
-              class: 'documents-table-item-link', target: :_blank %> <%= link_to "<span class='glyphicon glyphicon-search' aria-hidden='true'></span>".html_safe, document_path(:id => doc.id) %>
+            <%= link_to doc.title, document_path(:id => doc.id), class: 'documents-table-item-link' %>
+            <% if doc.uri.present? %>
+              <%= link_to "<i class='fa fa-share' aria-hidden='true'></i>".html_safe,  doc.uri, target: :_blank %>
+            <% end %>
             <div>
               <% if params[:search_text] %>
-                <%= doc.overlapping.first(5).map {|c| "<span class='glyphicon glyphicon-tag' aria-hidden='true'></span> #{c.title}"}.join(" ").html_safe %>
+                <%= doc.overlapping.first(5).map {|c| "#{link_to c.title, concept_path(c.concept_origin), class: 'badge badge-secondary'}"}.join(" ").html_safe %>
               <% else %>
-                <%= doc.classifications.first(5).map {|c| "<span class='glyphicon glyphicon-tag' aria-hidden='true'></span> #{link_to c.title, concept_path(c.concept_origin), target: :_blank}"}.join(" ").html_safe %>
+                <%= doc.classifications.first(5).map {|c| "#{link_to c.title, concept_path(c.concept_origin), class: 'badge badge-secondary'}"}.join(" ").html_safe %>
               <% end %>
             </div>
           </td>
