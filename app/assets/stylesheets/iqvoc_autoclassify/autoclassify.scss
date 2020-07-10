@@ -67,3 +67,13 @@
 .document-classification-action-column {
   min-width: 90px;
 }
+
+.col-divider {
+  background: linear-gradient(to right, transparent calc(50% + 1px), #fff calc(50% + 1px)), linear-gradient(to right, #fff calc(50% - 1px), lightgrey calc(50% - 1px));
+  padding-top: 4rem;
+
+  span {
+    background-color: #fff;
+    padding: 1rem;
+  }
+}

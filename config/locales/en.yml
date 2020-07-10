@@ -10,6 +10,7 @@ en:
           delete_success: Document success deleted.
           delete_error: An error occurred. Could not delete document.
         new:
+          classify_url_desc:  URL to website or pdf document
           classify_url: classify url
           classify_text: classify text
           classify_process: classifying...
@@ -27,6 +28,8 @@ en:
           success: comment created successfully
     views:
       document:
+        auto_classify_title: AutoClassify
+        auto_classify_desc:  With AutoClassify you can classify websites, PDF documents and texts according to concepts from our UmweltTheraurus. Give it a try!
         add_new_descriptors: Neue Deskriptoren hinzufügen
         comment: leave comment
         index: Index
