@@ -1,6 +1,6 @@
 <%= page_header :title => 'Thesaurus' %>
 
-<div class="row">
+<div class="row mb-5">
   <div class="col-sm-8">
     <%= t "txt.views.autoclassify.thesaurus_explanation" %>
   </div>
@@ -10,23 +10,21 @@
 </div>
 
 <%= bootstrap_form_tag :url => autoclassify_path, :html => { :class => 'document-form' }, method: :get do |f| %>
-  <div class="well">
-    <%= f.label :search_text, t("txt.views.autoclassify.text_area_field") %>
-    <%= f.text_area :search_text, hide_label: true, value: params[:search_text] || "", rows: 5, placeholder: t("txt.views.autoclassify.hint_analyze_text") %>
-    <%= f.submit t("txt.views.autoclassify.analyze_text"), class: 'btn btn-primary' %>
-    <%= link_to t("txt.views.autoclassify.reset_search"), autoclassify_path, class: 'btn btn-outline-secondary' %>
-  </div>
+  <%= f.label :search_text, t("txt.views.autoclassify.text_area_field") %>
+  <%= f.text_area :search_text, hide_label: true, value: params[:search_text] || "", rows: 5, placeholder: t("txt.views.autoclassify.hint_analyze_text") %>
+  <%= f.submit t("txt.views.autoclassify.analyze_text"), class: 'btn btn-primary' %>
+  <%= link_to t("txt.views.autoclassify.reset_search"), autoclassify_path, class: 'btn btn-outline-secondary' %>
 <% end %>
 
 <% if params[:search_text] %>
-  <div>
+  <div class="mt-5 mb-5">
     <% if @classifications.any? %>
       <%= t "txt.views.autoclassify.found_documents" %>
-      <div class="well">
+      <div>
         <%= @classifications.map {|c| "#{link_to c.title, concept_path(c.concept_origin), target: :_blank, class: 'badge badge-secondary'}"}.join(" ").html_safe %>
       </div>
     <% else %>
-      <div class="well text-danger">
+      <div class="text-danger">
         <%= t "txt.views.autoclassify.no_found_documents" %>
       </div>
     <% end %>
