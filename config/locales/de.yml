@@ -33,6 +33,7 @@ de:
       document:
         auto_classify_title: AutoClassify
         auto_classify_desc:  Mit unserem Dienst AutoClassify können Sie Internetseiten, PDF-Dokumente und Texte nach<br>Konzepten aus unserem UmweltTheraurus klassifizieren. Probieren Sie es aus!
+        or: ODER
         add_new_descriptors: Neue Deskriptoren hinzufügen
         comment: Kommentar hinterlassen
         index: Übersicht

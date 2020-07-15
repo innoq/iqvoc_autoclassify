@@ -30,6 +30,7 @@ en:
       document:
         auto_classify_title: AutoClassify
         auto_classify_desc:  With AutoClassify you can classify websites, PDF documents and texts according to concepts from our UmweltTheraurus. Give it a try!
+        or: OR
         add_new_descriptors: Neue Deskriptoren hinzufügen
         comment: leave comment
         index: Index
