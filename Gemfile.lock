@@ -1,7 +1,7 @@
 GIT
   remote: git://github.com/innoq/iqvoc.git
-  revision: 3218a282c48e87b9f5dc1d0b3dadca6d5123b00d
-  branch: bootstrap-v4
+  revision: 56a581270c0a41c8f7fad9694591944256a8db22
+  branch: master
   specs:
     iqvoc (4.12.2)
       apipie-rails
@@ -52,8 +52,8 @@ GIT
 
 GIT
   remote: git://github.com/innoq/iqvoc_skosxl.git
-  revision: de89ac47a5666b6b0d214609280385d5dd81f4a2
-  branch: bootstrap-v4
+  revision: 5366ab623b8fc90e2fc1ce422cd458764112d709
+  branch: master
   specs:
     iqvoc_skosxl (2.9.2)
       iqvoc (~> 4.12.0, >= 4.4.0)

@@ -1,7 +1,7 @@
 source 'https://rubygems.org'
 
-gem 'iqvoc', '~> 4.12', :github => 'innoq/iqvoc', branch: 'bootstrap-v4'
-gem 'iqvoc_skosxl', '~> 2.9.0', :github => 'innoq/iqvoc_skosxl', branch: 'bootstrap-v4'
+gem 'iqvoc', '~> 4.12', :github => 'innoq/iqvoc', branch: 'master'
+gem 'iqvoc_skosxl', '~> 2.9.0', :github => 'innoq/iqvoc_skosxl', branch: 'master'
 gem 'iqvoc_inflectionals', '~> 2.9.0', :github => 'innoq/iqvoc_inflectionals', branch: 'master'
 gem 'iqvoc_compound_forms', '~> 2.9.0', :github => 'innoq/iqvoc_compound_forms', branch: 'master'
 
