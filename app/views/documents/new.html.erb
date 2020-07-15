@@ -1,3 +1,13 @@
-<%= page_header :title => t("txt.views.document.new") %>
-<%= render "sidebar" %>
+<%# render "sidebar" %>
+<div class="frontpage-title mb-5">
+  <h1 class="display-4">
+    <%= t("txt.views.document.auto_classify_title") %>
+  </h1>
+
+  <p class="lead">
+    <% t("txt.views.document.auto_classify_desc") %>
+    Mit unserem Dienst AutoClassify können Sie Internetseiten, PDF-Dokumente und Texte nach<br>Konzepten aus unserem UmweltTheraurus klassifizieren. Probieren Sie es aus!
+  </p>
+</div>
+
 <%= render "form" %>

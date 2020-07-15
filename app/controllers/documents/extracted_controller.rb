@@ -52,7 +52,15 @@ class Documents::ExtractedController < DocumentsController
     DOC
 
   def create
-    @document = Document::Extracted.new(uri: params[:uri])
+    uri = if params[:document_base]
+            params[:document_base][:uri]
+          elsif params[:document_extracted]
+            params[:document_extracted][:uri]
+          else
+            params[:uri]
+          end
+
+    @document = Document::Extracted.new(uri: uri)
     @document.persist = false unless current_user
 
     render_errors and return if @document.invalid?

@@ -10,6 +10,7 @@ de:
           delete_success: Dokument wurde erfolgreich gelöscht.
           delete_error: Dokument konnte nicht gelöscht werden.
         new:
+          classify_url_desc:  URL zu HTML-Seite oder PDF-Dokument
           classify_url: URL klassifizieren
           classify_text: Text klassifizieren
           classify_process: klassifiziere...
@@ -30,6 +31,9 @@ de:
           success: Kommentar erfolgreich übermittelt
     views:
       document:
+        auto_classify_title: AutoClassify
+        auto_classify_desc:  Mit unserem Dienst AutoClassify können Sie Internetseiten, PDF-Dokumente und Texte nach<br>Konzepten aus unserem UmweltTheraurus klassifizieren. Probieren Sie es aus!
+        or: ODER
         add_new_descriptors: Neue Deskriptoren hinzufügen
         comment: Kommentar hinterlassen
         index: Übersicht
@@ -46,6 +50,7 @@ de:
         confirm_reclassify: Eine Neuberechnung der Klassifizierung bedeutet den Verlust aller manuell veränderten Deskriptoren.
         pref: Bevorzugt
         alt: Alternativ
+        visit_website: Website aufrufen
       autoclassify:
         thesaurus_explanation: Der Thesaurus dient als Dokumentationssprache zum Indexieren, Speichern und Finden von Dokumenten. Die Relationen ermöglichen es, bei der Indexierung und Recherche passende Benennungen für gesuchte Begriffe zu finden. Bei der Suche können Thesauri durch die automatische Erweiterung der Suchanfrage auf Synonyme und Unterbegriffe hilfreich sein. (Wikipedia)
         text_area_field: Suchtext

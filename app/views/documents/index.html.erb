@@ -20,9 +20,9 @@
       <tr class="documents-table-item">
         <td>
           <%= link_to doc.title, document_path(:id => doc.id), class: 'documents-table-item-link' %>
-          <%= link_to "<span class='glyphicon glyphicon-share' aria-hidden='true'></span>".html_safe, doc.uri, target: :_blank if doc.uri %>
+          <%= link_to "<i class='fa fa-share'></i>".html_safe, doc.uri, target: :_blank, title: t('txt.views.document.visit_website') if doc.uri %>
           <div>
-            <%= doc.classifications.first(5).map {|c| "<span class='glyphicon glyphicon-tag' aria-hidden='true'></span> #{link_to c.title, concept_path(c.concept_origin), target: :_blank}"}.join(" ").html_safe %>
+            <%= doc.classifications.first(5).map {|c| "#{link_to c.title, concept_path(c.concept_origin), target: :_blank, class: 'badge badge-secondary'}"}.join(" ").html_safe %>
           </div>
         </td>
         <td class="documents-table-item-classifications">
@@ -30,7 +30,7 @@
         </td>
         <td>
           <% if can? :use, :administration %>
-            <%= link_to  t("txt.common.delete"), document_path(doc), method: :delete, data: { confirm: t("txt.controllers.documents.index.delete_confirm") }, class: 'btn btn-danger btn-xs' %>
+            <%= link_to t("txt.common.delete"), document_path(doc), method: :delete, data: { confirm: t("txt.controllers.documents.index.delete_confirm") }, class: 'btn btn-danger btn-sm' %>
           <% end %>
         </td>
       </tr>

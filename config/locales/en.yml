@@ -10,6 +10,7 @@ en:
           delete_success: Document success deleted.
           delete_error: An error occurred. Could not delete document.
         new:
+          classify_url_desc:  URL to website or pdf document
           classify_url: classify url
           classify_text: classify text
           classify_process: classifying...
@@ -27,6 +28,9 @@ en:
           success: comment created successfully
     views:
       document:
+        auto_classify_title: AutoClassify
+        auto_classify_desc:  With AutoClassify you can classify websites, PDF documents and texts according to concepts from our UmweltTheraurus. Give it a try!
+        or: OR
         add_new_descriptors: Neue Deskriptoren hinzufügen
         comment: leave comment
         index: Index
@@ -43,6 +47,7 @@ en:
         confirm_reclassify: A reclassification includes the loss of all manually changed information.
         pref: Preferred
         alt: Alternative
+        visit_website: visit website
       autoclassify:
         thesaurus_explanation: In general usage, a thesaurus is a reference work that lists words grouped together according to similarity of meaning (containing synonyms and sometimes antonyms), in contrast to a dictionary, which provides definitions for words, and generally lists them in alphabetical order.
         text_area_field: searchtext

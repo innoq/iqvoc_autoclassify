@@ -51,3 +51,29 @@
   width: inherit;
   height: inherit;
 }
+
+.document-show-promote-button {
+  margin-right: 5px;
+}
+
+.document-show-promote-no-button {
+  margin-right: 23px;
+}
+
+.document-classification-item:hover {
+ background-color: #70ce3d;
+}
+
+.document-classification-action-column {
+  min-width: 90px;
+}
+
+.col-divider {
+  background: linear-gradient(to right, transparent calc(50% + 1px), #fff calc(50% + 1px)), linear-gradient(to right, #fff calc(50% - 1px), lightgrey calc(50% - 1px));
+  padding-top: 4rem;
+
+  span {
+    background-color: #fff;
+    padding: 1rem;
+  }
+}
