@@ -145,8 +145,6 @@ class DocumentsTest < ActionDispatch::IntegrationTest
 
     login 'administrator'
     visit new_document_path(lang: 'de')
-    assert page.has_content? 'Neues Dokument'
-    fill_in 'Titel', with: 'Mein Titel'
     fill_in 'Volltext', with: 'Foo Bar Baz'
     click_button 'Text klassifizieren'
 
@@ -158,8 +156,6 @@ class DocumentsTest < ActionDispatch::IntegrationTest
     documents_count = Document::Base.count
 
     visit new_document_path(lang: 'de')
-    assert page.has_content? 'Neues Dokument'
-    fill_in 'Titel', with: 'Mein Titel'
     fill_in 'Volltext', with: 'Foo Bar Baz'
     click_button 'Text klassifizieren'
 
