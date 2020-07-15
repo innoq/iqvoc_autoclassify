@@ -20,12 +20,11 @@
       <fieldset>
         <legend><%= t("txt.controllers.documents.new.classify_url_desc") %></legend>
         <%= f.form_group nil do %>
-          <%= text_field_tag :uri, nil, :class => 'form-control', placeholder: 'http://' %>
+          <%= f.text_field :uri, :class => 'form-control', placeholder: 'http://', hide_label: true %>
         <% end %>
 
         <%= f.button t("txt.controllers.documents.new.classify_url") , class: 'btn btn-primary', data: {disable_with: loading_indicator(t("txt.controllers.documents.new.classify_process"))} %>
       </fieldset>
     <% end %>
   </div>
-
 </div>
