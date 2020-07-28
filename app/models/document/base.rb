@@ -35,7 +35,7 @@ class Document::Base < ApplicationRecord
   class_attribute :weightings
   self.weightings = {
     'Labeling::SKOSXL::PrefLabel'   => 1.0,
-    'Labeling::SKOSXL::AltLabel'    => 1.0,
+    'Labeling::SKOSXL::AltLabel'    => 0.8,
     'Labeling::SKOSXL::HiddenLabel' => 0.3
   }
 
