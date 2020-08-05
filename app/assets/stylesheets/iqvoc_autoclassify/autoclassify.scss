@@ -77,3 +77,30 @@
     padding: 1rem;
   }
 }
+
+#auto-classify-analysed-text {
+  background-color: $gray-200;
+  padding: 1.2rem;
+}
+
+#auto-classify-results {
+  h2 {
+    font-size: 1.3rem;
+    font-weight: bold;
+  }
+
+  .auto-classify-result-list {
+    padding-left: 0;
+    list-style-type: none;
+
+    li {
+      padding: 0.4rem 0;
+    }
+  }
+
+  .auto-classify-result {
+    @extend .badge;
+    @extend .badge-primary;
+    font-size: 100%;
+  }
+}

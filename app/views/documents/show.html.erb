@@ -1,96 +1,27 @@
+<%= page_header title: t('txt.views.document.show.title') %>
+
 <% if @document.uri %>
-    <%= page_header :title => link_to(@document.title || @document.content_hash, @document.uri),
-                    :desc => "<br />#{Document::Base.human_attribute_name(:updated_at)}: #{l(@document.updated_at || Time.now)} <br />#{t "txt.views.document.last_automatic_update"}: #{@document.automatic_update ? l(@document.automatic_update) : '<i class="fa fa-minus"></i>'}<br />#{t "txt.views.document.last_manual_update"}: #{@document.manual_update ? l(@document.manual_update) : '<i class="fa fa-minus"></i>'}".html_safe %>
+  <%= simple_format(t('txt.views.document.show.description_url_analysis', url: link_to(t('txt.views.document.show.url'), @document.uri))) %>
 <% else %>
-    <%= page_header :title => @document.title || @document.content_hash %></h1>
+  <%= t('txt.views.document.show.description_text_analysis') %>
 <% end %>
 
-<% if @trace %>
-    <%= stylesheet_link_tag "iqvoc_autoclassify/jquery.mintip.css" %>
-    <%= content_for :scripts do %>
-        <%= javascript_include_tag "iqvoc_autoclassify/jquery.mintip.js" %>
-    <% end %>
-<% end %>
-
-<h2>
-    <%= t 'txt.views.autoclassify.concepts' %>
-<% if current_user %>
-    <%= link_to "<i class='fa fa-plus'></i> #{t 'txt.views.document.add_new_descriptors'}".html_safe, new_document_classification_path(@document), class: "pull-right" %>
-    <% end %>
-</h2>
-
-<% if @document.persisted? && @classifications %>
-
-  <table class="table">
-    <thead>
-      <th>#</th>
-      <th><%= t 'txt.views.autoclassify.concepts' %></th>
-      <th><%= t 'txt.views.document.weighting' %></th>
-      <th><%= t 'txt.views.document.places_of_discovery' %></th>
-      <th></th>
-    </thead>
-    <tbody>
-      <% @classifications.select {|c| c.concept}.each do |classification| %>
-        <tr class="document-classification-item">
-          <td><%= classification.rank %></td>
-          <td><%= link_to classification.to_s, concept_path(classification.concept) %></td>
-          <td class="weighting">[<%= "%4.2f" % classification.weighting if classification.weighting %>]</td>
-          <td class="weighting">
-            <%= classification.findings.try(:split, ", ").map { |f|
-              label = classification.concept.labels.find {|l| l.value == f}
-              link_to "#{label.value} (#{classification.concept.pref_labels.find {|l| l.value == f} ? t('txt.views.document.pref') : t('txt.views.document.alt')})", label_path(id: label.origin)
-            }.join(", ").html_safe if classification.findings
-            %>
-          </td>
-          <td class="document-classification-action-column">
-            <% if current_user %>
-              <%= link_to("<i class='fa fa-arrow-up'></i>".html_safe, promote_document_classification_path(@document.id, classification.id), method: :put, class: "document-show-promote-button") if classification.rank != 1 %>
-              <% if classification.rank == 1 %>
-                <span class="document-show-promote-no-button"></span>
-              <% end %>
-              <%= link_to("<i class='fa fa-arrow-down'></i>".html_safe, demote_document_classification_path(@document.id, classification.id), method: :put, class: "document-show-promote-button") if classification.rank != @document.classifications.size %>
-              <% if classification.rank == @document.classifications.size %>
-                <span class="document-show-promote-no-button"></span>
-              <% end %>
-              <%= link_to("<i class='fa fa-remove'></i>".html_safe, document_classification_path(@document.id, classification.id), method: :delete, class: "document-show-promote-button") %>
-            <% end %>
-          </td>
-        </tr>
-      <% end %>
-    </tbody>
-  </table>
-
-    <div class="autoclassify">
-        <%= paginate @classifications %>
+<div class="row pt-4">
+  <div class="col-md-8">
+    <div id="auto-classify-analysed-text">
+      <%= @document.content %>
     </div>
+  </div>
 
-    <hr/>
+  <div class="col-md-4" id="auto-classify-results">
+    <h2><%= t('txt.views.document.show.results') %></h2>
 
-    <%= content_tag(:div, render(:partial => "edit")) if current_user %>
-
-<% else %>
-
-    <%= content_tag(:ol) do %>
-        <% (Array.new(@document.classifications).sort_by { |c| -1 * c.weighting }).each do |classification| %>
-            <li>
-                <%= link_to classification.to_s, concept_path(classification.concept) %>
-                <% if @trace %>
-                    <%= raw classification_augmentation(@document, @classifications, classification) %>
-                <% end %>
-                <span class="weighting">[<%= "%4.2f" % classification.weighting %>]</span>
-            </li>
-        <% end %>
+    <ul class="auto-classify-result-list">
+    <% @classifications.select {|c| c.concept}.each do |classification| %>
+      <li>
+        <%= link_to classification.to_s, concept_path(classification.concept), class: 'auto-classify-result' %>
+      </li>
     <% end %>
-
-    <hr/>
-
-<% end %>
-
-<h2><%= Document::Base.human_attribute_name :content %></h2>
-<pre class="plaintext"><%= @document.content.try(:strip) %></pre>
-<%- if @trace -%>
-    <pre class="trace"><%= raw augmented_fulltext(@document) %></pre>
-    <% 10.times { concat '<br>'.html_safe } %>
-<%- end -%>
-
-<%= render "sidebar" %>
+    </ul>
+  </div>
+</div>
