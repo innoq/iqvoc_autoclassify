@@ -10,10 +10,15 @@ de:
           delete_success: Dokument wurde erfolgreich gelöscht.
           delete_error: Dokument konnte nicht gelöscht werden.
         new:
-          classify_url_desc:  URL zu HTML-Seite oder PDF-Dokument
-          classify_url: URL klassifizieren
-          classify_text: Text klassifizieren
+          title: Automatische Verschlagwortung
+          description:  "Finden Sie passende Schlagwörter zu Ihrem Text mit Hilfe der automatischen Verschlagwortung unseres Dienstes AutoClassify. Kopieren Sie hierzu Ihren Text in das folgende Textfeld und starten die Verschlagwortung.\n\n Alternativ können Sie auch eine Web-Adresse zu einem HTML- oder PDF-Dokument zur Verschlagwortung benutzen."
+          classify_text: Text verschlagworten
+          classify_url: URL verschlagworten
           classify_process: klassifiziere...
+          enter_text: Texteingabe
+          text_placeholder: Text eingeben/einfügen
+          enter_uri:  URL zu HTML-Seite oder PDF-Dokument
+          reset_text: Textfeld leeren
         save:
           success: Dokument erfolgreich gespeichert
         create:
@@ -32,9 +37,7 @@ de:
     views:
       document:
         auto_classify_title: AutoClassify
-        auto_classify_desc:  Mit unserem Dienst AutoClassify können Sie Internetseiten, PDF-Dokumente und Texte nach<br>Konzepten aus unserem UmweltTheraurus klassifizieren. Probieren Sie es aus!
         or: ODER
-        add_new_descriptors: Neue Deskriptoren hinzufügen
         comment: Kommentar hinterlassen
         index: Übersicht
         new_classifications_for: Neue Deskriptoren für

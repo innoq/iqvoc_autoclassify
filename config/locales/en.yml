@@ -10,10 +10,15 @@ en:
           delete_success: Document success deleted.
           delete_error: An error occurred. Could not delete document.
         new:
-          classify_url_desc:  URL to website or pdf document
+          title: AutoClassify
+          description:  "Find suitable keywords for your text with the automatic analysis of our AutoClassify service. Copy your text into the following text field and start the analysis.\n\nAlternatively, you can also use a web address to an HTML or PDF document for analysis."
           classify_url: classify url
           classify_text: classify text
           classify_process: classifying...
+          enter_text: Text
+          text_placeholder: enter/paste text
+          enter_uri:  URL to website or pdf document
+          reset_text: clear text
         save:
           success: document saved successfully
         create:
@@ -29,9 +34,7 @@ en:
     views:
       document:
         auto_classify_title: AutoClassify
-        auto_classify_desc:  With AutoClassify you can classify websites, PDF documents and texts according to concepts from our UmweltTheraurus. Give it a try!
         or: OR
-        add_new_descriptors: Neue Deskriptoren hinzufügen
         comment: leave comment
         index: Index
         new_classifications_for: Neue Deskriptoren für

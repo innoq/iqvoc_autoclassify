@@ -11,7 +11,7 @@ de:
       document/base:
         updated_at: Letzte Aktualisierung
         title: Titel
-        url: URL
-        content: Volltext
+        url: Weblink (HTML/PDF)
+        content: Text
       label/skosxl/base:
         auto_classify: Textanalysefunktion

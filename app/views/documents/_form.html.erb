@@ -18,7 +18,7 @@
   <div class="col-md-5">
     <%= bootstrap_form_for @document, :url => extracted_documents_path, :html => { :class => 'document-form' } do |f| %>
       <fieldset>
-        <legend><%= t("txt.controllers.documents.new.classify_url_desc") %></legend>
+        <legend><%= t("txt.controllers.documents.new.enter_uri") %></legend>
         <%= f.form_group nil do %>
           <%= f.text_field :uri, :class => 'form-control', placeholder: 'http://', hide_label: true %>
         <% end %>
