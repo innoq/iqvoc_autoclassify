@@ -10,7 +10,7 @@ Iqvoc.config.register_settings({
 
 Iqvoc::Configuration::Navigation.add_grouped({
   text: 'AutoClassify',
-  href: proc { autoclassify_path },
+  href: proc { new_document_path },
   controller: 'autoclassify'
 }, -3)
 
