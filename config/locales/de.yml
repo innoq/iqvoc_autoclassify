@@ -26,11 +26,6 @@ de:
         update:
           success: Dokument wurde erfolgreich aktualisiert.
           invalid: Bestätigung wurde nicht angewählt.
-        classifications:
-          addition_success: Deskriptoren %{concepts} wurden erfolgreich hinzugefügt
-          promote_success: Deskriptor %{concept} wurde erfolgreich um einen Rang verbessert (von %{old_rank} auf %{new_rank})
-          demote_success: Deskriptor %{concept} wurde erfolgreich um einen Rang verschlechtert (von %{old_rank} auf %{new_rank})
-          delete_success: Deskriptor %{concept} wurde erfolgreich gelöscht
       comments:
         save:
           success: Kommentar erfolgreich übermittelt
@@ -42,9 +37,6 @@ de:
         index: Übersicht
         new_classifications_for: Neue Deskriptoren für
         new: Neues Dokument
-        last_automatic_update: Automatische Änderung der Deskriptoren
-        last_manual_update: Manuelle Änderung der Deskriptoren
-        add_new_descriptors: Neue Deskriptoren hinzufügen
         places_of_discovery: Fundstellen
         reclassify: Klassifizierung neu berechnen
         response_limit_exceeded: Zeitüberschreitung bei Bearbeitung der Anfrage

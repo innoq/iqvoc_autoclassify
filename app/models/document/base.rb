@@ -94,7 +94,6 @@ class Document::Base < ApplicationRecord
         concept_origin: concept.origin,
         findings: weighting.drop(1).join(", "),
         weighting: weighting.first,
-        rank: index,
         title: concept.to_s)
     end
     create_classification_trace(trace: @trace.to_json) if persist?

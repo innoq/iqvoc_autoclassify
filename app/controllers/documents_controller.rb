@@ -59,7 +59,6 @@ class DocumentsController < ApplicationController
                               .find_by!(id: params[:id])
 
     @classifications = @document.classifications
-                                .reorder(:rank)
                                 .page(params[:page])
   end
 end
