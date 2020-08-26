@@ -17,10 +17,20 @@
     <h2><%= t('txt.views.document.show.results') %></h2>
 
     <ul class="auto-classify-result-list">
-    <% @classifications.select {|c| c.concept}.each do |classification| %>
+    <% if @document.persisted? && @classifications %>
+      <% @classifications.each do |classification| %>
+        <li>
+          <%= link_to concept_path(classification.concept), class: 'auto-classify-result' do %>
+            <%= "#{classification.to_s} [#{classification.weighting}]" %>
+          <% end %>
+        </li>
+      <% end %>
+    <% else %>
+      <% (Array.new(@document.classifications).sort_by { |c| -1 * c.weighting }).each do |classification| %>
       <li>
         <%= link_to classification.to_s, concept_path(classification.concept), class: 'auto-classify-result' %>
       </li>
+      <% end %>
     <% end %>
     </ul>
   </div>
