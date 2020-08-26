@@ -148,6 +148,6 @@ class DocumentConceptsTest < ActiveSupport::TestCase
     concepts = doc.concepts
 
     assert_equal 1, concepts.keys.length
-    assert_equal [2.0, 'ZweiteSahnePref', 'ZweiteSahneAlt'], concepts[@concepts['ZweiteSahnePref']]
+    assert_equal [1.8, 'ZweiteSahnePref', 'ZweiteSahneAlt'], concepts[@concepts['ZweiteSahnePref']]
   end
 end

@@ -62,7 +62,7 @@ class ClassificationWeightingTest < ActiveSupport::TestCase
 
     concepts = doc.concepts
     assert_equal 2, concepts.keys.length
-    assert_equal [1.0, 'All'], concepts[@concepts['Weltraum']] # via 'All' # FIXME: ?
+    assert_equal [0.8, 'All'], concepts[@concepts['Weltraum']] # via 'All' # FIXME: ?
     assert_nil concepts[@concepts['Kampf']]
     assert_nil concepts[@concepts['Pilot']]
     assert_equal [1.0, 'Weltraumkampfpilot'], concepts[@concepts['Weltraumkampfpilot']]
@@ -77,7 +77,7 @@ class ClassificationWeightingTest < ActiveSupport::TestCase
 
     concepts = doc.concepts
     assert_equal 3, concepts.keys.length
-    assert_equal [2.0, 'All', 'Weltraum'], concepts[@concepts['Weltraum']]
+    assert_equal [1.8, 'All', 'Weltraum'], concepts[@concepts['Weltraum']]
     assert_equal [2.0, 'Kampf'], concepts[@concepts['Kampf']]
     assert_equal [1.5, 'Auseinandersetzung'], concepts[@concepts['Auseinandersetzung']]
   end
@@ -98,7 +98,7 @@ class ClassificationWeightingTest < ActiveSupport::TestCase
 
     concepts = doc.concepts
     assert_equal 2, concepts.keys.length
-    assert_equal [1.0, 'All'], concepts[@concepts['Weltraum']] # via 'All' FIXME: ?
+    assert_equal [0.8, 'All'], concepts[@concepts['Weltraum']] # via 'All' FIXME: ?
     assert_nil concepts[@concepts['Kampf']]
     assert_nil concepts[@concepts['Pilot']]
     assert_equal [3.0, 'Weltraumkampfpilot'], concepts[@concepts['Weltraumkampfpilot']]

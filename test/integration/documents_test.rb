@@ -145,8 +145,8 @@ class DocumentsTest < ActionDispatch::IntegrationTest
 
     login 'administrator'
     visit new_document_path(lang: 'de')
-    fill_in 'Volltext', with: 'Foo Bar Baz'
-    click_button 'Text klassifizieren'
+    fill_in 'Text', with: 'Foo Bar Baz'
+    click_button 'Text verschlagworten'
 
     assert_equal Document::Base.count, documents_count+1 # one document than before
     assert page.current_path.include? '/de/documents/'
@@ -156,8 +156,8 @@ class DocumentsTest < ActionDispatch::IntegrationTest
     documents_count = Document::Base.count
 
     visit new_document_path(lang: 'de')
-    fill_in 'Volltext', with: 'Foo Bar Baz'
-    click_button 'Text klassifizieren'
+    fill_in 'Text', with: 'Foo Bar Baz'
+    click_button 'Text verschlagworten'
 
     assert_equal Document::Base.count, documents_count # same count as before
     assert_equal page.current_path, '/de/autoclassify/plain.html'
