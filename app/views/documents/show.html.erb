@@ -55,25 +55,30 @@
   <div class="col-md-4" id="auto-classify-results">
     <h2><%= t('txt.views.document.show.results') %></h2>
 
-    <ul class="auto-classify-result-list">
     <% if @document.persisted? && @classifications %>
-      <% @classifications.each do |classification| %>
-        <li>
-          <%= link_to concept_path(classification.concept), class: 'auto-classify-result' do %>
-            <%= classification.to_s %>
-            <% if current_user %>
-              [<%= classification.weighting %>]
-            <% end %>
-          <% end %>
-        </li>
-      <% end %>
+      <%# documents_controller#show %>
+      <% classifications = @classifications %>
     <% else %>
-      <% (Array.new(@document.classifications).sort_by { |c| -1 * c.weighting }).each do |classification| %>
-      <li>
-        <%= link_to classification.to_s, concept_path(classification.concept), class: 'auto-classify-result' %>
-      </li>
-      <% end %>
+      <%# plain_controller#create %>
+      <% classifications = Array.new(@document.classifications).sort_by { |c| -1 * c.weighting } %>
     <% end %>
+    <% limit = 15 # FIXME: all a bit hacky %>
+
+    <ul class="auto-classify-result-list">
+      <% classifications.take(limit).each do |classification| %>
+        <%= render partial: 'result_item', locals: { classification: classification } %>
+      <% end %>
     </ul>
+
+    <% if classifications.size > limit %>
+      <a href="#show-all" data-toggle="collapse"><%= "#{t('txt.views.document.show.show_all')} (#{classifications.size-limit})" %></a>
+      <div id="show-all" class="collapse">
+        <ul class="auto-classify-result-list">
+        <% classifications[limit,classifications.size].each do |classification| %>
+          <%= render partial: 'result_item', locals: { classification: classification } %>
+        <% end %>
+        </ul>
+      </div>
+    <% end %>
   </div>
 </div>

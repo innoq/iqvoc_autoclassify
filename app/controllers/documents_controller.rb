@@ -54,6 +54,5 @@ class DocumentsController < ApplicationController
                               .find_by!(id: params[:id])
 
     @classifications = @document.classifications
-                                .page(params[:page])
   end
 end

@@ -1,0 +1,8 @@
+<li>
+  <%= link_to concept_path(classification.concept), class: 'auto-classify-result' do %>
+    <%= classification.to_s %>
+    <% if current_user %>
+      [<%= classification.weighting %>]
+    <% end %>
+  <% end %>
+</li>

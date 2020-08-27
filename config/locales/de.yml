@@ -52,6 +52,7 @@ de:
           results: Gefundene Schlagwörter
           text: Text
           detailed_analysis: Detaillierte Analyse
+          show_all: Weitere Ergebnisse
       autoclassify:
         thesaurus_explanation: Der Thesaurus dient als Dokumentationssprache zum Indexieren, Speichern und Finden von Dokumenten. Die Relationen ermöglichen es, bei der Indexierung und Recherche passende Benennungen für gesuchte Begriffe zu finden. Bei der Suche können Thesauri durch die automatische Erweiterung der Suchanfrage auf Synonyme und Unterbegriffe hilfreich sein. (Wikipedia)
         text_area_field: Suchtext
