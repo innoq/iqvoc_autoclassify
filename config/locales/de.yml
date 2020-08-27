@@ -40,9 +40,7 @@ de:
         places_of_discovery: Fundstellen
         reclassify: Klassifizierung neu berechnen
         response_limit_exceeded: Zeitüberschreitung bei Bearbeitung der Anfrage
-        show_detailed_analysis: Detaillierte Analyse einblenden
         weighting: Gewichtung
-        confirm_reclassify: Eine Neuberechnung der Klassifizierung bedeutet den Verlust aller manuell veränderten Deskriptoren.
         pref: Bevorzugt
         alt: Alternativ
         visit_website: Website aufrufen
@@ -52,6 +50,8 @@ de:
           description_url_analysis: "Folgende Schlagwörter wurden bei der automatischen Analyse Ihrer %{url} gefunden:"
           url: URL
           results: Gefundene Schlagwörter
+          text: Text
+          detailed_analysis: Detaillierte Analyse
       autoclassify:
         thesaurus_explanation: Der Thesaurus dient als Dokumentationssprache zum Indexieren, Speichern und Finden von Dokumenten. Die Relationen ermöglichen es, bei der Indexierung und Recherche passende Benennungen für gesuchte Begriffe zu finden. Bei der Suche können Thesauri durch die automatische Erweiterung der Suchanfrage auf Synonyme und Unterbegriffe hilfreich sein. (Wikipedia)
         text_area_field: Suchtext

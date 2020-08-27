@@ -64,13 +64,11 @@ class DocumentsTest < ActionDispatch::IntegrationTest
   end
 
   test 'list matching concepts for the respective document in trace mode' do
-    skip
     login 'administrator'
     visit document_path(id: @documents[1], lang: 'de', trace: 1)
 
     assert page.has_selector?('pre.trace'), 'could not find trace area'
-    # FIXME: here is something wrong
-    #assert page.has_css? 'ol.trace > li', count: 3
+    assert page.has_css? 'ul.auto-classify-result-list li', count: 3
   end
 
   test 'reclassify document' do

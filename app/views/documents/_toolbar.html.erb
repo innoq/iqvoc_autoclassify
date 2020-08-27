@@ -1,0 +1,10 @@
+<div class="editing_versioning_toolbar">
+  <%= form_for @document, :url => document_path(:id => @document) do |f| %>
+    <%= hidden_field_tag :reclassify, '1' %>
+    <%= f.submit t('txt.views.document.reclassify'), class: 'btn btn-primary' %>
+
+    <% if can? :use, :administration %>
+      <%= link_to  t('txt.common.delete'), document_path(@document), method: :delete, data: { confirm: t('txt.controllers.documents.index.delete_confirm') }, class: 'btn btn-danger' %>
+    <% end %>
+  <% end %>
+</div>
