@@ -31,7 +31,7 @@ de:
           success: Kommentar erfolgreich übermittelt
     views:
       document:
-        auto_classify_title: AutoClassify
+        auto_classify_title: Automatische Textanalyse
         or: ODER
         comment: Kommentar hinterlassen
         index: Übersicht
