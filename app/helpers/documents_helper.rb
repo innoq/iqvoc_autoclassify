@@ -138,7 +138,7 @@ module DocumentsHelper
               concepts = Iqvoc::Concept.base_class.where(id: concepts) # XXX: database queries don't belong into helpers!?
               concepts = concepts.index_by(&:id)
               classes << 'concepts'
-              caption = concepts.first.last.class.model_name.human(count: 2)
+              caption = Iqvoc::Concept.base_class.model_name.human(count: 2)
               details << render_ulist(caption, concepts) do |id, concept|
                 uri = concept_path(id: concept.origin)
                 link_to(concept.to_s, uri) # XXX: `to_s` is expensive (label loaded lazily)

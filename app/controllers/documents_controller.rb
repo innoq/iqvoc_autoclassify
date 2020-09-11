@@ -53,6 +53,6 @@ class DocumentsController < ApplicationController
     @document = Document::Base.includes(:classifications)
                               .find_by!(id: params[:id])
 
-    @classifications = @document.classifications
+    @classifications = @document.classifications.select { |c| c.concept.present? }
   end
 end
