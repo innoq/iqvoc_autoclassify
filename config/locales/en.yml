@@ -46,14 +46,13 @@ en:
         visit_website: visit website
         show:
           title: Automatische Verschlagwortung
-          description_text_analysis: 'Folgende Schlagwörter wurden bei der automatischen Analyse Ihres Textes gefunden:'
-          description_url_analysis: "Folgende Schlagwörter wurden bei der automatischen Analyse Ihrer %{url} gefunden:"
+          description_url_analysis: 'Sie haben folgende URL verschlagwortet:'
           url: URL
           results: Gefundene Schlagwörter
           text: Text
           detailed_analysis: Detailled analysis
           show_all: More results
-          no_results: No concepts found
+          no_results: No
       autoclassify:
         thesaurus_explanation: In general usage, a thesaurus is a reference work that lists words grouped together according to similarity of meaning (containing synonyms and sometimes antonyms), in contrast to a dictionary, which provides definitions for words, and generally lists them in alphabetical order.
         text_area_field: searchtext

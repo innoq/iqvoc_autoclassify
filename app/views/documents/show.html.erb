@@ -12,9 +12,8 @@
     <%= render 'toolbar' if current_user %>
 
     <% if @document.uri %>
-      <%= simple_format(t('txt.views.document.show.description_url_analysis', url: link_to(t('txt.views.document.show.url'), @document.uri))) %>
-    <% else %>
-      <%= t('txt.views.document.show.description_text_analysis') %>
+      <%= t('txt.views.document.show.description_url_analysis') %>
+      <%= link_to(@document.uri, @document.uri, target: '_blank') %>
     <% end %>
   </div>
 

@@ -46,8 +46,7 @@ de:
         visit_website: Website aufrufen
         show:
           title: Automatische Verschlagwortung
-          description_text_analysis: 'Folgende Schlagwörter wurden bei der automatischen Analyse Ihres Textes gefunden:'
-          description_url_analysis: "Folgende Schlagwörter wurden bei der automatischen Analyse Ihrer %{url} gefunden:"
+          description_url_analysis: 'Sie haben folgende URL verschlagwortet:'
           url: URL
           results: Gefundene Schlagwörter
           text: Text
