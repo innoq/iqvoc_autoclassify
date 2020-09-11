@@ -53,6 +53,7 @@ en:
           text: Text
           detailed_analysis: Detailled analysis
           show_all: More results
+          no_results: No concepts found
       autoclassify:
         thesaurus_explanation: In general usage, a thesaurus is a reference work that lists words grouped together according to similarity of meaning (containing synonyms and sometimes antonyms), in contrast to a dictionary, which provides definitions for words, and generally lists them in alphabetical order.
         text_area_field: searchtext

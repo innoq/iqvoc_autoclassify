@@ -1,7 +1,5 @@
 <%= page_header title: t('txt.views.document.show.title') %>
 
-<%= render 'toolbar' if current_user %>
-
 <% if current_user %>
   <%= stylesheet_link_tag "iqvoc_autoclassify/jquery.mintip.css" %>
   <%= content_for :scripts do %>
@@ -9,11 +7,23 @@
   <% end %>
 <% end %>
 
-<% if @document.uri %>
-  <%= simple_format(t('txt.views.document.show.description_url_analysis', url: link_to(t('txt.views.document.show.url'), @document.uri))) %>
-<% else %>
-  <%= t('txt.views.document.show.description_text_analysis') %>
-<% end %>
+<div class="row">
+  <div class="col-md-8">
+    <%= render 'toolbar' if current_user %>
+
+    <% if @document.uri %>
+      <%= simple_format(t('txt.views.document.show.description_url_analysis', url: link_to(t('txt.views.document.show.url'), @document.uri))) %>
+    <% else %>
+      <%= t('txt.views.document.show.description_text_analysis') %>
+    <% end %>
+  </div>
+
+  <div class="col-md-4">
+    <div class="list-group">
+      <%= render 'sidebar_content' %>
+    </div>
+  </div>
+</div>
 
 <div class="row pt-4">
   <div class="col-md-8">
@@ -41,9 +51,13 @@
           </div>
 
           <div class="tab-pane fade" id="extended" role="tabpanel" aria-labelledby="url-tab">
-            <pre class="trace">
-            <%= raw augmented_fulltext(@document) %>
-            </pre>
+            <% if @classifications.empty? %>
+              <%= t('txt.views.document.show.no_results') %>
+            <% else %>
+              <pre class="trace">
+              <%= raw augmented_fulltext(@document) %>
+              </pre>
+            <% end %>
           </div>
         </div>
       <% else %>
@@ -64,11 +78,17 @@
     <% end %>
     <% limit = 15 # FIXME: all a bit hacky %>
 
-    <ul class="auto-classify-result-list">
-      <% classifications.take(limit).each do |classification| %>
-        <%= render partial: 'result_item', locals: { classification: classification } %>
-      <% end %>
-    </ul>
+    <% if classifications.any? %>
+      <ul class="auto-classify-result-list">
+        <% classifications.take(limit).each do |classification| %>
+          <%= render partial: 'result_item', locals: { classification: classification } %>
+        <% end %>
+      </ul>
+    <% else %>
+      <div class="alert alert-info" role="alert">
+        <%= t('txt.views.document.show.no_results') %>
+      </div>
+    <% end %>
 
     <% if classifications.size > limit %>
       <a href="#show-all" data-toggle="collapse"><%= "#{t('txt.views.document.show.show_all')} (#{classifications.size-limit})" %></a>
