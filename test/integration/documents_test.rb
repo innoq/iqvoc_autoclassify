@@ -59,7 +59,7 @@ class DocumentsTest < ActionDispatch::IntegrationTest
   test 'list matching concepts for the respective document' do
     visit document_path(id: @documents[1], lang: 'de')
 
-    assert page.has_css? 'table tbody tr', count: 3
+    assert page.has_css? 'ul.auto-classify-result-list li', count: 3
     assert page.has_no_selector?('pre.trace'), 'trace area should not be shown'
   end
 
@@ -68,8 +68,7 @@ class DocumentsTest < ActionDispatch::IntegrationTest
     visit document_path(id: @documents[1], lang: 'de', trace: 1)
 
     assert page.has_selector?('pre.trace'), 'could not find trace area'
-    # FIXME: here is something wrong
-    #assert page.has_css? 'ol.trace > li', count: 3
+    assert page.has_css? 'ul.auto-classify-result-list li', count: 3
   end
 
   test 'reclassify document' do
@@ -84,7 +83,7 @@ class DocumentsTest < ActionDispatch::IntegrationTest
     click_button 'Klassifizierung neu berechnen'
     assert page.has_content?('Dokument wurde erfolgreich aktualisiert.')
     visit document_path(id: @documents[0].id, format: 'html', lang: 'de')
-    assert page.has_css?('table tbody tr', count: 2)
+    assert page.has_css?('ul.auto-classify-result-list li', count: 2)
   end
 
   test 'turtle rdf representation' do

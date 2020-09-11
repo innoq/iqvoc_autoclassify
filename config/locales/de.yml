@@ -14,7 +14,7 @@ de:
           description:  "Finden Sie passende Schlagwörter zu Ihrem Text mit Hilfe der automatischen Verschlagwortung unseres Dienstes AutoClassify. Kopieren Sie hierzu Ihren Text in das folgende Textfeld und starten die Verschlagwortung.\n\n Alternativ können Sie auch eine Web-Adresse zu einem HTML- oder PDF-Dokument zur Verschlagwortung benutzen."
           classify_text: Text verschlagworten
           classify_url: URL verschlagworten
-          classify_process: klassifiziere...
+          classify_process: verschlagworte...
           enter_text: Texteingabe
           text_placeholder: Text eingeben/einfügen
           enter_uri:  URL zu HTML-Seite oder PDF-Dokument
@@ -26,34 +26,33 @@ de:
         update:
           success: Dokument wurde erfolgreich aktualisiert.
           invalid: Bestätigung wurde nicht angewählt.
-        classifications:
-          addition_success: Deskriptoren %{concepts} wurden erfolgreich hinzugefügt
-          promote_success: Deskriptor %{concept} wurde erfolgreich um einen Rang verbessert (von %{old_rank} auf %{new_rank})
-          demote_success: Deskriptor %{concept} wurde erfolgreich um einen Rang verschlechtert (von %{old_rank} auf %{new_rank})
-          delete_success: Deskriptor %{concept} wurde erfolgreich gelöscht
       comments:
         save:
           success: Kommentar erfolgreich übermittelt
     views:
       document:
-        auto_classify_title: AutoClassify
+        auto_classify_title: Automatische Textanalyse
         or: ODER
         comment: Kommentar hinterlassen
         index: Übersicht
         new_classifications_for: Neue Deskriptoren für
         new: Neues Dokument
-        last_automatic_update: Automatische Änderung der Deskriptoren
-        last_manual_update: Manuelle Änderung der Deskriptoren
-        add_new_descriptors: Neue Deskriptoren hinzufügen
         places_of_discovery: Fundstellen
         reclassify: Klassifizierung neu berechnen
         response_limit_exceeded: Zeitüberschreitung bei Bearbeitung der Anfrage
-        show_detailed_analysis: Detaillierte Analyse einblenden
         weighting: Gewichtung
-        confirm_reclassify: Eine Neuberechnung der Klassifizierung bedeutet den Verlust aller manuell veränderten Deskriptoren.
         pref: Bevorzugt
         alt: Alternativ
         visit_website: Website aufrufen
+        show:
+          title: Automatische Verschlagwortung
+          description_url_analysis: 'Sie haben folgende URL verschlagwortet:'
+          url: URL
+          results: Gefundene Schlagwörter
+          text: Text
+          detailed_analysis: Detaillierte Analyse
+          show_all: Weitere Ergebnisse
+          no_results: Es wurden keine Schlagwörter gefunden
       autoclassify:
         thesaurus_explanation: Der Thesaurus dient als Dokumentationssprache zum Indexieren, Speichern und Finden von Dokumenten. Die Relationen ermöglichen es, bei der Indexierung und Recherche passende Benennungen für gesuchte Begriffe zu finden. Bei der Suche können Thesauri durch die automatische Erweiterung der Suchanfrage auf Synonyme und Unterbegriffe hilfreich sein. (Wikipedia)
         text_area_field: Suchtext

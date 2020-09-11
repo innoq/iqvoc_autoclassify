@@ -13,11 +13,6 @@ class DocumentsController < ApplicationController
 
   def show
     get_document
-
-    if params[:trace] && current_user
-      @trace = true
-      @classifications = @classifications.per(100)
-    end
   end
 
   def new
@@ -58,8 +53,6 @@ class DocumentsController < ApplicationController
     @document = Document::Base.includes(:classifications)
                               .find_by!(id: params[:id])
 
-    @classifications = @document.classifications
-                                .reorder(:rank)
-                                .page(params[:page])
+    @classifications = @document.classifications.select { |c| c.concept.present? }
   end
 end

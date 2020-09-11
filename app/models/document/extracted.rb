@@ -35,8 +35,6 @@ class Document::Extracted < Document::Base
   end
 
   def reclassify!
-    self.manual_update = nil
-    self.automatic_update = DateTime.now
     reset!
     extract!
     classify!
