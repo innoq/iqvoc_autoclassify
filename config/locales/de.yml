@@ -11,7 +11,7 @@ de:
           delete_error: Dokument konnte nicht gelöscht werden.
         new:
           title: Automatische Verschlagwortung
-          description:  "Finden Sie passende Schlagwörter zu Ihrem Text mit Hilfe der automatischen Verschlagwortung unseres Dienstes AutoClassify. Kopieren Sie hierzu Ihren Text in das folgende Textfeld und starten die Verschlagwortung.\n\n Alternativ können Sie auch eine Web-Adresse zu einem HTML- oder PDF-Dokument zur Verschlagwortung benutzen."
+          description:  "Finden Sie passende Schlagwörter zu Ihrem Text mit Hilfe der automatischen Verschlagwortung unseres Dienstes AutoClassify. Kopieren Sie hierzu Ihren Text in das folgende Textfeld und starten Sie die Verschlagwortung.\n\n Alternativ können Sie auch eine Web-Adresse zu einem HTML- oder PDF-Dokument zur Verschlagwortung benutzen."
           classify_text: Text verschlagworten
           classify_url: URL verschlagworten
           classify_process: verschlagworte...
@@ -38,7 +38,7 @@ de:
         new_classifications_for: Neue Deskriptoren für
         new: Neues Dokument
         places_of_discovery: Fundstellen
-        reclassify: Klassifizierung neu berechnen
+        reclassify: Neu verschlagworten
         response_limit_exceeded: Zeitüberschreitung bei Bearbeitung der Anfrage
         weighting: Gewichtung
         pref: Bevorzugt
