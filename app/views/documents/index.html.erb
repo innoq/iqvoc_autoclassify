@@ -11,7 +11,7 @@
   <thead>
     <tr>
       <th><%= Document::Base.human_attribute_name(:title) %></th>
-      <th><%= t "txt.views.autoclassify.concepts" %></th>
+      <th><%= ::Concept::Base.model_name.human(count: 2) %></th>
       <th></th>
     </tr>
   </thead>

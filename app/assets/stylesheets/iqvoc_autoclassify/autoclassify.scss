@@ -52,14 +52,6 @@
   height: inherit;
 }
 
-.document-classification-item:hover {
- background-color: #70ce3d;
-}
-
-.document-classification-action-column {
-  min-width: 90px;
-}
-
 .col-divider {
   background: linear-gradient(to right, transparent calc(50% + 1px), #fff calc(50% + 1px)), linear-gradient(to right, #fff calc(50% - 1px), lightgrey calc(50% - 1px));
   padding-top: 4rem;
@@ -96,5 +88,44 @@
     font-size: 100%;
     white-space: normal;
     text-align: left;
+  }
+}
+
+.tag-wizard {
+  margin-top: 3rem;
+  height: 15rem;
+
+  .frontpage-title {
+    .display-4 {
+      font-family: 'Fira Sans Light';
+    }
+
+    .lead {
+      font-size: 1.5rem;
+      color: $gray-600;
+      font-family: 'Fira Sans ExtraLight';
+    }
+  }
+
+  .tag-wizard-body {
+
+    .autoclassify-col {
+      @include media-breakpoint-up(md) {
+        border-right: 1px solid $border-color;
+        padding-right: 3rem;
+      }
+    }
+
+    .freeclassify-col {
+      @include media-breakpoint-up(md) {
+        padding-left: 5rem;
+      }
+    }
+
+    h2 {
+      font-family: 'Fira Sans Regular';
+      font-size: $h5-font-size;
+      font-weight: bold;
+    }
   }
 }

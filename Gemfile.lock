@@ -1,6 +1,6 @@
 GIT
   remote: git://github.com/innoq/iqvoc.git
-  revision: 8e13ed512f93af266ce827cee63065e494224905
+  revision: 62f14f10b24f492a277f922cbe487132aa7736ef
   branch: master
   specs:
     iqvoc (4.12.2)
@@ -26,6 +26,7 @@ GIT
       maruku
       nokogiri
       puma (>= 3.11, < 5.0)
+      rack-mini-profiler
       rails (>= 5.2.0, < 6.0)
       rails_autolink
       rdf-vocab
@@ -43,7 +44,7 @@ GIT
 
 GIT
   remote: git://github.com/innoq/iqvoc_inflectionals.git
-  revision: 8e0f408ee7f361226efee5a2f8a2989ac9b01819
+  revision: a16797a2d97b08e54055fae7b24647e7e57ea709
   branch: master
   specs:
     iqvoc_inflectionals (2.9.0)
@@ -52,7 +53,7 @@ GIT
 
 GIT
   remote: git://github.com/innoq/iqvoc_skosxl.git
-  revision: 4d56a7548e1dd1277524cf6577fabb956de2430d
+  revision: e68e12fc1ed48ec580980b176e643677cd806a51
   branch: master
   specs:
     iqvoc_skosxl (2.9.2)
@@ -281,7 +282,7 @@ GEM
     mysql2 (0.4.10)
     net-http-persistent (3.1.0)
       connection_pool (~> 2.2)
-    nio4r (2.5.2)
+    nio4r (2.5.3)
     nokogiri (1.10.9)
       mini_portile2 (~> 2.4.0)
     nokogiri (1.10.9-java)
@@ -310,9 +311,11 @@ GEM
     pry-rails (0.3.9)
       pry (>= 0.10.4)
     public_suffix (4.0.4)
-    puma (4.3.5)
+    puma (4.3.6)
       nio4r (~> 2.0)
     rack (2.2.2)
+    rack-mini-profiler (2.0.4)
+      rack (>= 1.2.0)
     rack-test (1.1.0)
       rack (>= 1.0, < 3)
     rails (5.2.4.2)
@@ -349,7 +352,7 @@ GEM
     rb-fsevent (0.10.3)
     rb-inotify (0.10.1)
       ffi (~> 1.0)
-    rdf (3.1.5)
+    rdf (3.1.6)
       hamster (~> 3.0)
       link_header (~> 0.0, >= 0.0.8)
     rdf-aggregate-repo (3.1.0)

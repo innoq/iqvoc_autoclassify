@@ -5,6 +5,7 @@ Rails.application.routes.draw do
     end
 
     get 'autoclassify' => 'autoclassify#index'
+    get 'freeclassify' => 'free_classification#index'
 
     get  'autoclassify/extract' => 'documents/extracted#create'
     post 'autoclassify/extract' => 'documents/extracted#create',

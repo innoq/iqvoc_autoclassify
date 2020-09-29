@@ -9,8 +9,8 @@ Iqvoc.config.register_settings({
 })
 
 Iqvoc::Configuration::Navigation.add_grouped({
-  text: proc { t('txt.views.document.auto_classify_title') },
-  href: proc { new_document_path },
+  text: proc { t('txt.views.autoclassify.tag_wizard_title') },
+  href: proc { autoclassify_path },
   controller: 'autoclassify'
 }, -3)
 
