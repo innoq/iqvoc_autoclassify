@@ -80,7 +80,7 @@ class DocumentsTest < ActionDispatch::IntegrationTest
     Maker.concept pref_labels: [Maker.label('lorem')]
     Maker.concept pref_labels: [Maker.label('dolor')]
 
-    click_button 'Klassifizierung neu berechnen'
+    click_button I18n.t('txt.views.document.reclassify')
     assert page.has_content?('Dokument wurde erfolgreich aktualisiert.')
     visit document_path(id: @documents[0].id, format: 'html', lang: 'de')
     assert page.has_css?('ul.auto-classify-result-list li', count: 2)
