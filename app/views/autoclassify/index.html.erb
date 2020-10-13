@@ -1,4 +1,4 @@
-<div class="tag-wizard">
+<div class="autoclassify">
   <div class="frontpage-title">
     <h1 class="display-4">
       <%= t('txt.views.autoclassify.tag_wizard_title') %>
@@ -10,7 +10,7 @@
   </div>
 
   <div class="tag-wizard-body row justify-content-between mt-5">
-    <div class="autoclassify-col col-md-6 mt-5">
+    <div class="col-left col-md-6 mt-5">
       <h2><%= t('txt.views.autoclassify.auto_classify_title') %></h2>
 
       <p><%= t('txt.views.autoclassify.auto_classify_desc') %></p>
@@ -18,7 +18,7 @@
       <%= link_to t('txt.views.autoclassify.auto_classify_title'), new_document_path, class: 'btn btn-primary mt-3' %>
     </div>
 
-    <div class="freeclassify-col col-md-6 mt-5">
+    <div class="col-right-col col-md-6 mt-5">
       <h2><%= t('txt.views.autoclassify.free_classify_title') %></h2>
 
       <p><%= t('txt.views.autoclassify.free_classify_desc') %></p>

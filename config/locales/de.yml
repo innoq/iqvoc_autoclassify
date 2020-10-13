@@ -60,6 +60,14 @@ de:
         auto_classify_desc: Finden Sie passende Schlagwörter zu Ihrem Text mit Hilfe des SNS-Dienstes AutoClassify.
         free_classify_title: Freie Verschlagwortung
         free_classify_desc: Stöbern Sie im Umweltthesaurus und wählen Sie selbst passende Schlagwörter zu Ihrem Text aus.
+      free_classification:
+        seatch_input_label: Schlagwortsuche
+        results_title: Ihre Schlagwörter
+        no_results: Sie haben noch keine Schlagwörter ausgewählt
+        copy_all_to_clipboard: Alle in Zwischenablage kopieren
+        copy_to_clipboard: In Zwischenablage kopieren
+        query_placeholder: z.B. Umwelt
+        query_help_block: Tippen um nach Schlagwörtern zu suchen
     textractor:
       http_error: HTTP-Fehler
       response_limit_exceeded: Zeitüberschreitung bei Bearbeitung der Anfrage

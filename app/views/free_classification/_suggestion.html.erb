@@ -1,0 +1,6 @@
+<% if owner = result.owner %>
+  <li class="search-result">
+    <% link_value = (result.target.value == owner.to_s ? owner.to_s : "#{result.target.value} &rarr; #{owner.to_s}".html_safe) %>
+    <%= link_to(link_value, freeclassify_url(concepts: @selected + [owner.origin], query: params[:query]), class: (@selected.include? owner.origin) ? 'unpublished' : '') %>
+  </li>
+<% end %>
