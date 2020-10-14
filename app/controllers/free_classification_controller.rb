@@ -11,6 +11,16 @@ class FreeClassificationController < ApplicationController
 
     @selected = search_params[:concepts] || []
     @results = Iqvoc::Concept.base_class.where('concepts.origin IN (?)', @selected) || []
+
+    respond_to do |format|
+      format.html {
+        if request.headers['Accept'] == 'text/html; fragment=true'
+          render template: 'free_classification/_suggestion_list', layout: false
+        else
+          render :index, layout: with_layout?
+        end
+      }
+    end
   end
 
   private
