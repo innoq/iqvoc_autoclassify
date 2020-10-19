@@ -64,6 +64,7 @@ de:
         seatch_input_label: Schlagwortsuche
         results_title: Ihre Schlagwörter
         no_results: Sie haben noch keine Schlagwörter ausgewählt
+        remove_result_item: Schlagwort entfernen
         copy_all_to_clipboard: Alle in Zwischenablage kopieren
         copy_to_clipboard: In Zwischenablage kopieren
         query_placeholder: z.B. Umwelt

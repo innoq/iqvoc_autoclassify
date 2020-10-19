@@ -1,5 +1,11 @@
 <li>
-  <%= link_to concept_path(result), class: 'auto-classify-result' do %>
-    <%= result.to_s %>
-  <% end %>
+  <span class="auto-classify-result">
+    <%= link_to concept_path(result) do %>
+      <%= result.to_s %>
+    <% end %>
+
+    <%= link_to(freeclassify_url(concepts: @selected - [result.origin], query: params[:query]), title: t('txt.views.free_classification.remove_result_item')) do %>
+      <i class="fa fa-times" aria-hidden="true"></i>
+    <% end %>
+  </span>
 </li>

@@ -89,6 +89,10 @@
   font-size: 100%;
   white-space: normal;
   text-align: left;
+
+  a {
+    color: $white;
+  }
 }
 
 .autoclassify {
