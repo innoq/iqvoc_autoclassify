@@ -66,8 +66,6 @@
   </div>
 
   <div class="col-md-4" id="auto-classify-results">
-    <h2><%= t('txt.views.document.show.results') %></h2>
-
     <% if @document.persisted? && @classifications %>
       <%# documents_controller#show %>
       <% classifications = @classifications %>
@@ -76,6 +74,15 @@
       <% classifications = Array.new(@document.classifications).sort_by { |c| -1 * c.weighting } %>
     <% end %>
     <% limit = 15 # FIXME: all a bit hacky %>
+
+    <h2>
+      <%= t('txt.views.document.show.results') %>
+      <% if classifications.any? %>
+        <button type="button" class="btn-clipboard-multiple btn btn-link p-0" data-toggle="tooltip" title="<%= t('txt.views.free_classification.copy_all_to_clipboard') %>" data-clipboard-targets=".auto-classify-result .result-item" data-clipboard-targets-join-separator=", ">
+          <i class="fa fa-clone" aria-hidden="true"></i>
+        </button>
+      <% end %>
+    </h2>
 
     <% if classifications.any? %>
       <ul class="auto-classify-result-list">
