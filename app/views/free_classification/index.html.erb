@@ -17,6 +17,8 @@
               <%= t('txt.views.free_classification.query_help_block') %>
             </small>
           </div>
+          <%= submit_tag t('txt.views.navigation.search'), class: 'btn btn-primary' %>
+
           <% @selected.each do |s| %>
             <%= hidden_field_tag 'concepts[]', s %>
           <% end %>
