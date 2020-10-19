@@ -65,8 +65,9 @@ de:
         results_title: Ihre Schlagwörter
         no_results: Sie haben noch keine Schlagwörter ausgewählt
         remove_result_item: Schlagwort entfernen
-        copy_all_to_clipboard: Alle in Zwischenablage kopieren
-        copy_to_clipboard: In Zwischenablage kopieren
+        remove_all_result_items: Alle Schlagwörter entfernen
+        copy_all_to_clipboard: Alle Schlagwörter in Zwischenablage kopieren
+        copy_to_clipboard: Schlagwort in Zwischenablage kopieren
         query_placeholder: z.B. Umwelt
         query_help_block: Tippen um nach Schlagwörtern zu suchen
     textractor:

@@ -27,7 +27,10 @@
     </div>
 
     <div class="col-right col-md-6">
-      <h2 class="mb-4"><%= t('txt.views.free_classification.results_title') %></h2>
+      <h2 class="mb-4">
+        <%= t('txt.views.free_classification.results_title') %>
+        <%= render partial: 'controls' %>
+      </h2>
 
       <%= render partial: 'result_list' %>
     </div>

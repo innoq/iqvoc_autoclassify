@@ -10,4 +10,18 @@ jQuery(document).ready(function($) {
 		var html = el.next(".details").remove().html();
 		el.mintip({ content: html, allowHTML: true });
 	});
+
+	new ClipboardJS('.btn-clipboard');
+
+	new ClipboardJS('.btn-clipboard-multiple', {
+		text: function (trigger) {
+			var targetSelector = $(trigger).data('clipboard-targets');
+			var joinSeparator = $(trigger).data('clipboard-targets-join-separator');
+			var targets = $(targetSelector);
+
+			return targets.toArray().map(function(element) {
+				return element.text.trim()
+			}).join(joinSeparator);
+		}
+	});
 });
