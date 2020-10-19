@@ -29,17 +29,7 @@
     <div class="col-right col-md-6">
       <h2 class="mb-4"><%= t('txt.views.free_classification.results_title') %></h2>
 
-      <% if @results.any? %>
-        <ul class="auto-classify-result-list">
-          <% @results.each do |result| %>
-            <%= render partial: 'result_item', locals: { result: result } %>
-          <% end %>
-        </ul>
-      <% else %>
-        <div class="alert alert-info" role="alert">
-          <%= t('txt.views.free_classification.no_results') %>
-        </div>
-      <% end %>
+      <%= render partial: 'result_list' %>
     </div>
 
   </div>

@@ -1,0 +1,11 @@
+<% if @results.any? %>
+  <ul class="auto-classify-result-list">
+    <% @results.each do |result| %>
+      <%= render partial: 'result_item', locals: { result: result } %>
+    <% end %>
+  </ul>
+<% else %>
+  <div class="alert alert-info" role="alert">
+    <%= t('txt.views.free_classification.no_results') %>
+  </div>
+<% end %>

@@ -2,7 +2,7 @@
   <ul class="search-results list-unstyled border mt-5 p-2">
     <% if @suggestions.any? %>
       <% @suggestions.each do |s| %>
-        <%= render 'suggestion', result: s %>
+        <%= render 'suggestion_item', result: s %>
       <% end %>
     <% else %>
       <li class="p-2">
