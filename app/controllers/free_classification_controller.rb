@@ -7,7 +7,7 @@ class FreeClassificationController < ApplicationController
                    else
                      []
                    end
-    @suggestions = Kaminari.paginate_array(s, total_count: 15)
+    @suggestions = Kaminari.paginate_array(s, total_count: 50)
 
     @selected = search_params[:concepts] || []
     @results = Iqvoc::Concept.base_class.where('concepts.origin IN (?)', @selected) || []
