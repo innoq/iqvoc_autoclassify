@@ -33,13 +33,21 @@ class FreeClassificationController < ApplicationController
     query_str = build_query_string(params)
 
     scope = Labeling::SKOSXL::Base.includes(:target)
+                .where.not(type: 'Labeling::SKOSXL::HiddenLabel')
                 .references(:labels, :concepts)
                 .joins(:target)
                 .order(Arel.sql("LENGTH(#{Label::Base.table_name}.value), #{Label::Base.table_name}.value ASC"))
 
+    # exclude concepts belonging to Ordnungsdeskriptoren collection
+    od_collection = Iqvoc::Collection.base_class.includes(:members).find_by(origin: 'OD')
+    if od_collection
+      od_concept_ids = od_collection.members.map(&:target_id)
+    end
+
     # target concepts
     concepts = Iqvoc::Concept.base_class
                    .where(top_term: false)
+                   .where.not(id: od_concept_ids)
                    .published
                    .not_expired
     scope = scope.includes(:owner).merge(concepts)
@@ -49,13 +57,6 @@ class FreeClassificationController < ApplicationController
                  .by_language(params[:languages].to_a)
                  .published
     scope = scope.merge(labels)
-
-    # TODO: exclude concepts belonging to Ordnungsdeskriptoren collection?
-    # collection = Iqvoc::Collection.base_class.find_by(origin: 'OD')
-    # if collection
-    #   scope = scope.includes(owner: {collection_members: :collection})
-    #   scope = scope.where.not("#{Collection::Member::Base.table_name}.collection_id" => collection.id)
-    # end
 
     scope
   end
