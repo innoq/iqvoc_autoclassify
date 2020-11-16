@@ -70,6 +70,7 @@ de:
         copy_to_clipboard: Schlagwort in Zwischenablage kopieren
         query_placeholder: z.B. Umwelt
         query_help_block: Tippen um nach Schlagwörtern zu suchen
+        query_input_too_short: Bitte geben Sie einen Suchbegriff ein der mindestens 2 Zeichen lang ist
     textractor:
       http_error: HTTP-Fehler
       response_limit_exceeded: Zeitüberschreitung bei Bearbeitung der Anfrage
