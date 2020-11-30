@@ -14,12 +14,14 @@ Iqvoc::Configuration::Navigation.add_grouped({
   controller: 'documents'
 }, -3)
 
-# TODO: new default when Verschlagwortungsassistent is released
-# Iqvoc::Configuration::Navigation.add_grouped({
-#   text: proc { t('txt.views.autoclassify.tag_wizard_title') },
-#   href: proc { autoclassify_path },
-#   controller: 'autoclassify'
-# }, -3)
+# show upcoming link in dev & staging
+if Rails.env.development? || Rails.env.staging?
+  Iqvoc::Configuration::Navigation.add_grouped({
+    text: proc { t('txt.views.autoclassify.tag_wizard_title') },
+    href: proc { autoclassify_path },
+    controller: 'autoclassify'
+  }, -3)
+end
 
 Iqvoc.core_assets += %w(iqvoc_autoclassify/jquery.mintip.css iqvoc_autoclassify/jquery.mintip.js)
 
