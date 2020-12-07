@@ -71,6 +71,10 @@ de:
         query_placeholder: z.B. Umwelt
         query_help_block: Tippen um nach Schlagwörtern zu suchen
         query_input_too_short: Bitte geben Sie einen Suchbegriff ein der mindestens 2 Zeichen lang ist
+        settings: Einstellungen
+        include_alt_labels: Alternative Bezeichnungen einbeziehen
+        include_used_for_labels: BK-Bezeichnung (Benutzt-Für) einbeziehen
+        include_translations: Englische Übersetzungen einbeziehen
     textractor:
       http_error: HTTP-Fehler
       response_limit_exceeded: Zeitüberschreitung bei Bearbeitung der Anfrage

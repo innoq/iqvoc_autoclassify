@@ -1,11 +1,11 @@
 class FreeClassificationController < ApplicationController
 
   def index
-    suggestion_params = {:languages=>['de', 'en'], :query_type=>'contains'}
+    suggestion_params = {:languages => build_language_query(search_params), :query_type=>'contains'}
     @suggestions = if params[:query]&.present? && params[:query].size >= 2
-                     single_query(suggestion_params.merge(search_params).symbolize_keys)
+                     single_query(suggestion_params.merge(search_params).with_indifferent_access)
                    else
-                     flash[:info] = t('txt.views.free_classification.query_input_too_short')
+                     flash[:info] = t('txt.views.free_classification.query_input_too_short') if params[:query] && params[:query].size < 2
                      []
                    end
 
@@ -26,14 +26,15 @@ class FreeClassificationController < ApplicationController
   private
 
   def search_params
-    params.permit(:query, :concepts => [])
+    params.permit(:query, :include_translations, :include_alt_labels, :include_used_for_labels, :concepts => [])
   end
 
   def single_query(params = {})
     query_str = build_query_string(params)
+    labeling_types = build_labeling_types(params)
 
     scope = Labeling::SKOSXL::Base.includes(:target)
-                .where.not(type: 'Labeling::SKOSXL::HiddenLabel')
+                .where(type: labeling_types)
                 .references(:labels, :concepts)
                 .joins(:target)
                 .order(Arel.sql("LENGTH(#{Label::Base.table_name}.value), #{Label::Base.table_name}.value ASC"))
@@ -59,6 +60,19 @@ class FreeClassificationController < ApplicationController
     scope = scope.merge(labels)
 
     scope
+  end
+
+  def build_language_query(options = {})
+    res = ['de']
+    res << 'en' if options['include_translations'] == 'true'
+    res
+  end
+
+  def build_labeling_types(options = {})
+    res = [ Iqvoc::Concept.pref_labeling_class_name ] # should be search in any case
+    res << Iqvoc::Concept.alt_labeling_class_name if options[:include_alt_labels] == 'true'
+    res << Labeling::UMT::UsedForLabel.name if options[:include_used_for_labels] == 'true'
+    res
   end
 
   def build_query_string(params = {})
