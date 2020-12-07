@@ -4,7 +4,7 @@
       <%= result.to_s %>
     <% end %>
 
-    <%= link_to(freeclassify_url(concepts: @selected - [result.origin], query: params[:query]), title: t('txt.views.free_classification.remove_result_item'),  class: 'btn btn-link p-0', data: { toggle: 'tooltip' }) do %>
+    <%= link_to(freeclassify_url(@free_classification_params.merge(concepts: @selected - [result.origin])), title: t('txt.views.free_classification.remove_result_item'),  class: 'btn btn-link p-0', data: { toggle: 'tooltip' }) do %>
       <i class="fa fa-times" aria-hidden="true"></i>
     <% end %>
 

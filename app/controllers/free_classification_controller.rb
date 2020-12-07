@@ -1,9 +1,8 @@
 class FreeClassificationController < ApplicationController
 
   def index
-    suggestion_params = {:languages => build_language_query(search_params), :query_type=>'contains'}
     @suggestions = if params[:query]&.present? && params[:query].size >= 2
-                     single_query(suggestion_params.merge(search_params).with_indifferent_access)
+                     single_query(search_params.to_h.with_indifferent_access)
                    else
                      flash[:info] = t('txt.views.free_classification.query_input_too_short') if params[:query] && params[:query].size < 2
                      []
@@ -11,6 +10,12 @@ class FreeClassificationController < ApplicationController
 
     @selected = search_params[:concepts] || []
     @results = Iqvoc::Concept.base_class.where('concepts.origin IN (?)', @selected) || []
+    @free_classification_params = {
+        query: search_params[:query],
+        include_alt_labels: search_params[:include_alt_labels],
+        include_used_for_labels: search_params[:include_used_for_labels],
+        include_translations: search_params[:include_translations]
+    }
 
     respond_to do |format|
       format.html {
@@ -30,7 +35,6 @@ class FreeClassificationController < ApplicationController
   end
 
   def single_query(params = {})
-    query_str = build_query_string(params)
     labeling_types = build_labeling_types(params)
 
     scope = Labeling::SKOSXL::Base.includes(:target)
@@ -54,8 +58,11 @@ class FreeClassificationController < ApplicationController
     scope = scope.includes(:owner).merge(concepts)
 
     # filter by query input
+    query_str = build_query_string(params.merge(query_type: 'contains'))
+    languages = build_language_query(params)
+
     labels = Iqvoc::XLLabel.base_class.by_query_value(query_str)
-                 .by_language(params[:languages].to_a)
+                 .by_language(languages)
                  .published
     scope = scope.merge(labels)
 
