@@ -27,10 +27,18 @@
                     <%= label_tag :include_alt_labels, t('txt.views.free_classification.include_alt_labels'), class: 'form-check-label' %>
                   </div>
 
-                  <div class="dropdown-item form-check">
-                    <%= check_box_tag :include_used_for_labels, true, (!params[:query] || params[:include_used_for_labels].present?) , class: 'form-check-input' %>
-                    <%= label_tag :include_used_for_labels, t('txt.views.free_classification.include_used_for_labels'), class: 'form-check-label' %>
-                  </div>
+                  <% if can? :use, :administration %>
+                    <div role="separator" class="dropdown-divider"></div>
+                    <b><%= t('txt.views.free_classification.admin_settings') %></b>
+                    <div class="dropdown-item form-check">
+                      <%= check_box_tag :include_used_for_labels, true, (params[:include_used_for_labels] == "true") , class: 'form-check-input' %>
+                      <%= label_tag :include_used_for_labels, t('txt.views.free_classification.include_used_for_labels'), class: 'form-check-label' %>
+                    </div>
+                    <div class="dropdown-item form-check">
+                      <%= check_box_tag :include_translations, true, params[:include_translations] == "true", class: 'form-check-input' %>
+                      <%= label_tag :include_translations, t('txt.views.free_classification.include_translations'), class: 'form-check-label' %>
+                    </div>
+                  <% end %>
                 </div>
               </div>
             </div>
