@@ -73,7 +73,7 @@ de:
         query_input_too_short: Bitte geben Sie einen Suchbegriff ein der mindestens 2 Zeichen lang ist
         settings: Einstellungen
         include_alt_labels: Alternative Bezeichnungen einbeziehen
-        include_used_for_labels: BK-Bezeichnungen (Benutzt-Für) einbeziehen
+        include_used_for_labels: Benutze in Kombination-Bezeichnungen einbeziehen
         include_translations: Englische Bezeichnungen einbeziehen
     textractor:
       http_error: HTTP-Fehler
