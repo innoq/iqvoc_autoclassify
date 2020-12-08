@@ -36,11 +36,32 @@ class FreeClassificationController < ApplicationController
 
   def single_query(params = {})
     labeling_types = build_labeling_types(params)
+    query_str = build_query_string(params.merge(query_type: 'contains'))
 
     scope = Labeling::SKOSXL::Base.includes(:target, owner: [:pref_labels]).
         where(type: labeling_types).
         joins(:target).
         order(Arel.sql("LENGTH(#{Label::Base.table_name}.value), #{Label::Base.table_name}.value ASC"))
+
+    # bk label stuff
+    # FIXME: this is horrible for performance
+    if params[:include_used_for_labels] == 'true'
+      bk_labels = Iqvoc::XLLabel.base_class.
+        distinct.
+        by_query_value(query_str).
+        joins(:labelings).
+        includes(:labelings).
+        where('labelings.type = ?', 'Labeling::UMT::UsedForLabel')
+
+      bk_labeling_ids = bk_labels.map { |l| l.labelings.first.id }
+
+      bk_scope = Labeling::SKOSXL::Base.includes(:target, owner: [:pref_labels]).
+        where(type: 'Labeling::UMT::UsedForLabel').
+        joins(:target).
+        order(Arel.sql("LENGTH(#{Label::Base.table_name}.value), #{Label::Base.table_name}.value ASC")).
+        where(id: bk_labeling_ids)
+      scope = scope.or(bk_scope)
+    end
 
     # exclude concepts belonging to Ordnungsdeskriptoren collection
     od_collection = Iqvoc::Collection.base_class.includes(:members).find_by(origin: 'OD')
@@ -57,7 +78,6 @@ class FreeClassificationController < ApplicationController
     scope = scope.merge(concepts)
 
     # filter by query input
-    query_str = build_query_string(params.merge(query_type: 'contains'))
     languages = build_language_query(params)
 
     labels = Iqvoc::XLLabel.base_class.
@@ -78,7 +98,6 @@ class FreeClassificationController < ApplicationController
   def build_labeling_types(options = {})
     res = [Iqvoc::Concept.pref_labeling_class_name] # should be search in any case
     res << Iqvoc::Concept.alt_labeling_class_name if options[:include_alt_labels] == 'true'
-    res << Labeling::UMT::UsedForLabel.name if options[:include_used_for_labels] == 'true'
     res
   end
 
