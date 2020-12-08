@@ -31,11 +31,6 @@
                     <%= check_box_tag :include_used_for_labels, true, (!params[:query] || params[:include_used_for_labels].present?) , class: 'form-check-input' %>
                     <%= label_tag :include_used_for_labels, t('txt.views.free_classification.include_used_for_labels'), class: 'form-check-label' %>
                   </div>
-
-                  <div class="dropdown-item form-check">
-                    <%= check_box_tag :include_translations, true, params[:include_translations] == "true", class: 'form-check-input' %>
-                    <%= label_tag :include_translations, t('txt.views.free_classification.include_translations'), class: 'form-check-label' %>
-                  </div>
                 </div>
               </div>
             </div>
