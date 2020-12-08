@@ -9,7 +9,7 @@ class FreeClassificationController < ApplicationController
                    end
 
     @selected = search_params[:concepts] || []
-    @results = Iqvoc::Concept.base_class.where('concepts.origin IN (?)', @selected) || []
+    @results = Iqvoc::Concept.base_class.includes(:pref_labels).where('concepts.origin IN (?)', @selected) || []
     @free_classification_params = {
         query: search_params[:query],
         include_alt_labels: search_params[:include_alt_labels],
@@ -37,11 +37,10 @@ class FreeClassificationController < ApplicationController
   def single_query(params = {})
     labeling_types = build_labeling_types(params)
 
-    scope = Labeling::SKOSXL::Base.includes(:target)
-                .where(type: labeling_types)
-                .references(:labels, :concepts)
-                .joins(:target)
-                .order(Arel.sql("LENGTH(#{Label::Base.table_name}.value), #{Label::Base.table_name}.value ASC"))
+    scope = Labeling::SKOSXL::Base.includes(:target, owner: [:pref_labels]).
+        where(type: labeling_types).
+        joins(:target).
+        order(Arel.sql("LENGTH(#{Label::Base.table_name}.value), #{Label::Base.table_name}.value ASC"))
 
     # exclude concepts belonging to Ordnungsdeskriptoren collection
     od_collection = Iqvoc::Collection.base_class.includes(:members).find_by(origin: 'OD')
@@ -50,20 +49,21 @@ class FreeClassificationController < ApplicationController
     end
 
     # target concepts
-    concepts = Iqvoc::Concept.base_class
-                   .where(top_term: false)
-                   .where.not(id: od_concept_ids)
-                   .published
-                   .not_expired
-    scope = scope.includes(:owner).merge(concepts)
+    concepts = Iqvoc::Concept.base_class.
+        where(top_term: false).
+        where.not(id: od_concept_ids).
+        published.
+        not_expired
+    scope = scope.merge(concepts)
 
     # filter by query input
     query_str = build_query_string(params.merge(query_type: 'contains'))
     languages = build_language_query(params)
 
-    labels = Iqvoc::XLLabel.base_class.by_query_value(query_str)
-                 .by_language(languages)
-                 .published
+    labels = Iqvoc::XLLabel.base_class.
+        by_query_value(query_str).
+        by_language(languages).
+        published
     scope = scope.merge(labels)
 
     scope
@@ -76,7 +76,7 @@ class FreeClassificationController < ApplicationController
   end
 
   def build_labeling_types(options = {})
-    res = [ Iqvoc::Concept.pref_labeling_class_name ] # should be search in any case
+    res = [Iqvoc::Concept.pref_labeling_class_name] # should be search in any case
     res << Iqvoc::Concept.alt_labeling_class_name if options[:include_alt_labels] == 'true'
     res << Labeling::UMT::UsedForLabel.name if options[:include_used_for_labels] == 'true'
     res
