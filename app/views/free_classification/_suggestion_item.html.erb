@@ -1,11 +1,3 @@
-<%# if result.owner %>
-<!--  <li class="search-result">-->
-    <%# link_value = (result.target.value == result.owner.pref_label ? result.owner.pref_label : "#{result.target.value} &rarr; #{result.owner.to_s}".html_safe) %>
-    <%# highlighed_link_value = highlight(link_value, params[:query], highlighter: '<strong>\1</strong>') %>
-    <%#= link_to(highlighed_link_value, freeclassify_url(@free_classification_params.merge(concepts: @selected + [result.owner.origin])), class: (@selected.include? result.owner.origin) ? 'selected' : '') %>
-<!--  </li>-->
-<%# end %>
-
 <% if result.owner %>
   <% if result.type == 'Labeling::UMT::UsedForLabel' %>
     <li class="search-result">
@@ -16,7 +8,7 @@
     </li>
   <% else %>
     <li class="search-result">
-      <% link_value = (result.target.value == result.owner.pref_label ? result.owner.pref_label : "#{result.target.value} &rarr; #{result.owner.to_s}".html_safe) %>
+      <% link_value = (result.target == result.owner.pref_label ? result.owner.pref_label.value : "#{result.target.value} &rarr; #{result.owner.pref_label.value}".html_safe) %>
       <% highlighed_link_value = highlight(link_value, params[:query], highlighter: '<strong>\1</strong>') %>
       <%= link_to(highlighed_link_value, freeclassify_url(@free_classification_params.merge(concepts: @selected + [result.owner.origin])), class: (@selected.include? result.owner.origin) ? 'selected' : '') %>
     </li>
