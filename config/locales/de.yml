@@ -1,5 +1,8 @@
 de:
   txt:
+    common:
+      contact_email: info@example.org
+      contact_message: "Haben Sie Fehler entdeckt oder vermissen Schlagwörter? Teilen Sie uns diese bitte mit: %{email}"
     controllers:
       plain_documents:
         create:
@@ -72,6 +75,7 @@ de:
         query_help_block: Tippen um nach Schlagwörtern zu suchen
         query_input_too_short: Bitte geben Sie einen Suchbegriff ein der mindestens 2 Zeichen lang ist
         settings: Einstellungen
+        admin_settings: Einstellungen für Administratoren
         include_alt_labels: Alternative Bezeichnungen einbeziehen
         include_used_for_labels: Benutze in Kombination-Bezeichnungen einbeziehen
         include_translations: Englische Bezeichnungen einbeziehen
