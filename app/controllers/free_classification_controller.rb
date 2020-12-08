@@ -31,6 +31,7 @@ class FreeClassificationController < ApplicationController
   private
 
   def search_params
+    params[:query]&.strip!
     params.permit(:query, :include_translations, :include_alt_labels, :include_used_for_labels, :concepts => [])
   end
 
