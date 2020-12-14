@@ -1,15 +1,15 @@
 <li>
   <span class="auto-classify-result">
-    <%= link_to concept_path(result), class: "result-item result-item#{result.origin}" do %>
+    <span class="result-item">
       <%= result.to_s %>
-    <% end %>
+    </span>
 
     <%= link_to(freeclassify_url(@free_classification_params.merge(concepts: @selected - [result.origin])), title: t('txt.views.free_classification.remove_result_item'),  class: 'btn btn-link p-0', data: { toggle: 'tooltip' }) do %>
       <i class="fa fa-times" aria-hidden="true"></i>
     <% end %>
 
-    <button type="button" class="btn-clipboard btn btn-link" data-toggle="tooltip" data-placement="top" title="<%= t('txt.views.free_classification.copy_to_clipboard') %>" data-clipboard-target=".result-item<%= result.origin %>">
-      <i class="fa fa-clone" aria-hidden="true"></i>
-    </button>
+    <%= link_to(concept_path(result), title: t('txt.views.free_classification.show_details'), data: { toggle: 'tooltip' }, class: 'btn btn-link p-0', target: '_blank') do %>
+      <i class="fa fa-search-plus" aria-hidden="true"></i>
+    <% end %>
   </span>
 </li>

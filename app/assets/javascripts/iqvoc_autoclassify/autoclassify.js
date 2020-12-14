@@ -20,7 +20,7 @@ jQuery(document).ready(function($) {
 			var targets = $(targetSelector);
 
 			return targets.toArray().map(function(element) {
-				return element.text.trim()
+				return element.innerText.trim()
 			}).join(joinSeparator);
 		}
 	});

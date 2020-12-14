@@ -70,8 +70,8 @@ de:
         remove_result_item: Schlagwort entfernen
         remove_all_result_items: Alle Schlagwörter entfernen
         copy_all_to_clipboard: Alle Schlagwörter in Zwischenablage kopieren
-        copy_to_clipboard: Schlagwort in Zwischenablage kopieren
-        query_placeholder: z.B. Umwelt
+        show_details: Schlagwort im UMTHES öffnen
+        query_placeholder: z.B. Treibhausgas
         query_help_block: Tippen um nach Schlagwörtern zu suchen
         query_input_too_short: Bitte geben Sie einen Suchbegriff ein der mindestens 2 Zeichen lang ist
         settings: Einstellungen

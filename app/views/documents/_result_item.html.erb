@@ -1,15 +1,15 @@
 <li>
   <span class="auto-classify-result">
-    <%= link_to concept_path(classification.concept), class: "result-item result-item#{classification.concept_origin}" do %>
+    <span class="result-item">
       <%= classification.to_s %>
-    <% end %>
+    </span>
 
     <% if current_user %>
       [<%= classification.weighting %>]
     <% end %>
 
-    <button type="button" class="btn-clipboard btn btn-link" data-toggle="tooltip" data-placement="top" title="<%= t('txt.views.free_classification.copy_to_clipboard') %>" data-clipboard-target=".result-item<%= classification.concept_origin %>">
-      <i class="fa fa-clone" aria-hidden="true"></i>
-    </button>
+    <%= link_to(concept_path(classification.concept), title: t('txt.views.free_classification.show_details'), data: { toggle: 'tooltip' }, class: 'btn btn-link p-0', target: '_blank') do %>
+      <i class="fa fa-search-plus" aria-hidden="true"></i>
+    <% end %>
   </span>
 </li>
