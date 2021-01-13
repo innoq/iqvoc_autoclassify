@@ -1,1 +1,2 @@
-//= require iqvoc_autoclassify/autoclassify
+import './jquery.mintip';
+import './autoclassify';

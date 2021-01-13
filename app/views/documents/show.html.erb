@@ -1,12 +1,5 @@
 <%= page_header title: t('txt.views.document.show.title') %>
 
-<% if current_user %>
-  <%= stylesheet_link_tag "iqvoc_autoclassify/jquery.mintip.css" %>
-  <%= content_for :scripts do %>
-      <%= javascript_include_tag "iqvoc_autoclassify/jquery.mintip.js" %>
-  <% end %>
-<% end %>
-
 <div class="row">
   <div class="col-md-8">
     <%= render 'toolbar' if current_user %>

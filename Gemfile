@@ -1,9 +1,9 @@
 source 'https://rubygems.org'
 
-gem 'iqvoc', '~> 4.12', :github => 'innoq/iqvoc', branch: 'master'
-gem 'iqvoc_skosxl', '~> 2.9.0', :github => 'innoq/iqvoc_skosxl', branch: 'master'
+gem 'iqvoc', '~> 4.12', :github => 'innoq/iqvoc', branch: 'faucet'
+gem 'iqvoc_skosxl', '~> 2.9.0', :github => 'innoq/iqvoc_skosxl', branch: 'faucet'
 gem 'iqvoc_inflectionals', '~> 2.9.0', :github => 'innoq/iqvoc_inflectionals', branch: 'master'
-gem 'iqvoc_compound_forms', '~> 2.9.0', :github => 'innoq/iqvoc_compound_forms', branch: 'master'
+gem 'iqvoc_compound_forms', '~> 2.9.0', :github => 'innoq/iqvoc_compound_forms', branch: 'faucet'
 
 gem 'ruby-readability'
 gem 'nokogiri'
@@ -11,7 +11,6 @@ gem 'pdf-reader', '~> 1.4.0'
 gem 'workflow', '~> 1.0.0'
 gem 'guess_html_encoding'
 gem 'responders'
-gem 'therubyracer'
 gem 'pragmatic_segmenter'
 
 group :development do
