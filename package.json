@@ -1,0 +1,33 @@
+{
+  "name": "iqvoc_autoclassify",
+  "version": "1.8.1",
+  "description": "iQvoc AutoClassify extension.",
+  "files": [
+    "app/assets/**/*"
+  ],
+  "scripts": {
+    "watch": "faucet --watch",
+    "compile": "faucet --compact --fingerprint"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/innoq/iqvoc_autoclassify.git"
+  },
+  "author": "",
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/innoq/iqvoc_autoclassify/issues"
+  },
+  "homepage": "https://github.com/innoq/iqvoc_autoclassify#readme",
+  "devDependencies": {
+    "faucet-pipeline-js": "^2.1.7",
+    "faucet-pipeline-jsmin": "^2.1.7",
+    "faucet-pipeline-sass": "^1.4.0",
+    "faucet-pipeline-static": "^1.2.0"
+  },
+  "dependencies": {
+    "iqvoc": "innoq/iqvoc#faucet",
+    "iqvoc_skosxl": "innoq/iqvoc_skosxl#faucet",
+    "iqvoc_compound_forms": "innoq/iqvoc_compound_forms#faucet"
+  }
+}

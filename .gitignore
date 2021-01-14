@@ -9,6 +9,7 @@ db/schema.rb
 log
 tmp
 
+public/assets
 public/*/iqvoc
 
 .DS_Store
@@ -21,3 +22,5 @@ iqvoc_autoclassify.iml
 
 .ruby-version
 .idea
+
+node_modules

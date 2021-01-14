@@ -1,2 +1,2 @@
-//= require iqvoc_autoclassify/clipboard.min.js
-//= require iqvoc_autoclassify/autoclassify
+import './jquery.mintip';
+import './autoclassify';
