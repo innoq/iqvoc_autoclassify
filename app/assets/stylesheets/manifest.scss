@@ -1,5 +1,5 @@
-@import "iqvoc/settings/bootstrap-variables";
-@import "framework";
-@import "iqvoc/manifest";
-@import "iqvoc_skosxl/manifest";
-@import "iqvoc_autoclassify/manifest";
+@import 'iqvoc/app/assets/stylesheets/iqvoc/settings/bootstrap-variables';
+@import 'iqvoc/app/assets/stylesheets/framework';
+@import 'iqvoc/app/assets/stylesheets/iqvoc/manifest';
+@import 'iqvoc_skosxl/app/assets/stylesheets/iqvoc_skosxl/manifest';
+@import "./iqvoc_autoclassify/manifest";
