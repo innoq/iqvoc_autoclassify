@@ -38,6 +38,10 @@ module.exports = {
     source: "./node_modules/font-awesome/fonts",
     target: "./public/assets/fonts",
     fingerprint: false
+  },
+  {
+    source: "./node_modules/clipboard/dist/clipboard.min.js",
+    target: "./public/assets/javascripts/clipboard.min.js",
   }
 ],
   manifest: {

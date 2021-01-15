@@ -26,8 +26,9 @@
     "faucet-pipeline-static": "^1.2.0"
   },
   "dependencies": {
+    "clipboard": "^2.0.6",
     "iqvoc": "innoq/iqvoc#faucet",
-    "iqvoc_skosxl": "innoq/iqvoc_skosxl#faucet",
-    "iqvoc_compound_forms": "innoq/iqvoc_compound_forms#faucet"
+    "iqvoc_compound_forms": "innoq/iqvoc_compound_forms#faucet",
+    "iqvoc_skosxl": "innoq/iqvoc_skosxl#faucet"
   }
 }

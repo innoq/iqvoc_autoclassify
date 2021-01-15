@@ -1,5 +1,9 @@
 <%= page_header title: t('txt.views.document.show.title') %>
 
+<% content_for :scripts do %>
+  <%= javascript_include_tag "clipboard.min.js" %>
+<% end %>
+
 <div class="row">
   <div class="col-md-8">
     <%= render 'toolbar' if current_user %>
@@ -70,13 +74,11 @@
 
     <h2>
       <%= t('txt.views.document.show.results') %>
-      <%# if classifications.any? %>
-<!--
+      <% if classifications.any? %>
         <button type="button" class="btn-clipboard-multiple btn btn-link p-0" data-toggle="tooltip" title="<%= t('txt.views.free_classification.copy_all_to_clipboard') %>" data-clipboard-targets=".auto-classify-result .result-item" data-clipboard-targets-join-separator=", ">
           <i class="fa fa-clone" aria-hidden="true"></i>
         </button>
--->
-      <%# end %>
+      <% end %>
     </h2>
 
     <% if classifications.any? %>
