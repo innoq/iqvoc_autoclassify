@@ -109,9 +109,9 @@
     }
 
     .lead {
+      @extend %font-light;
       font-size: 1.5rem;
       color: $gray-600;
-      font-family: 'Fira Sans ExtraLight';
     }
   }
 
@@ -133,8 +133,7 @@
   }
 
   h2 {
-    font-family: 'Fira Sans Regular';
-    font-weight: bold;
+    @extend %font-bold;
   }
 
   .suggestion-results {
