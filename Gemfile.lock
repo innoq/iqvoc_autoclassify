@@ -1,6 +1,6 @@
 GIT
   remote: git://github.com/innoq/iqvoc.git
-  revision: db22424df976acb97f4745344376332982a36aeb
+  revision: b140dfe3962a3453ed5f5782ae8c9d0b34bf3a62
   branch: faucet
   specs:
     iqvoc (4.12.2)
@@ -52,7 +52,7 @@ GIT
 
 GIT
   remote: git://github.com/innoq/iqvoc_skosxl.git
-  revision: 5f56d397f91d4fedfe5eb026062ab45a1bb2fe19
+  revision: 33185ebb2154eaf1dc3186eb49bd472bd44181a8
   branch: faucet
   specs:
     iqvoc_skosxl (2.9.2)
@@ -122,9 +122,7 @@ GEM
       erubi (>= 1.0.0)
       rack (>= 0.9.0)
     bindex (0.8.1)
-    bootsnap (1.5.1)
-      msgpack (~> 1.0)
-    bootsnap (1.5.1-java)
+    bootsnap (1.7.0)
       msgpack (~> 1.0)
     bootstrap_form (4.5.0)
       actionpack (>= 5.2)
@@ -148,10 +146,15 @@ GEM
       mini_mime (>= 0.1.3)
     cliver (0.3.2)
     coderay (1.1.2)
-    concurrent-ruby (1.1.7)
+    concurrent-ruby (1.1.8)
     connection_pool (2.2.3)
     crass (1.0.6)
-    database_cleaner (1.8.5)
+    database_cleaner (2.0.0)
+      database_cleaner-active_record (~> 2.0.0)
+    database_cleaner-active_record (2.0.0)
+      activerecord (>= 5.a)
+      database_cleaner-core (~> 2.0.0)
+    database_cleaner-core (2.0.0)
     deep_cloneable (3.0.0)
       activerecord (>= 3.1.0, < 7)
     delayed_job (4.1.9)
@@ -277,8 +280,8 @@ GEM
     mini_mime (1.0.2)
     mini_portile2 (2.5.0)
     minitest (5.14.3)
-    msgpack (1.3.3)
-    msgpack (1.3.3-java)
+    msgpack (1.4.2)
+    msgpack (1.4.2-java)
     multi_json (1.15.0)
     multipart-post (2.1.1)
     mysql2 (0.4.10)
@@ -323,7 +326,7 @@ GEM
     racc (1.5.2)
     racc (1.5.2-java)
     rack (2.2.3)
-    rack-mini-profiler (2.3.0)
+    rack-mini-profiler (2.3.1)
       rack (>= 1.2.0)
     rack-test (1.1.0)
       rack (>= 1.0, < 3)
@@ -418,14 +421,16 @@ GEM
       rdf (~> 3.1, >= 3.1.8)
     rdf-vocab (3.1.10)
       rdf (~> 3.1, >= 3.1.8)
-    rdf-xsd (3.1.0)
+    rdf-xsd (3.1.1)
       rdf (~> 3.1)
+      rexml (~> 3.2)
     regexp_parser (1.7.0)
     request_store (1.5.0)
       rack (>= 1.4)
     responders (3.0.0)
       actionpack (>= 5.0)
       railties (>= 5.0)
+    rexml (3.2.4)
     ruby-rc4 (0.1.5)
     ruby-readability (0.7.0)
       guess_html_encoding (>= 0.0.4)
@@ -448,16 +453,16 @@ GEM
       rdf-xsd (~> 3.1)
       sparql (~> 3.1)
       sxp (~> 1.1)
-    sparql (3.1.4)
+    sparql (3.1.5)
       builder (~> 3.2)
       ebnf (~> 2.1)
       rdf (~> 3.1, >= 3.1.8)
       rdf-aggregate-repo (~> 3.1)
       rdf-xsd (~> 3.1)
-      sparql-client (~> 3.1)
+      sparql-client (~> 3.1, >= 3.1.2)
       sxp (~> 1.1)
-    sparql-client (3.1.1)
-      net-http-persistent (~> 4.0)
+    sparql-client (3.1.2)
+      net-http-persistent (~> 4.0, >= 4.0.1)
       rdf (~> 3.1)
     spoon (0.0.6)
       ffi
@@ -472,7 +477,7 @@ GEM
     sxp (1.1.0)
       rdf (~> 3.1)
     temple (0.8.2)
-    thor (1.0.1)
+    thor (1.1.0)
     thread_safe (0.3.6)
     thread_safe (0.3.6-java)
     tilt (2.0.10)
