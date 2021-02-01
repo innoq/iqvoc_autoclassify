@@ -132,10 +132,6 @@
 
   }
 
-  h2 {
-    @extend %font-bold;
-  }
-
   .suggestion-results {
     list-style-type: none;
     background: $white;
