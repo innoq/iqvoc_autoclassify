@@ -104,10 +104,6 @@
   height: 15rem;
 
   .frontpage-title {
-    .display-4 {
-      @extend %font-light;
-    }
-
     .lead {
       @extend %font-light;
       font-size: 1.5rem;
