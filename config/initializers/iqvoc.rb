@@ -17,7 +17,7 @@ Iqvoc::Configuration::Navigation.add_grouped({
 # show upcoming link in dev & staging
 if Rails.env.development? || Rails.env.staging?
   Iqvoc::Configuration::Navigation.add_grouped({
-    text: proc { t('txt.views.autoclassify.tag_wizard_title') },
+    text: proc { t('txt.views.autoclassify.tag_wizard_title').html_safe },
     href: proc { autoclassify_path },
     controller: 'autoclassify'
   }, -3)
