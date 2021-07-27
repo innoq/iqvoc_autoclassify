@@ -1,9 +1,9 @@
 source 'https://rubygems.org'
 
-gem 'iqvoc', '~> 4.12', :github => 'innoq/iqvoc', branch: 'faucet'
-gem 'iqvoc_skosxl', '~> 2.9.0', :github => 'innoq/iqvoc_skosxl', branch: 'faucet'
+gem 'iqvoc', '~> 4.12', :github => 'innoq/iqvoc', branch: 'master'
+gem 'iqvoc_skosxl', '~> 2.9.0', :github => 'innoq/iqvoc_skosxl', branch: 'master'
 gem 'iqvoc_inflectionals', '~> 2.9.0', :github => 'innoq/iqvoc_inflectionals', branch: 'master'
-gem 'iqvoc_compound_forms', '~> 2.9.0', :github => 'innoq/iqvoc_compound_forms', branch: 'faucet'
+gem 'iqvoc_compound_forms', '~> 2.9.0', :github => 'innoq/iqvoc_compound_forms', branch: 'master'
 
 gem 'ruby-readability'
 gem 'nokogiri'
@@ -23,7 +23,6 @@ group :development, :test do
   gem 'awesome_print'
   gem 'spring'
   gem 'pry-rails'
-  gem 'mysql2'
   gem 'pg'
 end
 
