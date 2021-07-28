@@ -2,7 +2,7 @@ de:
   txt:
     common:
       contact_email: info@example.org
-      contact_message: "Haben Sie Fehler entdeckt oder vermissen Schlagwörter? Teilen Sie uns diese bitte mit: %{email}"
+      contact_message: "Haben Sie Fehler entdeckt oder vermissen Sie Schlagwörter? Teilen Sie uns diese bitte mit: %{email}"
     controllers:
       plain_documents:
         create:
