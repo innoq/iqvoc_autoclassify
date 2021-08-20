@@ -1,6 +1,6 @@
 <% if @results.any? %>
   <ul class="auto-classify-result-list">
-    <% @results.each do |result| %>
+    <% @results.sort_by { |r| @selected.index(r.origin)}.each do |result| %>
       <%= render partial: 'result_item', locals: { result: result } %>
     <% end %>
   </ul>
