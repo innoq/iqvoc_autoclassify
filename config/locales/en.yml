@@ -53,11 +53,11 @@ en:
           detailed_analysis: Detailled analysis
           show_all: More results
           no_results: No
-      autoclassify:
+      classification:
         tag_wizard_title: Verschlagwortungsassistent
         tag_wizard_desc: Verschlagworten Sie ihre Dokumente mit der Fachsprache des Umweltbundesamtes
         auto_classify_title: Automatische Verschlagwortung
-        auto_classify_desc: Finden Sie passende Schlagwörter zu Ihrem Text mit Hilfe des SNS-Dienstes AutoClassify.
+        auto_classify_desc: Finden Sie automatisch passende Schlagwörter zu Ihrem Text mit Hilfe des SNS-Dienstes AutoClassify.
         free_classify_title: Manuelle Verschlagwortung
         free_classify_desc: Stöbern Sie im Umweltthesaurus und wählen Sie selbst passende Schlagwörter zu Ihrem Text aus.
       free_classification:
