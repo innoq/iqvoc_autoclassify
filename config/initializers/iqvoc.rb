@@ -9,19 +9,10 @@ Iqvoc.config.register_settings({
 })
 
 Iqvoc::Configuration::Navigation.add_grouped({
-  text: proc { t('txt.views.document.auto_classify_title') },
-  href: proc { new_document_path },
-  controller: 'documents'
+  text: proc { t('txt.views.classification.tag_wizard_title').html_safe },
+  href: proc { classification_path },
+  controller: 'classification'
 }, -3)
-
-# show upcoming link in dev & staging
-if Rails.env.development? || Rails.env.staging?
-  Iqvoc::Configuration::Navigation.add_grouped({
-    text: proc { t('txt.views.classification.tag_wizard_title').html_safe },
-    href: proc { classification_path },
-    controller: 'classification'
-  }, -3)
-end
 
 Iqvoc.core_assets += %w(iqvoc_autoclassify/jquery.mintip.css iqvoc_autoclassify/jquery.mintip.js)
 
