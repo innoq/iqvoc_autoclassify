@@ -9,7 +9,10 @@ class FreeClassificationController < ApplicationController
                    end
 
     @selected = search_params[:concepts] || []
-    @results = Iqvoc::Concept.base_class.includes(:pref_labels).where('concepts.origin IN (?)', @selected) || []
+    @results = Iqvoc::Concept.base_class.includes(:pref_labels)
+                             .order('labels.value')
+                             .where('concepts.origin IN (?)', @selected) || []
+
     @free_classification_params = {
         query: search_params[:query],
         include_alt_labels: search_params[:include_alt_labels],
