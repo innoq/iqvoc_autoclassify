@@ -63,6 +63,7 @@ de:
         auto_classify_desc: Lassen Sie sich Schlagwörter zu Ihrem Text vorschlagen.
         free_classify_title: Manuelle Verschlagwortung
         free_classify_desc: Stöbern Sie im Umweltthesaurus und wählen Sie selbst passende Schlagwörter zu Ihrem Text aus.
+        about_services: "Weitere Informationen zu unseren Diensten finden Sie %{about_link}."
       free_classification:
         seatch_input_label: Schlagwortsuche
         results_title: Ihre Schlagwörter
