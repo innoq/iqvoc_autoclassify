@@ -43,7 +43,7 @@ GIT
 
 GIT
   remote: git://github.com/innoq/iqvoc_inflectionals.git
-  revision: a16797a2d97b08e54055fae7b24647e7e57ea709
+  revision: 96cd30afd3dfa49a7dd84007168d4257247e97c9
   branch: master
   specs:
     iqvoc_inflectionals (2.9.0)

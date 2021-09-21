@@ -115,7 +115,8 @@ class Document::Base < ApplicationRecord
     labels.each do |label, occurrences|
       label.labelings.reject { |l| l.owner.is_a?(Iqvoc::Collection.base_class) }.each do |labeling|
         concept = labeling.owner
-        next if not concept.published?
+        next if !concept.published? || concept.expired?
+
         # list of concept IDs by label ID
         @trace[:concept_index][label.id] ||= []
         @trace[:concept_index][label.id] << concept.id
@@ -133,7 +134,6 @@ class Document::Base < ApplicationRecord
     determine_title_concepts(concepts.keys).each do |concept|
       concepts[concept][0] *= 1.5 # NB: regular analysis already includes the title
     end
-
     concepts
   end
 
