@@ -13,18 +13,16 @@ Gem::Specification.new do |s|
   s.description = 'Automatic classification of documents based on iQvoc thesauri'
 
   s.add_dependency 'iqvoc', '>= 4.5.0', '~> 4.12'
-  s.add_dependency 'iqvoc_skosxl', '~> 2.9.0'
-  s.add_dependency 'iqvoc_inflectionals', '~> 2.9.0'
-  s.add_dependency 'iqvoc_compound_forms', '~> 2.9.0'
+  s.add_dependency 'iqvoc_skosxl', '~> 2.10.0'
+  s.add_dependency 'iqvoc_inflectionals', '~> 2.10.0'
+  s.add_dependency 'iqvoc_compound_forms', '~> 2.10.0'
   s.add_dependency 'bundler'
   s.add_dependency 'ruby-readability'
   s.add_dependency 'pdf-reader', '~> 1.4.0'
   s.add_dependency 'workflow', '~> 1.0.0'
   s.add_dependency 'guess_html_encoding'
-  s.add_dependency 'nokogiri'
   s.add_dependency 'responders'
   s.add_dependency 'pragmatic_segmenter'
-  s.add_dependency 'ffi'
 
   s.files         = `git ls-files`.split("\n")
   s.test_files    = `git ls-files -- {test,spec,features}/*`.split("\n")
