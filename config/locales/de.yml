@@ -14,7 +14,7 @@ de:
           delete_error: Dokument konnte nicht gelöscht werden.
         new:
           title: Automatische Verschlagwortung
-          description:  "Finden Sie passende Schlagwörter zu Ihrem Text mit Hilfe der automatischen Verschlagwortung unseres Dienstes AutoClassify. Kopieren Sie hierzu Ihren Text in das folgende Textfeld und starten Sie die Verschlagwortung.\n\n Alternativ können Sie auch eine Web-Adresse zu einem HTML- oder PDF-Dokument zur Verschlagwortung benutzen."
+          description: "Finden Sie passende Schlagwörter zu Ihrem Text mit Hilfe der automatischen Verschlagwortung. Kopieren Sie hierzu Ihren Text in das Textfeld oder benutzen Sie eine Web-Adresse zu Ihrem HTML- oder PDF-Dokument.\n\n Hinweis: Es werden alle im Text ermittelten SNS-Begriffe vorgeschlagen. Das Ergebnis der Verschlagwortung sollte intellektuell validiert und korrigiert werden."
           classify_text: Text verschlagworten
           classify_url: URL verschlagworten
           classify_process: verschlagworte...
