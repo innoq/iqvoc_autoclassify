@@ -1,6 +1,6 @@
 # required due to pdf-reader v0.10's awkward API
 # largely cargo-culted from pdf-reader examples
-class PDFReceiver
+class PdfReceiver
   attr_reader :meta, :content
 
   def initialize
