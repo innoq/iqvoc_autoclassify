@@ -91,7 +91,7 @@ class Documents::ExtractedControllerTest < ActionController::TestCase
     end
     assert_not_nil assigns(:document)
     assert_response 200
-    assert_equal 'application/rdf+xml', response.content_type
+    assert_equal 'application/rdf+xml; charset=utf-8', response.content_type
   end
 
   test 'classify pdf via uri' do
@@ -104,7 +104,7 @@ class Documents::ExtractedControllerTest < ActionController::TestCase
     end
     assert_not_nil assigns(:document)
     assert_response 200
-    assert_equal 'application/rdf+xml', response.content_type
+    assert_equal 'application/rdf+xml; charset=utf-8', response.content_type
   end
 
   test 'classify and persist via uri' do
@@ -125,7 +125,7 @@ class Documents::ExtractedControllerTest < ActionController::TestCase
   #test "timeout handling" do
   #  post :create, :uri => @urls[:big], :format => 'rdf', :lang => "de"
   #  assert_response 504
-  #  assert_equal 'application/rdf+xml', response.content_type
+  #  assert_equal 'application/rdf+xml; charset=utf-8', response.content_type
   #end
 
   test 'extraction errors' do
@@ -157,7 +157,7 @@ class Documents::ExtractedControllerTest < ActionController::TestCase
     end
     assert_not_nil assigns(:document)
     assert_response :success
-    assert_equal 'application/rdf+xml', response.content_type
+    assert_equal 'application/rdf+xml; charset=utf-8', response.content_type
 
     session.destroy
   end

@@ -37,7 +37,7 @@ class WordMatcher
     # use normalized form for case-insensitivity (and performance)
     hash_seqs = {}
     @sentences.each_with_index { |_sentence, _ix|
-      sentence = _sentence.map { |word| word.mb_chars.downcase.strip.normalize }
+      sentence = _sentence.map { |word| word.mb_chars.downcase.strip.unicode_normalize(:nfkc)  }
       key = sentence.join(' ').to_sym
 
       @trace[:token_index][key] = {}
