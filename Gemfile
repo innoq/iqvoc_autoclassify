@@ -20,7 +20,6 @@ end
 
 group :development, :test do
   gem 'awesome_print'
-  gem 'spring'
   gem 'pry-rails'
   gem 'pg'
 end
