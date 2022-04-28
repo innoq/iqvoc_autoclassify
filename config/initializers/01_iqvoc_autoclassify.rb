@@ -1,1 +1,0 @@
-require "iqvoc_autoclassify"
