@@ -52,7 +52,11 @@ class Documents::ExtractedController < DocumentsController
     DOC
 
   def create
-    @document = Document::Extracted.new(uri: document_params[:uri])
+    @document = Document::Extracted.new do |doc|
+      doc.uri = document_params[:uri]
+      doc.language = document_params[:language] if document_params[:language].present?
+    end
+
     @document.persist = false unless current_user
 
     render_errors and return if @document.invalid?
@@ -102,13 +106,13 @@ class Documents::ExtractedController < DocumentsController
   def document_params
     if params[:document_base]
       # form request
-      params.require(:document_base).permit(:uri)
+      params.require(:document_base).permit(:uri, :language)
     elsif params[:document_extracted]
       # FIXME: necessary?
-      params.require(:document_extracted).permit(:uri)
+      params.require(:document_extracted).permit(:uri, :language)
     else
       # api request
-      params.permit(:uri)
+      params.permit(:uri, :language)
     end
   end
 

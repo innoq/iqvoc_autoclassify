@@ -2,15 +2,16 @@ require 'digest/sha1'
 require 'workflow'
 
 class Document::Base < ApplicationRecord
+  include Rails.application.routes.url_helpers
+  include Workflow
+
+  self.table_name = 'documents'
 
   MAX_TITLE_CHARS = 255
   MAX_CONTENT_CHARS = 10_000
   MAX_CONTENT_SUFFIX = '…'
 
-  self.table_name = 'documents'
-
-  include Rails.application.routes.url_helpers
-  include Workflow
+  store_accessor :options, :language
 
   attr_writer :persist
   attr_reader :weightings
@@ -32,6 +33,7 @@ class Document::Base < ApplicationRecord
 
   validates :title, length: { maximum: MAX_TITLE_CHARS }
   validates :content, length: { maximum: MAX_CONTENT_CHARS }
+  validates :language, inclusion: { in: Iqvoc::Concept.pref_labeling_languages }, allow_blank: true
 
   class_attribute :weightings
   self.weightings = {
@@ -100,11 +102,13 @@ class Document::Base < ApplicationRecord
     concepts.sort_by {|_k, v| -v[0]}.each.with_index(1) do |concept_with_weighting, index|
       concept = concept_with_weighting.first
       weighting = concept_with_weighting.last
+      result_pref_label = concept.pref_labels.find { |pf| pf.language == self.language }&.value
+
       classifications.send(method,
         concept_origin: concept.origin,
         findings: weighting.drop(1).join(", "),
         weighting: weighting.first,
-        title: concept.to_s)
+        title: result_pref_label || concept.to_s)
     end
     create_classification_trace(trace: @trace.to_json) if persist?
     halt if invalid?
@@ -185,9 +189,12 @@ class Document::Base < ApplicationRecord
     label_ids = matcher.labels
     @trace = matcher.trace
 
+    label_params = { id: label_ids.uniq }
+    label_params[:language] = self.language if self.language.present?
+
     labels = Iqvoc::XLLabel.base_class.
         published.
-        where(id: label_ids.uniq).
+        where(label_params).
         includes(labelings: { owner: { relations: :target } }) # required for subsequent concept analysis
     labels = labels.index_by(&:id)
 

@@ -13,5 +13,6 @@ en:
         title: title
         url: weblink (HTML/PDF)
         content: text
+        language: Language
       label/skosxl/base:
         auto_classify: Text Analysis
