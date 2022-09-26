@@ -90,7 +90,7 @@ class ClassificationWeightingTest < ActiveSupport::TestCase
     concepts = doc.concepts
     assert_equal 2, concepts.keys.length
     assert_equal [1.0, 'Weltraum'], concepts[@concepts['Weltraum']]
-    assert_equal [1.5, 'Fracht'], concepts[@concepts['Fracht']]
+    assert_equal [5, 'Fracht'], concepts[@concepts['Fracht']]
 
     title = 'der Weltraum, ein Kampf der Pilot'
     text = 'ein Weltraumkampfpilot im All'

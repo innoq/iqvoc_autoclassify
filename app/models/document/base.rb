@@ -132,7 +132,7 @@ class Document::Base < ApplicationRecord
 
     # increase weighting for concepts derived from the title
     determine_title_concepts(concepts.keys).each do |concept|
-      concepts[concept][0] *= 1.5 # NB: regular analysis already includes the title
+      concepts[concept][0] *= 5.0 # NB: regular analysis already includes the title
     end
     concepts
   end
