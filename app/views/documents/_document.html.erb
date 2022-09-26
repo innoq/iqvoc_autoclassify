@@ -1,0 +1,13 @@
+<% if document.title.present? %>
+  <h2><%= document.title %></h2>
+<% end %>
+
+<div>
+  <h3>
+    <%= Document::Base.human_attribute_name(:content) %>
+    (<%= number_with_delimiter(document.content.size) %>
+    <%= t('txt.common.character') %>)
+  </h3>
+
+  <%= document.content %>
+</div>

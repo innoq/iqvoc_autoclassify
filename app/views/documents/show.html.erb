@@ -63,7 +63,7 @@
       <% if current_user %>
         <div class="tab-content" id="myTabContent">
           <div class="tab-pane fade show active" id="text" role="tabpanel" aria-labelledby="home-tab">
-            <%= @document.content %>
+            <%= render 'document', document: @document %>
           </div>
 
           <div class="tab-pane fade" id="extended" role="tabpanel" aria-labelledby="url-tab">
@@ -77,7 +77,7 @@
           </div>
         </div>
       <% else %>
-        <%= @document.content %>
+        <%= render 'document', document: @document %>
       <% end %>
     </div>
   </div>

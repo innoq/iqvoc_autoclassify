@@ -3,7 +3,7 @@ require 'workflow'
 
 class Document::Base < ApplicationRecord
 
-  MAX_CONTENT_CHARS = 10000
+  MAX_CONTENT_CHARS = 10_000
   MAX_CONTENT_SUFFIX = '…'
 
   self.table_name = 'documents'
@@ -68,7 +68,7 @@ class Document::Base < ApplicationRecord
   end
 
   def title
-    read_attribute(:title).presence || content_hash || '-'
+    read_attribute(:title).presence
   end
 
   def content=(_content)
@@ -163,7 +163,10 @@ class Document::Base < ApplicationRecord
 
   # returns a hash pairing labels with the respective number of occurrences
   def determine_labels
-    text = self.title ? self.title + ".\n\n" + self.content : self.content
+    text = [self.title, self.content]
+             .select(&:present?)
+             .join("\n\n")
+
     sentences = @parser.new(text).sentences
 
     matcher = WordMatcher.new(sentences)

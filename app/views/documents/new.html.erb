@@ -20,6 +20,7 @@
   <div class="tab-pane fade show active" id="text" role="tabpanel" aria-labelledby="home-tab">
     <%= bootstrap_form_for @document, :as => :document, :url => plain_documents_path, :html => { :class => 'document-form' } do |f| %>
       <fieldset>
+        <%= f.text_field :title %>
         <%= f.text_area :content, rows: 10, label: t('txt.controllers.documents.new.enter_text'), autofocus: 'true' %>
 
         <%= f.button t("txt.controllers.documents.new.classify_text"), class: 'btn btn-primary', data: {disable_with: loading_indicator(t("txt.controllers.documents.new.classify_process"))} %>

@@ -3,6 +3,7 @@ de:
     common:
       contact_email: info@example.org
       contact_message: "Haben Sie Fehler entdeckt oder vermissen Sie Schlagwörter? Teilen Sie uns diese bitte mit: %{email}"
+      character: Zeichen
     controllers:
       plain_documents:
         create:

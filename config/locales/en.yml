@@ -1,5 +1,7 @@
 en:
   txt:
+    common:
+      character: character
     controllers:
       plain_documents:
         create:
