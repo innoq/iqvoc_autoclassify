@@ -113,7 +113,9 @@ class Document::Base < ApplicationRecord
     @trace[:concept_index] = {}
 
     labels.each do |label, occurrences|
-      label.labelings.reject { |l| l.owner.is_a?(Iqvoc::Collection.base_class) }.each do |labeling|
+      label.labelings
+           .reject { |l| l.owner.is_a?(Iqvoc::Collection.base_class) || l.owner.is_a?(Concept::SKOS::Scheme) }
+           .each do |labeling|
         concept = labeling.owner
         next if !concept.published? || concept.expired?
 
