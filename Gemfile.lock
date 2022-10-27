@@ -1,6 +1,6 @@
 GIT
   remote: https://github.com/innoq/iqvoc.git
-  revision: ab6f63bae8a03b003131f2c50124e71ebfc5f472
+  revision: 9f24127b2d9b036a184c2a635ec5085566456430
   branch: master
   specs:
     iqvoc (4.13.2)
@@ -248,7 +248,7 @@ GEM
       multi_json (~> 1.15)
       rack (~> 2.2)
       rdf (~> 3.2, >= 3.2.9)
-    json-ld-preloaded (3.2.1)
+    json-ld-preloaded (3.2.2)
       json-ld (~> 3.2)
       rdf (~> 3.2)
     kaminari (1.2.2)
@@ -460,7 +460,7 @@ GEM
     rdf-turtle (3.2.1)
       ebnf (~> 2.3)
       rdf (~> 3.2)
-    rdf-vocab (3.2.2)
+    rdf-vocab (3.2.3)
       rdf (~> 3.2, >= 3.2.4)
     rdf-xsd (3.2.1)
       rdf (~> 3.2)
