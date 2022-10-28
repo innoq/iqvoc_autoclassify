@@ -8,6 +8,8 @@ class Document::Base < ApplicationRecord
 
   self.table_name = 'documents'
 
+  serialize :options
+
   include Rails.application.routes.url_helpers
   include Workflow
 
@@ -171,7 +173,7 @@ class Document::Base < ApplicationRecord
 
     sentences = @parser.new(text).sentences
 
-    matcher = WordMatcher.new(sentences)
+    matcher = WordMatcher.new(sentences, self.options)
     label_ids = matcher.labels
     @trace = matcher.trace
 
