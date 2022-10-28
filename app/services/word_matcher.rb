@@ -16,8 +16,10 @@ class WordMatcher
   end
 
   # each sentence is an array words (i.e. simple strings)
-  def initialize(sentences)
+  def initialize(sentences, options = {})
     @sentences = sentences
+    @options = options
+
     @trace = {}
     @phrases = {} # Labels containing spaces. Could have compound forms aswell.
   end
@@ -47,7 +49,7 @@ class WordMatcher
       @trace[:compound_index][key] = []
       @trace[:result_index][key] = []
 
-      sentence += phrase_recognition_variants(sentence, 10) # find phrases that are not compound-forms
+      sentence += phrase_recognition_variants(sentence) # find phrases that are not compound-forms
       sentence = add_non_dotted_variants(sentence)
       sentence = find_existing_inflectionals(sentence)
       sentence = remove_duplicate_word_partials(sentence)
@@ -276,8 +278,10 @@ class WordMatcher
     label_seqs
   end
 
-  def phrase_recognition_variants(words, max_tupel_size=3)
+  def phrase_recognition_variants(words)
+    max_tupel_size = @options[:phrase_recognition_size] || 10
     res = []
+
     return res if max_tupel_size < 2
     (2..max_tupel_size).each do |max|
       ix = 0

@@ -47,13 +47,13 @@ class PhraseRecognitionTest < ActiveSupport::TestCase
 
   end
 
- test 'prefer longer exact labels matches' do
+  test 'prefer longer exact labels matches' do
     sentence = %w(Die Monetäre Bewertung der Umweltschäden ist mein Hobby.)
     labels = WordMatcher.new([sentence]).labels
     assert_equal 1, labels.length
     assert labels.include? @label_ids['Monetäre Bewertung']
 
-     # should only find "Monetäre Bewertung von Umweltschäden" and not shorter "Monetäre Bewertung"
+    # should only find "Monetäre Bewertung von Umweltschäden" and not shorter "Monetäre Bewertung"
     sentence = %w(In diesem Satz geht es um Monetäre Bewertung von Umweltschäden und nicht anderem.)
     labels = WordMatcher.new([sentence]).labels
     assert_equal 1, labels.length
@@ -66,4 +66,34 @@ class PhraseRecognitionTest < ActiveSupport::TestCase
     assert labels.include? @label_ids['Abbau von natürlichen Ressourcen']
     assert labels.exclude? @label_ids['natürlichen Ressourcen']
   end
+
+  test 'phrase recognition size parameter' do
+    # should only find "Monetäre Bewertung von Umweltschäden" and not shorter "Monetäre Bewertung"
+    sentence = %w(In diesem Satz geht es um Monetäre Bewertung von Umweltschäden und nicht anderem.)
+
+    # phrase_recognition_size: 0, disabled
+    # only finds "Bewetung"
+    labels = WordMatcher.new([sentence], phrase_recognition_size: 0).labels
+    assert_equal 1, labels.length
+    assert labels.include? @label_ids['Bewertung']
+    assert labels.exclude? @label_ids['Monetäre Bewertung']
+    assert labels.exclude? @label_ids['Monetäre Bewertung von Umweltschäden']
+
+    # phrase_recognition_size: 2
+    # Finds "Bewertung" and "Monetäre Bewertung" and prefer longer "Monetäre Bewertung"
+    labels = WordMatcher.new([sentence], phrase_recognition_size: 2).labels
+    assert_equal 1, labels.length
+    assert labels.exclude? @label_ids['Bewertung']
+    assert labels.include? @label_ids['Monetäre Bewertung']
+    assert labels.exclude? @label_ids['Monetäre Bewertung von Umweltschäden']
+
+    # phrase_recognition_size: 4
+    # Finds "Bewertung", "Monetäre Bewertung", "Monetäre Bewertung von Umweltschäden" and prefer longest
+    labels = WordMatcher.new([sentence], phrase_recognition_size: 4).labels
+    assert_equal 1, labels.length
+    assert labels.exclude? @label_ids['Bewertung']
+    assert labels.exclude? @label_ids['Monetäre Bewertung']
+    assert labels.include? @label_ids['Monetäre Bewertung von Umweltschäden']
+  end
+
 end
