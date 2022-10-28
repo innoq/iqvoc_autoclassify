@@ -101,7 +101,7 @@ class ClassificationWeightingTest < ActiveSupport::TestCase
     assert_equal [0.8, 'All'], concepts[@concepts['Weltraum']] # via 'All' FIXME: ?
     assert_nil concepts[@concepts['Kampf']]
     assert_nil concepts[@concepts['Pilot']]
-    assert_equal [3.0, 'Weltraumkampfpilot'], concepts[@concepts['Weltraumkampfpilot']]
+    assert_equal [10.0, 'Weltraumkampfpilot'], concepts[@concepts['Weltraumkampfpilot']]
   end
 
   test 'multiple occurence of the same label increases weighting' do
