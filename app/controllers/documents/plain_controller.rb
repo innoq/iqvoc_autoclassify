@@ -42,24 +42,16 @@ class Documents::PlainController < DocumentsController
     if params[:document]
       title = params[:document][:title]
       content = params[:document][:content]
-      phrase_recognition_size = params[:document]['phrase-recognition-size']
     else
       title = params[:title]
       content = params[:content]
-      phrase_recognition_size = params['phrase-recognition-size']
     end
 
     render_errors and return if content.nil?
 
-    options = {}
-    if phrase_recognition_size&.match(/\d+/) && phrase_recognition_size.to_i <= 10
-      options[:phrase_recognition_size] = phrase_recognition_size.to_i
-    end
-
     @document = Document::Plain.new do |doc|
       doc.title = title
       doc.content = content
-      doc.options = options
     end
     @document.persist = false unless current_user
 
