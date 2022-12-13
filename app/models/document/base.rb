@@ -3,6 +3,7 @@ require 'workflow'
 
 class Document::Base < ApplicationRecord
 
+  MAX_TITLE_CHARS = 255
   MAX_CONTENT_CHARS = 10_000
   MAX_CONTENT_SUFFIX = '…'
 
@@ -29,7 +30,7 @@ class Document::Base < ApplicationRecord
           dependent: :destroy,
           inverse_of: :document
 
-  validates :title, length: { maximum: 255 }
+  validates :title, length: { maximum: MAX_TITLE_CHARS }
   validates :content, length: { maximum: MAX_CONTENT_CHARS }
 
   class_attribute :weightings
@@ -71,10 +72,19 @@ class Document::Base < ApplicationRecord
     read_attribute(:title).presence
   end
 
+  def title=(_title)
+    title = _title&.squish
+
+    if title && title.bytesize >= MAX_TITLE_CHARS
+      super(title.mb_chars.limit(MAX_TITLE_CHARS - MAX_CONTENT_SUFFIX.length).to_s + MAX_CONTENT_SUFFIX)
+    else
+      super(title)
+    end
+  end
+
   def content=(_content)
     content = _content.squish
-    # puts _content
-    # puts content
+
     if content.bytesize >= MAX_CONTENT_CHARS
       super(content.mb_chars.limit(MAX_CONTENT_CHARS - MAX_CONTENT_SUFFIX.length).to_s  + MAX_CONTENT_SUFFIX)
     else
