@@ -14,6 +14,7 @@ class FreeClassificationController < ApplicationController
 
     @free_classification_params = {
       query: search_params[:query],
+      language: search_params[:language],
       include_alt_labels: search_params[:include_alt_labels],
       include_used_for_labels: search_params[:include_used_for_labels],
       include_translations: search_params[:include_translations]
@@ -34,7 +35,7 @@ class FreeClassificationController < ApplicationController
 
   def search_params
     params[:query]&.strip!
-    params.permit(:query, :include_translations, :include_alt_labels, :include_used_for_labels, :concepts => [])
+    params.permit(:query, :language, :include_translations, :include_alt_labels, :include_used_for_labels, :concepts => [])
   end
 
   def single_query(params = {})
@@ -93,13 +94,21 @@ class FreeClassificationController < ApplicationController
   end
 
   def build_language_query(options = {})
-    res = ['de']
-    res << 'en' if options['include_translations'] == 'true'
+    pref_labeling_languages = Iqvoc::Concept.pref_labeling_languages
+    fallback_lang = pref_labeling_languages.first
+
+    res = if options['include_translations'] == 'true'
+            # use all available languages
+            pref_labeling_languages
+          else
+            pref_labeling_languages.select { |l| l == (options['language'] || fallback_lang) }
+          end
+
     res
   end
 
   def build_labeling_types(options = {})
-    res = [Iqvoc::Concept.pref_labeling_class_name] # should be search in any case
+    res = [Iqvoc::Concept.pref_labeling_class_name] # should be searched in any case
     res << Iqvoc::Concept.alt_labeling_class_name if options[:include_alt_labels] == 'true'
     res
   end

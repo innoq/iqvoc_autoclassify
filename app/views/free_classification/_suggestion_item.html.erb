@@ -1,4 +1,6 @@
-<% if result.owner %>
+<% owner_has_explicit_pref_label = result&.owner&.pref_label(@free_classification_params[:language])&.language == @free_classification_params[:language] %>
+
+<% if result.owner && owner_has_explicit_pref_label %>
   <% if result.type == 'Labeling::UMT::UsedForLabel' %>
     <li class="search-result">
       <% concepts = result.target.concepts_for_labeling_class(Labeling::UMT::UsedForLabel) %>
@@ -8,9 +10,9 @@
     </li>
   <% else %>
     <li class="search-result">
-      <% link_value = (result.target == result.owner.pref_label ? result.owner.pref_label.value : "#{result.target.value} &rarr; #{result.owner.pref_label.value}".html_safe) %>
-      <% highlighed_link_value = highlight(link_value, params[:query], highlighter: '<strong>\1</strong>') %>
-      <%= link_to(highlighed_link_value, freeclassify_url(@free_classification_params.merge(concepts: @selected + [result.owner.origin])), class: (@selected.include? result.owner.origin) ? 'selected' : '') %>
+      <% human_label = human_label_for(result, @free_classification_params[:language]) %>
+      <% highlighed_human_label = highlight(human_label, params[:query], highlighter: '<strong>\1</strong>') %>
+      <%= link_to(highlighed_human_label, freeclassify_url(@free_classification_params.merge(concepts: @selected + [result.owner.origin])), class: (@selected.include? result.owner.origin) ? 'selected' : '') %>
     </li>
   <% end %>
 <% end %>

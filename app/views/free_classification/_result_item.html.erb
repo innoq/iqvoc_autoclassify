@@ -1,7 +1,7 @@
 <li>
   <span class="auto-classify-result">
     <span class="result-item">
-      <%= result.to_s %>
+      <%= result.pref_label(@free_classification_params[:language]).value %>
     </span>
 
     <%= link_to(freeclassify_url(@free_classification_params.merge(concepts: @selected - [result.origin])), title: t('txt.views.free_classification.remove_result_item'),  class: 'btn btn-link p-0', data: { toggle: 'tooltip' }) do %>

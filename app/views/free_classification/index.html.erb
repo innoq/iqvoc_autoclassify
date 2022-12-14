@@ -6,45 +6,61 @@
 
       <%= form_tag freeclassify_path(:query => nil), method: :get do %>
         <div>
-          <div class="form-control-with-icon-end">
-            <%= label_tag 'search', t('txt.views.free_classification.seatch_input_label') %>
+          <div class="form-control-with-icon-end form-row">
 
-            <div class="input-group">
-              <%= search_field_tag 'query', params[:query], id: 'search', class: 'form-control',
-                                   autofocus: true,
-                                   autocomplete: 'off',
-                                   placeholder: t('txt.views.free_classification.query_placeholder'),
-                                   'aria-describedby': 'queryHelpBlock' %>
-              <div class="input-group-append">
-                <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                  <i class="fa fa-cog" aria-hidden="true"></i>
-                </button>
-                <div class="dropdown-menu p-2">
-                  <b><%= t('txt.views.free_classification.settings') %></b>
-                  <div role="separator" class="dropdown-divider"></div>
-                  <div class="dropdown-item form-check">
-                    <%= check_box_tag :include_alt_labels, true, (!params[:query] || params[:include_alt_labels].present?), class: 'form-check-input' %>
-                    <%= label_tag :include_alt_labels, t('txt.views.free_classification.include_alt_labels'), class: 'form-check-label' %>
-                  </div>
+            <div class="col-sm-9">
+              <%= label_tag 'search', t('txt.views.free_classification.seatch_input_label'), class: 'col-form-label' %>
 
-                  <% if can? :use, :administration %>
+              <div class="input-group">
+                <%= search_field_tag 'query', params[:query], id: 'search', class: 'form-control',
+                                     autofocus: true,
+                                     autocomplete: 'off',
+                                     placeholder: t('txt.views.free_classification.query_placeholder'),
+                                     'aria-describedby': 'queryHelpBlock' %>
+                <div class="input-group-append">
+                  <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <i class="fa fa-cog" aria-hidden="true"></i>
+                  </button>
+                  <div class="dropdown-menu p-2">
+                    <b><%= t('txt.views.free_classification.settings') %></b>
                     <div role="separator" class="dropdown-divider"></div>
-                    <b><%= t('txt.views.free_classification.admin_settings') %></b>
-                    <div class="dropdown-item form-check">
-                      <%= check_box_tag :include_used_for_labels, true, (params[:include_used_for_labels] == "true") , class: 'form-check-input' %>
-                      <%= label_tag :include_used_for_labels, t('txt.views.free_classification.include_used_for_labels'), class: 'form-check-label' %>
+                    <div class="dropdown-item">
+                      <div class="form-check">
+                        <%= check_box_tag :include_alt_labels, true, (!params[:query] || params[:include_alt_labels].present?), class: 'form-check-input' %>
+                        <%= label_tag :include_alt_labels, t('txt.views.free_classification.include_alt_labels'), class: 'form-check-label' %>
+                      </div>
                     </div>
-                    <div class="dropdown-item form-check">
-                      <%= check_box_tag :include_translations, true, params[:include_translations] == "true", class: 'form-check-input' %>
-                      <%= label_tag :include_translations, t('txt.views.free_classification.include_translations'), class: 'form-check-label' %>
-                    </div>
-                  <% end %>
+
+                    <% if can? :use, :administration %>
+                      <div role="separator" class="dropdown-divider"></div>
+                      <b><%= t('txt.views.free_classification.admin_settings') %></b>
+                      <div class="dropdown-item">
+                        <div class="form-check">
+                          <%= check_box_tag :include_used_for_labels, true, (params[:include_used_for_labels] == "true") , class: 'form-check-input' %>
+                          <%= label_tag :include_used_for_labels, t('txt.views.free_classification.include_used_for_labels'), class: 'form-check-label' %>
+                        </div>
+                      </div>
+                      <div class="dropdown-item">
+                        <div class="form-check">
+                          <%= check_box_tag :include_translations, true, params[:include_translations] == "true", class: 'form-check-input' %>
+                          <%= label_tag :include_translations, t('txt.views.free_classification.include_translations'), class: 'form-check-label' %>
+                        </div>
+                      </div>
+                    <% end %>
+                  </div>
                 </div>
               </div>
+              <small id="queryHelpBlock">
+                <%= t('txt.views.free_classification.query_help_block') %>
+              </small>
             </div>
-            <small id="queryHelpBlock">
-              <%= t('txt.views.free_classification.query_help_block') %>
-            </small>
+
+            <div class="col-sm-3">
+              <%= label_tag :language, t('txt.views.free_classification.result_language'), class: 'col-form-label' %>
+              <%= select_tag :language, options_for_select(Iqvoc::Concept.pref_labeling_languages.map { |lang| [t(lang, scope: 'languages'), lang] }, params[:language]),
+                             class: 'form-control' %>
+            </div>
+
           </div>
           <%= submit_tag t('txt.views.navigation.search'), class: 'btn btn-primary' %>
 

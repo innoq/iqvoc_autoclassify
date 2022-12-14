@@ -80,7 +80,8 @@ de:
         admin_settings: Einstellungen für Administratoren
         include_alt_labels: Alternative Bezeichnungen einbeziehen
         include_used_for_labels: Benutze in Kombination-Bezeichnungen einbeziehen
-        include_translations: Englische Bezeichnungen einbeziehen
+        result_language: Sprache
+        include_translations: Andere Sprachen einbeziehen
     textractor:
       http_error: HTTP-Fehler
       response_limit_exceeded: Zeitüberschreitung bei Bearbeitung der Anfrage
