@@ -53,11 +53,11 @@ class Documents::ExtractedController < DocumentsController
 
   def create
     uri = if params[:document_base]
-            params[:document_base][:uri]
+            params.require(:document_base).require(:uri)
           elsif params[:document_extracted]
-            params[:document_extracted][:uri]
+            params.require(:document_extracted).require(:uri)
           else
-            params[:uri]
+            params.require(:uri)
           end
 
     @document = Document::Extracted.new(uri: uri)

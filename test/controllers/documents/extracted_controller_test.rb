@@ -161,4 +161,109 @@ class Documents::ExtractedControllerTest < ActionController::TestCase
 
     session.destroy
   end
+
+  test 'ttl, ntriples, rdfxml and json support' do
+    mimes = [
+      {accept: 'ttl', content_type: 'text/turtle; charset=utf-8'},
+      {accept: 'nt', content_type: 'application/n-triples; charset=utf-8'},
+      {accept: 'rdf', content_type: 'application/rdf+xml; charset=utf-8'},
+      {accept: 'json', content_type: 'application/json; charset=utf-8'},
+    ]
+
+    mimes.each do |mime|
+      post :create, params: {
+        lang: 'de',
+        format: mime[:accept],
+        uri: @urls[:html]
+      }
+
+      assert_response :success
+      assert_equal mime[:content_type], response.content_type
+    end
+  end
+
+  test 'flat and nested documents params' do
+    %w[ttl nt rdf json].each do |format|
+      post :create, params: {
+        lang: 'de',
+        format: format,
+        uri: @urls[:html]
+      }
+      assert_response :success
+
+      post :create, params: {
+        lang: 'de',
+        format: format,
+        document_base: {
+          uri: @urls[:html]
+        }
+      }
+      assert_response :success
+
+      post :create, params: {
+        lang: 'de',
+        format: format,
+        document_extracted: {
+          uri: @urls[:html]
+        }
+      }
+      assert_response :success
+    end
+  end
+
+  test 'respond with bad request on missing uri parameter' do
+    %w[ttl nt rdf json].each do |format|
+      post :create, params: {
+        lang: 'de',
+        format: format,
+      }
+      assert_response :bad_request
+
+      post :create, params: {
+        lang: 'de',
+        format: format,
+        document_base: {
+          xuri: 'my text'
+        }
+      }
+      assert_response :bad_request
+
+      post :create, params: {
+        lang: 'de',
+        format: format,
+        document_extracted: {
+          xuri: 'my text'
+        }
+      }
+      assert_response :bad_request
+    end
+  end
+
+  test 'respond with bad request on empty uri parameter' do
+    %w[ttl nt rdf json].each do |format|
+      post :create, params: {
+        lang: 'de',
+        format: format,
+      }
+      assert_response :bad_request
+
+      post :create, params: {
+        lang: 'de',
+        format: format,
+        document_base: {
+          xuri: 'my text'
+        }
+      }
+      assert_response :bad_request
+
+      post :create, params: {
+        lang: 'de',
+        format: format,
+        document_extracted: {
+          xuri: 'my text'
+        }
+      }
+      assert_response :bad_request
+    end
+  end
 end
