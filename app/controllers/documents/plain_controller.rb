@@ -41,10 +41,10 @@ class Documents::PlainController < DocumentsController
   def create
     if params[:document]
       title = params[:document][:title]
-      content = params[:document][:content]
+      content = params.require(:document).require(:content)
     else
       title = params[:title]
-      content = params[:content]
+      content = params.require(:content)
     end
 
     render_errors and return if content.nil?
