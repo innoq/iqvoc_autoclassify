@@ -42,6 +42,7 @@ class Documents::PlainController < DocumentsController
     @document = Document::Plain.new do |doc|
       doc.title = document_params[:title]
       doc.content = document_params[:content]
+      doc.language = document_params[:language] if document_params[:language].present?
     end
 
     @document.persist = false unless current_user
@@ -89,10 +90,10 @@ class Documents::PlainController < DocumentsController
   def document_params
     if params[:document]
       # form request
-      params.require(:document).permit(:title, :content)
+      params.require(:document).permit(:title, :content, :language)
     else
       # api request
-      params.permit(:title, :content)
+      params.permit(:title, :content, :language)
     end
   end
 
