@@ -52,9 +52,7 @@ class Documents::ExtractedController < DocumentsController
     DOC
 
   def create
-    uri = document_params.require(:uri)
-
-    @document = Document::Extracted.new(uri: uri)
+    @document = Document::Extracted.new(uri: document_params[:uri])
     @document.persist = false unless current_user
 
     render_errors and return if @document.invalid?
@@ -116,6 +114,7 @@ class Documents::ExtractedController < DocumentsController
 
   def error_response
     {
+      bad_request: 400,
       response_limit_exceeded: 413, # XXX: s/response/request/ ?
       http_error: 422,
       unsupported_content_type: 422,
@@ -132,6 +131,7 @@ class Documents::ExtractedController < DocumentsController
     end
 
     if @document.errors.any?
+      extraction_error_code = error_response[:bad_request]
       messages << t('txt.controllers.documents.create.invalid')
     end
 
@@ -140,11 +140,11 @@ class Documents::ExtractedController < DocumentsController
         flash[:error] = messages.join("\n")
         render :new
       end
-      format.any(:rdf, :ttl, :nt) do
+      format.any(:rdf, :ttl, :nt, :json) do
         if extraction_error_code
-          render plain: messages.join("\n"), status: extraction_error_code
+          head extraction_error_code
         else
-          render plain: messages.join("\n"), status: 422
+          head 422
         end
       end
     end

@@ -83,9 +83,9 @@ class Document::Base < ApplicationRecord
   end
 
   def content=(_content)
-    content = _content.squish
+    content = _content&.squish
 
-    if content.bytesize >= MAX_CONTENT_CHARS
+    if content && content.bytesize >= MAX_CONTENT_CHARS
       super(content.mb_chars.limit(MAX_CONTENT_CHARS - MAX_CONTENT_SUFFIX.length).to_s  + MAX_CONTENT_SUFFIX)
     else
       super(content)

@@ -162,4 +162,36 @@ class DocumentsTest < ActionDispatch::IntegrationTest
     assert_equal page.current_path, '/de/autoclassify/plain.html'
   end
 
+  test 'missing or empty plain content parameters' do
+    visit new_document_path(lang: 'de')
+    click_button 'Text verschlagworten'
+
+    assert page.has_content?('Entweder URL oder Volltext müssen übermittelt werden'), 'Fehlermeldung nicht gefunden'
+
+    visit new_document_path(lang: 'de')
+    fill_in 'Text', with: ''
+    click_button 'Text verschlagworten'
+
+    assert page.has_content?('Entweder URL oder Volltext müssen übermittelt werden'), 'Fehlermeldung nicht gefunden'
+
+    visit new_document_path(lang: 'de')
+    fill_in 'Text', with: 'Lorem'
+    click_button 'Text verschlagworten'
+
+    assert page.has_no_content?('Entweder URL oder Volltext müssen übermittelt werden')
+  end
+
+  test 'missing or empty extracted uri parameter' do
+    visit new_document_path(lang: 'de')
+    click_button 'Text verschlagworten'
+
+    assert page.has_content?('Entweder URL oder Volltext müssen übermittelt werden'), 'Fehlermeldung nicht gefunden'
+
+    visit new_document_path(lang: 'de')
+    fill_in 'URL zu HTML-Seite oder PDF-Dokument', with: ''
+    click_button 'Text verschlagworten'
+
+    assert page.has_content?('Entweder URL oder Volltext müssen übermittelt werden'), 'Fehlermeldung nicht gefunden'
+  end
+
 end

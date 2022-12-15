@@ -41,7 +41,7 @@ class Documents::PlainController < DocumentsController
   def create
     @document = Document::Plain.new do |doc|
       doc.title = document_params[:title]
-      doc.content = document_params.require(:content)
+      doc.content = document_params[:content]
     end
 
     @document.persist = false unless current_user
@@ -97,14 +97,22 @@ class Documents::PlainController < DocumentsController
   end
 
   def render_errors
-    @document = Document::Base.new unless @document
+    status = 422
 
-    flash[:error] = t('txt.controllers.documents.create.invalid')
+    if @document.content.blank?
+      status = 400
+    end
+
     respond_to do |format|
-      format.html { render :new }
-      format.any(:rdf, :ttl, :nt) {
-        render plain: flash[:error], status: 422
+      format.html {
+        @document = Document::Base.new unless @document
+        flash[:error] = t('txt.controllers.documents.create.invalid')
+        render :new
+      }
+      format.any(:rdf, :ttl, :nt, :json) {
+        head status
       }
     end
+
   end
 end
