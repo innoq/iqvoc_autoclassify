@@ -26,7 +26,7 @@ de:
         save:
           success: Dokument erfolgreich gespeichert
         create:
-          invalid: entweder URL oder Volltext müssen übermittelt werden
+          invalid: Entweder URL oder Volltext müssen übermittelt werden
         update:
           success: Dokument wurde erfolgreich aktualisiert.
           invalid: Bestätigung wurde nicht angewählt.
