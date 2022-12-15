@@ -39,20 +39,11 @@ class Documents::PlainController < DocumentsController
   DOC
 
   def create
-    if params[:document]
-      title = params[:document][:title]
-      content = params.require(:document).require(:content)
-    else
-      title = params[:title]
-      content = params.require(:content)
-    end
-
-    render_errors and return if content.nil?
-
     @document = Document::Plain.new do |doc|
-      doc.title = title
-      doc.content = content
+      doc.title = document_params[:title]
+      doc.content = document_params.require(:content)
     end
+
     @document.persist = false unless current_user
 
     render_errors and return if @document.invalid?
@@ -94,6 +85,16 @@ class Documents::PlainController < DocumentsController
   end
 
   protected
+
+  def document_params
+    if params[:document]
+      # form request
+      params.require(:document).permit(:title, :content)
+    else
+      # api request
+      params.permit(:title, :content)
+    end
+  end
 
   def render_errors
     @document = Document::Base.new unless @document

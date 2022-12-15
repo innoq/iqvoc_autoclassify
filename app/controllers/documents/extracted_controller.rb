@@ -52,13 +52,7 @@ class Documents::ExtractedController < DocumentsController
     DOC
 
   def create
-    uri = if params[:document_base]
-            params.require(:document_base).require(:uri)
-          elsif params[:document_extracted]
-            params.require(:document_extracted).require(:uri)
-          else
-            params.require(:uri)
-          end
+    uri = document_params.require(:uri)
 
     @document = Document::Extracted.new(uri: uri)
     @document.persist = false unless current_user
@@ -106,6 +100,19 @@ class Documents::ExtractedController < DocumentsController
   end
 
   protected
+
+  def document_params
+    if params[:document_base]
+      # form request
+      params.require(:document_base).permit(:uri)
+    elsif params[:document_extracted]
+      # FIXME: necessary?
+      params.require(:document_extracted).permit(:uri)
+    else
+      # api request
+      params.permit(:uri)
+    end
+  end
 
   def error_response
     {
