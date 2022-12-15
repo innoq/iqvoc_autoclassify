@@ -133,7 +133,7 @@ class Documents::ExtractedController < DocumentsController
         flash[:error] = messages.join("\n")
         render :new
       end
-      format.any(:rdf, :ttl) do
+      format.any(:rdf, :ttl, :nt) do
         if extraction_error_code
           render plain: messages.join("\n"), status: extraction_error_code
         else

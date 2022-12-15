@@ -101,7 +101,7 @@ class Documents::PlainController < DocumentsController
     flash[:error] = t('txt.controllers.documents.create.invalid')
     respond_to do |format|
       format.html { render :new }
-      format.any(:rdf, :ttl) {
+      format.any(:rdf, :ttl, :nt) {
         render plain: flash[:error], status: 422
       }
     end
