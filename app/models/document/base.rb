@@ -102,13 +102,19 @@ class Document::Base < ApplicationRecord
     concepts.sort_by {|_k, v| -v[0]}.each.with_index(1) do |concept_with_weighting, index|
       concept = concept_with_weighting.first
       weighting = concept_with_weighting.last
-      result_pref_label = concept.pref_labels.find { |pf| pf.language == self.language }&.value
+      result_pref_label = if self.language.present?
+                            concept.pref_labels.find { |pf| pf.language == self.language }&.value
+                          else
+                            concept.to_s
+                          end
+
+      next unless result_pref_label
 
       classifications.send(method,
         concept_origin: concept.origin,
         findings: weighting.drop(1).join(", "),
         weighting: weighting.first,
-        title: result_pref_label || concept.to_s)
+        title: result_pref_label)
     end
     create_classification_trace(trace: @trace.to_json) if persist?
     halt if invalid?
