@@ -75,7 +75,6 @@ de:
         copy_all_to_clipboard: Alle Schlagwörter in Zwischenablage kopieren
         show_details: Schlagwort im UMTHES öffnen
         query_placeholder: z.B. Treibhausgas
-        query_help_block: Tippen um nach Schlagwörtern zu suchen
         query_input_too_short: Bitte geben Sie einen Suchbegriff ein der mindestens 2 Zeichen lang ist
         settings: Einstellungen
         admin_settings: Einstellungen für Administratoren
