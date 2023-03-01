@@ -13,6 +13,6 @@ de:
         title: Titel
         url: Weblink (HTML/PDF)
         content: Text
-        language: Dokumentensprache
+        language: Textsprache
       label/skosxl/base:
         auto_classify: Textanalysefunktion

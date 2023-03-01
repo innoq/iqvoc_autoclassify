@@ -23,7 +23,7 @@ de:
           text_placeholder: Text eingeben/einfügen
           enter_uri:  URL zu HTML-Seite oder PDF-Dokument
           reset_text: Textfeld leeren
-          select_language_prompt: Keine explizite Dokumentensprache angeben
+          select_language_prompt: keine Angabe
         save:
           success: Dokument erfolgreich gespeichert
         create:

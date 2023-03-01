@@ -21,6 +21,7 @@ en:
           text_placeholder: enter/paste text
           enter_uri:  URL to website or pdf document
           reset_text: clear text
+          select_language_prompt: not specified
         save:
           success: document saved successfully
         create:
