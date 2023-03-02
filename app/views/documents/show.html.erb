@@ -32,6 +32,13 @@
       <%= t('txt.views.document.show.description_url_analysis') %>
       <%= link_to(@document.uri, @document.uri, target: '_blank') %>
     <% end %>
+
+    <% if @document.language %>
+      <div class="mt-3">
+        <%= "#{Document::Base.human_attribute_name(:language)}:" %>
+        <span class="badge badge-secondary"><%= t(@document.language, scope: 'languages') %></span>
+      </div>
+    <% end %>
   </div>
 
   <div class="col-md-4">

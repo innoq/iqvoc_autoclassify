@@ -49,6 +49,7 @@ de:
         pref: Bevorzugt
         alt: Alternativ
         visit_website: Website aufrufen
+        no_title: "[Ohne Titel]"
         show:
           title: Automatische Verschlagwortung
           description_url_analysis: 'Sie haben folgende URL verschlagwortet:'
