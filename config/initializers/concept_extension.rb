@@ -1,5 +1,6 @@
 module ConceptExtension
 
+  # TODO: move to iqvoc core!?
   # returns the (one!) preferred label of a concept for the requested language.
   # lang can either be a (lowercase) string or symbol with the (ISO ....) two letter
   # code of the language (e.g. :en for English, :fr for French, :de for German).
@@ -22,7 +23,7 @@ module ConceptExtension
       end
     end
 
-    lang = language.to_s || (I18n.locale.to_s == 'none' ? nil : I18n.locale.to_s)
+    lang = language.to_s.presence || (I18n.locale.to_s == 'none' ? nil : I18n.locale.to_s)
 
     if @cached_pref_labels[lang].nil?
       # Fallback to the main language
