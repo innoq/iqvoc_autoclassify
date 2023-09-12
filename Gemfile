@@ -28,5 +28,5 @@ group :test do
   gem 'rails-controller-testing'
   gem 'capybara'
   gem 'poltergeist'
-  gem 'fakeweb'
+  gem 'webmock'
 end

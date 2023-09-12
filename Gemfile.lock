@@ -174,6 +174,8 @@ GEM
     coderay (1.1.3)
     concurrent-ruby (1.2.2)
     connection_pool (2.4.1)
+    crack (0.4.5)
+      rexml
     crass (1.0.6)
     database_cleaner (1.8.5)
     date (3.3.3)
@@ -192,7 +194,6 @@ GEM
       sxp (~> 1.2)
       unicode-types (~> 1.8)
     erubi (1.12.0)
-    fakeweb (1.3.0)
     faraday (1.10.3)
       faraday-em_http (~> 1.0)
       faraday-em_synchrony (~> 1.0)
@@ -238,6 +239,7 @@ GEM
       tilt
     hamster (3.0.0)
       concurrent-ruby (~> 1.0)
+    hashdiff (1.0.1)
     hashery (2.1.2)
     htmlentities (4.3.4)
     i18n (1.14.1)
@@ -329,7 +331,6 @@ GEM
     method_source (1.0.0)
     mini_magick (4.12.0)
     mini_mime (1.1.5)
-    mini_portile2 (2.8.4)
     minitest (5.20.0)
     msgpack (1.7.2)
     msgpack (1.7.2-java)
@@ -350,8 +351,7 @@ GEM
       net-protocol
     nio4r (2.5.9)
     nio4r (2.5.9-java)
-    nokogiri (1.15.4)
-      mini_portile2 (~> 2.8.2)
+    nokogiri (1.15.4-arm64-darwin)
       racc (~> 1.4)
     nokogiri (1.15.4-java)
       racc (~> 1.4)
@@ -366,12 +366,12 @@ GEM
       capybara (>= 2.1, < 4)
       cliver (~> 0.3.1)
       websocket-driver (>= 0.2.0)
-    pragmatic_segmenter (0.3.22)
+    pragmatic_segmenter (0.3.23)
       unicode
-    pry (0.13.1)
+    pry (0.14.2)
       coderay (~> 1.1)
       method_source (~> 1.0)
-    pry (0.13.1-java)
+    pry (0.14.2-java)
       coderay (~> 1.1)
       method_source (~> 1.0)
       spoon (~> 0.0)
@@ -550,7 +550,7 @@ GEM
     thor (1.2.2)
     tilt (2.2.0)
     timeout (0.4.0)
-    ttfunk (1.6.2.1)
+    ttfunk (1.7.0)
     tzinfo (2.0.6)
       concurrent-ruby (~> 1.0)
     unicode (0.4.4.4)
@@ -562,6 +562,10 @@ GEM
       activemodel (>= 6.0.0)
       bindex (>= 0.4.0)
       railties (>= 6.0.0)
+    webmock (3.19.1)
+      addressable (>= 2.8.0)
+      crack (>= 0.3.2)
+      hashdiff (>= 0.4.0, < 2.0.0)
     websocket-driver (0.7.6)
       websocket-extensions (>= 0.1.0)
     websocket-driver (0.7.6-java)
@@ -578,14 +582,13 @@ GEM
     zeitwerk (2.6.11)
 
 PLATFORMS
+  arm64-darwin-22
   java
-  ruby
 
 DEPENDENCIES
   awesome_print
   better_errors
   capybara
-  fakeweb
   guess_html_encoding
   iqvoc (~> 4.13)!
   iqvoc_compound_forms (~> 2.10.0)!
@@ -601,6 +604,7 @@ DEPENDENCIES
   responders
   ruby-readability
   web-console
+  webmock
   workflow (~> 1.0.0)
 
 BUNDLED WITH

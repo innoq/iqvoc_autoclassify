@@ -2,7 +2,6 @@
 
 require File.join(File.expand_path(File.dirname(__FILE__)), '../test_helper')
 require File.join(File.expand_path(File.dirname(__FILE__)), '../integration_test_helper')
-require 'fake_web'
 
 class DocumentsTest < ActionDispatch::IntegrationTest
   setup do
@@ -35,14 +34,6 @@ class DocumentsTest < ActionDispatch::IntegrationTest
     ].map do |text|
       make_document(content: text)
     end
-
-    # FIXME - there is no test covering PDF-Extraction
-    # @urls = {
-    #   'pdf' => 'http://example.org/sample.pdf',
-    #   'html' => 'http://example.org/sample.html'
-    # }
-    # FakeWeb.register_uri(:get, @urls['pdf'], body: 'test/fixtures/sample.pdf', content_type: 'application/pdf')
-    # FakeWeb.register_uri(:get, @urls['html'], body: 'test/fixtures/sample.html')
   end
 
   test 'list documents at index' do

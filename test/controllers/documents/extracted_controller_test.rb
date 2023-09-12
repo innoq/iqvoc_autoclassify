@@ -1,10 +1,10 @@
 # encoding: UTF-8
 
 require File.join(File.expand_path(File.dirname(__FILE__)), '../../test_helper')
-require 'fake_web'
+require 'authlogic/test_case'
 
 class Documents::ExtractedControllerTest < ActionController::TestCase
-  require 'authlogic/test_case'
+  include Authlogic::TestCase
 
   setup do
     data = Maker.from_yaml <<-EOF
@@ -43,31 +43,6 @@ class Documents::ExtractedControllerTest < ActionController::TestCase
       redirected: 'http://example.org/redirected',
     }
 
-    FakeWeb.register_uri :get, @urls[:service],
-      body: 'test/fixtures/service.pdf',
-      content_type: 'application/pdf'
-
-    FakeWeb.register_uri :get, @urls[:html],
-      body: 'test/fixtures/sample.html',
-      content_type: 'text/html'
-
-    FakeWeb.register_uri :get, @urls[:big],
-      body: 'test/fixtures/sample.pdf',
-      content_type: 'application/pdf',
-      content_length: 751945
-
-    FakeWeb.register_uri :get, @urls[:not_found],
-      body: 'Nothing here',
-      status: ['404', 'Not Found']
-
-    FakeWeb.register_uri :get, @urls[:unsupported_content_type],
-      body: 'test/fixtures/unsupported.pdf',
-      content_type: 'application/zip'
-
-    FakeWeb.register_uri :get, @urls[:redirected],
-                         status:   ['301', 'Moved Permanently'],
-                         location: @urls[:html]
-
     activate_authlogic
 
     @admin = User.create! do |u|
@@ -82,6 +57,12 @@ class Documents::ExtractedControllerTest < ActionController::TestCase
   end
 
   test 'classify html via uri' do
+    stub_request(:get, @urls[:html]).to_return(
+      body: File.new('test/fixtures/sample.html'),
+      status: 200,
+      headers: { 'Content-Type': 'text/html' }
+    )
+
     assert_no_difference 'Document::Extracted.count' do
       post :create, params: {
         uri: @urls[:html],
@@ -95,6 +76,12 @@ class Documents::ExtractedControllerTest < ActionController::TestCase
   end
 
   test 'classify pdf via uri' do
+    stub_request(:get, @urls[:service]).to_return(
+      body: File.new('test/fixtures/service.pdf'),
+      status: 200,
+      headers: { 'Content-Type': 'application/pdf' }
+    )
+
     assert_no_difference 'Document::Extracted.count' do
       post :create, params: {
         uri: @urls[:service],
@@ -108,6 +95,12 @@ class Documents::ExtractedControllerTest < ActionController::TestCase
   end
 
   test 'classify and persist via uri' do
+    stub_request(:get, @urls[:html]).to_return(
+      body: File.new('test/fixtures/sample.html'),
+      status: 200,
+      headers: { 'Content-Type': 'text/html' }
+    )
+
     session = UserSession.create(@admin)
 
     assert_difference 'Document::Extracted.count' do
@@ -129,6 +122,15 @@ class Documents::ExtractedControllerTest < ActionController::TestCase
   #end
 
   test 'extraction errors' do
+    stub_request(:get, @urls[:not_found]).to_return(
+      status: 404
+    )
+    stub_request(:get, @urls[:unsupported_content_type]).to_return(
+      body: File.new('test/fixtures/unsupported.zip'),
+      status: 200,
+      headers: { 'Content-Type': 'application/zip' }
+    )
+
     post :create, params: {
       uri: @urls[:not_found],
       format: 'rdf',
@@ -145,6 +147,16 @@ class Documents::ExtractedControllerTest < ActionController::TestCase
   end
 
   test 'follow redirects, classify html and persist via uri' do
+    stub_request(:get, @urls[:redirected]).to_return(
+      status: 301,
+      headers: { 'Location': @urls[:html] }
+    )
+    stub_request(:get, @urls[:html]).to_return(
+      body: File.new('test/fixtures/sample.html'),
+      status: 200,
+      headers: { 'Content-Type': 'text/html' }
+    )
+
     session = UserSession.create(@admin)
 
     assert_difference 'Document::Extracted.count' do
@@ -163,6 +175,12 @@ class Documents::ExtractedControllerTest < ActionController::TestCase
   end
 
   test 'ttl, ntriples, rdfxml and json support' do
+    stub_request(:get, @urls[:html]).to_return(
+      body: File.new('test/fixtures/sample.html'),
+      status: 200,
+      headers: { 'Content-Type': 'text/html' }
+    )
+
     mimes = [
       {accept: 'ttl', content_type: 'text/turtle; charset=utf-8'},
       {accept: 'nt', content_type: 'application/n-triples; charset=utf-8'},
@@ -183,6 +201,12 @@ class Documents::ExtractedControllerTest < ActionController::TestCase
   end
 
   test 'flat and nested documents params' do
+    stub_request(:get, @urls[:html]).to_return(
+      body: File.new('test/fixtures/sample.html'),
+      status: 200,
+      headers: { 'Content-Type': 'text/html' }
+    )
+
     %w[ttl nt rdf json].each do |format|
       post :create, params: {
         lang: 'de',

@@ -1,10 +1,10 @@
 # encoding: UTF-8
 
 require File.join(File.expand_path(File.dirname(__FILE__)), '../../test_helper')
-require 'fake_web'
+require 'authlogic/test_case'
 
 class Documents::PlainControllerTest < ActionController::TestCase
-  require 'authlogic/test_case'
+  include Authlogic::TestCase
 
   setup do
     activate_authlogic
