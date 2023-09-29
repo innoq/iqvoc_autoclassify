@@ -1,9 +1,9 @@
 GIT
   remote: https://github.com/innoq/iqvoc.git
-  revision: 3e294f4401916fd5eab0154b3fc22ee5b8f387bb
+  revision: 045b089839b93acce8c15ace6d23adf197ebf3aa
   branch: master
   specs:
-    iqvoc (4.14.0)
+    iqvoc (4.14.1)
       apipie-rails
       authlogic
       bootsnap
@@ -35,29 +35,29 @@ GIT
 
 GIT
   remote: https://github.com/innoq/iqvoc_compound_forms.git
-  revision: b5bbf18d8e6ffca9f72f14ee47f2fb1b8230d93a
+  revision: 0fc7786b556a30c8d882886e91fdf52864b28a0a
   branch: master
   specs:
-    iqvoc_compound_forms (2.11.0)
+    iqvoc_compound_forms (2.11.1)
       iqvoc (~> 4.14.0)
       iqvoc_skosxl (~> 2.11.0)
 
 GIT
   remote: https://github.com/innoq/iqvoc_inflectionals.git
-  revision: 925a7b32b57ffff3789055f091c84c860c018233
+  revision: 4c1032ebe27697e75c11b4765c0807f73e7bd165
   branch: master
   specs:
-    iqvoc_inflectionals (2.11.0)
+    iqvoc_inflectionals (2.11.1)
       iqvoc (~> 4.14.0)
       iqvoc_skosxl (~> 2.11.0)
 
 GIT
   remote: https://github.com/innoq/iqvoc_skosxl.git
-  revision: 893cfd5c97d31cc25f5f49f4b842a2c4a0a4c68e
+  revision: 7067a4049954ec4089610b57af00778687bcca3c
   branch: master
   specs:
-    iqvoc_skosxl (2.11.0)
-      iqvoc (~> 4.14.0, >= 4.4.0)
+    iqvoc_skosxl (2.11.1)
+      iqvoc (~> 4.14.1)
 
 GEM
   remote: https://rubygems.org/
@@ -221,19 +221,15 @@ GEM
       faraday (~> 1.0)
     faucet_pipeline_rails (1.0.1)
       rails (>= 4.2.10)
-    ffi (1.15.5)
-    ffi (1.15.5-java)
+    ffi (1.16.2)
+    ffi (1.16.2-java)
     ffi-compiler (1.0.1)
       ffi (>= 1.0.0)
       rake
     globalid (1.2.1)
       activesupport (>= 6.1)
     guess_html_encoding (0.0.11)
-    haml (6.1.2)
-      temple (>= 0.8.2)
-      thor
-      tilt
-    haml (6.1.2-java)
+    haml (6.2.0)
       temple (>= 0.8.2)
       thor
       tilt
@@ -580,7 +576,7 @@ GEM
       psych (>= 3.3)
       rdf (~> 3.2, >= 3.2.9)
       rdf-xsd (~> 3.2)
-    zeitwerk (2.6.11)
+    zeitwerk (2.6.12)
 
 PLATFORMS
   arm64-darwin-22
