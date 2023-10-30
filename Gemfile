@@ -10,7 +10,7 @@ gem 'pdf-reader', '~> 1.4.0'
 gem 'workflow', '~> 1.0.0'
 gem 'guess_html_encoding'
 gem 'responders'
-gem 'pragmatic_segmenter'
+gem 'pragmatic_segmenter', '~> 0.3.23', :github => 'innoq/pragmatic_segmenter', branch: 'issue-78'
 
 group :development do
   gem 'better_errors'

@@ -59,6 +59,14 @@ GIT
     iqvoc_skosxl (2.11.2)
       iqvoc (~> 4.14.2)
 
+GIT
+  remote: https://github.com/innoq/pragmatic_segmenter.git
+  revision: f0bd139e0c8697ec4141ad84948f0fe86549ca78
+  branch: issue-78
+  specs:
+    pragmatic_segmenter (0.3.23)
+      unicode
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -362,8 +370,6 @@ GEM
       capybara (>= 2.1, < 4)
       cliver (~> 0.3.1)
       websocket-driver (>= 0.2.0)
-    pragmatic_segmenter (0.3.23)
-      unicode
     pry (0.14.2)
       coderay (~> 1.1)
       method_source (~> 1.0)
@@ -595,7 +601,7 @@ DEPENDENCIES
   pdf-reader (~> 1.4.0)
   pg
   poltergeist
-  pragmatic_segmenter
+  pragmatic_segmenter (~> 0.3.23)!
   pry-rails
   rails-controller-testing
   responders
