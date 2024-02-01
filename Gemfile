@@ -1,9 +1,9 @@
 source 'https://rubygems.org'
 
-gem 'iqvoc', '~> 4.14.2', :github => 'innoq/iqvoc', branch: 'master'
-gem 'iqvoc_skosxl', '~> 2.11.2', :github => 'innoq/iqvoc_skosxl', branch: 'master'
-gem 'iqvoc_inflectionals', '~> 2.11.2', :github => 'innoq/iqvoc_inflectionals', branch: 'master'
-gem 'iqvoc_compound_forms', '~> 2.11.2', :github => 'innoq/iqvoc_compound_forms', branch: 'master'
+gem 'iqvoc', '~> 4.14.4', :github => 'innoq/iqvoc', branch: 'master'
+gem 'iqvoc_skosxl', '~> 2.11.3', :github => 'innoq/iqvoc_skosxl', branch: 'master'
+gem 'iqvoc_inflectionals', '~> 2.11.3', :github => 'innoq/iqvoc_inflectionals', branch: 'master'
+gem 'iqvoc_compound_forms', '~> 2.11.3', :github => 'innoq/iqvoc_compound_forms', branch: 'master'
 
 gem 'ruby-readability'
 gem 'pdf-reader', '~> 1.4.0'
