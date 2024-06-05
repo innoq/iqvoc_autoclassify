@@ -1,5 +1,3 @@
-import '../../../../node_modules/clipboard/dist/clipboard';
-
 jQuery(function($) {
   "use strict";
 
