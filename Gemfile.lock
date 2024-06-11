@@ -61,7 +61,7 @@ GIT
 
 GIT
   remote: https://github.com/innoq/pragmatic_segmenter.git
-  revision: f0bd139e0c8697ec4141ad84948f0fe86549ca78
+  revision: 30c0cc33bfaf8ed64a8ba2bd7f21d6a5cb558bbc
   branch: issue-78
   specs:
     pragmatic_segmenter (0.3.23)
