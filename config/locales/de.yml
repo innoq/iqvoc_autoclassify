@@ -88,3 +88,4 @@ de:
       response_limit_exceeded: Zeitüberschreitung bei Bearbeitung der Anfrage
       unsupported_content_type: Content type nicht unterstützt
       unprocessable_pdf: PDF-Dokument konnte nicht verarbeitet werden
+      bad_request: Ungültige Eingabe

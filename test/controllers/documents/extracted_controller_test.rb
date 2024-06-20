@@ -290,4 +290,16 @@ class Documents::ExtractedControllerTest < ActionController::TestCase
       assert_response :bad_request
     end
   end
+
+  test 'respond with bad request on invalid uri parameter' do
+    %w[ttl nt rdf json].each do |format|
+      post :create, params: {
+        uri: 'htt://invalid.uri',
+        format: 'rdf',
+        lang: 'de'
+      }
+
+      assert_response :bad_request, "Expecting bad request for format :#{format} when using url 'htt://invalid.uri' "
+    end
+  end
 end

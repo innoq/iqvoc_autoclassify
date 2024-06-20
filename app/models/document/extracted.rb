@@ -20,6 +20,8 @@ class Document::Extracted < Document::Base
   def extract
     begin
       self.title, self.content = Textractor.from_uri(uri)
+    rescue Textractor::InvalidUri
+      halt :bad_request
     rescue Textractor::ResponseLimitExceeded
       halt :response_limit_exceeded
     rescue Textractor::HTTPError, Textractor::ConnectionError
