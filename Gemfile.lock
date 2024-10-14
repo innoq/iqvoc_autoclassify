@@ -44,7 +44,7 @@ GIT
 
 GIT
   remote: https://github.com/innoq/iqvoc_inflectionals.git
-  revision: 27952d48cb508742109688bb8127c26753e83706
+  revision: cf31b2a2ae1545fecf2c16b857c06a3a9162ded2
   branch: main
   specs:
     iqvoc_inflectionals (2.11.4)
@@ -53,19 +53,11 @@ GIT
 
 GIT
   remote: https://github.com/innoq/iqvoc_skosxl.git
-  revision: 7aedeb161052b069390d23b9d5025202b1bf314c
+  revision: 81033f253c4bf86fe300ed7343d5b2beb61bad31
   branch: main
   specs:
     iqvoc_skosxl (2.11.4)
       iqvoc (~> 4.14.5)
-
-GIT
-  remote: https://github.com/innoq/pragmatic_segmenter.git
-  revision: 30c0cc33bfaf8ed64a8ba2bd7f21d6a5cb558bbc
-  branch: issue-78
-  specs:
-    pragmatic_segmenter (0.3.23)
-      unicode
 
 GEM
   remote: https://rubygems.org/
@@ -377,6 +369,7 @@ GEM
       capybara (>= 2.1, < 4)
       cliver (~> 0.3.1)
       websocket-driver (>= 0.2.0)
+    pragmatic_segmenter (0.3.24)
     psych (5.1.2)
       stringio
     psych (5.1.2-java)
@@ -559,8 +552,6 @@ GEM
     ttfunk (1.7.0)
     tzinfo (2.0.6)
       concurrent-ruby (~> 1.0)
-    unicode (0.4.4.4)
-    unicode (0.4.4.4-java)
     unicode-types (1.10.0)
     uri (0.13.1)
     web-console (4.2.1)
@@ -603,7 +594,7 @@ DEPENDENCIES
   pdf-reader (~> 1.4.0)
   pg
   poltergeist
-  pragmatic_segmenter (~> 0.3.23)!
+  pragmatic_segmenter
   rails-controller-testing
   responders
   ruby-readability
