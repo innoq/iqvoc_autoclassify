@@ -3,6 +3,8 @@ require 'responders'
 class DocumentsController < ApplicationController
   respond_to :html, :rdf, :ttl
 
+  before_action :load_document, only: [:show, :edit, :update, :destroy]
+
   def index
     @documents = Document::Base.includes(:classifications)
                                .order('updated_at DESC')
@@ -12,17 +14,24 @@ class DocumentsController < ApplicationController
   end
 
   def show
-    get_document
   end
 
   def new
     @document = Document::Base.new(language: Iqvoc::Concept.pref_labeling_languages.first.to_s)
   end
 
-  def update
-    if params[:reclassify]
-      get_document
+  def edit
+    authorize! :use, :administration
+    # FIXME: use custom cancan ability
+  end
 
+  def update
+    authorize! :use, :administration
+    # FIXME: use custom cancan ability
+
+    @document.update(document_params)
+
+    if @document.save
       @document.reclassify!
 
       flash[:success] = I18n.t('txt.controllers.documents.update.success')
@@ -34,8 +43,6 @@ class DocumentsController < ApplicationController
   end
 
   def destroy
-    get_document
-
     # FIXME: use custom cancan ability
     authorize! :use, :administration
 
@@ -49,10 +56,21 @@ class DocumentsController < ApplicationController
   end
 
   protected
-  def get_document
+
+  def load_document
     @document = Document::Base.includes(:classifications)
                               .find_by!(id: params[:id])
 
     @classifications = @document.classifications.select { |c| c.concept.present? }
+  end
+
+  def document_params
+    if params[:document]
+      # form request
+      params.require(:document).permit(:title, :content, :language)
+    else
+      # api request
+      params.permit(:title, :content, :language)
+    end
   end
 end
