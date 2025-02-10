@@ -20,7 +20,7 @@
       <tr class="documents-table-item">
         <td>
           <%= link_to doc.title || t('txt.views.document.no_title'), document_path(:id => doc.id), class: 'documents-table-item-link' %>
-          <% if doc.language %>
+          <% if doc.language.present? %>
             <span class="badge badge-secondary"><%= t(doc.language, scope: 'languages') %></span>
           <% end %>
           <%= link_to "<i class='fa fa-share'></i>".html_safe, doc.uri, target: :_blank, title: t('txt.views.document.visit_website') if doc.uri %>

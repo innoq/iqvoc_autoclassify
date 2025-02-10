@@ -54,7 +54,7 @@ class Documents::ExtractedController < DocumentsController
   def create
     @document = Document::Extracted.new do |doc|
       doc.uri = document_params[:uri]
-      doc.language = document_params[:language] if document_params[:language].present?
+      doc.language = document_params[:language] || Iqvoc::Concept.pref_labeling_languages.first.to_s
     end
 
     @document.persist = false unless current_user

@@ -42,7 +42,7 @@ class Documents::PlainController < DocumentsController
     @document = Document::Plain.new do |doc|
       doc.title = document_params[:title]
       doc.content = document_params[:content]
-      doc.language = document_params[:language] if document_params[:language].present?
+      doc.language = document_params[:language] || Iqvoc::Concept.pref_labeling_languages.first.to_s
     end
 
     @document.persist = false unless current_user

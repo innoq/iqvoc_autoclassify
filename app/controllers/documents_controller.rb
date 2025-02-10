@@ -16,7 +16,7 @@ class DocumentsController < ApplicationController
   end
 
   def new
-    @document = Document::Base.new
+    @document = Document::Base.new(language: Iqvoc::Concept.pref_labeling_languages.first.to_s)
   end
 
   def update
