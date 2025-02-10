@@ -71,11 +71,11 @@ module DocumentsHelper
     return trace['result_index'].map { |sentence_key, _|
 
       # ROW: Original Sentence (more or less original)
-      segment = [%Q(<h5>#{h sentence_key}</h5>)]
+      segment = [%Q(<blockquote>#{h sentence_key}</blockquote>)]
 
       # ROW: All given regular labels
       if trace.key?('label_index') && !trace['label_index'][sentence_key].empty?
-        segment << "Labels (1):"
+        segment << "<strong>Labels (1)</strong>:"
         segment << trace['label_index'][sentence_key].map { |label_id|
           label = labels[label_id]
 
@@ -89,13 +89,13 @@ module DocumentsHelper
             %Q(<span class="#{classes.join ' '}">#{h label}</span>) +
                 %Q(<div class="details">#{details.join("\n")}</div>)
           end
-        }.compact
+        }.compact.join(', ')
         segment << "\n\n"
       end
 
       # ROW: All resulting labels
       if trace.key?('result_index') && !trace['result_index'][sentence_key].empty?
-        segment << "Labels (2):"
+        segment << "<strong>Labels (2)</strong>:"
         segment << trace['result_index'][sentence_key].map { |label_id|
           label = labels[label_id]
           #pp "LABEL: #{label_id} -> #{label}"
@@ -148,21 +148,21 @@ module DocumentsHelper
             %Q(<span class="#{classes.join ' '}">#{h label}</span>) +
                 %Q(<div class="details">#{details.join("\n")}</div>)
           end
-        }.compact
+        }.compact.join(', ')
         segment << "\n\n"
       end
 
       # ROW: All unused tokens
-      if trace.key?('token_index') && !trace['token_index'][sentence_key].empty?
-        segment << "Ohne Label:"
-        segment << trace['token_index'][sentence_key].map { |word|
-          classes = ['hint']
-
-          %Q(<span class="#{classes.join ' '}">#{h word}</span>)+
-              %Q(<div class="details">kein Label gefunden</div>)
-        }.compact
-        segment << "\n\n"
-      end
+      # if trace.key?('token_index') && !trace['token_index'][sentence_key].empty?
+      #   segment << "Ohne Label:"
+      #   segment << trace['token_index'][sentence_key].map { |word|
+      #     classes = ['hint']
+      #
+      #     %Q(<span class="#{classes.join ' '}">#{h word}</span>)+
+      #         %Q(<div class="details">kein Label gefunden</div>)
+      #   }.compact
+      #   segment << "\n\n"
+      # end
 
       content_tag(:div, segment.reject(&:empty?).join(' ').html_safe, {class: 'sentence'})
     }.join("\n")
