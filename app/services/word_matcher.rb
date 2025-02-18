@@ -118,10 +118,10 @@ class WordMatcher
 
   private
 
-  # FIXME: (architecture) this gem doesn't know about Label::Relation::UMT::Homograph/::Qualifier
+  # FIXME: (architecture) this gem doesn't know about Label::Relation::Umt::Homograph/::Qualifier
   def homographs(_label_seqs)
-    type_homograph = 'Label::Relation::UMT::Homograph'
-    type_qualifier = 'Label::Relation::UMT::Qualifier'
+    type_homograph = 'Label::Relation::Umt::Homograph'
+    type_qualifier = 'Label::Relation::Umt::Qualifier'
 
     return _label_seqs unless Object.const_defined?(type_homograph) || Object.const_defined?(type_qualifier)
 
@@ -186,7 +186,7 @@ class WordMatcher
       candidates = candidates.map(&:compound_form).uniq.compact # FIXME uniq+compact # TODO: might as well query CompoundForm::Base above!?
 
       #pp "---CANDIDATES=#{candidates.size} LEVEL=#{level}"
-      #pp "---LABELS: " + Iqvoc::XLLabel.base_class.where(id: label_seq_dup).map(&:value).join(', ')
+      #pp "---LABELS: " + Iqvoc::Xllabel.base_class.where(id: label_seq_dup).map(&:value).join(', ')
 
       # phrases-extraction
       # FIXME: there might have been non-label tokens between a phrases-tupel which blurry the results
@@ -254,7 +254,7 @@ class WordMatcher
 
   def find_compound_parts(list, label_ids)
     # FIXME: replace with Iqvoc::CompoundFrom.base_class?
-    compound_form_class = Object.const_defined?('CompoundFrom::UMT::Base') ? 'CompoundFrom::UMT::Base' : 'CompoundForm::Base'
+    compound_form_class = Object.const_defined?('CompoundFrom::Umt::Base') ? 'CompoundFrom::Umt::Base' : 'CompoundForm::Base'
 
     label_ids.each do |l|
       compound_form = compound_form_class.constantize.find_by(domain_id: l)
@@ -270,7 +270,7 @@ class WordMatcher
   def remove_autoclassify_disabled_label_seq(_label_seqs, level=0)
     label_seqs = {}
 
-    found = (Iqvoc::XLLabel.base_class.where(auto_classify: true, id: _label_seqs.values.flatten.uniq)).map(&:id)
+    found = (Iqvoc::Xllabel.base_class.where(auto_classify: true, id: _label_seqs.values.flatten.uniq)).map(&:id)
     _label_seqs.each do |ix, _label_seq|
       label_seqs[ix] = _label_seq.select { |id| found.include?(id) }
     end

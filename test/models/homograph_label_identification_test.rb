@@ -1,18 +1,8 @@
 # encoding: UTF-8
 
 require File.join(File.expand_path(File.dirname(__FILE__)), '../test_helper')
-require 'word_matcher'
 
 class HomographLabelIdentificationTest < ActiveSupport::TestCase
-
-  # FIXME: (architecture) Introduce iqvoc_umt sub-classes to iqvoc_autoclassify
-  module Label::Relation::UMT
-    class Homograph < Label::Relation::SKOSXL::Base
-    end
-
-    class Qualifier < Label::Relation::SKOSXL::Base
-    end
-  end
 
   setup do
     data = Maker.from_yaml <<-EOF
@@ -38,18 +28,18 @@ class HomographLabelIdentificationTest < ActiveSupport::TestCase
     @label_ids.each { |term, label| @label_ids[term] = label.id }
 
     # FIXME: (architecture) Can't use RDFAPI here as Homograph/Qualifier aren't part of iqvoc_autoclassify
-    Label::Relation::UMT::Homograph.create!(domain_id: @label_ids['Weide [Salix]'], range_id: @label_ids['Weide'])
-    Label::Relation::UMT::Qualifier.create!(domain_id: @label_ids['Weide [Salix]'], range_id: @label_ids['Salix'])
+    Label::Relation::Umt::Homograph.create!(domain_id: @label_ids['Weide [Salix]'], range_id: @label_ids['Weide'])
+    Label::Relation::Umt::Qualifier.create!(domain_id: @label_ids['Weide [Salix]'], range_id: @label_ids['Salix'])
 
-    Label::Relation::UMT::Homograph.create!(domain_id: @label_ids['Weide [Grünland]'], range_id: @label_ids['Weide'])
-    Label::Relation::UMT::Qualifier.create!(domain_id: @label_ids['Weide [Grünland]'], range_id: @label_ids['Grünland'])
+    Label::Relation::Umt::Homograph.create!(domain_id: @label_ids['Weide [Grünland]'], range_id: @label_ids['Weide'])
+    Label::Relation::Umt::Qualifier.create!(domain_id: @label_ids['Weide [Grünland]'], range_id: @label_ids['Grünland'])
 
-    Label::Relation::UMT::Homograph.create!(domain_id: @label_ids['Weide [Salix, Grünland]'], range_id: @label_ids['Weide'])
-    Label::Relation::UMT::Qualifier.create!(domain_id: @label_ids['Weide [Salix, Grünland]'], range_id: @label_ids['Salix'])
-    Label::Relation::UMT::Qualifier.create!(domain_id: @label_ids['Weide [Salix, Grünland]'], range_id: @label_ids['Grünland'])
+    Label::Relation::Umt::Homograph.create!(domain_id: @label_ids['Weide [Salix, Grünland]'], range_id: @label_ids['Weide'])
+    Label::Relation::Umt::Qualifier.create!(domain_id: @label_ids['Weide [Salix, Grünland]'], range_id: @label_ids['Salix'])
+    Label::Relation::Umt::Qualifier.create!(domain_id: @label_ids['Weide [Salix, Grünland]'], range_id: @label_ids['Grünland'])
 
-    Label::Relation::UMT::Homograph.create!(domain_id: @label_ids['Luft [Weide [Grünland]]'], range_id: @label_ids['Weide [Grünland]'])
-    Label::Relation::UMT::Qualifier.create!(domain_id: @label_ids['Luft [Weide [Grünland]]'], range_id: @label_ids['Luft'])
+    Label::Relation::Umt::Homograph.create!(domain_id: @label_ids['Luft [Weide [Grünland]]'], range_id: @label_ids['Weide [Grünland]'])
+    Label::Relation::Umt::Qualifier.create!(domain_id: @label_ids['Luft [Weide [Grünland]]'], range_id: @label_ids['Luft'])
   end
 
   test 'simple homograph discovery' do

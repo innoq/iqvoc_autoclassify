@@ -20,7 +20,7 @@ class HelpersTest < ActiveSupport::TestCase
         components: ["Foo", "Bar"]
     EOF
 
-    labels = Iqvoc::XLLabel.base_class.all
+    labels = Iqvoc::Xllabel.base_class.all
     assert_equal 3, labels.length
 
     label = labels[0]

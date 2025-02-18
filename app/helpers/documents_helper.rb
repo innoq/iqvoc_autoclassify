@@ -27,7 +27,7 @@ module DocumentsHelper
     # FIXME: inefficient; duplicates `augmented_fulltext` functionality
     label_ids = (trace['label_index']).values.flatten
     label_ids+= (trace['result_index']).values.flatten
-    labels = Iqvoc::XLLabel.base_class.# XXX: database queries don't belong into helpers!?
+    labels = Iqvoc::Xllabel.base_class.# XXX: database queries don't belong into helpers!?
         where(id: label_ids.uniq, language: I18n.locale).
         select([:id, :origin, :value, :language])
     # labels by ID
@@ -62,7 +62,7 @@ module DocumentsHelper
     trace = get_trace(document)
     label_ids = trace.map { |_, v| v.values }.flatten.uniq
 
-    labels = Iqvoc::XLLabel.base_class.# XXX: database queries don't belong into helpers!!
+    labels = Iqvoc::Xllabel.base_class.# XXX: database queries don't belong into helpers!!
     where(id: label_ids).
         select([:id, :origin, :value, :language])
     # labels by ID

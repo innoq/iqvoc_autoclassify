@@ -42,7 +42,7 @@ class FreeClassificationController < ApplicationController
     labeling_types = build_labeling_types(params)
     query_str = build_query_string(params.merge(query_type: 'contains'))
 
-    scope = Labeling::SKOSXL::Base.includes(:target, owner: [:pref_labels]).
+    scope = Labeling::Skosxl::Base.includes(:target, owner: [:pref_labels]).
         where(type: labeling_types).
         joins(:target).
         order(Arel.sql("LENGTH(#{Label::Base.table_name}.value), #{Label::Base.table_name}.value ASC"))
@@ -50,17 +50,17 @@ class FreeClassificationController < ApplicationController
     # bk label stuff
     # FIXME: this is horrible for performance
     if params[:include_used_for_labels] == 'true'
-      bk_labels = Iqvoc::XLLabel.base_class.
+      bk_labels = Iqvoc::Xllabel.base_class.
         distinct.
         by_query_value(query_str).
         joins(:labelings).
         includes(:labelings).
-        where('labelings.type = ?', 'Labeling::UMT::UsedForLabel')
+        where('labelings.type = ?', 'Labeling::Umt::UsedForLabel')
 
       bk_labeling_ids = bk_labels.map { |l| l.labelings.first.id }
 
-      bk_scope = Labeling::SKOSXL::Base.includes(:target, owner: [:pref_labels]).
-        where(type: 'Labeling::UMT::UsedForLabel').
+      bk_scope = Labeling::Skosxl::Base.includes(:target, owner: [:pref_labels]).
+        where(type: 'Labeling::Umt::UsedForLabel').
         joins(:target).
         order(Arel.sql("LENGTH(#{Label::Base.table_name}.value), #{Label::Base.table_name}.value ASC")).
         where(id: bk_labeling_ids)
@@ -84,7 +84,7 @@ class FreeClassificationController < ApplicationController
     # filter by query input
     languages = build_language_query(params)
 
-    labels = Iqvoc::XLLabel.base_class.
+    labels = Iqvoc::Xllabel.base_class.
         by_query_value(query_str).
         by_language(languages).
         published

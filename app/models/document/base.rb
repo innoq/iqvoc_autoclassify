@@ -37,16 +37,16 @@ class Document::Base < ApplicationRecord
 
   class_attribute :weightings
   self.weightings = {
-    'Labeling::SKOSXL::PrefLabel'   => 1.0,
-    'Labeling::SKOSXL::AltLabel'    => 0.8,
-    'Labeling::SKOSXL::HiddenLabel' => 0.3
+    'Labeling::Skosxl::PrefLabel'   => 1.0,
+    'Labeling::Skosxl::AltLabel'    => 0.8,
+    'Labeling::Skosxl::HiddenLabel' => 0.3
   }
 
   class_attribute :weighting_factors
   self.weighting_factors = {
     Iqvoc::Concept.broader_relation_class_name => 1.5,
-    'Concept::Relation::SKOS::Narrower::Base'  => 2.0,
-    'Concept::Relation::SKOS::Related'         => 1.3
+    'Concept::Relation::Skos::Narrower::Base'  => 2.0,
+    'Concept::Relation::Skos::Related'         => 1.3
   }
 
   after_initialize do
@@ -134,7 +134,7 @@ class Document::Base < ApplicationRecord
 
     labels.each do |label, occurrences|
       label.labelings
-           .reject { |l| l.owner.is_a?(Iqvoc::Collection.base_class) || l.owner.is_a?(Concept::SKOS::Scheme) }
+           .reject { |l| l.owner.is_a?(Iqvoc::Collection.base_class) || l.owner.is_a?(Concept::Skos::Scheme) }
            .each do |labeling|
         concept = labeling.owner
         next if !concept.published? || concept.expired?
@@ -198,7 +198,7 @@ class Document::Base < ApplicationRecord
     label_params = { id: label_ids.uniq }
     label_params[:language] = self.language if self.language.present?
 
-    labels = Iqvoc::XLLabel.base_class.
+    labels = Iqvoc::Xllabel.base_class.
         published.
         where(label_params).
         includes(labelings: { owner: { relations: :target } }) # required for subsequent concept analysis

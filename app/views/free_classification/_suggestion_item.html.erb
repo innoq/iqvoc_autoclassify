@@ -1,9 +1,9 @@
 <% owner_has_explicit_pref_label = result&.owner&.pref_label(@free_classification_params[:language])&.language == @free_classification_params[:language] %>
 
 <% if result.owner && owner_has_explicit_pref_label %>
-  <% if result.type == 'Labeling::UMT::UsedForLabel' %>
+  <% if result.type == 'Labeling::Umt::UsedForLabel' %>
     <li class="search-result">
-      <% concepts = result.target.concepts_for_labeling_class(Labeling::UMT::UsedForLabel) %>
+      <% concepts = result.target.concepts_for_labeling_class(Labeling::Umt::UsedForLabel) %>
       <% link_value = "#{result.target.value} &rarr; #{concepts.join(" + ")}".html_safe %>
       <% highlighed_link_value = highlight(link_value, params[:query], highlighter: '<strong>\1</strong>') %>
       <%= link_to(highlighed_link_value, freeclassify_url(@free_classification_params.merge(concepts: @selected + concepts.map(&:origin))), class: (concepts.map(&:origin).all? { |c| @selected.include? c }) ? 'selected' : '') %>
