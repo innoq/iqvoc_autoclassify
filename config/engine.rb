@@ -2,6 +2,7 @@ require 'rails'
 
 # An engine doesn't require it's own dependencies automatically.
 require 'responders'
+require 'pragmatic_segmenter'
 
 module Iqvoc
   module AutoClassify
