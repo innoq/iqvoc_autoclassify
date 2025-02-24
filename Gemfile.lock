@@ -1,6 +1,6 @@
 GIT
   remote: https://github.com/innoq/iqvoc.git
-  revision: 675283fc95b1da5d95368a3a196023bad3051a38
+  revision: aea234e83c6d3772fecbe5a1aa6aeb4025c92733
   branch: main
   specs:
     iqvoc (4.14.5)
@@ -353,7 +353,7 @@ GEM
     marcel (1.0.4)
     maruku (0.7.3)
     matrix (0.4.2)
-    mini_magick (5.1.2)
+    mini_magick (5.2.0)
       benchmark
       logger
     mini_mime (1.1.5)
@@ -376,9 +376,9 @@ GEM
       net-protocol
     nio4r (2.7.4)
     nio4r (2.7.4-java)
-    nokogiri (1.18.2-arm64-darwin)
+    nokogiri (1.18.3-arm64-darwin)
       racc (~> 1.4)
-    nokogiri (1.18.2-java)
+    nokogiri (1.18.3-java)
       racc (~> 1.4)
     pdf-reader (1.4.1)
       Ascii85 (~> 1.0.0)
@@ -575,7 +575,7 @@ GEM
       net-http-persistent (~> 4.0, >= 4.0.2)
       rdf (~> 3.3)
     ssrf_filter (1.2.0)
-    stringio (3.1.3)
+    stringio (3.1.5)
     sxp (1.3.0)
       matrix (~> 0.4)
       rdf (~> 3.3)
