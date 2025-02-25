@@ -18,35 +18,11 @@
 
 <div class="tab-content" id="myTabContent">
   <div class="tab-pane fade show active" id="text" role="tabpanel" aria-labelledby="home-tab">
-    <%= bootstrap_form_for @document, :as => :document, :url => plain_documents_path, :html => { :class => 'document-form' } do |f| %>
-      <fieldset>
-        <%= f.select :language, Iqvoc::Concept.pref_labeling_languages.map { |lang| [t(lang, scope: 'languages'), lang] },
-                     include_blank: t('txt.controllers.documents.new.select_language_prompt') %>
-
-        <%= f.text_field :title %>
-
-        <%= f.text_area :content, rows: 10, label: t('txt.controllers.documents.new.enter_text'), autofocus: 'true' %>
-
-        <%= f.button t("txt.controllers.documents.new.classify_text"), class: 'btn btn-primary', data: {disable_with: loading_indicator(t("txt.controllers.documents.new.classify_process"))} %>
-        <%= submit_tag(t("txt.controllers.documents.new.reset_text"), name: 'reset', id: 'reset_button', type: 'reset', class: 'btn btn-outline-secondary') %>
-      </fieldset>
-    <% end %>
+    <%= render 'plain_form', url: plain_documents_path %>
   </div>
 
   <div class="tab-pane fade" id="url" role="tabpanel" aria-labelledby="url-tab">
-    <%= bootstrap_form_for @document, :url => extracted_documents_path, :html => { :class => 'document-form' } do |f| %>
-      <fieldset>
-
-        <%= f.select :language, Iqvoc::Concept.pref_labeling_languages.map { |lang| [t(lang, scope: 'languages'), lang] },
-                     include_blank: t('txt.controllers.documents.new.select_language_prompt') %>
-
-        <%= f.form_group nil do %>
-          <%= f.text_field :uri, :class => 'form-control', placeholder: 'https://', label: t('txt.controllers.documents.new.enter_uri') %>
-        <% end %>
-
-        <%= f.button t("txt.controllers.documents.new.classify_url") , class: 'btn btn-primary', data: {disable_with: loading_indicator(t("txt.controllers.documents.new.classify_process"))} %>
-      </fieldset>
-    <% end %>
+    <%= render 'extracted_form', url: extracted_documents_path %>
   </div>
 </div>
 
