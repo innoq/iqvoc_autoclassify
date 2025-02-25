@@ -52,10 +52,7 @@ class Documents::ExtractedController < DocumentsController
     DOC
 
   def create
-    @document = Document::Extracted.new do |doc|
-      doc.uri = document_params[:uri]
-      doc.language = document_params[:language] || Iqvoc::Concept.pref_labeling_languages.first.to_s
-    end
+    @document = Document::Extracted.new document_params
 
     @document.persist = false unless current_user
 
@@ -106,13 +103,13 @@ class Documents::ExtractedController < DocumentsController
   def document_params
     if params[:document_base]
       # form request
-      params.require(:document_base).permit(:uri, :language)
+      params.require(:document_base).permit(:uri, :language, :exclude_disabled_concepts)
     elsif params[:document_extracted]
       # FIXME: necessary?
-      params.require(:document_extracted).permit(:uri, :language)
+      params.require(:document_extracted).permit(:uri, :language, :exclude_disabled_concepts)
     else
       # api request
-      params.permit(:uri, :language)
+      params.permit(:uri, :language, :exclude_disabled_concepts)
     end
   end
 

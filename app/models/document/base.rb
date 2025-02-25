@@ -11,7 +11,7 @@ class Document::Base < ApplicationRecord
   MAX_CONTENT_CHARS = 10_000
   MAX_CONTENT_SUFFIX = '…'
 
-  store_accessor :options, :language
+  store_accessor :options, :language, :exclude_disabled_concepts
 
   attr_writer :persist
   attr_reader :weightings
@@ -52,6 +52,9 @@ class Document::Base < ApplicationRecord
   after_initialize do
     @parser = DocumentParser::German
     @persist = true
+
+    self.language ||= Iqvoc::Concept.pref_labeling_languages.first.to_s
+    self.exclude_disabled_concepts ||= false
   end
 
   before_validation do |document|
@@ -137,7 +140,7 @@ class Document::Base < ApplicationRecord
            .reject { |l| l.owner.is_a?(Iqvoc::Collection.base_class) || l.owner.is_a?(Concept::Skos::Scheme) }
            .each do |labeling|
         concept = labeling.owner
-        next if !concept.published? || concept.expired?
+        next if !concept.published? || concept.expired? || (self.exclude_disabled_concepts && !concept.auto_classify? )
 
         # list of concept IDs by label ID
         @trace[:concept_index][label.id] ||= []

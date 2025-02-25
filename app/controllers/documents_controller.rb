@@ -67,10 +67,10 @@ class DocumentsController < ApplicationController
   def document_params
     if params[:document]
       # form request
-      params.require(:document).permit(:title, :content, :language)
+      params.require(:document).permit(:title, :content, :language, :exclude_disabled_concepts)
     else
       # api request
-      params.permit(:title, :content, :language)
+      params.permit(:title, :content, :language, :exclude_disabled_concepts)
     end
   end
 end

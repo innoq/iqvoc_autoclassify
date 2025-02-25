@@ -39,11 +39,7 @@ class Documents::PlainController < DocumentsController
   DOC
 
   def create
-    @document = Document::Plain.new do |doc|
-      doc.title = document_params[:title]
-      doc.content = document_params[:content]
-      doc.language = document_params[:language] || Iqvoc::Concept.pref_labeling_languages.first.to_s
-    end
+    @document = Document::Plain.new document_params
 
     @document.persist = false unless current_user
 
@@ -90,10 +86,10 @@ class Documents::PlainController < DocumentsController
   def document_params
     if params[:document]
       # form request
-      params.require(:document).permit(:title, :content, :language)
+      params.require(:document).permit(:title, :content, :language, :exclude_disabled_concepts)
     else
       # api request
-      params.permit(:title, :content, :language)
+      params.permit(:title, :content, :language, :exclude_disabled_concepts)
     end
   end
 

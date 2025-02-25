@@ -14,5 +14,8 @@ de:
         url: Weblink (HTML/PDF)
         content: Text
         language: Textsprache
+        exclude_disabled_concepts: für Textanalyse deaktivierte Begriffe ausschließen
       label/skosxl/base:
+        auto_classify: Textanalysefunktion
+      concept/skos/base:
         auto_classify: Textanalysefunktion
