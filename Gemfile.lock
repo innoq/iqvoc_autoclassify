@@ -1,6 +1,6 @@
 GIT
   remote: https://github.com/innoq/iqvoc.git
-  revision: b25a9273bb39345e5f4911cb43421d06b059b346
+  revision: 58140d97e753118c1ce86210fc18584ad3ec20cb
   branch: main
   specs:
     iqvoc (4.14.5)
@@ -53,7 +53,7 @@ GIT
 
 GIT
   remote: https://github.com/innoq/iqvoc_skosxl.git
-  revision: f7354f542b508c932a4625b7b3749f535394e42a
+  revision: 018b30ff1b83267284c9f263ae4155ab8fb3f400
   branch: main
   specs:
     iqvoc_skosxl (2.11.4)
@@ -278,7 +278,6 @@ GEM
       reline (>= 0.4.2)
     jar-dependencies (0.5.5)
     json (2.10.1)
-    json (2.10.1-java)
     json-canonicalization (1.0.0)
     json-ld (3.3.2)
       htmlentities (~> 4.3)
@@ -359,7 +358,6 @@ GEM
     mini_mime (1.1.5)
     minitest (5.25.4)
     msgpack (1.8.0)
-    msgpack (1.8.0-java)
     multi_json (1.15.0)
     multipart-post (2.4.1)
     mutex_m (0.3.0)
@@ -375,7 +373,6 @@ GEM
     net-smtp (0.5.1)
       net-protocol
     nio4r (2.7.4)
-    nio4r (2.7.4-java)
     nokogiri (1.18.3-arm64-darwin)
       racc (~> 1.4)
     nokogiri (1.18.3-java)
@@ -403,8 +400,6 @@ GEM
       jar-dependencies (>= 0.1.7)
     public_suffix (6.0.1)
     puma (6.6.0)
-      nio4r (~> 2.0)
-    puma (6.6.0-java)
       nio4r (~> 2.0)
     racc (1.8.1)
     racc (1.8.1-java)

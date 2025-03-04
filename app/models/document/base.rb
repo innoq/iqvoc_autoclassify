@@ -5,13 +5,19 @@ class Document::Base < ApplicationRecord
   include Rails.application.routes.url_helpers
   include Workflow
 
+  extend BooleanStoreAccessor
+
   self.table_name = 'documents'
 
   MAX_TITLE_CHARS = 255
   MAX_CONTENT_CHARS = 10_000
   MAX_CONTENT_SUFFIX = '…'
 
-  store_accessor :options, :language, :exclude_disabled_concepts
+  BOOLEAN_OPTIONS = [:exclude_disabled_concepts, :disable_compound_labels]
+  store_accessor :options, :language, *BOOLEAN_OPTIONS
+
+  # FIXME: hack to deal with boolean types store_accessors
+  boolean_store_accessor *BOOLEAN_OPTIONS
 
   attr_writer :persist
   attr_reader :weightings
@@ -55,6 +61,7 @@ class Document::Base < ApplicationRecord
 
     self.language ||= Iqvoc::Concept.pref_labeling_languages.first.to_s
     self.exclude_disabled_concepts ||= false
+    self.disable_compound_labels ||= false
   end
 
   before_validation do |document|
@@ -166,7 +173,7 @@ class Document::Base < ApplicationRecord
   def determine_title_concepts(concepts)
     return {} unless self.title
     sentences = @parser.new(self.title).sentences
-    matcher = WordMatcher.new(sentences)
+    matcher = WordMatcher.new(sentences, self.options)
     concept_ids = matcher.labels.map { |id| @trace[:concept_index][id] }.
         flatten.compact.uniq # `uniq` avoids multiple bonuses for the same concept
     concepts = concepts.index_by(&:id)
@@ -194,7 +201,7 @@ class Document::Base < ApplicationRecord
 
     sentences = @parser.new(text).sentences
 
-    matcher = WordMatcher.new(sentences)
+    matcher = WordMatcher.new(sentences, self.options)
     label_ids = matcher.labels
     @trace = matcher.trace
 

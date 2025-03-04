@@ -18,7 +18,7 @@ class WordMatcher
   # each sentence is an array words (i.e. simple strings)
   def initialize(sentences, options = {})
     @sentences = sentences
-    @options = options
+    @options = options&.with_indifferent_access || {}
 
     @trace = {}
     @phrases = {} # Labels containing spaces. Could have compound forms aswell.
@@ -108,7 +108,7 @@ class WordMatcher
 
     @trace[:label_index] = label_seqs.deep_dup
     label_seqs = homographs(label_seqs)
-    label_seqs = compound_forms(label_seqs)
+    label_seqs = compound_forms(label_seqs) unless @options[:disable_compound_labels]
     # label_seqs = remove_compound_part_duplicates(label_seqs)
     label_seqs = remove_autoclassify_disabled_label_seq(label_seqs)
     @trace[:result_index] = label_seqs

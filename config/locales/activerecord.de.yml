@@ -15,6 +15,7 @@ de:
         content: Text
         language: Textsprache
         exclude_disabled_concepts: für Textanalyse deaktivierte Begriffe ausschließen
+        disable_compound_labels: Zusammensetzungen deaktivieren
       label/skosxl/base:
         auto_classify: Textanalysefunktion
       concept/skos/base:

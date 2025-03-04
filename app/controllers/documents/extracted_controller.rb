@@ -103,13 +103,13 @@ class Documents::ExtractedController < DocumentsController
   def document_params
     if params[:document_base]
       # form request
-      params.require(:document_base).permit(:uri, :language, :exclude_disabled_concepts)
+      params.require(:document_base).permit(:uri, :language, *Document::Base::BOOLEAN_OPTIONS)
     elsif params[:document_extracted]
       # FIXME: necessary?
-      params.require(:document_extracted).permit(:uri, :language, :exclude_disabled_concepts)
+      params.require(:document_extracted).permit(:uri, :language, *Document::Base::BOOLEAN_OPTIONS)
     else
       # api request
-      params.permit(:uri, :language, :exclude_disabled_concepts)
+      params.permit(:uri, :language, *Document::Base::BOOLEAN_OPTIONS)
     end
   end
 
