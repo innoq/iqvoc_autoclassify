@@ -36,6 +36,6 @@ module ConceptExtension
 
 end
 
-Rails.configuration.to_prepare do
-  Concept::Skos::Base.prepend ConceptExtension
-end
+# Rails.configuration.to_prepare do
+#   Concept::Skos::Base.prepend ConceptExtension
+# end
