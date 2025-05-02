@@ -1,6 +1,6 @@
 GIT
   remote: https://github.com/innoq/iqvoc.git
-  revision: 038e5e682fafe5ec8f232bd0dd9adec230befb76
+  revision: 5032a24f4ab48a61b56557ed048573729e83868b
   branch: rails-8
   specs:
     iqvoc (4.14.5)
@@ -272,7 +272,6 @@ GEM
       reline (>= 0.4.2)
     jar-dependencies (0.5.5)
     json (2.11.3)
-    json (2.11.3-java)
     json-canonicalization (1.0.0)
     json-ld (3.3.2)
       htmlentities (~> 4.3)
@@ -353,7 +352,6 @@ GEM
     mini_mime (1.1.5)
     minitest (5.25.5)
     msgpack (1.8.0)
-    msgpack (1.8.0-java)
     multi_json (1.15.0)
     multipart-post (2.4.1)
     net-http-persistent (4.0.5)
@@ -368,7 +366,6 @@ GEM
     net-smtp (0.5.1)
       net-protocol
     nio4r (2.7.4)
-    nio4r (2.7.4-java)
     nokogiri (1.18.8-arm64-darwin)
       racc (~> 1.4)
     nokogiri (1.18.8-java)
@@ -396,8 +393,6 @@ GEM
       jar-dependencies (>= 0.1.7)
     public_suffix (6.0.2)
     puma (6.6.0)
-      nio4r (~> 2.0)
-    puma (6.6.0-java)
       nio4r (~> 2.0)
     racc (1.8.1)
     racc (1.8.1-java)
