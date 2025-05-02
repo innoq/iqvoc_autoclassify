@@ -58,6 +58,7 @@ jobs:
       - name: Setup Database
         env:
           RAILS_ENV: test
+          POSTGRES_HOST: postgres
         run: |
           cp config/database.template.yml config/database.yml
           bin/rails db:create
