@@ -1,6 +1,6 @@
 GIT
   remote: https://github.com/innoq/iqvoc.git
-  revision: 58140d97e753118c1ce86210fc18584ad3ec20cb
+  revision: 5032a24f4ab48a61b56557ed048573729e83868b
   branch: main
   specs:
     iqvoc (4.14.5)
@@ -28,14 +28,14 @@ GIT
       nokogiri
       puma
       rack-mini-profiler
-      rails (~> 7.1.0)
+      rails (~> 8.0.0)
       rails_autolink
       rdf-vocab
       scrypt
 
 GIT
   remote: https://github.com/innoq/iqvoc_compound_forms.git
-  revision: 024377224842aeb64a897775753504399e9c7821
+  revision: 3fa84a23fec8318675b6bbec5cc7c5eb306834e0
   branch: main
   specs:
     iqvoc_compound_forms (2.11.4)
@@ -44,7 +44,7 @@ GIT
 
 GIT
   remote: https://github.com/innoq/iqvoc_inflectionals.git
-  revision: 5a7f0143a80f2632634a9fc0ae6a6e7e46b74a1c
+  revision: 848c0677cc12d89756d1bf27521d436779a2e060
   branch: main
   specs:
     iqvoc_inflectionals (2.11.4)
@@ -53,7 +53,7 @@ GIT
 
 GIT
   remote: https://github.com/innoq/iqvoc_skosxl.git
-  revision: 018b30ff1b83267284c9f263ae4155ab8fb3f400
+  revision: 4d2aac1bf3a70464151ad8abfdaa9a0b13fe1044
   branch: main
   specs:
     iqvoc_skosxl (2.11.4)
@@ -63,93 +63,87 @@ GEM
   remote: https://rubygems.org/
   specs:
     Ascii85 (1.0.3)
-    actioncable (7.1.5.1)
-      actionpack (= 7.1.5.1)
-      activesupport (= 7.1.5.1)
+    actioncable (8.0.2)
+      actionpack (= 8.0.2)
+      activesupport (= 8.0.2)
       nio4r (~> 2.0)
       websocket-driver (>= 0.6.1)
       zeitwerk (~> 2.6)
-    actionmailbox (7.1.5.1)
-      actionpack (= 7.1.5.1)
-      activejob (= 7.1.5.1)
-      activerecord (= 7.1.5.1)
-      activestorage (= 7.1.5.1)
-      activesupport (= 7.1.5.1)
-      mail (>= 2.7.1)
-      net-imap
-      net-pop
-      net-smtp
-    actionmailer (7.1.5.1)
-      actionpack (= 7.1.5.1)
-      actionview (= 7.1.5.1)
-      activejob (= 7.1.5.1)
-      activesupport (= 7.1.5.1)
-      mail (~> 2.5, >= 2.5.4)
-      net-imap
-      net-pop
-      net-smtp
+    actionmailbox (8.0.2)
+      actionpack (= 8.0.2)
+      activejob (= 8.0.2)
+      activerecord (= 8.0.2)
+      activestorage (= 8.0.2)
+      activesupport (= 8.0.2)
+      mail (>= 2.8.0)
+    actionmailer (8.0.2)
+      actionpack (= 8.0.2)
+      actionview (= 8.0.2)
+      activejob (= 8.0.2)
+      activesupport (= 8.0.2)
+      mail (>= 2.8.0)
       rails-dom-testing (~> 2.2)
-    actionpack (7.1.5.1)
-      actionview (= 7.1.5.1)
-      activesupport (= 7.1.5.1)
+    actionpack (8.0.2)
+      actionview (= 8.0.2)
+      activesupport (= 8.0.2)
       nokogiri (>= 1.8.5)
-      racc
       rack (>= 2.2.4)
       rack-session (>= 1.0.1)
       rack-test (>= 0.6.3)
       rails-dom-testing (~> 2.2)
       rails-html-sanitizer (~> 1.6)
-    actiontext (7.1.5.1)
-      actionpack (= 7.1.5.1)
-      activerecord (= 7.1.5.1)
-      activestorage (= 7.1.5.1)
-      activesupport (= 7.1.5.1)
+      useragent (~> 0.16)
+    actiontext (8.0.2)
+      actionpack (= 8.0.2)
+      activerecord (= 8.0.2)
+      activestorage (= 8.0.2)
+      activesupport (= 8.0.2)
       globalid (>= 0.6.0)
       nokogiri (>= 1.8.5)
-    actionview (7.1.5.1)
-      activesupport (= 7.1.5.1)
+    actionview (8.0.2)
+      activesupport (= 8.0.2)
       builder (~> 3.1)
       erubi (~> 1.11)
       rails-dom-testing (~> 2.2)
       rails-html-sanitizer (~> 1.6)
-    activejob (7.1.5.1)
-      activesupport (= 7.1.5.1)
+    activejob (8.0.2)
+      activesupport (= 8.0.2)
       globalid (>= 0.3.6)
-    activemodel (7.1.5.1)
-      activesupport (= 7.1.5.1)
-    activerecord (7.1.5.1)
-      activemodel (= 7.1.5.1)
-      activesupport (= 7.1.5.1)
+    activemodel (8.0.2)
+      activesupport (= 8.0.2)
+    activerecord (8.0.2)
+      activemodel (= 8.0.2)
+      activesupport (= 8.0.2)
       timeout (>= 0.4.0)
-    activestorage (7.1.5.1)
-      actionpack (= 7.1.5.1)
-      activejob (= 7.1.5.1)
-      activerecord (= 7.1.5.1)
-      activesupport (= 7.1.5.1)
+    activestorage (8.0.2)
+      actionpack (= 8.0.2)
+      activejob (= 8.0.2)
+      activerecord (= 8.0.2)
+      activesupport (= 8.0.2)
       marcel (~> 1.0)
-    activesupport (7.1.5.1)
+    activesupport (8.0.2)
       base64
       benchmark (>= 0.3)
       bigdecimal
-      concurrent-ruby (~> 1.0, >= 1.0.2)
+      concurrent-ruby (~> 1.0, >= 1.3.1)
       connection_pool (>= 2.2.5)
       drb
       i18n (>= 1.6, < 2)
       logger (>= 1.4.2)
       minitest (>= 5.1)
-      mutex_m
       securerandom (>= 0.3)
-      tzinfo (~> 2.0)
+      tzinfo (~> 2.0, >= 2.0.5)
+      uri (>= 0.13.1)
     addressable (2.8.7)
       public_suffix (>= 2.0.2, < 7.0)
     afm (0.2.2)
     apipie-rails (1.4.2)
       actionpack (>= 5.0)
       activesupport (>= 5.0)
-    authlogic (6.4.3)
-      activemodel (>= 5.2, < 7.2)
-      activerecord (>= 5.2, < 7.2)
-      activesupport (>= 5.2, < 7.2)
+    authlogic (6.5.0)
+      activemodel (>= 5.2, < 8.1)
+      activerecord (>= 5.2, < 8.1)
+      activesupport (>= 5.2, < 8.1)
       request_store (~> 1.0)
     base64 (0.2.0)
     bcp47_spec (0.2.1)
@@ -173,23 +167,23 @@ GEM
       rack-test (>= 0.6.3)
       regexp_parser (>= 1.5, < 3.0)
       xpath (~> 3.2)
-    carrierwave (3.1.1)
+    carrierwave (3.1.2)
       activemodel (>= 6.0.0)
       activesupport (>= 6.0.0)
       addressable (~> 2.6)
       image_processing (~> 1.1)
       marcel (~> 1.0.0)
       ssrf_filter (~> 1.0)
-    carrierwave-i18n (3.0.0)
+    carrierwave-i18n (3.1.0)
       carrierwave (>= 3.0.0, < 4)
     cliver (0.3.2)
     concurrent-ruby (1.3.5)
-    connection_pool (2.5.0)
+    connection_pool (2.5.3)
     crack (0.4.6)
       bigdecimal
       rexml
     crass (1.0.6)
-    csv (3.3.2)
+    csv (3.3.4)
     database_cleaner (2.1.0)
       database_cleaner-active_record (>= 2, < 3)
     database_cleaner-active_record (2.2.0)
@@ -243,8 +237,8 @@ GEM
       faraday (~> 1.0)
     faucet_pipeline_rails (1.0.1)
       rails (>= 4.2.10)
-    ffi (1.17.1-arm64-darwin)
-    ffi (1.17.1-java)
+    ffi (1.17.2-arm64-darwin)
+    ffi (1.17.2-java)
     ffi-compiler (1.3.2)
       ffi (>= 1.15.5)
       rake
@@ -272,12 +266,13 @@ GEM
       builder
       bundler
     iq_triplestorage (0.2.2)
-    irb (1.15.1)
+    irb (1.15.2)
       pp (>= 0.6.0)
       rdoc (>= 4.0.0)
       reline (>= 0.4.2)
     jar-dependencies (0.5.5)
-    json (2.10.1)
+    json (2.11.3)
+    json (2.11.3-java)
     json-canonicalization (1.0.0)
     json-ld (3.3.2)
       htmlentities (~> 4.3)
@@ -340,7 +335,7 @@ GEM
     listen (3.9.0)
       rb-fsevent (~> 0.10, >= 0.10.3)
       rb-inotify (~> 0.9, >= 0.9.10)
-    logger (1.6.6)
+    logger (1.7.0)
     loofah (2.24.0)
       crass (~> 1.0.2)
       nokogiri (>= 1.12.0)
@@ -356,14 +351,14 @@ GEM
       benchmark
       logger
     mini_mime (1.1.5)
-    minitest (5.25.4)
+    minitest (5.25.5)
     msgpack (1.8.0)
+    msgpack (1.8.0-java)
     multi_json (1.15.0)
     multipart-post (2.4.1)
-    mutex_m (0.3.0)
     net-http-persistent (4.0.5)
       connection_pool (~> 2.2)
-    net-imap (0.5.6)
+    net-imap (0.5.8)
       date
       net-protocol
     net-pop (0.1.2)
@@ -373,9 +368,10 @@ GEM
     net-smtp (0.5.1)
       net-protocol
     nio4r (2.7.4)
-    nokogiri (1.18.3-arm64-darwin)
+    nio4r (2.7.4-java)
+    nokogiri (1.18.8-arm64-darwin)
       racc (~> 1.4)
-    nokogiri (1.18.3-java)
+    nokogiri (1.18.8-java)
       racc (~> 1.4)
     pdf-reader (1.4.1)
       Ascii85 (~> 1.0.0)
@@ -392,18 +388,20 @@ GEM
       prettyprint
     pragmatic_segmenter (0.3.24)
     prettyprint (0.2.0)
-    psych (5.2.3)
+    psych (5.2.4)
       date
       stringio
-    psych (5.2.3-java)
+    psych (5.2.4-java)
       date
       jar-dependencies (>= 0.1.7)
-    public_suffix (6.0.1)
+    public_suffix (6.0.2)
     puma (6.6.0)
+      nio4r (~> 2.0)
+    puma (6.6.0-java)
       nio4r (~> 2.0)
     racc (1.8.1)
     racc (1.8.1-java)
-    rack (3.1.10)
+    rack (3.1.13)
     rack-mini-profiler (3.3.1)
       rack (>= 1.2.0)
     rack-session (2.1.0)
@@ -413,20 +411,20 @@ GEM
       rack (>= 1.3)
     rackup (2.2.1)
       rack (>= 3)
-    rails (7.1.5.1)
-      actioncable (= 7.1.5.1)
-      actionmailbox (= 7.1.5.1)
-      actionmailer (= 7.1.5.1)
-      actionpack (= 7.1.5.1)
-      actiontext (= 7.1.5.1)
-      actionview (= 7.1.5.1)
-      activejob (= 7.1.5.1)
-      activemodel (= 7.1.5.1)
-      activerecord (= 7.1.5.1)
-      activestorage (= 7.1.5.1)
-      activesupport (= 7.1.5.1)
+    rails (8.0.2)
+      actioncable (= 8.0.2)
+      actionmailbox (= 8.0.2)
+      actionmailer (= 8.0.2)
+      actionpack (= 8.0.2)
+      actiontext (= 8.0.2)
+      actionview (= 8.0.2)
+      activejob (= 8.0.2)
+      activemodel (= 8.0.2)
+      activerecord (= 8.0.2)
+      activestorage (= 8.0.2)
+      activesupport (= 8.0.2)
       bundler (>= 1.15.0)
-      railties (= 7.1.5.1)
+      railties (= 8.0.2)
     rails-controller-testing (1.0.5)
       actionpack (>= 5.0.1.rc1)
       actionview (>= 5.0.1.rc1)
@@ -442,10 +440,10 @@ GEM
       actionview (> 3.1)
       activesupport (> 3.1)
       railties (> 3.1)
-    railties (7.1.5.1)
-      actionpack (= 7.1.5.1)
-      activesupport (= 7.1.5.1)
-      irb
+    railties (8.0.2)
+      actionpack (= 8.0.2)
+      activesupport (= 8.0.2)
+      irb (~> 1.13)
       rackup (>= 1.0.0)
       rake (>= 12.2)
       thor (~> 1.0, >= 1.2.2)
@@ -519,10 +517,10 @@ GEM
     rdf-xsd (3.3.0)
       rdf (~> 3.3)
       rexml (~> 3.2)
-    rdoc (6.12.0)
+    rdoc (6.13.1)
       psych (>= 4.0.0)
     regexp_parser (2.9.0)
-    reline (0.6.0)
+    reline (0.6.1)
       io-console (~> 0.5)
     request_store (1.7.0)
       rack (>= 1.4)
@@ -570,7 +568,7 @@ GEM
       net-http-persistent (~> 4.0, >= 4.0.2)
       rdf (~> 3.3)
     ssrf_filter (1.2.0)
-    stringio (3.1.5)
+    stringio (3.1.7)
     sxp (1.3.0)
       matrix (~> 0.4)
       rdf (~> 3.3)
@@ -582,6 +580,8 @@ GEM
     tzinfo (2.0.6)
       concurrent-ruby (~> 1.0)
     unicode-types (1.10.0)
+    uri (1.0.3)
+    useragent (0.16.11)
     web-console (4.2.1)
       actionview (>= 6.0.0)
       activemodel (>= 6.0.0)
@@ -606,11 +606,12 @@ GEM
       psych (>= 3.3)
       rdf (~> 3.3)
       rdf-xsd (~> 3.3)
-    zeitwerk (2.6.18)
+    zeitwerk (2.7.2)
 
 PLATFORMS
   arm64-darwin-22
   arm64-darwin-23
+  arm64-darwin-24
   java
 
 DEPENDENCIES

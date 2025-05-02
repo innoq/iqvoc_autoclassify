@@ -36,6 +36,9 @@ module ConceptExtension
 
 end
 
-Rails.configuration.to_prepare do
-  Concept::Skos::Base.prepend ConceptExtension
+# FIXME: hack to get github actions working
+unless Rails.env.test?
+  Rails.configuration.to_prepare do
+    Concept::Skos::Base.prepend ConceptExtension
+  end
 end

@@ -84,10 +84,6 @@ class HelpersTest < ActiveSupport::TestCase
     assert_equal 0, alt_labels.count
   end
 
-  test 'concepts from YAML with inline labels' do
-    # TODO (YAGNI?)
-  end
-
   test 'concepts from YAML with relation references' do
     Maker.from_yaml <<-EOF
       labels:
@@ -132,8 +128,12 @@ class HelpersTest < ActiveSupport::TestCase
     assert_equal concepts[1], narrower.first
   end
 
-  test 'concepts from YAML with inline relations' do
-    # TODO (YAGNI?)
-  end
+  # test 'concepts from YAML with inline labels' do
+  #   # TODO (YAGNI?)
+  # end
+
+  # test 'concepts from YAML with inline relations' do
+  #   # TODO (YAGNI?)
+  # end
 
 end
