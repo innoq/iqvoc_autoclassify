@@ -1,4 +1,4 @@
-[![Build Status](https://ci.innoq.com/buildStatus/icon?job=iqvoc_autoclassify)](https://ci.innoq.com/job/iqvoc_autoclassify/)
+[![CI](https://github.com/innoq/iqvoc_autoclassify/actions/workflows/ci.yml/badge.svg)](https://github.com/innoq/iqvoc_autoclassify/actions/workflows/ci.yml)
 
 # Iqvoc::AutoClassify
 
