@@ -22,6 +22,7 @@ en:
           enter_uri:  URL to website or pdf document
           reset_text: clear text
           select_language_prompt: not specified
+          language_selection_help: "Keywords will be searched in the selected language. If 'not specified' is selected, keywords for both languages will be shown and translated to English if needed."
         save:
           success: document saved successfully
         create:

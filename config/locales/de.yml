@@ -24,6 +24,7 @@ de:
           enter_uri:  URL zu HTML-Seite oder PDF-Dokument
           reset_text: Textfeld leeren
           select_language_prompt: keine Angabe
+          language_selection_help: "Die Suche erfolgt in der ausgewählten Sprache. Wenn keine Angabe gemacht wurde, werden Schlagwörter für beide Sprachen angezeigt und ggf. ins Deutsche übersetzt."
         save:
           success: Dokument erfolgreich gespeichert
         create:
