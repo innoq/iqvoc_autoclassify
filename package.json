@@ -22,13 +22,13 @@
   "devDependencies": {
     "faucet-pipeline-js": "^2.1.7",
     "faucet-pipeline-jsmin": "^2.1.7",
-    "faucet-pipeline-sass": "^1.4.0",
+    "faucet-pipeline-sass": "^1.6.0",
     "faucet-pipeline-static": "^1.2.0"
   },
   "dependencies": {
     "clipboard": "^2.0.6",
-    "iqvoc": "innoq/iqvoc#faucet",
-    "iqvoc_compound_forms": "innoq/iqvoc_compound_forms#faucet",
-    "iqvoc_skosxl": "innoq/iqvoc_skosxl#faucet"
+    "iqvoc": "innoq/iqvoc",
+    "iqvoc_compound_forms": "innoq/iqvoc_compound_forms",
+    "iqvoc_skosxl": "github:innoq/iqvoc_skosxl"
   }
 }
