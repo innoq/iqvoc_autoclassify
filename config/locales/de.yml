@@ -24,7 +24,7 @@ de:
           enter_uri:  URL zu HTML-Seite oder PDF-Dokument
           reset_text: Textfeld leeren
           select_language_prompt: keine Angabe
-          language_selection_help: "Die Suche erfolgt in der ausgewählten Sprache. Wenn keine Angabe gemacht wurde, werden Schlagwörter für beide Sprachen angezeigt und ggf. ins Deutsche übersetzt."
+          language_selection_help: "Suche und Schlagwortausgabe erfolgen in der jeweils ausgewählten Sprache. Wird keine Angabe gemacht, werden deutsche und englische Wörter im Text gesucht, die dazu passenden Schlagwörter aber nur in Deutsch vorgeschlagen."
         save:
           success: Dokument erfolgreich gespeichert
         create:
