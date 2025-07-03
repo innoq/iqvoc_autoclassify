@@ -107,9 +107,9 @@ class Document::Base < ApplicationRecord
   def classify
     save! if persist?
 
-    classifications.destroy_all
+    self.classifications.destroy_all
     method = persist? ? :create : :build
-    concepts.sort_by {|_k, v| -v[0]}.each.with_index(1) do |concept_with_weighting, index|
+    self.concepts.sort_by {|_k, v| -v[0]}.each.with_index(1) do |concept_with_weighting, index|
       concept = concept_with_weighting.first
       weighting = concept_with_weighting.last
       result_pref_label = if self.language.present?
@@ -120,26 +120,26 @@ class Document::Base < ApplicationRecord
 
       next unless result_pref_label
 
-      classifications.send(method,
+      self.classifications.send(method,
         concept_origin: concept.origin,
         findings: weighting.drop(1).join(", "),
         weighting: weighting.first,
         title: result_pref_label)
     end
-    create_classification_trace(trace: @trace.to_json) if persist?
+    self.create_classification_trace(trace: @trace.to_json) if persist?
     halt if invalid?
   end
 
   def concepts
     return @concepts if (@concepts && @trace)
-    @concepts = determine_concepts
-    analyze_concept_relations
+    @concepts = self.determine_concepts
+    self.analyze_concept_relations
     @concepts
   end
 
   def determine_concepts
     concepts = {}
-    labels = determine_labels
+    labels = self.determine_labels
     @trace[:concept_index] = {}
 
     labels.each do |label, occurrences|
@@ -167,9 +167,10 @@ class Document::Base < ApplicationRecord
     end
 
     # increase weighting for concepts derived from the title
-    determine_title_concepts(concepts.keys).each do |concept|
+    self.determine_title_concepts(concepts.keys).each do |concept|
       concepts[concept][0] *= 5.0 # NB: regular analysis already includes the title
     end
+
     concepts
   end
 
