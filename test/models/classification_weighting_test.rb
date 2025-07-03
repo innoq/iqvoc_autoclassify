@@ -68,6 +68,26 @@ class ClassificationWeightingTest < ActiveSupport::TestCase
     assert_equal [1.0, 'Weltraumkampfpilot'], concepts[@concepts['Weltraumkampfpilot']]
   end
 
+  test 'ignores labels without weighting' do
+    # disables alt labels weighting for tests
+    Document::Base.register_weighting('Labeling::Skosxl::AltLabel', 0.0)
+
+    text = <<-EOF
+      Der Weltraum (oder das All) ist Schauplatz für den Kampf, sagt der Pilot.
+    EOF
+    doc = make_document(content: text)
+
+    concepts = doc.concepts
+    assert_equal 1, concepts.keys.length
+    assert_nil concepts[@concepts['All']]
+    assert_nil concepts[@concepts['Kampf']]
+    assert_nil concepts[@concepts['Pilot']]
+    assert_equal [1.0, 'Weltraumkampfpilot'], concepts[@concepts['Weltraumkampfpilot']]
+
+    # reenables alt labels weighting for tests
+    Document::Base.register_weighting('Labeling::Skosxl::AltLabel', 0.8)
+  end
+
   test 'full concept weighting' do
     text = <<-EOF
       Der Weltraum (oder das All) ist Schauplatz für die Auseinandersetzung;

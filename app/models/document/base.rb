@@ -147,6 +147,10 @@ class Document::Base < ApplicationRecord
            .reject { |l| l.owner.is_a?(Iqvoc::Collection.base_class) || l.owner.is_a?(Concept::Skos::Scheme) }
            .each do |labeling|
         concept = labeling.owner
+
+        # skip labels with zero weighting
+        next if self.class.weightings[labeling.type]&.zero?
+
         next if !concept.published? || concept.expired? || (self.exclude_disabled_concepts && !concept.auto_classify? )
 
         # list of concept IDs by label ID
