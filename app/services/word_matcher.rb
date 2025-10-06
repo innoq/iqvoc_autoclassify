@@ -313,14 +313,15 @@ class WordMatcher
   # rejects word which does not match to any inflectional
   # ["Monetäre Bewertung von Umweltschäden", "Bewertung von"] => ["Monetäre Bewertung von Umweltschäden"]
   def find_existing_inflectionals(variants)
-    sql_escaped_words = variants.reverse.map { |w| "'#{w}'" }
-    query = "SELECT LOWER(value) FROM #{Inflectional::Base.table_name} WHERE LOWER(value) IN (#{sql_escaped_words.join(',')})"
+    return [] if variants.empty?
 
-    existing_inflectionals = ActiveRecord::Base.connection.execute(query).values.flatten.uniq
+    existing_inflectionals = Inflectional::Base.where('LOWER(value) IN (?)', variants.map(&:downcase))
+                                               .pluck(Arel.sql('LOWER(value)'))
+                                               .uniq
 
-    words_with_no_inflectional_match = variants.select {|v| v.is_a?(ActiveSupport::Multibyte::Chars) && existing_inflectionals.exclude?(v)}
+    words_with_no_inflectional_match = variants.select { |v| v.is_a?(ActiveSupport::Multibyte::Chars) && existing_inflectionals.exclude?(v.downcase) }
 
-    (existing_inflectionals + words_with_no_inflectional_match).sort_by { |e| -e.length }
+    (existing_inflectionals + words_with_no_inflectional_match).sort_by(&:length).reverse
   end
 
   # rejects shorter duplicate inline word partials
