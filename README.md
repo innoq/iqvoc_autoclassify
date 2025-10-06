@@ -38,3 +38,18 @@ gems.innoq.com.
 You can bump, tag and push a new gem release with
 
     $ bundle exec rake release:push[X.X.X]
+
+## Maintainer & Contributors
+
+iQvoc was originally created and is being maintained by [innoQ Deutschland GmbH](http://innoq.com).
+
+* Robert Glaser ([mrreynolds](http://github.com/mrreynolds))
+* Till Schulte-Coerne ([tillsc](http://github.com/tillsc))
+* Frederik Dohr ([FND](http://github.com/FND))
+* Marc Jansing ([mjansing](http://github.com/mjansing))
+
+## License
+
+Copyright 2025 [innoQ Deutschland GmbH](https://www.innoq.com).
+
+Licensed under the Apache License, Version 2.0.
