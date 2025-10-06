@@ -315,9 +315,11 @@ class WordMatcher
   def find_existing_inflectionals(variants)
     return [] if variants.empty?
 
-    existing_inflectionals = Inflectional::Base.where('LOWER(value) IN (?)', variants.map(&:downcase))
-                                               .pluck(Arel.sql('LOWER(value)'))
-                                               .uniq
+    existing_inflectionals =  Inflectional::Base
+                                .joins(label: :labelings)
+                                .where('LOWER(inflectionals.value) IN (?)', variants.map(&:downcase))
+                                .pluck('LOWER(inflectionals.value)')
+                                .uniq
 
     words_with_no_inflectional_match = variants.select { |v| v.is_a?(ActiveSupport::Multibyte::Chars) && existing_inflectionals.exclude?(v.downcase) }
 

@@ -46,6 +46,8 @@ class DocumentLabelsTest < ActiveSupport::TestCase
       concepts:
       -
         pref_labels: [Weltraumkampfpilot]
+      -
+        pref_labels: [1. BImSchv]
     EOF
     @labels = data[:labels]
   end

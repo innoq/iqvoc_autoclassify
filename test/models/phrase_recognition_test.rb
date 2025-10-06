@@ -22,7 +22,31 @@ class PhraseRecognitionTest < ActiveSupport::TestCase
         value: Abbau von natürlichen Ressourcen
       -
         value: natürlichen Ressourcen
+
+      concepts:
+      -
+        origin: Fuss_und_Radverkehr
+        pref_labels: [Fuß- und Radverkehr]
+      -
+        origin: Monetaere_Bewertung
+        pref_labels: [Monetäre Bewertung]
+      -
+        origin: monetaer
+        pref_labels: [monetär]
+      -
+        origin: Bewertung
+        pref_labels: [Bewertung]
+      -
+        origin: Monetaere_Bewertung_von_Umweltschaeden
+        pref_labels: [Monetäre Bewertung von Umweltschäden]
+      -
+        origin: Abbau_von_natuerlichen_Ressourcen
+        pref_labels: [Abbau von natürlichen Ressourcen]
+      -
+        origin: natuerlichen_Ressourcen
+        pref_labels: [natürlichen Ressourcen]
     EOF
+
     @label_ids = data[:labels]
     @label_ids.each { |term, label| @label_ids[term] = label.id }
   end
