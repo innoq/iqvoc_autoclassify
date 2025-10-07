@@ -90,7 +90,6 @@ class DocumentLabelsTest < ActiveSupport::TestCase
   end
 
   test 'ignore foreign-language labels' do
-    skip # enable when explicit language support added
     text = 'lorem baz ipsum'
 
     labels = make_document(content: text).determine_labels
