@@ -262,7 +262,10 @@ class WordMatcher
   def remove_autoclassify_disabled_label_seq(_label_seqs, level=0)
     label_seqs = {}
 
-    found = (Iqvoc::Xllabel.base_class.where(auto_classify: true, id: _label_seqs.values.flatten.uniq)).map(&:id)
+    found = Iqvoc::Xllabel
+              .base_class
+              .where(auto_classify: true, id: _label_seqs.values.flatten.uniq)
+              .pluck(:id)
     _label_seqs.each do |ix, _label_seq|
       label_seqs[ix] = _label_seq.select { |id| found.include?(id) }
     end
