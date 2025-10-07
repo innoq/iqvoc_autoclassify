@@ -68,16 +68,8 @@ class WordMatcher
     }
 
     # determine inflectionals
-    inflectionals = []
-    inflectionals_sql = Inflectional::Base.select([:normal_hash, :label_id])
-
-    # Trying to avoid ORA-01795 by limiting
-    # the number of values per IN clause to 1000
-    #
-    # NB: does not retain order or duplicates
-    hash_seqs.values.flatten.compact.uniq.in_groups_of(1000, false).each do |group|
-      inflectionals += inflectionals_sql.where(normal_hash: group)
-    end
+    inflectionals = Inflectional::Base.select(:normal_hash, :label_id)
+                                                      .where(normal_hash: hash_seqs.values.flatten.compact.uniq)
 
     label_index = inflectionals.each_with_object({}) do |inf, hsh|
       (hsh[inf.normal_hash] ||= []) << inf.label_id
