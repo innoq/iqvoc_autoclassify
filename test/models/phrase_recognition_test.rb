@@ -94,12 +94,26 @@ class PhraseRecognitionTest < ActiveSupport::TestCase
   end
 
   test 'prefer short exact labels matches and ignores longer unbound label matches' do
-    # should only find "Monetäre Bewertung von Umweltschäden" and not longer unbound "Monetäre Bewertung von Umweltschäden"
+    # should only find "Monetäre Bewertung von Umweltschäden" and not longer unbound "Monetäre Bewertung von Umweltschäden in der Natur"
     sentence = %w(In diesem Satz geht es um Monetäre Bewertung von Umweltschäden in der Natur und nicht anderem)
     labels = WordMatcher.new([sentence]).labels
     assert_equal 1, labels.length
     assert labels.include? @label_ids['Monetäre Bewertung von Umweltschäden']
     assert labels.exclude? @label_ids['Monetäre Bewertung von Umweltschäden in der Natur']
+  end
+
+  test 'prefer short exact labels matches and ignores longer expired concept label matches' do
+    # should only find "Monetäre Bewertung" and not longer expired "Monetäre Bewertung von Umweltschäden"
+    sentence = %w(In diesem Satz geht es um Monetäre Bewertung von Umweltschäden in der Natur und nicht anderem)
+
+    # mark concept as expired
+    concept = Iqvoc::Concept.base_class.find_by(origin: 'Monetaere_Bewertung_von_Umweltschaeden')
+    concept.update_attribute(:expired_at, 1.year.ago)
+
+    labels = WordMatcher.new([sentence]).labels
+    assert_equal 1, labels.length
+    assert labels.include? @label_ids['Monetäre Bewertung']
+    assert labels.exclude? @label_ids['Monetäre Bewertung von Umweltschäden']
   end
 
   test 'phrase recognition size parameter' do

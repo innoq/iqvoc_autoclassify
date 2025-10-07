@@ -316,8 +316,9 @@ class WordMatcher
     return [] if variants.empty?
 
     existing_inflectionals =  Inflectional::Base
-                                .joins(label: :labelings)
+                                .joins(label: :concepts)
                                 .where('LOWER(inflectionals.value) IN (?)', variants.map(&:downcase))
+                                .merge(Iqvoc::Concept.base_class.not_expired)
                                 .pluck('LOWER(inflectionals.value)')
                                 .uniq
 
