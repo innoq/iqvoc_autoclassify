@@ -19,6 +19,9 @@ class PhraseRecognitionTest < ActiveSupport::TestCase
         value: Monetäre Bewertung von Umweltschäden
         components: [Bewertung, monetär]
       -
+        value: Monetäre Bewertung von Umweltschäden in der Natur
+        components: [Bewertung, monetär]
+      -
         value: Abbau von natürlichen Ressourcen
       -
         value: natürlichen Ressourcen
@@ -88,6 +91,15 @@ class PhraseRecognitionTest < ActiveSupport::TestCase
     assert_equal 1, labels.length
     assert labels.include? @label_ids['Abbau von natürlichen Ressourcen']
     assert labels.exclude? @label_ids['natürlichen Ressourcen']
+  end
+
+  test 'prefer short exact labels matches and ignores longer unbound label matches' do
+    # should only find "Monetäre Bewertung von Umweltschäden" and not longer unbound "Monetäre Bewertung von Umweltschäden"
+    sentence = %w(In diesem Satz geht es um Monetäre Bewertung von Umweltschäden in der Natur und nicht anderem)
+    labels = WordMatcher.new([sentence]).labels
+    assert_equal 1, labels.length
+    assert labels.include? @label_ids['Monetäre Bewertung von Umweltschäden']
+    assert labels.exclude? @label_ids['Monetäre Bewertung von Umweltschäden in der Natur']
   end
 
   test 'phrase recognition size parameter' do
