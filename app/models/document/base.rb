@@ -13,7 +13,7 @@ class Document::Base < ApplicationRecord
   MAX_CONTENT_CHARS = 10_000
   MAX_CONTENT_SUFFIX = '…'
 
-  BOOLEAN_OPTIONS = [:exclude_disabled_concepts, :disable_compound_labels]
+  BOOLEAN_OPTIONS = [:disable_compound_labels]
   store_accessor :options, :language, *BOOLEAN_OPTIONS
 
   # FIXME: hack to deal with boolean types store_accessors
@@ -60,7 +60,6 @@ class Document::Base < ApplicationRecord
     @persist = true
 
     self.language ||= Iqvoc::Concept.pref_labeling_languages.first.to_s
-    self.exclude_disabled_concepts ||= false
     self.disable_compound_labels ||= false
   end
 
@@ -151,7 +150,7 @@ class Document::Base < ApplicationRecord
         # skip labels with zero weighting
         next if self.class.weightings[labeling.type]&.zero?
 
-        next if !concept.published? || concept.expired? || (self.exclude_disabled_concepts && !concept.auto_classify? )
+        next if !concept.published? || concept.expired? || !concept.auto_classify?
 
         # list of concept IDs by label ID
         @trace[:concept_index][label.id] ||= []
