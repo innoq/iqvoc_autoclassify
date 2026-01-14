@@ -2,7 +2,7 @@
 
 <div class="row">
   <div class="col-md-8">
-    <%= render 'toolbar' if current_user %>
+    <%= render 'toolbar' if current_user and @document.persisted? %>
 
     <% if @document.uri %>
       <%= t('txt.views.document.show.description_url_analysis') %>
@@ -27,7 +27,7 @@
 <div class="row pt-4">
   <div class="col-md-8">
 
-    <% if current_user %>
+    <% if current_user and @document.persisted? %>
     <ul class="nav nav-tabs" id="myTab" role="tablist">
       <li class="nav-item" role="presentation">
         <a class="nav-link active" id="text-tab" data-toggle="tab" href="#text" role="tab" aria-controls="text" aria-selected="true">
@@ -43,7 +43,7 @@
     <% end %>
 
     <div id="auto-classify-analysed-text">
-      <% if current_user %>
+      <% if current_user and @document.persisted? %>
         <div class="tab-content" id="myTabContent">
           <div class="tab-pane fade show active" id="text" role="tabpanel" aria-labelledby="home-tab">
             <%= render 'document', document: @document %>

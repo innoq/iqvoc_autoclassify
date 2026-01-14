@@ -51,12 +51,11 @@ class Documents::ExtractedController < DocumentsController
 
     DOC
 
+  before_action :set_document, only: :create
+
   def create
-    @document = Document::Extracted.new document_params
-
-    @document.persist = false unless current_user
-
     render_errors and return if @document.invalid?
+
     @document.save if @document.persist?
 
     @document.extract!
@@ -99,6 +98,12 @@ class Documents::ExtractedController < DocumentsController
   end
 
   protected
+
+  def set_document
+    @document = Document::Extracted.new document_params
+
+    @document.persist = false unless current_user
+  end
 
   def document_params
     if params[:document_base]

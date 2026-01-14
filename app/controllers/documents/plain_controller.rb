@@ -38,11 +38,9 @@ class Documents::PlainController < DocumentsController
                  sdc:rank 1.0.
   DOC
 
+  before_action :set_document, only: :create
+
   def create
-    @document = Document::Plain.new document_params
-
-    @document.persist = false unless current_user
-
     render_errors and return if @document.invalid?
 
     @document.classify!
@@ -82,6 +80,12 @@ class Documents::PlainController < DocumentsController
   end
 
   protected
+
+  def set_document
+    @document = Document::Plain.new document_params
+
+    @document.persist = false unless current_user
+  end
 
   def document_params
     if params[:document]
