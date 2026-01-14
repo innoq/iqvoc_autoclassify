@@ -12,7 +12,7 @@ Gem::Specification.new do |s|
   s.summary     = 'Automatic classification of documents based on iQvoc thesauri'
   s.description = 'Automatic classification of documents based on iQvoc thesauri'
 
-  s.add_dependency 'iqvoc', '~> 4.14.4'
+  s.add_dependency 'iqvoc', '~> 4.15.0'
   s.add_dependency 'iqvoc_skosxl', '~> 2.11.3'
   s.add_dependency 'iqvoc_inflectionals', '~> 2.11.3'
   s.add_dependency 'iqvoc_compound_forms', '~> 2.11.3'
