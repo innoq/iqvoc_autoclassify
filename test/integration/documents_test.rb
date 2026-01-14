@@ -95,8 +95,7 @@ class DocumentsTest < ActionDispatch::IntegrationTest
       \tdct:title "Foo";
       \tsdc:rank 1.0.
     EOS
-    expected.gsub!(/^ +/, '')
-    assert ttl.include? expected
+    assert ttl.include? expected.gsub(/^ +/, '')
 
     assert ttl.include? 'sdc:result search:result2;'
     expected = <<-EOS
@@ -105,8 +104,7 @@ class DocumentsTest < ActionDispatch::IntegrationTest
       \tdct:title "Bar";
       \tsdc:rank 1.0.
     EOS
-    expected.gsub!(/^ +/, '')
-    assert ttl.include? expected
+    assert ttl.include? expected.gsub(/^ +/, '')
     assert ttl.include? 'sdc:result search:result3.'
     expected = <<-EOS
       search:result3 a sdc:Result;
@@ -114,8 +112,7 @@ class DocumentsTest < ActionDispatch::IntegrationTest
       \tdct:title "Baz";
       \tsdc:rank 1.0.
     EOS
-    expected.gsub!(/^ +/, '')
-    assert ttl.include? expected
+    assert ttl.include? expected.gsub(/^ +/, '')
   end
 
   test 'XML/RDF representation' do
