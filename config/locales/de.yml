@@ -60,6 +60,7 @@ de:
           detailed_analysis: Detaillierte Analyse
           show_all: Weitere Ergebnisse
           no_results: Es wurden keine Schlagwörter gefunden
+          no_trace: Keine detaillierte Analyse verfügbar
       classification:
         tag_wizard_title: Text&shy;verschlag&shy;wortung
         tag_wizard_desc: Verschlagworten Sie ihre Dokumente mit der Fachsprache des Umweltbundesamtes

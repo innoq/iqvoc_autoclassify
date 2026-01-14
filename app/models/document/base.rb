@@ -125,7 +125,10 @@ class Document::Base < ApplicationRecord
         weighting: weighting.first,
         title: result_pref_label)
     end
-    self.create_classification_trace(trace: @trace.to_json) if persist?
+
+    if @trace and persist?
+      self.create_classification_trace(trace: @trace.to_json)
+    end
     halt if invalid?
   end
 
