@@ -23,6 +23,9 @@
           <% if doc.language.present? %>
             <span class="badge badge-secondary"><%= t(doc.language, scope: 'languages') %></span>
           <% end %>
+          <% if doc.is_a? Document::Autoclassify2::Plain %>
+            <span class="badge badge-warning">AutoClassify2</span>
+          <% end %>
           <%= link_to "<i class='fa fa-share'></i>".html_safe, doc.uri, target: :_blank, title: t('txt.views.document.visit_website') if doc.uri %>
           <div>
             <%= truncate(doc.content, length: 80) %>
