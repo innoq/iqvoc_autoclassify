@@ -17,5 +17,12 @@ Rails.application.routes.draw do
     post 'autoclassify/plain' => 'documents/plain#create',
          as: 'plain_documents',
          commit: /.+/
+
+    if ENV['AUTOCLASSIFY_SERVICE_URI'].present?
+      get  'autoclassify2/plain' => 'documents/autoclassify2/plain#create'
+      post 'autoclassify2/plain' => 'documents/autoclassify2/plain#create',
+           as: 'plain2_documents',
+           commit: /.+/
+    end
   end
 end

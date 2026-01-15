@@ -13,7 +13,7 @@
       </div>
     <% end %>
 
-    <% if can?(:use, :administration) %>
+    <% if can?(:use, :administration) and local_assigns[:show_options] != false %>
       <% Document::Base::BOOLEAN_OPTIONS.each do |bool_attr| %>
         <%= f.check_box bool_attr %>
       <% end %>

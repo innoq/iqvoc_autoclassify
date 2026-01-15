@@ -13,6 +13,10 @@
       <div class="mt-3">
         <%= "#{Document::Base.human_attribute_name(:language)}:" %>
         <span class="badge badge-secondary"><%= t(@document.language, scope: 'languages') %></span>
+
+        <% if current_user %>
+          Typ: <span class="badge badge-secondary"><%= @document.class %></span>
+        <% end %>
       </div>
     <% end %>
   </div>
