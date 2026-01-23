@@ -10,18 +10,13 @@ module Document
       end
 
       def determine_concepts
-        service = AutoclassifyApiService.new
-        response = service.classify_content(
-          content: self.content,
-          language: self.language,
-          title: self.title,
-        )
+        call_autoclassify_service
 
         concepts = {}
-        concept_origins = response['results'].map { it["uri"]}.map { it.split('/').last }
+        concept_origins = self.api_response_body['results'].map { it["uri"]}.map { it.split('/').last }
         preloaded_concepts = Iqvoc::Concept.base_class.where(origin: concept_origins)
 
-        response['results'].each do |item|
+        self.api_response_body['results'].each do |item|
           concept_origin = item["uri"].split('/').last
           concept = preloaded_concepts.find { |c| c.origin == concept_origin }
           concepts[concept] ||= [item["score"]]
@@ -30,6 +25,21 @@ module Document
         end
 
         concepts
+      end
+
+      private
+
+      def call_autoclassify_service
+        service = AutoclassifyApiService.new
+
+        response = service.classify_content(
+          content: self.content,
+          language: self.language,
+          title: self.title
+        )
+
+        self.api_response_body = response
+        self.update(api_response_body: response) if persist?
       end
 
     end

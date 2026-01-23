@@ -58,6 +58,7 @@ de:
           results: Gefundene Schlagwörter
           text: Text
           detailed_analysis: Detaillierte Analyse
+          api_response_body: API-Rückgabe
           show_all: Weitere Ergebnisse
           no_results: Es wurden keine Schlagwörter gefunden
           no_trace: Keine detaillierte Analyse verfügbar
