@@ -1,6 +1,6 @@
 source 'https://rubygems.org'
 
-gem 'iqvoc', '~> 4.15.0', :github => 'innoq/iqvoc', branch: :main
+gem 'iqvoc', '~> 4.15.1', :github => 'innoq/iqvoc', branch: :main
 gem 'iqvoc_skosxl', '~> 2.11.3', :github => 'innoq/iqvoc_skosxl', branch: :main
 gem 'iqvoc_inflectionals', '~> 2.11.3', :github => 'innoq/iqvoc_inflectionals', branch: :main
 gem 'iqvoc_compound_forms', '~> 2.11.3', :github => 'innoq/iqvoc_compound_forms', branch: :main
