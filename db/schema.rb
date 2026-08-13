@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2025_03_26_182601) do
+ActiveRecord::Schema[8.1].define(version: 2026_07_23_172701) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -126,6 +126,7 @@ ActiveRecord::Schema[8.1].define(version: 2025_03_26_182601) do
   end
 
   create_table "documents", id: :serial, force: :cascade do |t|
+    t.jsonb "api_response_body"
     t.text "content"
     t.string "content_hash"
     t.datetime "created_at", precision: nil
@@ -147,6 +148,7 @@ ActiveRecord::Schema[8.1].define(version: 2025_03_26_182601) do
     t.string "token"
     t.datetime "updated_at", precision: nil
     t.integer "user_id"
+    t.boolean "zip", default: false, null: false
     t.index ["user_id"], name: "index_exports_on_user_id"
   end
 
