@@ -1,0 +1,28 @@
+<%
+  venn_summary = [
+    t('txt.views.document.show.compare_summary_classic', count: classic_only),
+    t('txt.views.document.show.compare_summary_shared', count: shared),
+    t('txt.views.document.show.compare_summary_sns', count: sns_only)
+  ].join(', ')
+%>
+<svg viewBox="0 0 400 200" role="img" aria-label="<%= venn_summary %>" class="venn-diagram">
+  <circle cx="150" cy="105" r="85" class="venn-circle-classic" />
+  <circle cx="250" cy="105" r="85" class="venn-circle-sns" />
+
+  <text x="105" y="30" text-anchor="middle" class="venn-label">
+    <%= t('txt.views.document.show.compare_column_classic') %>
+  </text>
+  <text x="295" y="30" text-anchor="middle" class="venn-label">
+    <%= t('txt.views.document.show.compare_column_sns') %>
+  </text>
+
+  <text x="100" y="115" text-anchor="middle" class="venn-count">
+    <%= classic_only %>
+  </text>
+  <text x="200" y="115" text-anchor="middle" class="venn-count">
+    <%= shared %>
+  </text>
+  <text x="300" y="115" text-anchor="middle" class="venn-count">
+    <%= sns_only %>
+  </text>
+</svg>

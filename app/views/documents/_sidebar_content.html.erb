@@ -8,3 +8,9 @@
     :icon => 'edit',
     :path => new_document_path,
     :active => params[:controller] == 'documents' && ["new", "create"].include?(params[:action]) %>
+<% if ENV['AUTOCLASSIFY_SERVICE_URI'].present? && can?(:use, :administration) %>
+  <%= sidebar_item :text => t("txt.controllers.documents.new.compare"),
+                   :icon => "compress",
+                   :path => compare_documents_path
+  %>
+<% end %>

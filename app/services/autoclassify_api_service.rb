@@ -1,5 +1,6 @@
 class AutoclassifyApiService
   BASE_URL = ENV['AUTOCLASSIFY_SERVICE_URI']
+  REQUEST_TIMEOUT = 5 # seconds
 
   class Error < StandardError; end
   class ValidationError < Error; end
@@ -9,6 +10,8 @@ class AutoclassifyApiService
       faraday.request :json
       faraday.response :json
       faraday.response :raise_error
+      faraday.options.timeout = REQUEST_TIMEOUT
+      faraday.options.open_timeout = REQUEST_TIMEOUT
       faraday.adapter Faraday.default_adapter
     end
   end

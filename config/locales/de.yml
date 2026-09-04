@@ -23,6 +23,8 @@ de:
           text_placeholder: Text eingeben/einfügen
           enter_uri:  URL zu HTML-Seite oder PDF-Dokument
           reset_text: Textfeld leeren
+          compare: Neuer Vergleich
+          compare_description: "Klassifizieren Sie Ihren Text gleichzeitig mit der klassischen Engine und mit sns-autoclassify und vergleichen Sie die Ergebnisse."
           select_language_prompt: keine Angabe
           language_selection_help: "Suche und Schlagwortausgabe erfolgen in der jeweils ausgewählten Sprache. Wird keine Angabe gemacht, werden deutsche und englische Wörter im Text gesucht, die dazu passenden Schlagwörter aber nur in Deutsch vorgeschlagen."
         save:
@@ -62,6 +64,14 @@ de:
           show_all: Weitere Ergebnisse
           no_results: Es wurden keine Schlagwörter gefunden
           no_trace: Keine detaillierte Analyse verfügbar
+          compare_results: Vergleichsergebnisse
+          compare_unavailable: Für diesen Text sind keine sns-autoclassify-Ergebnisse verfügbar.
+          compare_summary_classic: "%{count} nur autoclassify"
+          compare_summary_shared: "%{count} von beiden gefunden"
+          compare_summary_sns: "%{count} nur autoclassify2"
+          compare_column_classic: autoclassify
+          compare_column_shared: Von beiden gefunden
+          compare_column_sns: autoclassify2
       classification:
         tag_wizard_title: Text&shy;verschlag&shy;wortung
         tag_wizard_desc: Verschlagworten Sie ihre Dokumente mit der Fachsprache des Umweltbundesamtes

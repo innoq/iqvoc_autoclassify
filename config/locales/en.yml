@@ -21,6 +21,8 @@ en:
           text_placeholder: enter/paste text
           enter_uri:  URL to website or pdf document
           reset_text: clear text
+          compare: Compare
+          compare_description: "Classify your text with the classic engine and sns-autoclassify at the same time and compare the results."
           select_language_prompt: not specified
           language_selection_help: "Search and keyword output are performed in the selected language. If not specified, German and English words in the text are searched, but the matching keywords are only suggested in English."
         save:
@@ -57,6 +59,14 @@ en:
           detailed_analysis: Detailled analysis
           show_all: More results
           no_results: No
+          compare_results: Comparison results
+          compare_unavailable: No sns-autoclassify results are available for this text.
+          compare_summary_classic: "%{count} iQvoc only"
+          compare_summary_shared: "%{count} found by both"
+          compare_summary_sns: "%{count} SNS-autoclassify only"
+          compare_column_classic: iqvoc_autoclassify only
+          compare_column_shared: Found by both
+          compare_column_sns: sns-autoclassify only
       classification:
         tag_wizard_title: Text&shy;verschlag&shy;wortung
         tag_wizard_desc: Verschlagworten Sie ihre Dokumente mit der Fachsprache des Umweltbundesamtes

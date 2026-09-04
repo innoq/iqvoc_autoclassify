@@ -110,6 +110,55 @@
   }
 }
 
+// concepts both engines found: neutral, so that the highlighted
+// engine-specific hits below stand out within each ranked column
+.auto-classify-result-shared {
+  @extend .badge-secondary;
+}
+
+.auto-classify-result-autoclassify {
+  @extend .badge-success;
+}
+
+.auto-classify-result-autoclassify2 {
+  @extend .badge-warning;
+  color: $gray-900;
+
+  button,
+  a {
+    color: $gray-900;
+  }
+}
+
+.venn-diagram {
+  width: 100%;
+  max-width: 480px;
+  display: block;
+  margin: 0 auto;
+}
+
+.venn-circle-classic {
+  fill: $success;
+  fill-opacity: 0.55;
+}
+
+.venn-circle-sns {
+  fill: $warning;
+  fill-opacity: 0.55;
+}
+
+.venn-label {
+  font-size: 14px;
+  font-weight: 600;
+  fill: $gray-900;
+}
+
+.venn-count {
+  font-size: 30px;
+  font-weight: 700;
+  fill: $gray-900;
+}
+
 .autoclassify {
   margin-top: 3rem;
 

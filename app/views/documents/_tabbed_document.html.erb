@@ -1,0 +1,50 @@
+<% if current_user and document.persisted? %>
+  <ul class="nav nav-tabs" id="myTab" role="tablist">
+    <li class="nav-item" role="presentation">
+      <a class="nav-link active" id="text-tab" data-toggle="tab" href="#text" role="tab" aria-controls="text" aria-selected="true">
+        <%= t("txt.views.document.show.text") %>
+      </a>
+    </li>
+    <li class="nav-item" role="presentation">
+      <a class="nav-link" id="url-tab" data-toggle="tab" href="#extended" role="tab" aria-controls="extended" aria-selected="false">
+        <%= t("txt.views.document.show.detailed_analysis") %>
+      </a>
+    </li>
+    <% if document.api_response_body.present? %>
+      <li class="nav-item" role="presentation">
+        <a class="nav-link" id="api-tab" data-toggle="tab" href="#api-response" role="tab" aria-controls="api-response" aria-selected="false">
+          <%= t("txt.views.document.show.api_response_body") %>
+        </a>
+      </li>
+    <% end %>
+  </ul>
+<% end %>
+
+<div id="auto-classify-analysed-text">
+  <% if current_user and document.persisted? %>
+    <div class="tab-content" id="myTabContent">
+      <div class="tab-pane fade show active" id="text" role="tabpanel" aria-labelledby="home-tab">
+        <%= render 'document', document: document %>
+      </div>
+
+      <div class="tab-pane fade" id="extended" role="tabpanel" aria-labelledby="url-tab">
+        <% if document.classification_trace&.trace %>
+              <pre class="trace">
+                <%= raw augmented_fulltext(document) %>
+              </pre>
+        <% else %>
+          <%= t('txt.views.document.show.no_trace') %>
+        <% end %>
+      </div>
+      <% if document.api_response_body.present? %>
+        <div class="tab-pane fade" id="api-response" role="tabpanel" aria-labelledby="api-tab">
+            <pre class="json">
+              <%= JSON.pretty_generate(document.api_response_body) %>
+            </pre>
+        </div>
+      <% end %>
+    </div>
+  <% else %>
+    <%= render 'document', document: document %>
+  <% end %>
+</div>

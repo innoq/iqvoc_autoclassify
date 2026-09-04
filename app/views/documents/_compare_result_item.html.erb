@@ -1,0 +1,15 @@
+<li>
+  <span class="auto-classify-result auto-classify-result-<%= kind %>">
+    <span class="result-item">
+      <%= title %>
+    </span>
+
+    <% if current_user %>
+      [<%= number_with_precision(score, precision: 5) %>]
+    <% end %>
+
+    <%= link_to(concept_path(id: concept_origin), title: t('txt.views.free_classification.show_details'), data: { toggle: 'tooltip' }, target: '_blank') do %>
+      <i class="fa fa-search-plus" aria-hidden="true"></i>
+    <% end %>
+  </span>
+</li>

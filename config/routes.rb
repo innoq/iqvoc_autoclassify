@@ -23,6 +23,11 @@ Rails.application.routes.draw do
       post 'autoclassify2/plain' => 'documents/autoclassify2/plain#create',
            as: 'plain2_documents',
            commit: /.+/
+
+      get  'autoclassify/compare' => 'documents/compare/plain#create'
+      post 'autoclassify/compare' => 'documents/compare/plain#create',
+           as: 'compare_documents',
+           commit: /.+/
     end
   end
 end

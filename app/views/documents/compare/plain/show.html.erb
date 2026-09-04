@@ -1,0 +1,79 @@
+<%= page_header title: t('txt.views.document.show.compare_results') %>
+
+<div class="row">
+  <div class="col-md-8">
+    <%= render 'toolbar' if current_user and @document.persisted? %>
+
+    <% if @document.uri %>
+      <%= t('txt.views.document.show.description_url_analysis') %>
+      <%= link_to(@document.uri, @document.uri, target: '_blank') %>
+    <% end %>
+
+    <% if @document.language.present? %>
+      <div class="mt-3">
+        <span class="badge badge-secondary"><%= t(@document.language, scope: 'languages') %></span>
+        <span class="badge badge-danger"><%= t("txt.controllers.documents.new.compare") %></span>
+      </div>
+    <% end %>
+  </div>
+
+  <div class="col-md-4">
+    <div class="list-group">
+      <%= render 'sidebar_content' %>
+    </div>
+  </div>
+</div>
+
+<div class="row pt-4">
+  <div class="col-md-12">
+    <%= render "tabbed_document", document: @document %>
+  </div>
+</div>
+
+
+<div class="row pt-4">
+  <div class="col-12" id="auto-classify-compare-results">
+    <% if @document.comparison_unavailable? %>
+      <div class="alert alert-warning" role="alert">
+        <%= t('txt.views.document.show.compare_unavailable') %>
+      </div>
+    <% end %>
+
+    <% shared_origins = @document.shared_concept_origins
+       classic_results = @document.classifications
+       sns_results = @document.comparison_results.sort_by { |result| -result['score'].to_f } %>
+
+    <%= render partial: 'documents/venn_diagram', locals: { classic_only: @document.classic_only_classifications.size, shared: shared_origins.size, sns_only: @document.sns_only_results.size } %>
+
+    <div class="row">
+      <div class="col-md-6 compare-column-classic text-center">
+        <h2><%= t('txt.views.document.show.compare_column_classic') %></h2>
+        <% if classic_results.any? %>
+          <ul class="auto-classify-result-list">
+            <% classic_results.each do |classification| %>
+              <% kind = shared_origins.include?(classification.concept_origin) ? 'shared' : 'autoclassify' %>
+              <%= render partial: 'documents/compare_result_item', locals: { title: classification.to_s, concept_origin: classification.concept_origin, score: classification.weighting, kind: kind } %>
+            <% end %>
+          </ul>
+        <% else %>
+          <p class="compare-column-empty"><%= t('txt.views.document.show.no_results') %></p>
+        <% end %>
+      </div>
+
+      <div class="col-md-6 compare-column-sns text-center">
+        <h2><%= t('txt.views.document.show.compare_column_sns') %></h2>
+        <% if sns_results.any? %>
+          <ul class="auto-classify-result-list">
+            <% sns_results.each do |result| %>
+              <% origin = result['uri'].split('/').last %>
+              <% kind = shared_origins.include?(origin) ? 'shared' : 'autoclassify2' %>
+              <%= render partial: 'documents/compare_result_item', locals: { title: result['pref_label'], concept_origin: origin, score: result['score'], kind: kind } %>
+            <% end %>
+          </ul>
+        <% else %>
+          <p class="compare-column-empty"><%= t('txt.views.document.show.no_results') %></p>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>

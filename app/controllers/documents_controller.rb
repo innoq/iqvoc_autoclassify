@@ -14,6 +14,7 @@ class DocumentsController < ApplicationController
   end
 
   def show
+    render_compare_show if request.format.html? && @document.is_a?(Document::Compare::Plain)
   end
 
   def new
@@ -38,7 +39,11 @@ class DocumentsController < ApplicationController
       redirect_to document_path(id: @document)
     else
       flash[:error] = I18n.t('txt.controllers.documents.update.invalid')
-      render :show, status: 400
+      if @document.is_a?(Document::Compare::Plain)
+        render_compare_show(status: 400)
+      else
+        render :show, status: 400
+      end
     end
   end
 
@@ -56,6 +61,10 @@ class DocumentsController < ApplicationController
   end
 
   protected
+
+  def render_compare_show(status: nil)
+    render 'documents/compare/plain/show', status: status
+  end
 
   def load_document
     @document = Document::Base.includes(:classifications)
