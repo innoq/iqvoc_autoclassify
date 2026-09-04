@@ -3,6 +3,7 @@ require 'capybara/rails'
 require 'capybara/dsl'
 require Iqvoc.root.join('test', 'authentication')
 
+Capybara.server = :puma, { Silent: true }
 Capybara.javascript_driver = :poltergeist
 
 class ActionDispatch::IntegrationTest
