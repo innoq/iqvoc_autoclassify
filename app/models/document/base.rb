@@ -13,6 +13,13 @@ class Document::Base < ApplicationRecord
   MAX_CONTENT_CHARS = 10_000
   MAX_CONTENT_SUFFIX = '…'
 
+  # ActiveSupport::Multibyte::Chars, which this replaces, coerced non-UTF-8
+  # input before truncating -- without that, appending the suffix raises
+  def self.truncate_with_suffix(string, limit)
+    string = string.dup.force_encoding(Encoding::UTF_8) unless string.encoding == Encoding::UTF_8
+    string.truncate_bytes(limit - MAX_CONTENT_SUFFIX.length, omission: nil) + MAX_CONTENT_SUFFIX
+  end
+
   BOOLEAN_OPTIONS = [:disable_compound_labels]
   store_accessor :options, :language, *BOOLEAN_OPTIONS
 
@@ -87,7 +94,7 @@ class Document::Base < ApplicationRecord
     title = _title&.squish
 
     if title && title.bytesize >= MAX_TITLE_CHARS
-      super(title.mb_chars.limit(MAX_TITLE_CHARS - MAX_CONTENT_SUFFIX.length).to_s + MAX_CONTENT_SUFFIX)
+      super(Document::Base.truncate_with_suffix(title, MAX_TITLE_CHARS))
     else
       super(title)
     end
@@ -97,7 +104,7 @@ class Document::Base < ApplicationRecord
     content = _content&.squish
 
     if content && content.bytesize >= MAX_CONTENT_CHARS
-      super(content.mb_chars.limit(MAX_CONTENT_CHARS - MAX_CONTENT_SUFFIX.length).to_s  + MAX_CONTENT_SUFFIX)
+      super(Document::Base.truncate_with_suffix(content, MAX_CONTENT_CHARS))
     else
       super(content)
     end
