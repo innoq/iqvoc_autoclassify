@@ -6,7 +6,7 @@ gem 'iqvoc_inflectionals', '~> 2.12.0', github: 'innoq/iqvoc_inflectionals', bra
 gem 'iqvoc_compound_forms', '~> 2.12.0', github: 'innoq/iqvoc_compound_forms', branch: :main
 
 gem 'ruby-readability'
-gem 'pdf-reader', '~> 1.4.0'
+gem 'pdf-reader', '~> 2.16.0'
 gem 'workflow', '~> 1.0.0'
 gem 'guess_html_encoding'
 gem 'responders'

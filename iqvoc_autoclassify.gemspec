@@ -18,7 +18,7 @@ Gem::Specification.new do |s|
   s.add_dependency 'iqvoc_compound_forms', '~> 2.12.0'
   s.add_dependency 'bundler'
   s.add_dependency 'ruby-readability'
-  s.add_dependency 'pdf-reader', '~> 1.4.0'
+  s.add_dependency 'pdf-reader', '~> 2.16.0'
   s.add_dependency 'workflow', '~> 1.0.0'
   s.add_dependency 'guess_html_encoding'
   s.add_dependency 'responders'
