@@ -17,7 +17,10 @@ class AutoclassifyApiService
   end
 
 
-  def classify_content(content:, language: 'de', title: nil, max_results: 20, min_score: 0.0)
+  # max_results asks for as much as the service allows, so the weaker end of the
+  # result list stays visible while the classification is being evaluated. The
+  # cut is by count alone -- min_score 0.0 filters nothing out.
+  def classify_content(content:, language: 'de', title: nil, max_results: 100, min_score: 0.0)
     validate_params!(content, language, title, max_results, min_score)
 
     payload = {
