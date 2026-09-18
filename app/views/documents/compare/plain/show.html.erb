@@ -9,12 +9,7 @@
       <%= link_to(@document.uri, @document.uri, target: '_blank') %>
     <% end %>
 
-    <% if @document.language.present? %>
-      <div class="mt-3">
-        <span class="badge badge-secondary"><%= t(@document.language, scope: 'languages') %></span>
-        <span class="badge badge-danger"><%= t("txt.controllers.documents.new.compare") %></span>
-      </div>
-    <% end %>
+    <%= render 'document_labels', document: @document %>
   </div>
 
   <div class="col-md-4">
