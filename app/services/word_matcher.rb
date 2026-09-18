@@ -38,9 +38,15 @@ class WordMatcher
 
     # use normalized form for case-insensitivity (and performance)
     hash_seqs = {}
+    # Sentences are keyed by their own text, so two verbatim-identical ones --
+    # a repeated caption, a recurring list item -- overwrite each other and one
+    # set of findings is lost. Counting the occurrences per key restores it for
+    # the returned list while leaving the trace's shape untouched.
+    key_counts = Hash.new(0)
     @sentences.each_with_index { |_sentence, _ix|
       sentence = _sentence.map { |word| word.mb_chars.downcase.strip.unicode_normalize(:nfkc)  }
       key = sentence.join(' ').to_sym
+      key_counts[key] += 1
 
       @trace[:token_index][key] = {}
       @trace[:label_index][key] = []
@@ -105,7 +111,7 @@ class WordMatcher
     label_seqs = remove_autoclassify_disabled_label_seq(label_seqs)
     @trace[:result_index] = label_seqs
 
-    label_seqs.values.flatten
+    label_seqs.flat_map { |key, label_ids| label_ids * key_counts[key] }
   end
 
   private

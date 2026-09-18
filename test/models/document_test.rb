@@ -16,6 +16,8 @@ class DocumentTest < ActiveSupport::TestCase
       -
         value: Pilot
         inflectionals: [Piloten]
+      -
+        value: Feinstaub
 
       concepts:
       -
@@ -26,6 +28,8 @@ class DocumentTest < ActiveSupport::TestCase
         pref_labels: [Fracht]
       -
         pref_labels: [Pilot]
+      -
+        pref_labels: [Feinstaub]
     EOF
   end
 
@@ -114,4 +118,16 @@ class DocumentTest < ActiveSupport::TestCase
     assert_equal 'Luftqualität in Ballungsräumen',
                  Document::Plain.new(title: "Luftqualität\nin   Ballungsräumen").title
   end
+
+  # WordMatcher keys sentences by their own text, so a verbatim repeat used to
+  # overwrite the first one and take its findings with it
+  test 'counts a verbatim repeated sentence once per occurrence' do
+    doc = Document::Plain.new(persist: false,
+                              content: 'Der Feinstaub sinkt. Die Lage ist ernst. Der Feinstaub sinkt.')
+    doc.classify
+
+    feinstaub = doc.classifications.detect { |c| c.title == 'Feinstaub' }
+    assert_equal 2.0, feinstaub.weighting.to_f
+  end
+
 end
