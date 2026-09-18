@@ -101,7 +101,8 @@ class Document::Base < ApplicationRecord
   end
 
   def content=(_content)
-    content = _content&.squish
+    # keeps its line structure. Browsers submit textarea content with CRLF.
+    content = _content&.gsub("\r\n", "\n")&.strip
 
     if content && content.bytesize >= MAX_CONTENT_CHARS
       super(Document::Base.truncate_with_suffix(content, MAX_CONTENT_CHARS))

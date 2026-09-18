@@ -95,4 +95,23 @@ class DocumentTest < ActiveSupport::TestCase
     assert_equal title, Document::Plain.new(title: title).title
   end
 
+  test 'keeps the line structure of the content' do
+    text = "Luftqualität in Ballungsräumen\n\nDie Feinstaubbelastung ist zurückgegangen."
+
+    assert_equal text, Document::Plain.new(content: text).content
+  end
+
+  # Browsers submit textarea content with CRLF; only the outer edges are trimmed
+  test 'normalizes submitted line endings and trims the edges' do
+    submitted = "\n  Grenzwerte für Stickstoffdioxid\r\n\r\nMessstationen  \n"
+
+    assert_equal "Grenzwerte für Stickstoffdioxid\n\nMessstationen",
+                 Document::Plain.new(content: submitted).content
+  end
+
+  # Deliberately asymmetric: a heading is a single line, the text below it is not
+  test 'still collapses whitespace in the title' do
+    assert_equal 'Luftqualität in Ballungsräumen',
+                 Document::Plain.new(title: "Luftqualität\nin   Ballungsräumen").title
+  end
 end
