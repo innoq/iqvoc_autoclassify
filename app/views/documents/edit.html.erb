@@ -5,12 +5,12 @@
 
 <ul class="nav nav-tabs mt-5" id="myTab" role="tablist">
   <li class="nav-item" role="presentation">
-    <a class="nav-link active" id="text-tab" data-toggle="tab" href="#text" role="tab" aria-controls="text" aria-selected="true">
+    <a class="nav-link active" id="text-tab" data-bs-toggle="tab" href="#text" role="tab" aria-controls="text" aria-selected="true">
       <%= Document::Base.human_attribute_name :content %>
     </a>
   </li>
   <li class="nav-item" role="presentation">
-    <a class="nav-link" id="url-tab" data-toggle="tab" href="#url" role="tab" aria-controls="uri" aria-selected="false">
+    <a class="nav-link" id="url-tab" data-bs-toggle="tab" href="#url" role="tab" aria-controls="uri" aria-selected="false">
       <%= Document::Base.human_attribute_name :url %>
     </a>
   </li>

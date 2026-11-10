@@ -97,7 +97,7 @@
 .auto-classify-result {
   @extend %font-light;
   @extend .badge;
-  @extend .badge-primary;
+  @extend .bg-primary;
   font-size: 100%;
   white-space: normal;
   text-align: left;
@@ -113,15 +113,15 @@
 // concepts both engines found: neutral, so that the highlighted
 // engine-specific hits below stand out within each ranked column
 .auto-classify-result-shared {
-  @extend .badge-secondary;
+  @extend .bg-secondary;
 }
 
 .auto-classify-result-autoclassify {
-  @extend .badge-success;
+  @extend .bg-success;
 }
 
 .auto-classify-result-autoclassify2 {
-  @extend .badge-warning;
+  @extend .bg-warning;
   color: $gray-900;
 
   button,

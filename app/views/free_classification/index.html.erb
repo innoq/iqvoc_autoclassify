@@ -6,7 +6,7 @@
 
       <%= form_tag freeclassify_path(:query => nil), method: :get do %>
         <div>
-          <div class="form-control-with-icon-end form-row">
+          <div class="form-control-with-icon-end row">
 
             <div class="col-sm-9">
               <%= label_tag 'search', t('txt.views.free_classification.seatch_input_label'), class: 'col-form-label' %>
@@ -15,11 +15,9 @@
                 <%= search_field_tag 'query', params[:query], id: 'search', class: 'form-control',
                                      autofocus: true,
                                      autocomplete: 'off',
-                                     placeholder: t('txt.views.free_classification.query_placeholder'),
-                                     'aria-describedby': 'queryHelpBlock' %>
-                <div class="input-group-append">
-                  <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    <i class="fa fa-cog" aria-hidden="true"></i>
+                                     placeholder: t('txt.views.free_classification.query_placeholder') %>
+                  <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" aria-label="<%= t('txt.views.free_classification.settings') %>">
+                    <i class="fa-solid fa-gear" aria-hidden="true"></i>
                   </button>
                   <div class="dropdown-menu p-2">
                     <b><%= t('txt.views.free_classification.settings') %></b>
@@ -48,7 +46,6 @@
                       </div>
                     <% end %>
                   </div>
-                </div>
               </div>
             </div>
 

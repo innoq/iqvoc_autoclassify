@@ -1,18 +1,18 @@
 <% if current_user and document.persisted? %>
   <ul class="nav nav-tabs" id="myTab" role="tablist">
     <li class="nav-item" role="presentation">
-      <a class="nav-link active" id="text-tab" data-toggle="tab" href="#text" role="tab" aria-controls="text" aria-selected="true">
+      <a class="nav-link active" id="text-tab" data-bs-toggle="tab" href="#text" role="tab" aria-controls="text" aria-selected="true">
         <%= t("txt.views.document.show.text") %>
       </a>
     </li>
     <li class="nav-item" role="presentation">
-      <a class="nav-link" id="url-tab" data-toggle="tab" href="#extended" role="tab" aria-controls="extended" aria-selected="false">
+      <a class="nav-link" id="url-tab" data-bs-toggle="tab" href="#extended" role="tab" aria-controls="extended" aria-selected="false">
         <%= t("txt.views.document.show.detailed_analysis") %>
       </a>
     </li>
     <% if document.api_response_body.present? %>
       <li class="nav-item" role="presentation">
-        <a class="nav-link" id="api-tab" data-toggle="tab" href="#api-response" role="tab" aria-controls="api-response" aria-selected="false">
+        <a class="nav-link" id="api-tab" data-bs-toggle="tab" href="#api-response" role="tab" aria-controls="api-response" aria-selected="false">
           <%= t("txt.views.document.show.api_response_body") %>
         </a>
       </li>

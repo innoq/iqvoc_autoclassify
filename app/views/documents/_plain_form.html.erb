@@ -1,30 +1,29 @@
+<% id_suffix = local_assigns[:id_suffix] %>
 <%= bootstrap_form_for @document, as: :document, url: url, html: { class: 'document-form' } do |f| %>
   <fieldset>
-    <%= f.collection_radio_buttons :language,
-                                   Iqvoc::Concept.pref_labeling_languages.map { |lang| [lang, t(lang, scope: 'languages')] } +
-                                   [
-                                     ["", t('txt.controllers.documents.new.select_language_prompt')]
-                                   ],
-                                   :first,
-                                   :last,
-                                   help: t('txt.controllers.documents.new.language_selection_help') do |option| %>
+    <legend class="form-label"><%= Document::Base.human_attribute_name :language %></legend>
+    <% (Iqvoc::Concept.pref_labeling_languages.map { |lang| [lang, t(lang, scope: 'languages')] } +
+        [["", t('txt.controllers.documents.new.select_language_prompt')]]).each do |value, text| %>
       <div class="form-check">
-        <%= option.radio_button(class: 'form-check-input') + option.label(class: 'form-check-label') %>
+        <%= radio_button_tag 'document[language]', value, @document.language == value,
+                             id: "document_language_#{value}#{id_suffix}", class: 'form-check-input' %>
+        <%= label_tag "document_language_#{value}#{id_suffix}", text, class: 'form-check-label' %>
       </div>
     <% end %>
+    <small class="form-text text-muted"><%= t('txt.controllers.documents.new.language_selection_help') %></small>
 
     <% if can?(:use, :administration) and local_assigns[:show_options] != false %>
       <% Document::Base::BOOLEAN_OPTIONS.each do |bool_attr| %>
-        <%= f.check_box bool_attr %>
+        <%= f.check_box bool_attr, id: "document_#{bool_attr}#{id_suffix}" %>
       <% end %>
       <hr>
     <% end %>
 
-    <%= f.text_field :title %>
+    <%= f.text_field :title, id: "document_title#{id_suffix}" %>
 
-    <%= f.text_area :content, rows: 10, label: t('txt.controllers.documents.new.enter_text'), autofocus: 'true' %>
+    <%= f.text_area :content, rows: 10, label: t('txt.controllers.documents.new.enter_text'), autofocus: 'true', id: "document_content#{id_suffix}" %>
 
     <%= f.button t("txt.controllers.documents.new.classify_text"), class: 'btn btn-primary', data: {disable_with: loading_indicator(t("txt.controllers.documents.new.classify_process"))} %>
-    <%= submit_tag(t("txt.controllers.documents.new.reset_text"), name: 'reset', id: 'reset_button', type: 'reset', class: 'btn btn-outline-secondary') %>
+    <%= submit_tag(t("txt.controllers.documents.new.reset_text"), name: 'reset', id: "reset_button#{id_suffix}", type: 'reset', class: 'btn btn-outline-secondary') %>
   </fieldset>
 <% end %>

@@ -5,19 +5,19 @@
 
 <ul class="nav nav-tabs mt-5" id="myTab" role="tablist">
   <li class="nav-item" role="presentation">
-    <a class="nav-link active" id="text-tab" data-toggle="tab" href="#text" role="tab" aria-controls="text" aria-selected="true">
+    <a class="nav-link active" id="text-tab" data-bs-toggle="tab" href="#text" role="tab" aria-controls="text" aria-selected="true">
       <%= Document::Base.human_attribute_name :content %>
     </a>
   </li>
   <li class="nav-item" role="presentation">
-    <a class="nav-link" id="url-tab" data-toggle="tab" href="#url" role="tab" aria-controls="uri" aria-selected="false">
+    <a class="nav-link" id="url-tab" data-bs-toggle="tab" href="#url" role="tab" aria-controls="uri" aria-selected="false">
       <%= Document::Base.human_attribute_name :url %>
     </a>
   </li>
 
   <% if ENV['AUTOCLASSIFY_SERVICE_URI'].present? and can?(:use, :administration) %>
     <li class="nav-item" role="presentation">
-      <a class="nav-link" id="text-tab" data-toggle="tab" href="#text2" role="tab" aria-controls="text" aria-selected="false">
+      <a class="nav-link" id="text2-tab" data-bs-toggle="tab" href="#text2" role="tab" aria-controls="text2" aria-selected="false">
         AutoClassify2 <%= Document::Base.human_attribute_name :content %>
       </a>
     </li>
@@ -25,7 +25,7 @@
 </ul>
 
 <div class="tab-content" id="myTabContent">
-  <div class="tab-pane fade show active" id="text" role="tabpanel" aria-labelledby="home-tab">
+  <div class="tab-pane fade show active" id="text" role="tabpanel" aria-labelledby="text-tab">
     <%= render 'plain_form', url: plain_documents_path %>
   </div>
 
@@ -34,8 +34,8 @@
   </div>
 
   <% if ENV['AUTOCLASSIFY_SERVICE_URI'].present? and can?(:use, :administration) %>
-    <div class="tab-pane fade" id="text2" role="tabpanel" aria-labelledby="next-tab">
-      <%= render 'plain_form', url: plain2_documents_path, show_options: false %>
+    <div class="tab-pane fade" id="text2" role="tabpanel" aria-labelledby="text2-tab">
+      <%= render 'plain_form', url: plain2_documents_path, show_options: false, id_suffix: '_2' %>
     </div>
   <% end %>
 </div>

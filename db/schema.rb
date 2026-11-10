@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_07_23_172701) do
+ActiveRecord::Schema[8.1].define(version: 2026_09_17_120100) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -183,6 +183,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_23_172701) do
     t.string "type"
     t.datetime "updated_at", precision: nil
     t.index ["domain_id", "range_id", "type"], name: "ix_label_rel_dom_rng_type"
+    t.index ["range_id"], name: "index_label_relations_on_range_id"
     t.index ["type"], name: "ix_label_relations_on_type"
   end
 
@@ -193,6 +194,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_23_172701) do
     t.string "type"
     t.datetime "updated_at", precision: nil
     t.index ["owner_id", "target_id", "type"], name: "ix_labelings_fk_type"
+    t.index ["target_id"], name: "index_labelings_on_target_id"
     t.index ["type"], name: "ix_labelings_on_type"
   end
 

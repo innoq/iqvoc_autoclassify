@@ -2,8 +2,8 @@
 <%= render "sidebar" %>
 
 <div class="row">
-  <div class="col-sm-4 pull-right">
-    <%= image_tag 'thesaurus_fox.png', class: "img-responsive thesaurus-fox" %>
+  <div class="col-sm-4 float-end">
+    <%= image_tag 'thesaurus_fox.png', class: "img-fluid thesaurus-fox" %>
   </div>
 </div>
 
@@ -23,12 +23,12 @@
 
           <%= render 'document_labels', document: doc %>
 
-          <%= link_to "<i class='fa fa-share'></i>".html_safe, doc.uri, target: :_blank, title: t('txt.views.document.visit_website') if doc.uri %>
+          <%= link_to "<i class='fa-solid fa-share'></i>".html_safe, doc.uri, target: :_blank, title: t('txt.views.document.visit_website') if doc.uri %>
           <div>
             <%= truncate(doc.content, length: 80) %>
           </div>
           <div>
-            <%= doc.classifications.first(5).map {|c| "#{link_to c.title, concept_path(c.concept_origin), target: :_blank, class: 'badge badge-primary'}"}.join(" ").html_safe %>
+            <%= doc.classifications.first(5).map {|c| "#{link_to c.title, concept_path(c.concept_origin), target: :_blank, class: 'badge bg-primary'}"}.join(" ").html_safe %>
           </div>
         </td>
         <td class="documents-table-item-classifications">

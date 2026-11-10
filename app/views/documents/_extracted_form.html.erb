@@ -1,5 +1,6 @@
 <%= bootstrap_form_for @document, url: url, html: { class: 'document-form' } do |f| %>
   <fieldset>
+    <legend class="form-label"><%= Document::Base.human_attribute_name :language %></legend>
     <%= f.collection_radio_buttons :language,
                                    Iqvoc::Concept.pref_labeling_languages.map { |lang| [lang, t(lang, scope: 'languages')] } +
                                    [
@@ -7,6 +8,7 @@
                                    ],
                                    :first,
                                    :last,
+                                   skip_label: true,
                                    help: t('txt.controllers.documents.new.language_selection_help') do |option| %>
       <div class="form-check">
         <%= option.radio_button(class: 'form-check-input') + option.label(class: 'form-check-label') %>

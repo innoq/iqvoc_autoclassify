@@ -1,9 +1,9 @@
 source 'https://rubygems.org'
 
-gem 'iqvoc', '~> 4.16.0', github: 'innoq/iqvoc', branch: :main
-gem 'iqvoc_skosxl', '~> 2.12.0', github: 'innoq/iqvoc_skosxl', branch: :main
-gem 'iqvoc_inflectionals', '~> 2.12.0', github: 'innoq/iqvoc_inflectionals', branch: :main
-gem 'iqvoc_compound_forms', '~> 2.12.0', github: 'innoq/iqvoc_compound_forms', branch: :main
+gem 'iqvoc', '~> 4.17.0', github: 'innoq/iqvoc'
+gem 'iqvoc_skosxl', '~> 2.13.0', github: 'innoq/iqvoc_skosxl'
+gem 'iqvoc_inflectionals', '~> 2.13.0', github: 'innoq/iqvoc_inflectionals'
+gem 'iqvoc_compound_forms', '~> 2.13.0', github: 'innoq/iqvoc_compound_forms'
 
 gem 'ruby-readability'
 gem 'pdf-reader', '~> 2.16.0'
@@ -31,5 +31,5 @@ group :test do
   gem 'capybara'
   gem 'poltergeist'
   gem 'webmock'
-  gem 'minitest', '< 6'
+  gem 'minitest'
 end

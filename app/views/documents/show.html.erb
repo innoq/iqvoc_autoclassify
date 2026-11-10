@@ -37,8 +37,8 @@
     <h2>
       <%= t('txt.views.document.show.results') %>
       <% if classifications.any? %>
-        <button type="button" class="btn-clipboard-multiple btn btn-link p-0" data-toggle="tooltip" title="<%= t('txt.views.free_classification.copy_all_to_clipboard') %>" data-clipboard-targets=".auto-classify-result .result-item" data-clipboard-targets-join-separator=", ">
-          <i class="fa fa-clone" aria-hidden="true"></i>
+        <button type="button" class="btn-clipboard-multiple btn btn-link p-0" data-bs-toggle="tooltip" title="<%= t('txt.views.free_classification.copy_all_to_clipboard') %>" data-clipboard-targets=".auto-classify-result .result-item" data-clipboard-targets-join-separator=", ">
+          <i class="fa-solid fa-clone" aria-hidden="true"></i>
         </button>
       <% end %>
     </h2>
@@ -56,7 +56,7 @@
     <% end %>
 
     <% if classifications.size > limit %>
-      <a href="#show-all" data-toggle="collapse"><%= "#{t('txt.views.document.show.show_all')} (#{classifications.size-limit})" %></a>
+      <a href="#show-all" data-bs-toggle="collapse"><%= "#{t('txt.views.document.show.show_all')} (#{classifications.size-limit})" %></a>
       <div id="show-all" class="collapse">
         <ul class="auto-classify-result-list">
         <% classifications[limit,classifications.size].each do |classification| %>

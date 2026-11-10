@@ -2,12 +2,14 @@
   "name": "iqvoc_autoclassify",
   "version": "1.10.4",
   "description": "iQvoc AutoClassify extension.",
+  "main": "app/javascript/manifest.js",
   "files": [
-    "app/assets/**/*"
+    "app/assets/**/*",
+    "app/javascript/**/*"
   ],
   "scripts": {
-    "watch": "faucet --watch",
-    "compile": "faucet --compact --fingerprint"
+    "build": "esbuild app/javascript/*.* --bundle --sourcemap --format=esm --outdir=app/assets/builds --public-path=/assets",
+    "build:css": "sass ./app/assets/stylesheets/application.scss:./app/assets/builds/application.css --no-source-map --load-path=node_modules"
   },
   "repository": {
     "type": "git",
@@ -20,15 +22,13 @@
   },
   "homepage": "https://github.com/innoq/iqvoc_autoclassify#readme",
   "devDependencies": {
-    "faucet-pipeline-js": "^2.1.7",
-    "faucet-pipeline-jsmin": "^2.1.7",
-    "faucet-pipeline-sass": "^1.6.0",
-    "faucet-pipeline-static": "^1.2.0"
+    "esbuild": "^0.28.2",
+    "sass": "^1.108.1"
   },
   "dependencies": {
     "clipboard": "^2.0.6",
-    "iqvoc": "innoq/iqvoc",
-    "iqvoc_compound_forms": "innoq/iqvoc_compound_forms",
+    "iqvoc": "github:innoq/iqvoc",
+    "iqvoc_compound_forms": "github:innoq/iqvoc_compound_forms",
     "iqvoc_skosxl": "github:innoq/iqvoc_skosxl"
   }
 }

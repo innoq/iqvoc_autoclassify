@@ -8,8 +8,8 @@
       [<%= classification.weighting %>]
     <% end %>
 
-    <%= link_to(concept_path(classification.concept), title: t('txt.views.free_classification.show_details'), data: { toggle: 'tooltip' }, class: 'btn btn-link p-0', target: '_blank') do %>
-      <i class="fa fa-search-plus" aria-hidden="true"></i>
+    <%= link_to(concept_path(classification.concept), title: t('txt.views.free_classification.show_details'), data: { bs_toggle: 'tooltip' }, class: 'btn btn-link p-0', target: '_blank') do %>
+      <i class="fa-solid fa-magnifying-glass-plus" aria-hidden="true"></i>
     <% end %>
   </span>
 </li>

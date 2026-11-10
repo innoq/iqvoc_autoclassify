@@ -1,11 +1,11 @@
 <% if document.language.present? %>
-  <span class="badge badge-secondary"><%= t(document.language, scope: 'languages') %></span>
+  <span class="badge bg-secondary"><%= t(document.language, scope: 'languages') %></span>
 <% end %>
 
 <% if document.class == Document::Plain %>
-  <span class="badge badge-success">AutoClassify1</span>
+  <span class="badge bg-success">AutoClassify1</span>
 <% elsif document.class == Document::Autoclassify2::Plain %>
-  <span class="badge badge-warning">AutoClassify2</span>
+  <span class="badge bg-warning">AutoClassify2</span>
 <% elsif document.class == Document::Compare::Plain %>
-  <span class="badge badge-danger">Vergleich</span>
+  <span class="badge bg-danger">Vergleich</span>
 <% end %>

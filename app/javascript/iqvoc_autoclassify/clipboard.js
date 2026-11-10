@@ -1,3 +1,5 @@
+import ClipboardJS from 'clipboard/dist/clipboard';
+
 jQuery(function($) {
   "use strict";
 
