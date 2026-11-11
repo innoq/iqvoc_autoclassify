@@ -27,17 +27,13 @@ Operate Iqvoc::AutoClassify and iQvoc as Engines running in a custom App.
 
 ## Release
 
-### Prerequisites
-
-As iqvoc_autoclassify is closed source it cannot be pushed to Rubygems. Therefore
-you have to use [iq_gem](https://github.com/innoq/iq_gem) in order to push it to
-gems.innoq.com.
-
-### Push
-
-You can bump, tag and push a new gem release with
-
-    $ bundle exec rake release:push[X.X.X]
+1. Bump the version in `lib/iqvoc/auto_classify/version.rb` and `package.json`
+2. Commit and tag the release:
+    `git tag -a vX.Y.Z -m "Version X.Y.Z"`
+3. Push the commit and the tag:
+    `git push origin main vX.Y.Z`
+4. Build and publish the gem:
+    `gem build iqvoc_autoclassify.gemspec && gem push iqvoc_autoclassify-X.Y.Z.gem`
 
 ## Maintainer & Contributors
 
