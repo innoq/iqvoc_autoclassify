@@ -76,7 +76,7 @@
       <%= render partial: 'result_list' %>
 
       <div class="border p-2 mt-5">
-        <%= raw t('txt.common.contact_message', email: mail_to(t('txt.common.contact_email'), t('txt.common.contact_email'), subject: 'Feedback Verschlagwortungsassistent')) %>
+        <%= render 'feedback' %>
       </div>
     </div>
 
