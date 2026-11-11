@@ -23,7 +23,7 @@
   "homepage": "https://github.com/innoq/iqvoc_autoclassify#readme",
   "devDependencies": {
     "esbuild": "^0.28.2",
-    "sass": "^1.108.1"
+    "sass": "^1.108.2"
   },
   "dependencies": {
     "clipboard": "^2.0.11",
