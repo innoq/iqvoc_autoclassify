@@ -1,6 +1,6 @@
 {
   "name": "iqvoc_autoclassify",
-  "version": "1.12.0",
+  "version": "1.13.0",
   "description": "iQvoc AutoClassify extension.",
   "main": "app/javascript/manifest.js",
   "files": [
