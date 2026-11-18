@@ -200,6 +200,21 @@ class Documents::ExtractedControllerTest < ActionController::TestCase
     end
   end
 
+  test 'json response names the versions of the engine and the host application' do
+    stub_request(:get, @urls[:html]).to_return(
+      body: File.new('test/fixtures/sample.html'),
+      status: 200,
+      headers: { 'Content-Type': 'text/html' }
+    )
+
+    post :create, params: { lang: 'de', format: 'json', uri: @urls[:html] }
+
+    assert_response :success
+    expected = { 'app_version' => Iqvoc::AutoClassify::VERSION,
+                 'host_app_version' => Iqvoc.host_version }.compact
+    assert_equal expected, JSON.parse(response.body)['generated_by']
+  end
+
   test 'flat and nested documents params' do
     stub_request(:get, @urls[:html]).to_return(
       body: File.new('test/fixtures/sample.html'),

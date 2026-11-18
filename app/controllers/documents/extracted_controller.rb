@@ -15,6 +15,10 @@ class Documents::ExtractedController < DocumentsController
 
     {
       "url": "http://localhost:3000/de/autoclassify/extract.json?uri=https://www.umweltbundesamt.de",
+      "generated_by": {
+        "app_version": "1.12.0",
+        "host_app_version": "1.23.1"
+      },
       "total_results": 2,
       "results": [
         {
@@ -78,6 +82,7 @@ class Documents::ExtractedController < DocumentsController
         format.json {
           render json: {
             "url": request.original_url,
+            "generated_by": generated_by,
             "total_results": @document.classifications.length,
             "results":
               @document.classifications

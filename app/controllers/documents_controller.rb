@@ -62,6 +62,13 @@ class DocumentsController < ApplicationController
 
   protected
 
+  def generated_by
+    {
+      app_version: Iqvoc::AutoClassify::VERSION,
+      host_app_version: Iqvoc.host_version
+    }.compact
+  end
+
   def render_compare_show(status: nil)
     render 'documents/compare/plain/show', status: status
   end

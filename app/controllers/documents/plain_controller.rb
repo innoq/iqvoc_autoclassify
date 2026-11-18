@@ -12,6 +12,10 @@ class Documents::PlainController < DocumentsController
 
   {
     "url": "https://sns.uba.de/umthes/de/autoclassify/plain.json",
+    "generated_by": {
+      "app_version": "1.12.0",
+      "host_app_version": "1.23.1"
+    },
     "total_results": 1,
     "results":
       [
@@ -60,6 +64,7 @@ class Documents::PlainController < DocumentsController
           # TODO: render using jbuilder?
           render json: {
             "url": request.original_url,
+            "generated_by": generated_by,
             "total_results": @document.classifications.length,
             "results":
               @document.classifications

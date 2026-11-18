@@ -70,6 +70,15 @@ class Documents::PlainControllerTest < ActionController::TestCase
     end
   end
 
+  test 'json response names the versions of the engine and the host application' do
+    post :create, params: { lang: 'de', format: 'json', content: 'my text' }
+
+    assert_response :success
+    expected = { 'app_version' => Iqvoc::AutoClassify::VERSION,
+                 'host_app_version' => Iqvoc.host_version }.compact
+    assert_equal expected, JSON.parse(response.body)['generated_by']
+  end
+
   test 'flat and nested documents params' do
     %w[ttl nt rdf json].each do |format|
       post :create, params: {
